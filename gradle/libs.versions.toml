@@ -18,6 +18,7 @@ roomVersion = "2.6.1"
 lifecycleVersion = "2.8.6"
 kspVersion = "1.9.0-1.0.13"
 pagingCommon = "3.1.1"
+uiTextGoogleFonts = "1.7.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,6 +51,7 @@ paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.r
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "roomVersion" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomVersion" }
 pagingCommon = { module = "androidx.paging:paging-common-ktx", version.ref = "pagingCommon" }
+androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 
 
 [plugins]

@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -32,7 +34,7 @@ fun BottomNavigationBar(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(80.dp)
+            .wrapContentHeight()
             .padding(horizontal = 16.dp, vertical = 16.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
@@ -41,7 +43,8 @@ fun BottomNavigationBar(
     ) {
         Row(
             modifier = modifier
-                .fillMaxSize(),
+                .fillMaxWidth()
+                .wrapContentHeight(),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -49,16 +52,10 @@ fun BottomNavigationBar(
                 val itemIsSelected = currentDestination?.route == item.navigationRoute.route
                 IconButton(onClick = {
                     navController.navigate(item.navigationRoute) {
-                        // Pop up to the start destination of the graph to
-                        // avoid building up a large stack of destinations
-                        // on the back stack as users select items
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
-                        // Avoid multiple copies of the same destination when
-                        // reselecting the same item
                         launchSingleTop = true
-                        // Restore state when reselecting a previously selected item
                         restoreState = true
                     }
                 }) {

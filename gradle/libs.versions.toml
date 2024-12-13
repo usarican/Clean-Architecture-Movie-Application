@@ -5,6 +5,7 @@ coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
+kotlinxSerializationJson = "1.5.3"
 lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.3"
 composeBom = "2024.04.01"
@@ -19,6 +20,7 @@ lifecycleVersion = "2.8.6"
 kspVersion = "1.9.0-1.0.13"
 pagingCommon = "3.1.1"
 uiTextGoogleFonts = "1.7.5"
+navigation = "2.8.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -37,6 +39,7 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android" , version.ref = "hiltVersion"}
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler" , version.ref = "hiltVersion"}
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomVersion" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomVersion" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofitVersion" }
@@ -52,6 +55,7 @@ room-paging = { group = "androidx.room", name = "room-paging", version.ref = "ro
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomVersion" }
 pagingCommon = { module = "androidx.paging:paging-common-ktx", version.ref = "pagingCommon" }
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
+androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
 
 [plugins]

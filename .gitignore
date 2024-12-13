@@ -7,6 +7,10 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+/.idea/.name
+/.idea/appInsightsSettings.xml
+/.idea/runConfigurations.xml
+
 .DS_Store
 /build
 /captures

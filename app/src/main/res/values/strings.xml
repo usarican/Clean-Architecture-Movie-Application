@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CleanArchitectureMovieApp</string>
+    <string name="movies">Movies</string>
+    <string name="search">Search</string>
+    <string name="my_list">My List</string>
+    <string name="settings">Settings</string>
+    <string name="tv_series">TV Series</string>
 </resources>

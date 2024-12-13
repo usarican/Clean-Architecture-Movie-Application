@@ -1,53 +1,57 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import android.annotation.SuppressLint
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 fun BottomNavigationBar(
-    modifier: Modifier = Modifier,
+    modifier : Modifier = Modifier,
     navController: NavController
-) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-    Card(
+){
+    NavigationBar(
         modifier = modifier
-            .fillMaxWidth()
-            .height(80.dp)
-            .padding(horizontal = 16.dp, vertical = 16.dp),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-        )
     ) {
-        Row(
-            modifier = modifier
-                .fillMaxSize(),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            bottomNavigationItems.forEach { item ->
-                val itemIsSelected = currentDestination?.route == item.navigationRoute.route
-                IconButton(onClick = {
+        var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
+        BottomNavigationItems.items.forEachIndexed { index, item ->
+            NavigationBarItem(
+                icon = { Icon(painter = painterResource( item.iconResourceId ), contentDescription = item.itemName) },
+                label = {
+                    Text(
+                        text = stringResource(item.itemLabel),
+                        style =  MaterialTheme.typography.labelSmall,
+                        fontWeight = if (selectedItemIndex == index) FontWeight.Bold else FontWeight.Normal
+                    ) },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    indicatorColor = Color.Transparent
+                ),
+                selected = selectedItemIndex == index,
+                onClick = {
+                    selectedItemIndex = index
                     navController.navigate(item.navigationRoute) {
                         // Pop up to the start destination of the graph to
                         // avoid building up a large stack of destinations
@@ -61,14 +65,8 @@ fun BottomNavigationBar(
                         // Restore state when reselecting a previously selected item
                         restoreState = true
                     }
-                }) {
-                    Icon(
-                        painterResource(item.iconResourceId),
-                        contentDescription = item.title,
-                        tint = if (itemIsSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
                 }
-            }
+            )
         }
     }
 }

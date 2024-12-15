@@ -18,7 +18,7 @@ fun HomeScreen(){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(Constants.API_KEY, style = TextStyle(
+        Text("HOME", style = TextStyle(
             fontSize = 50.sp
         ))
     }

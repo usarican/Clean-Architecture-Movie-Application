@@ -10,7 +10,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.en
 interface GenreDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(vararg genreEntity: GenreEntity)
+    suspend fun insertAll(genreList : List<GenreEntity>)
 
     @Query("SELECT * FROM genres")
     suspend fun getGenres() : List<GenreEntity>

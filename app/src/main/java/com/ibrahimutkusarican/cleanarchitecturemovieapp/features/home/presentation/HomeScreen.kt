@@ -9,10 +9,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 
 @Composable
-fun HomeScreen(){
+fun HomeScreen(
+    homeViewModel: HomeViewModel
+){
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

@@ -64,5 +64,6 @@ secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.se
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinAndroidKsp = { id = "com.google.devtools.ksp", version.ref ="kspVersion" }
+kotlinKapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref ="hiltVersion" }
 

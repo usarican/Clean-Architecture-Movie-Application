@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.hiltAndroid) apply false
     alias(libs.plugins.kotlinAndroidKsp) apply false
+    alias(libs.plugins.kotlinKapt) apply false
 }
 buildscript {
     dependencies {

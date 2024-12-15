@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.kotlinKapt)
     kotlin("plugin.serialization") version "2.1.0"
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
@@ -104,5 +105,7 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.hilt.compiler)
+    kapt(libs.room.compiler)
     implementation(libs.androidx.navigation)
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
    }

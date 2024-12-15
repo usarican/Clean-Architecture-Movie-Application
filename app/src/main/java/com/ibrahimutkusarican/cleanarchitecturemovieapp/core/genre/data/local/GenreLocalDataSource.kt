@@ -6,8 +6,8 @@ import javax.inject.Inject
 class GenreLocalDataSource @Inject constructor(
     private val genreDao: GenreDao
 ) {
-    suspend fun insertAllGenres(vararg genreEntity: GenreEntity) {
-        genreDao.insertAll(*genreEntity)
+    suspend fun insertAllGenres(genreList: List<GenreEntity>) {
+        genreDao.insertAll(genreList)
     }
 
     suspend fun getAllGenres(): List<GenreEntity> =

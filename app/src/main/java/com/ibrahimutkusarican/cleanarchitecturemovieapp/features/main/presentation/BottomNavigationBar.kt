@@ -81,9 +81,8 @@ fun BottomNavigationBar(
 @Composable
 @Preview(showBackground = true)
 fun BottomNavigationItem(
-    modifier: Modifier = Modifier
-        .width(100.dp),
-    selected: Boolean = false,
+    modifier: Modifier = Modifier.width(100.dp),
+    selected: Boolean = true,
     onClick: () -> Unit = {},
     bottomNavigationItems: BottomNavigationItems = BottomNavigationItems(
         itemName = "movies",
@@ -122,9 +121,10 @@ fun BottomNavigationItem(
                 painter = painterResource(bottomNavigationItems.iconResourceId),
                 contentDescription = bottomNavigationItems.itemName
             )
-            AnimatedVisibility(selected) {
+            AnimatedVisibility(
+                visible = selected,
+                modifier = Modifier.padding(horizontal = 4.dp)) {
                 Text(
-                    modifier = Modifier.padding(start = 4.dp),
                     text = stringResource(bottomNavigationItems.itemLabel),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold

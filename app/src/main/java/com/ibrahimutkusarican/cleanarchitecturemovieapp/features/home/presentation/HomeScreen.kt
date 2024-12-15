@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 
 @Composable
 fun HomeScreen(){
@@ -17,7 +18,7 @@ fun HomeScreen(){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("HOME SCREEN", style = TextStyle(
+        Text(Constants.API_KEY, style = TextStyle(
             fontSize = 50.sp
         ))
     }

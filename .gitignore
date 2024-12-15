@@ -17,3 +17,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+secrets.properties
+local.defaults.properties

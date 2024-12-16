@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.usecase.GetMovieGenresUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getSuccessOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,11 +17,11 @@ class HomeViewModel @Inject constructor(
 ): BaseViewModel() {
 
     init {
-        getMovieGenresUseCase.getMovieGenresUseCase()
-            .doOnSuccess { genreModels ->
-                Log.d(TAG,genreModels.toString())
-            }
-            .launchIn(viewModelScope)
+        viewModelScope.launch {
+            val data = getMovieGenresUseCase.getMovieGenresUseCase()
+                .getSuccessOrThrow()
+            Log.d(TAG,data.toString())
+        }
     }
 
     companion object {

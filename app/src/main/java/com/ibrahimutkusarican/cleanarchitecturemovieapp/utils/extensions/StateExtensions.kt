@@ -2,6 +2,8 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.State
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.transform
 
 fun <T, R> State<T>.map(transform: (T) -> R): State<R> {
@@ -35,3 +37,7 @@ fun <T> Flow<State<T>>.doOnLoading(action: suspend () -> Unit): Flow<State<T>> =
         }
         return@transform emit(value)
     }
+
+suspend fun <T> Flow<State<T>>.getSuccessOrThrow() : T   {
+    return (this.first { it is State.Success } as State.Success<T>).data ?: throw NullPointerException("Data is null!")
+}

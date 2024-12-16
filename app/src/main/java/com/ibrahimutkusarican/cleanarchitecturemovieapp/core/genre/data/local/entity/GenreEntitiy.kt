@@ -3,10 +3,9 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.e
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieEntity
 
 @Entity(tableName = "genres")
 data class GenreEntity(
     @PrimaryKey @ColumnInfo(name = "genreId") val genreId : Int,
     @ColumnInfo(name = "genreName") val genreName : String,
-) : MovieEntity
+)

@@ -1,13 +1,9 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.core
 
-interface ResponseMapper<E : MovieEntity, R : MovieResponse> {
+interface ResponseMapper<E,R> {
     fun mapResponseToEntity(response : R) : E
 }
 
-interface EntityMapper<E : MovieEntity, M : MovieModel>{
+interface EntityMapper<E,M>{
     fun mapEntityToModel(entity : E) : M
 }
-
-interface MovieEntity
-interface MovieResponse
-interface MovieModel

@@ -2,7 +2,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.reposit
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.State
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.GenreResponseMapper
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.mapper.GenreResponseMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.GenreLocalDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.entity.GenreEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.remote.GenreRemoteDataSource

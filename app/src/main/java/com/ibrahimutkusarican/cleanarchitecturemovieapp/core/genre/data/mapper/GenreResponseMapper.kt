@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.mapper
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ResponseMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.entity.GenreEntity

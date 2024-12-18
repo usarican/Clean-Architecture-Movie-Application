@@ -18,7 +18,10 @@ class HomeViewModel @Inject constructor(
 ): BaseViewModel() {
 
     init {
-
+        val movies = getHomeMoviesUseCase.getHomeMoviesUseCase()
+        movies.doOnSuccess {
+            Log.d(TAG, "Movies: $it")
+        }.launchIn(viewModelScope)
     }
 
     companion object {

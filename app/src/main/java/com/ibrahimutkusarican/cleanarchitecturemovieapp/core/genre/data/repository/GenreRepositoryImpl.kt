@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.repository
 
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ApiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseRepository
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.State
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.mapper.GenreResponseMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.GenreLocalDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.entity.GenreEntity
@@ -15,7 +15,7 @@ class GenreRepositoryImpl @Inject constructor(
     private val genreResponseMapper: GenreResponseMapper
 ) : BaseRepository(), GenreRepository {
 
-    override fun getMovieGenreList(): Flow<State<List<GenreEntity>>> {
+    override fun getMovieGenreList(): Flow<ApiState<List<GenreEntity>>> {
         return apiCall {
             genreLocalDataSource.getAllGenres().ifEmpty {
                 val genreResponse = genreRemoteDataSource.getMovieGenreList()

@@ -1,7 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data
 
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ApiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseRepository
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.State
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.MovieLocalDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
@@ -16,7 +17,7 @@ class MovieRepositoryImpl @Inject constructor(
     private val movieResultResponseMapper: MovieResultResponseMapper
 ) : BaseRepository(), MovieRepository {
 
-    override fun getMoviesByType(movieType: MovieType): Flow<State<List<MovieEntity>>> {
+    override fun getMoviesByType(movieType: MovieType): Flow<ApiState<List<MovieEntity>>> {
         return apiCall {
             val movieEntities = movieLocalDataSource.getMoviesByType(movieType)
             movieEntities.ifEmpty {

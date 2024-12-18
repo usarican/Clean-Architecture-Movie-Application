@@ -1,6 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.usecase
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.State
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ApiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.repository.GenreRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.mapper.GenreModelMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.model.GenreModel
@@ -12,7 +12,7 @@ import javax.inject.Inject
 class GetMovieGenresUseCaseImpl @Inject constructor(
     private val genreRepository: GenreRepository, private val genreModelMapper: GenreModelMapper
 ) : GetMovieGenresUseCase {
-    override fun getMovieGenresUseCase(): Flow<State<List<GenreModel>>> {
+    override fun getMovieGenresUseCase(): Flow<ApiState<List<GenreModel>>> {
         return genreRepository.getMovieGenreList().map { state ->
                 state.map { genreEntities ->
                     genreEntities.map { genreEntity -> genreModelMapper.mapEntityToModel(genreEntity) }

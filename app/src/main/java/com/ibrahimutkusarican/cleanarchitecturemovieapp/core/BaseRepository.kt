@@ -7,12 +7,11 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 abstract class BaseRepository {
-    fun <T : Any> apiCall(call: suspend () -> T): Flow<State<T>> =
+    fun <T : Any> apiCall(call: suspend () -> T): Flow<ApiState<T>> =
         flow {
-            emit(State.Loading)
-            emit(State.Success(data = call.invoke()))
+            emit(ApiState.Success(data = call.invoke()) as ApiState<T>)
         }.catch { error ->
             error.printStackTrace()
-            emit(State.Error(error))
+            emit(ApiState.Error(error))
         }.flowOn(Dispatchers.IO)
 }

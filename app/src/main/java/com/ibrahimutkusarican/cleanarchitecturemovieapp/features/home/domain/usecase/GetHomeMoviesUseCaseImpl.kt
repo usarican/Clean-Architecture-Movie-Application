@@ -1,6 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.usecase
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.State
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.usecase.GetMovieGenresUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.MovieRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
@@ -19,7 +19,7 @@ class GetHomeMoviesUseCaseImpl @Inject constructor(
     private val movieModelMapper: HomeMovieModelMapper,
     private val getMovieGenreUseCase: GetMovieGenresUseCase
 ) : GetHomeMoviesUseCase {
-    override fun getHomeMoviesUseCase(genreIds: List<Int>): Flow<State<Map<MovieType, List<HomeMovieModel>>>> {
+    override fun getHomeMoviesUseCase(): Flow<UiState<Map<MovieType, List<HomeMovieModel>>>> {
         return combine(
             getMovieGenreUseCase.getMovieGenresUseCase(),
             movieRepository.getMoviesByType(MovieType.NOW_PLAYING),
@@ -27,7 +27,7 @@ class GetHomeMoviesUseCaseImpl @Inject constructor(
             movieRepository.getMoviesByType(MovieType.TOP_RATED),
             movieRepository.getMoviesByType(MovieType.UPCOMING)
         ) { stateGenres, stateNowPlaying, statePopular, stateTopRated, stateUpcoming ->
-            State.Loading
+            UiState.Loading
             val genreModelList = stateGenres.getSuccessOrThrow()
             val nowPlayingList = stateNowPlaying.getSuccessOrThrow()
             val popularList = statePopular.getSuccessOrThrow()
@@ -65,9 +65,9 @@ class GetHomeMoviesUseCaseImpl @Inject constructor(
                 MovieType.TOP_RATED to topRatedMovieModelList,
                 MovieType.UPCOMING to upComingMovieModelList
             )
-            State.Success(movieMap)
+            UiState.Success(movieMap)
         }.catch { exp ->
-            State.Error(exp)
+            UiState.Error(exp)
         }.flowOn(Dispatchers.IO)
     }
 }

@@ -1,8 +1,11 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.di
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieDatabase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.MovieRepository
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.MovieRepositoryImpl
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.MovieDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.MovieService
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +17,9 @@ import javax.inject.Singleton
 @InstallIn(ViewModelComponent::class)
 abstract class HomeModule {
 
+    @Binds
+    abstract fun bindMovieRepository(movieRepositoryImpl: MovieRepositoryImpl): MovieRepository
+
     companion object {
         @Provides
         @Singleton
@@ -22,7 +28,7 @@ abstract class HomeModule {
 
         @Provides
         @Singleton
-        fun provideMovieDao(movieDatabase: MovieDatabase) : MovieDao = movieDatabase.movieDao()
+        fun provideMovieDao(movieDatabase: MovieDatabase): MovieDao = movieDatabase.movieDao()
 
     }
 }

@@ -23,7 +23,7 @@ class RequestInterceptor : Interceptor {
 
     companion object {
         private const val HEADER_KEY = "Authorization"
-        private const val HEADER_AUTH_TOKEN = "Bearer ${BuildConfig.TMDB_AUTH_TOKEN}"
+        private const val HEADER_AUTH_TOKEN = "Bearer ${Constants.TMDB_AUTH_TOKEN}"
         private const val LANGUAGE_PARAMETER = "language"
     }
 }

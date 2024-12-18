@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions
 
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieExceptions
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.State
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -38,6 +39,15 @@ fun <T> Flow<State<T>>.doOnLoading(action: suspend () -> Unit): Flow<State<T>> =
         return@transform emit(value)
     }
 
-suspend fun <T> Flow<State<T>>.getSuccessOrThrow() : T   {
-    return (this.first { it is State.Success } as State.Success<T>).data ?: throw NullPointerException("Data is null!")
+suspend fun <T> Flow<State<T>>.getSuccessOrThrow(): T {
+    return (this.first { it is State.Success } as State.Success<T>).data
+        ?: throw NullPointerException("Data is null!")
+}
+
+fun <T> State<T>.getSuccessOrThrow(): T {
+    return when (this) {
+        is State.Success -> data
+        is State.Error -> throw exception
+        else -> throw MovieExceptions.ApiException("Data is null!")
+    }
 }

@@ -20,6 +20,7 @@ object PersistenceModule {
         val room = Room.databaseBuilder(
             context, MovieDatabase::class.java, "db-movie"
         )
+        room.fallbackToDestructiveMigration()
         return room.build()
     }
 

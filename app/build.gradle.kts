@@ -99,4 +99,5 @@ dependencies {
     ksp(libs.room.compiler)
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.dotlottie.android)
    }

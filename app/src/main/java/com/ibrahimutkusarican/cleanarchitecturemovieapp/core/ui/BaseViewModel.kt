@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.core
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui
 
 import androidx.lifecycle.ViewModel
 

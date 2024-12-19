@@ -1,6 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.usecase
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.UiState
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieExceptions
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.usecase.GetMovieGenresUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.MovieRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
@@ -67,7 +68,7 @@ class GetHomeMoviesUseCaseImpl @Inject constructor(
             )
             UiState.Success(movieMap)
         }.catch { exp ->
-            UiState.Error(exp)
+            UiState.Error(MovieExceptions.GeneralException(exp.message))
         }.flowOn(Dispatchers.IO)
     }
 }

@@ -2,9 +2,12 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentat
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
@@ -30,7 +33,7 @@ fun HomeSuccessScreen(movies: Map<MovieType, List<HomeMovieModel>>) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        BannerMoviesScreen(modifier = Modifier.weight(.4F), homeMovieModels = movies[MovieType.NOW_PLAYING] ?: emptyList())
+        BannerMoviesScreen(modifier = Modifier.height(300.dp).fillMaxWidth().weight(.4F,fill = false), homeMovieModels = movies[MovieType.NOW_PLAYING] ?: emptyList())
         PopularMoviesScreen(movies[MovieType.POPULAR] ?: emptyList())
         TopRatedMoviesScreen(movies[MovieType.TOP_RATED] ?: emptyList())
         UpcomingMoviesScreen(movies[MovieType.UPCOMING] ?: emptyList())

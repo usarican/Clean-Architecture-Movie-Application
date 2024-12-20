@@ -100,4 +100,6 @@ dependencies {
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.dotlottie.android)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
    }

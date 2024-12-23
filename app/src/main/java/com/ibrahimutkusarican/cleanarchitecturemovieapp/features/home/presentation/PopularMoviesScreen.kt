@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -26,13 +29,13 @@ fun PopularMoviesScreen(
     Column(
         modifier = modifier
     ) {
-        Text(text = stringResource(R.string.popular_movies), style = MaterialTheme.typography.titleMedium)
+        Text(text = stringResource(R.string.popular_movies), style = MaterialTheme.typography.titleLarge)
         LazyRow(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = spacedBy(4.dp),
         ) {
             items(homeMovieModels){ popularMovie ->
-                UpComingMovieItem(upComingMovie = popularMovie)
+                PopularMovieItem(popularMovie = popularMovie)
             }
         }
     }
@@ -41,7 +44,7 @@ fun PopularMoviesScreen(
 @Composable
 fun PopularMovieItem(popularMovie: HomeMovieModel) {
     Card(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.height(240.dp).width(80.dp),
         shape = RoundedCornerShape(16.dp),
     ) {
         Box {

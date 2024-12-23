@@ -18,10 +18,10 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.mod
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel
-){
+) {
     val homeUiState by homeViewModel.homeUiState.collectAsStateWithLifecycle()
     val movies by homeViewModel.movies.collectAsStateWithLifecycle()
-    when(homeUiState){
+    when (homeUiState) {
         is UiState.Error -> ErrorScreen(exception = (homeUiState as UiState.Error).exception)
         UiState.Loading -> LoadingScreen()
         is UiState.Success -> HomeSuccessScreen(movies)
@@ -33,10 +33,22 @@ fun HomeSuccessScreen(movies: Map<MovieType, List<HomeMovieModel>>) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        BannerMoviesScreen(modifier = Modifier.height(300.dp).fillMaxWidth().weight(.4F,fill = false), homeMovieModels = movies[MovieType.NOW_PLAYING] ?: emptyList())
-        PopularMoviesScreen(movies[MovieType.POPULAR] ?: emptyList())
-        TopRatedMoviesScreen(movies[MovieType.TOP_RATED] ?: emptyList())
-        UpcomingMoviesScreen(movies[MovieType.UPCOMING] ?: emptyList())
+        BannerMoviesScreen(
+            modifier = Modifier.weight(0.4F).fillMaxWidth(),
+            homeMovieModels = movies[MovieType.NOW_PLAYING] ?: emptyList()
+        )
+        PopularMoviesScreen(
+            modifier = Modifier.weight(1F).fillMaxWidth(),
+            homeMovieModels = movies[MovieType.POPULAR] ?: emptyList()
+        )
+        TopRatedMoviesScreen(
+            modifier = Modifier.weight(1F).fillMaxWidth(),
+            homeMovieModels = movies[MovieType.TOP_RATED] ?: emptyList()
+        )
+        UpcomingMoviesScreen(
+            modifier = Modifier.weight(1F).fillMaxWidth(),
+            homeMovieModels = movies[MovieType.UPCOMING] ?: emptyList()
+        )
     }
 }
 

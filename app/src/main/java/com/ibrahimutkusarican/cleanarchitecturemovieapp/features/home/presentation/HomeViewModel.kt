@@ -19,7 +19,6 @@ class HomeViewModel @Inject constructor(
     private val getHomeMoviesUseCase: GetHomeMoviesUseCase
 ): BaseViewModel() {
 
-
     private val _movies = MutableStateFlow<Map<MovieType, List<HomeMovieModel>>>(mapOf())
     val movies : StateFlow<Map<MovieType, List<HomeMovieModel>>> = _movies
 

@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
@@ -44,8 +45,10 @@ fun UpcomingMoviesScreen(modifier: Modifier = Modifier, homeMovieModels: List<Ho
 @Composable
 fun UpComingMovieItem(upComingMovie : HomeMovieModel) {
     Card(
-        modifier = Modifier.height(160.dp).width(120.dp),
-        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier
+            .height(dimensionResource(R.dimen.home_category_movie_height))
+            .width(dimensionResource(R.dimen.home_category_movie_width)),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.medium_corner)),
     ) {
         Box {
             Column(

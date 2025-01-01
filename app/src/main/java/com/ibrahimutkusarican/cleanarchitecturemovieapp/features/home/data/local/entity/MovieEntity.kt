@@ -20,5 +20,6 @@ data class MovieEntity(
     @ColumnInfo(name = "video") val video: Boolean,
     @ColumnInfo(name = "vote_average") val voteAverage: Double,
     @ColumnInfo(name = "vote_count") val voteCount: Int,
-    @ColumnInfo(name = "movie_type") val movieType: MovieType
+    @ColumnInfo(name = "movie_type") val movieType: MovieType,
+    @ColumnInfo(name = "lastFetchedTime") val lastFetchedTime : Long
 )

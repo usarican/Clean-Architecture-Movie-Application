@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="home_category_movie_height">160dp</dimen>
-    <dimen name="home_category_movie_width">100dp</dimen>
+    <dimen name="home_category_movie_height">180dp</dimen>
+    <dimen name="home_category_movie_width">120dp</dimen>
     <dimen name="medium_corner">16dp</dimen>
     <dimen name="x_small_padding">4dp</dimen>
     <dimen name="small_padding">8dp</dimen>

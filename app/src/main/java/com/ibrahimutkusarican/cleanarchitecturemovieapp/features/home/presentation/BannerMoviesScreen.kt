@@ -1,6 +1,5 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation
 
-import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -48,7 +47,7 @@ fun BannerMovieItem(modifier: Modifier = Modifier, bannerMovie: HomeMovieModel) 
             modifier = Modifier.fillMaxSize()
         ) {
             MovieImage(
-                modifier = modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 imageUrl = bannerMovie.moviePosterImageUrl
             )
             Text(

@@ -9,6 +9,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remot
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResponse
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.minutes
 
 class MovieRepositoryImpl @Inject constructor(
     private val movieRemoteDataSource: MovieRemoteDataSource,
@@ -19,25 +21,30 @@ class MovieRepositoryImpl @Inject constructor(
     override fun getMoviesByType(movieType: MovieType): Flow<ApiState<List<MovieEntity>>> {
         return apiCall {
             val movieEntities = movieLocalDataSource.getMoviesByType(movieType)
-            movieEntities.ifEmpty {
-                val movieResponse = when (movieType) {
-                    MovieType.NOW_PLAYING -> movieRemoteDataSource.getNowPlayingMovies(PAGE_NUMBER)
-                    MovieType.POPULAR -> movieRemoteDataSource.getPopularMovies(PAGE_NUMBER)
-                    MovieType.TOP_RATED -> movieRemoteDataSource.getTopRatedMovies(PAGE_NUMBER)
-                    MovieType.UPCOMING -> movieRemoteDataSource.getUpComingMovies(PAGE_NUMBER)
-                }
-                fetchAndSaveMovies(
-                    movieResponse = movieResponse,
-                    movieType = MovieType.UPCOMING
+            return@apiCall if (movieEntities.isEmpty()) {
+                fetchAndSaveMoviesFromRemote(
+                    movieType = movieType
                 )
+            } else {
+                if (isDataStale(movieEntities.first())) {
+                    movieLocalDataSource.deleteAllMovies()
+                    fetchAndSaveMoviesFromRemote(movieType)
+                } else {
+                    movieEntities
+                }
             }
         }
     }
 
-    private suspend fun fetchAndSaveMovies(
+    private suspend fun fetchAndSaveMoviesFromRemote(
         movieType: MovieType,
-        movieResponse: MovieResponse
     ): List<MovieEntity> {
+        val movieResponse = when (movieType) {
+            MovieType.NOW_PLAYING -> movieRemoteDataSource.getNowPlayingMovies(PAGE_NUMBER)
+            MovieType.POPULAR -> movieRemoteDataSource.getPopularMovies(PAGE_NUMBER)
+            MovieType.TOP_RATED -> movieRemoteDataSource.getTopRatedMovies(PAGE_NUMBER)
+            MovieType.UPCOMING -> movieRemoteDataSource.getUpComingMovies(PAGE_NUMBER)
+        }
         val movieEntities = movieResponse.movieResultResponse.map {
             movieResultResponseMapper.mapResponseToEntity(it, movieType)
         }
@@ -45,8 +52,15 @@ class MovieRepositoryImpl @Inject constructor(
         return movieEntities
     }
 
+    private fun isDataStale(movieEntity: MovieEntity): Boolean {
+        val currentTime = System.currentTimeMillis()
+        val lastFetchedTime = movieEntity.lastFetchedTime
+        return (currentTime - lastFetchedTime) > MOVIE_CACHE_TIME
+    }
+
     companion object {
         private const val PAGE_NUMBER = 1
+        private val MOVIE_CACHE_TIME = 1.days.inWholeMilliseconds
     }
 
 }

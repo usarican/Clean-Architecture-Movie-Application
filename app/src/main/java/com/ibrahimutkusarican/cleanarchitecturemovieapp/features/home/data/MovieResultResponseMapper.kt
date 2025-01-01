@@ -24,7 +24,8 @@ class MovieResultResponseMapper @Inject constructor() {
                 video = video,
                 voteAverage = voteAverage,
                 voteCount = voteCount,
-                movieType = movieType
+                movieType = movieType,
+                lastFetchedTime = System.currentTimeMillis()
             )
         }
     }

@@ -6,11 +6,9 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.MovieRemoteDataSource
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResponse
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.days
-import kotlin.time.Duration.Companion.minutes
 
 class MovieRepositoryImpl @Inject constructor(
     private val movieRemoteDataSource: MovieRemoteDataSource,
@@ -45,8 +43,13 @@ class MovieRepositoryImpl @Inject constructor(
             MovieType.TOP_RATED -> movieRemoteDataSource.getTopRatedMovies(PAGE_NUMBER)
             MovieType.UPCOMING -> movieRemoteDataSource.getUpComingMovies(PAGE_NUMBER)
         }
-        val movieEntities = movieResponse.movieResultResponse.map {
-            movieResultResponseMapper.mapResponseToEntity(it, movieType)
+        val movieEntities = movieResponse.movieResultResponse.map { response ->
+            val existingMovie = movieLocalDataSource.getMovieById(response.id)
+            movieResultResponseMapper.mapResponseToEntity(
+                response = response,
+                movieType = movieType,
+                existingMovieTypes = existingMovie?.movieTypes ?: emptyList()
+            )
         }
         movieLocalDataSource.insertMovies(movieEntities)
         return movieEntities

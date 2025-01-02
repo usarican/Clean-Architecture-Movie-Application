@@ -7,7 +7,11 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remot
 import javax.inject.Inject
 
 class MovieResultResponseMapper @Inject constructor() {
-    fun mapResponseToEntity(response: MovieResultResponse, movieType: MovieType): MovieEntity {
+    fun mapResponseToEntity(
+        response: MovieResultResponse,
+        movieType: MovieType,
+        existingMovieTypes: List<MovieType> = emptyList()
+    ): MovieEntity {
         return with(response) {
             MovieEntity(
                 id = id,
@@ -24,7 +28,9 @@ class MovieResultResponseMapper @Inject constructor() {
                 video = video,
                 voteAverage = voteAverage,
                 voteCount = voteCount,
-                movieType = movieType,
+                movieTypes = existingMovieTypes.toMutableList().apply {
+                    if (!contains(movieType)) add(movieType)
+                },
                 lastFetchedTime = System.currentTimeMillis()
             )
         }

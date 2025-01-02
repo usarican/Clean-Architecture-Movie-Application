@@ -11,6 +11,10 @@ class MovieLocalDataSource @Inject constructor(
         movieDao.insertMovies(movies)
     }
 
+    suspend fun getMovieById(movieId : Int) : MovieEntity? {
+        return movieDao.getMovieById(movieId)
+    }
+
     suspend fun getMoviesByType(movieType: MovieType): List<MovieEntity> {
         return movieDao.getMoviesByType(movieType)
     }

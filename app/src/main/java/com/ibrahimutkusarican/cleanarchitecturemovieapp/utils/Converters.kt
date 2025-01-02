@@ -25,8 +25,18 @@ class Converters {
         return movieType.name // Convert enum to String
     }
 
+    // For List<MovieType>
+    private val movieTypeListType = Types.newParameterizedType(List::class.java, MovieType::class.java)
+    private val movieTypeListAdapter = moshi.adapter<List<MovieType>>(movieTypeListType)
+
     @TypeConverter
-    fun toMovieType(movieType: String): MovieType {
-        return MovieType.valueOf(movieType) // Convert String back to enum
+    fun fromMovieTypeList(movieTypes: List<MovieType>): String {
+        return movieTypeListAdapter.toJson(movieTypes) ?: "[]"
     }
+
+    @TypeConverter
+    fun toMovieTypeList(movieTypesString: String): List<MovieType> {
+        return movieTypeListAdapter.fromJson(movieTypesString) ?: emptyList()
+    }
+
 }

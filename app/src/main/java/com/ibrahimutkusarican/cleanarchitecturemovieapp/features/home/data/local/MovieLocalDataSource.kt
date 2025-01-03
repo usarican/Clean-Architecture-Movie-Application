@@ -11,7 +11,7 @@ class MovieLocalDataSource @Inject constructor(
         movieDao.insertMovies(movies)
     }
 
-    suspend fun getMovieById(movieId : Int) : MovieEntity? {
+    suspend fun getMovieById(movieId: Int): MovieEntity? {
         return movieDao.getMovieById(movieId)
     }
 
@@ -19,11 +19,7 @@ class MovieLocalDataSource @Inject constructor(
         return movieDao.getMoviesByType(movieType)
     }
 
-    suspend fun deleteAllMovies() {
-        movieDao.deleteAllMovies()
-    }
-
-    suspend fun deleteMoviesByType(movieType: MovieType){
+    suspend fun deleteMoviesByType(movieType: MovieType) {
         movieDao.deleteMoviesByType(movieType)
     }
 }

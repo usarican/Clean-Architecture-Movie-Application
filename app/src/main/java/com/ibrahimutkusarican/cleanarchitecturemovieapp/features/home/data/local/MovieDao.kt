@@ -14,9 +14,6 @@ interface MovieDao {
     @Query("SELECT * FROM movie_table WHERE movie_types LIKE '%' || :movieType || '%' ORDER BY popularity DESC")
     suspend fun getMoviesByType(movieType: MovieType): List<MovieEntity>
 
-    @Query("DELETE FROM movie_table")
-    suspend fun deleteAllMovies()
-
     @Query("DELETE FROM movie_table WHERE movie_types LIKE '%' || :movieType || '%'")
     suspend fun deleteMoviesByType(movieType: MovieType)
 

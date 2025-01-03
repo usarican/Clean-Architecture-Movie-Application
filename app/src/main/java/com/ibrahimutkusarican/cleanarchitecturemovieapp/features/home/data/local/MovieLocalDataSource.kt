@@ -22,4 +22,8 @@ class MovieLocalDataSource @Inject constructor(
     suspend fun deleteAllMovies() {
         movieDao.deleteAllMovies()
     }
+
+    suspend fun deleteMoviesByType(movieType: MovieType){
+        movieDao.deleteMoviesByType(movieType)
+    }
 }

@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data
 
+import android.util.Log
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ApiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.MovieLocalDataSource
@@ -7,6 +8,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.MovieRemoteDataSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.days
 
@@ -16,17 +19,24 @@ class MovieRepositoryImpl @Inject constructor(
     private val movieResultResponseMapper: MovieResultResponseMapper
 ) : BaseRepository(), MovieRepository {
 
+    private val refreshMutex = Mutex()
+
     override fun getMoviesByType(movieType: MovieType): Flow<ApiState<List<MovieEntity>>> {
         return apiCall {
             val movieEntities = movieLocalDataSource.getMoviesByType(movieType)
+            Log.d("Repository","Movie Entites Ids ${movieEntities.map { it.id }} and Type $movieType")
             return@apiCall if (movieEntities.isEmpty()) {
-                fetchAndSaveMoviesFromRemote(
-                    movieType = movieType
-                )
+                refreshMutex.withLock {
+                    fetchAndSaveMoviesFromRemote(
+                        movieType = movieType
+                    )
+                }
             } else {
                 if (isDataStale(movieEntities.first())) {
-                    movieLocalDataSource.deleteAllMovies()
-                    fetchAndSaveMoviesFromRemote(movieType)
+                   refreshMutex.withLock {
+                       movieLocalDataSource.deleteMoviesByType(movieType)
+                       fetchAndSaveMoviesFromRemote(movieType)
+                   }
                 } else {
                     movieEntities
                 }
@@ -43,6 +53,7 @@ class MovieRepositoryImpl @Inject constructor(
             MovieType.TOP_RATED -> movieRemoteDataSource.getTopRatedMovies(PAGE_NUMBER)
             MovieType.UPCOMING -> movieRemoteDataSource.getUpComingMovies(PAGE_NUMBER)
         }
+        Log.d("Repository Fetch And Save","Movie Response Ids ${movieResponse.movieResultResponse.map { it.id }} and Type $movieType")
         val movieEntities = movieResponse.movieResultResponse.map { response ->
             val existingMovie = movieLocalDataSource.getMovieById(response.id)
             movieResultResponseMapper.mapResponseToEntity(

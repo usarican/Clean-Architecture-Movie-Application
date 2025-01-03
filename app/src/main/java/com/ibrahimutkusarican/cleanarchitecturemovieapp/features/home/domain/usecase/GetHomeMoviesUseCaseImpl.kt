@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.usecase
 
+import android.util.Log
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieExceptions
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.usecase.GetMovieGenresUseCase
@@ -68,6 +69,7 @@ class GetHomeMoviesUseCaseImpl @Inject constructor(
             )
             UiState.Success(movieMap)
         }.catch { exp ->
+            Log.d("UseCaseImp",exp.message.toString())
             UiState.Error(MovieExceptions.GeneralException(exp.message))
         }.flowOn(Dispatchers.IO)
     }

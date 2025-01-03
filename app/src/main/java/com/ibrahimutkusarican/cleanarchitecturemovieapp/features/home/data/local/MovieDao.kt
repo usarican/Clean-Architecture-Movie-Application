@@ -1,22 +1,24 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Upsert
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 
 @Dao
 interface MovieDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun insertMovies(movies: List<MovieEntity>)
 
-    @Query("SELECT * FROM movie_table WHERE movie_types LIKE '%' || :movieType || '%'")
+    @Query("SELECT * FROM movie_table WHERE movie_types LIKE '%' || :movieType || '%' ORDER BY popularity DESC")
     suspend fun getMoviesByType(movieType: MovieType): List<MovieEntity>
 
     @Query("DELETE FROM movie_table")
     suspend fun deleteAllMovies()
+
+    @Query("DELETE FROM movie_table WHERE movie_types LIKE '%' || :movieType || '%'")
+    suspend fun deleteMoviesByType(movieType: MovieType)
 
     @Query("SELECT * FROM movie_table WHERE id = :movieId")
     suspend fun getMovieById(movieId: Int): MovieEntity?

@@ -8,6 +8,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.Movie
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.mapper.HomeMovieModelMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.HomeMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.MoviePosterSize
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getSuccessOrThrow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -39,7 +40,8 @@ class GetHomeMoviesUseCaseImpl @Inject constructor(
             val nowPlayingMovieModelList = nowPlayingList.map { movieEntity ->
                 movieModelMapper.mapEntityToModel(
                     entity = movieEntity,
-                    genreList = genreModelList
+                    genreList = genreModelList,
+                    posterSize = MoviePosterSize.W780
                 )
             }
             val popularMovieModelList = popularList.map { movieEntity ->

@@ -48,7 +48,7 @@ fun PopularMovieItem(popularMovie: HomeMovieModel) {
         modifier = Modifier
             .height(dimensionResource(R.dimen.home_category_movie_height))
             .width(dimensionResource(R.dimen.home_category_movie_width)),
-        shape = RoundedCornerShape(dimensionResource(R.dimen.medium_corner)),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.x_small_border)),
     ) {
         Box {
             Column(

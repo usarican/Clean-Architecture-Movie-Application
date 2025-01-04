@@ -9,11 +9,12 @@ import coil3.compose.AsyncImage
 fun MovieImage(
     modifier : Modifier = Modifier,
     imageUrl : String,
+    contentScale: ContentScale = ContentScale.FillBounds
 ) {
     AsyncImage(
         modifier = modifier,
         model = imageUrl,
         contentDescription = "AsyncImage",
-        contentScale = ContentScale.FillBounds
+        contentScale = contentScale
     )
 }

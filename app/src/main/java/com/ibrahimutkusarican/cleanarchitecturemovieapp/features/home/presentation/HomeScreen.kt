@@ -12,8 +12,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
@@ -35,25 +38,36 @@ fun HomeScreen(
 
 @Composable
 fun HomeSuccessScreen(movies: Map<MovieType, List<HomeMovieModel>>) {
+    val screenHeightDp = LocalConfiguration.current.screenHeightDp.dp
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = dimensionResource(R.dimen.small_padding))
             .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
     ) {
         BannerMoviesScreen(
-            modifier = Modifier.height(240.dp).fillMaxWidth().padding(bottom = 8.dp),
+            modifier = Modifier
+                .height(screenHeightDp * 0.35F)
+                .fillMaxWidth(),
             homeMovieModels = movies[MovieType.NOW_PLAYING] ?: emptyList()
         )
         PopularMoviesScreen(
-            modifier = Modifier.wrapContentHeight().fillMaxWidth(),
+            modifier = Modifier
+                .wrapContentHeight()
+                .fillMaxWidth(),
             homeMovieModels = movies[MovieType.POPULAR] ?: emptyList()
         )
         TopRatedMoviesScreen(
-            modifier = Modifier.wrapContentHeight().fillMaxWidth(),
+            modifier = Modifier
+                .wrapContentHeight()
+                .fillMaxWidth(),
             homeMovieModels = movies[MovieType.TOP_RATED] ?: emptyList()
         )
         UpcomingMoviesScreen(
-            modifier = Modifier.wrapContentHeight().fillMaxWidth(),
+            modifier = Modifier
+                .wrapContentHeight()
+                .fillMaxWidth(),
             homeMovieModels = movies[MovieType.UPCOMING] ?: emptyList()
         )
     }

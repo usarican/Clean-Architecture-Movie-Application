@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.HomeMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.carouselTransition
@@ -48,7 +49,8 @@ fun BannerMovieItem(modifier: Modifier = Modifier, bannerMovie: HomeMovieModel) 
         ) {
             MovieImage(
                 modifier = Modifier.fillMaxSize(),
-                imageUrl = bannerMovie.moviePosterImageUrl
+                imageUrl = bannerMovie.moviePosterImageUrl,
+                contentScale = ContentScale.FillBounds
             )
             Text(
                 modifier = Modifier.align(Alignment.BottomStart),

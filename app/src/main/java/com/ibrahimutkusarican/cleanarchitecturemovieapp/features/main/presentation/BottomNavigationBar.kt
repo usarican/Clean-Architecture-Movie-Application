@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,19 +33,15 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 
 @Composable
 fun BottomNavigationBar(
-    modifier: Modifier = Modifier,
-    navController: NavController
+    modifier: Modifier = Modifier, navController: NavController
 ) {
     Card(
-        modifier = modifier
-            .padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
-        shape = RoundedCornerShape(16.dp),
+        modifier = modifier,
         colors = CardDefaults.cardColors(
             contentColor = MaterialTheme.colorScheme.primaryContainer
         ),
-        elevation = CardDefaults.cardElevation(2.dp)
+        shape = RoundedCornerShape(dimensionResource(R.dimen.zero_dp))
     ) {
-
         var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
         Row(
             modifier = Modifier
@@ -53,9 +50,7 @@ fun BottomNavigationBar(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             BottomNavigationItems.items.forEachIndexed { index, item ->
-                BottomNavigationItem(
-                    modifier = Modifier
-                        .weight(1f),
+                BottomNavigationItem(modifier = Modifier.weight(1f),
                     selected = selectedItemIndex == index,
                     bottomNavigationItems = item,
                     onClick = {
@@ -73,8 +68,7 @@ fun BottomNavigationBar(
                             // Restore state when reselecting a previously selected item
                             restoreState = true
                         }
-                    }
-                )
+                    })
             }
         }
     }
@@ -117,8 +111,7 @@ fun BottomNavigationItem(
                 contentDescription = bottomNavigationItems.itemName
             )
             AnimatedVisibility(
-                visible = selected,
-                modifier = Modifier.padding(horizontal = 4.dp)
+                visible = selected, modifier = Modifier.padding(horizontal = 4.dp)
             ) {
                 Text(
                     text = stringResource(bottomNavigationItems.itemLabel),

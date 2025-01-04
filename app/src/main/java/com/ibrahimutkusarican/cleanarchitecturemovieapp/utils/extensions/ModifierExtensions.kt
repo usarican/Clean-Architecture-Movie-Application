@@ -13,7 +13,7 @@ fun Modifier.carouselTransition(page: Int, pagerState: PagerState) =
 
         val transformation =
             lerp(
-                start = 0.7f,
+                start = 0.8f,
                 stop = 1f,
                 fraction = 1f - pageOffset.coerceIn(0f, 1f)
             )

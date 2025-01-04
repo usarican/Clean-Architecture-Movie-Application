@@ -18,14 +18,16 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.presenta
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.presentation.SettingsScreen
 
 @Composable
-fun MainScreen(){
+fun MainScreen() {
     val navController = rememberNavController()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        bottomBar = { BottomNavigationBar(
-            modifier = Modifier,
-            navController = navController
-        ) }
+        bottomBar = {
+            BottomNavigationBar(
+                modifier = Modifier,
+                navController = navController
+            )
+        }
     ) { innerPadding ->
         NavHost(
             navController = navController,

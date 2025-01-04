@@ -14,8 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.HomeMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.blurTransition
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.carouselTransition
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 
@@ -28,18 +31,25 @@ fun BannerMoviesScreen(
 
     HorizontalPager(
         modifier = modifier, state = pagerState,
-        contentPadding = PaddingValues(horizontal = 32.dp),
-        pageSpacing = 16.dp
+        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.x_x_large_padding)),
+        pageSpacing = dimensionResource(R.dimen.medium_padding)
     ) { page ->
         BannerMovieItem(
             modifier = modifier.carouselTransition(page, pagerState),
-            homeMovieModels[page]
+            bannerMovie = homeMovieModels[page],
+            page = page,
+            pagerState = pagerState
         )
     }
 }
 
 @Composable
-fun BannerMovieItem(modifier: Modifier = Modifier, bannerMovie: HomeMovieModel) {
+fun BannerMovieItem(
+    modifier: Modifier = Modifier,
+    bannerMovie: HomeMovieModel,
+    page: Int,
+    pagerState: PagerState
+) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(16.dp),
@@ -48,7 +58,9 @@ fun BannerMovieItem(modifier: Modifier = Modifier, bannerMovie: HomeMovieModel) 
             modifier = Modifier.fillMaxSize()
         ) {
             MovieImage(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .blurTransition(page,pagerState),
                 imageUrl = bannerMovie.moviePosterImageUrl,
                 contentScale = ContentScale.FillBounds
             )

@@ -4,12 +4,12 @@ import javax.inject.Inject
 
 class ImageUrlHelper @Inject constructor() {
 
-    fun getPosterUrl(posterPath: String, size: MoviePosterSize = MoviePosterSize.W500): String {
-        return "${Constants.MOVIE_IMAGE_API_URL}${size.size}$posterPath"
+    fun getPosterUrl(posterPath: String?, size: MoviePosterSize = MoviePosterSize.W500): String? {
+        return if (posterPath != null) "${Constants.MOVIE_IMAGE_API_URL}${size.size}$posterPath" else null
     }
 
-    fun getBackdropUrl(backdropPath: String, size: BackdropSize = BackdropSize.W780): String {
-        return "${Constants.MOVIE_IMAGE_API_URL}${size.size}$backdropPath"
+    fun getBackdropUrl(backdropPath: String?, size: BackdropSize = BackdropSize.W780): String? {
+        return if (backdropPath != null) "${Constants.MOVIE_IMAGE_API_URL}${size.size}$backdropPath" else null
     }
 
 }

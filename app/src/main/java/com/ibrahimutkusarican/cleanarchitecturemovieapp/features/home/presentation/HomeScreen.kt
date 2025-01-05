@@ -48,27 +48,14 @@ fun HomeSuccessScreen(movies: Map<MovieType, List<HomeMovieModel>>) {
     ) {
         BannerMoviesScreen(
             modifier = Modifier
-                .height(screenHeightDp * 0.35F)
-                .fillMaxWidth(),
+                .height(screenHeightDp * 0.4F)
+                .fillMaxWidth()
+                .padding(vertical = dimensionResource(R.dimen.small_padding)),
             homeMovieModels = movies[MovieType.NOW_PLAYING] ?: emptyList()
         )
-        PopularMoviesScreen(
-            modifier = Modifier
-                .wrapContentHeight()
-                .fillMaxWidth(),
-            homeMovieModels = movies[MovieType.POPULAR] ?: emptyList()
-        )
-        TopRatedMoviesScreen(
-            modifier = Modifier
-                .wrapContentHeight()
-                .fillMaxWidth(),
-            homeMovieModels = movies[MovieType.TOP_RATED] ?: emptyList()
-        )
-        UpcomingMoviesScreen(
-            modifier = Modifier
-                .wrapContentHeight()
-                .fillMaxWidth(),
-            homeMovieModels = movies[MovieType.UPCOMING] ?: emptyList()
+        MovieCategoryList(
+            modifier = Modifier.fillMaxWidth(),
+            movies = movies
         )
     }
 }

@@ -28,7 +28,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.HomeMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getStringRes
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.paddingWithMovieItems
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.showMovieItemText
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.fontDimensionResource
 
@@ -102,7 +101,7 @@ fun MovieCategory(
             ) {
                 items(movies) { movie ->
                     MovieCategoryItemList(
-                        movie = movie, showItemWithText = movieType.showMovieItemText()
+                        movie = movie
                     )
                 }
             }
@@ -112,12 +111,8 @@ fun MovieCategory(
 }
 
 @Composable
-fun MovieCategoryItemList(movie: HomeMovieModel, showItemWithText: Boolean) {
-    if (showItemWithText) {
-        MovieCategoryItemWithText(movie)
-    } else {
-        MovieCategoryItemWithoutText(movie)
-    }
+fun MovieCategoryItemList(movie: HomeMovieModel) {
+    MovieCategoryItemWithText(movie)
 }
 
 @Composable
@@ -155,24 +150,5 @@ fun MovieCategoryItemWithText(
                 )
             )
         }
-    }
-}
-
-@Composable
-fun MovieCategoryItemWithoutText(
-    categoryMovieItem: HomeMovieModel
-) {
-    Column {
-        Card(
-            modifier = Modifier
-                .height(dimensionResource(R.dimen.home_category_movie_height))
-                .width(dimensionResource(R.dimen.home_category_movie_width)),
-            shape = RoundedCornerShape(dimensionResource(R.dimen.small_border)),
-        ) {
-            MovieImage(
-                imageUrl = categoryMovieItem.moviePosterImageUrl
-            )
-        }
-
     }
 }

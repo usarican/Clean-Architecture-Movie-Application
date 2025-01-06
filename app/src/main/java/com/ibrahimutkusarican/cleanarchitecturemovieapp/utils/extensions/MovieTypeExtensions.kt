@@ -12,7 +12,6 @@ fun MovieType.getStringRes(): Int {
     }
 }
 
-fun MovieType.showMovieItemText() : Boolean = this == MovieType.POPULAR
 fun MovieType.paddingWithMovieItems() : Int {
     return when(this){
         MovieType.POPULAR -> R.dimen.medium_padding

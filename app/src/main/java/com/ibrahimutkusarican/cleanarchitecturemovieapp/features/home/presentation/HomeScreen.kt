@@ -43,11 +43,10 @@ fun HomeSuccessScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = dimensionResource(R.dimen.twenty_dp))
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
     ) {
-        BannerMoviesScreen(
+        BannerMoviesList(
             modifier = Modifier
                 .height(screenHeightDp * 0.4F)
                 .fillMaxWidth()
@@ -55,7 +54,9 @@ fun HomeSuccessScreen(
             homeMovieModels = movies[MovieType.NOW_PLAYING] ?: emptyList()
         )
         MovieCategoryList(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = dimensionResource(R.dimen.twenty_dp)),
             movies = movies,
             seeAllClickAction = seeAllClickAction
         )

@@ -1,7 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentation
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -11,12 +10,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,23 +33,24 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 
 @Composable
 fun BottomNavigationBar(
-    modifier: Modifier = Modifier,
-    navController: NavController
+    modifier: Modifier = Modifier, navController: NavController
 ) {
-    NavigationBar(
-        modifier = modifier
+    Card(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
+            contentColor = MaterialTheme.colorScheme.primaryContainer
+        ),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.zero_dp))
     ) {
-
         var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 4.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             BottomNavigationItems.items.forEachIndexed { index, item ->
-                BottomNavigationItem(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 4.dp),
+                BottomNavigationItem(modifier = Modifier.weight(1f),
                     selected = selectedItemIndex == index,
                     bottomNavigationItems = item,
                     onClick = {
@@ -71,8 +68,7 @@ fun BottomNavigationBar(
                             // Restore state when reselecting a previously selected item
                             restoreState = true
                         }
-                    }
-                )
+                    })
             }
         }
     }
@@ -81,9 +77,8 @@ fun BottomNavigationBar(
 @Composable
 @Preview(showBackground = true)
 fun BottomNavigationItem(
-    modifier: Modifier = Modifier
-        .width(100.dp),
-    selected: Boolean = false,
+    modifier: Modifier = Modifier.width(100.dp),
+    selected: Boolean = true,
     onClick: () -> Unit = {},
     bottomNavigationItems: BottomNavigationItems = BottomNavigationItems(
         itemName = "movies",
@@ -92,21 +87,14 @@ fun BottomNavigationItem(
         navigationRoute = NavigationRoutes.Home
     ),
 ) {
-    val animatedIndicatorColor by animateColorAsState(
-        if (selected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
-        label = "animatedIndicatorColor"
-    )
-    val animatedIconAndTextColor by animateColorAsState(
-        if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-        label = "animatedIconAndTextColor"
-    )
+
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(if (selected) 2.dp else 0.dp),
         colors = CardDefaults.cardColors(
-            containerColor = animatedIndicatorColor,
-            contentColor = animatedIconAndTextColor
+            containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
+            contentColor = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
         ),
         onClick = onClick
     ) {
@@ -115,16 +103,17 @@ fun BottomNavigationItem(
                 .padding(vertical = 4.dp, horizontal = 8.dp)
                 .animateContentSize(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = if (selected) Arrangement.Start else Arrangement.Center
+            horizontalArrangement = Arrangement.Center
         ) {
             Icon(
                 modifier = Modifier.weight(1f),
                 painter = painterResource(bottomNavigationItems.iconResourceId),
                 contentDescription = bottomNavigationItems.itemName
             )
-            AnimatedVisibility(selected) {
+            AnimatedVisibility(
+                visible = selected, modifier = Modifier.padding(horizontal = 4.dp)
+            ) {
                 Text(
-                    modifier = Modifier.padding(start = 4.dp),
                     text = stringResource(bottomNavigationItems.itemLabel),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold

@@ -3,7 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.kotlinKapt)
     kotlin("plugin.serialization") version "2.1.0"
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -41,6 +43,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -49,6 +52,14 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+
+    secrets {
+        propertiesFileName = "secrets.properties"
+        defaultPropertiesFileName = "local.defaults.properties"
+
+        ignoreList.add("keyToIgnore")
+        ignoreList.add("sdk.*")
     }
 }
 
@@ -85,5 +96,11 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.hilt.compiler)
+    ksp(libs.room.compiler)
     implementation(libs.androidx.navigation)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.dotlottie.android)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+    implementation (libs.androidx.palette.ktx)
    }

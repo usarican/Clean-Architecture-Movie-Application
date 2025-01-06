@@ -32,17 +32,19 @@ fun HomeScreen(
     when (homeUiState) {
         is UiState.Error -> ErrorScreen(exception = (homeUiState as UiState.Error).exception)
         UiState.Loading -> LoadingScreen()
-        is UiState.Success -> HomeSuccessScreen(movies)
+        is UiState.Success -> HomeSuccessScreen(movies = movies, seeAllClickAction = {})
     }
 }
 
 @Composable
-fun HomeSuccessScreen(movies: Map<MovieType, List<HomeMovieModel>>) {
+fun HomeSuccessScreen(
+    movies: Map<MovieType, List<HomeMovieModel>>, seeAllClickAction: (movieType: MovieType) -> Unit
+) {
     val screenHeightDp = LocalConfiguration.current.screenHeightDp.dp
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = dimensionResource(R.dimen.small_padding))
+            .padding(horizontal = dimensionResource(R.dimen.twenty_dp))
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
     ) {
@@ -55,7 +57,8 @@ fun HomeSuccessScreen(movies: Map<MovieType, List<HomeMovieModel>>) {
         )
         MovieCategoryList(
             modifier = Modifier.fillMaxWidth(),
-            movies = movies
+            movies = movies,
+            seeAllClickAction = seeAllClickAction
         )
     }
 }

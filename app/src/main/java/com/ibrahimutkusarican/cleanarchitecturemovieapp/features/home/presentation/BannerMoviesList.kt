@@ -85,12 +85,12 @@ fun BannerMovieItem(
     shadowColor: Color
 ) {
     val animatedElevation by animateDpAsState(
-        targetValue = if (isSelected) 8.dp else 0.dp, // Higher elevation for selected item
+        targetValue = if (isSelected) 4.dp else 0.dp, // Higher elevation for selected item
         animationSpec = tween(durationMillis = 500), label = ""
     )
 
     val animatedStrokeWidth by animateDpAsState(
-        targetValue = if (isSelected && shadowColor != Color.White) 20.dp else 0.dp,
+        targetValue = if (isSelected && shadowColor != Color.White) 12.dp else 0.dp,
         animationSpec = tween(durationMillis = 1000), label = ""
     )
 
@@ -109,10 +109,9 @@ fun BannerMovieItem(
     // Gradient for the moving border
     val animatedBrush = Brush.linearGradient(
         colors = listOf(
-            shadowColor.copy(alpha = 0.75F),
+            shadowColor,
             shadowColor.copy(alpha = 0.5f),
-            MaterialTheme.colorScheme.background,
-            shadowColor.copy(alpha = 0.75F)
+            shadowColor
         ),
         start = Offset(0f, 0f), // Horizontal animation
         end = Offset(

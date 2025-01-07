@@ -27,7 +27,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.HomeMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getStringRes
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.paddingWithMovieItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.fontDimensionResource
 
@@ -97,7 +96,7 @@ fun MovieCategory(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = dimensionResource(R.dimen.small_padding)),
-                horizontalArrangement = spacedBy(dimensionResource(movieType.paddingWithMovieItems())),
+                horizontalArrangement = spacedBy(dimensionResource(R.dimen.medium_padding)),
             ) {
                 items(movies) { movie ->
                     MovieCategoryItemList(

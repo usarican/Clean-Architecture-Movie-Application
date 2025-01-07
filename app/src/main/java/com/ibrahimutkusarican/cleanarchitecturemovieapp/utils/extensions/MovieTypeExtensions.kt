@@ -11,11 +11,3 @@ fun MovieType.getStringRes(): Int {
         else -> R.string.popular_movies
     }
 }
-
-fun MovieType.paddingWithMovieItems() : Int {
-    return when(this){
-        MovieType.POPULAR -> R.dimen.medium_padding
-        else -> R.dimen.small_padding
-
-    }
-}

@@ -16,6 +16,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -108,9 +109,10 @@ fun BannerMovieItem(
     // Gradient for the moving border
     val animatedBrush = Brush.linearGradient(
         colors = listOf(
-            shadowColor,
+            shadowColor.copy(alpha = 0.75F),
             shadowColor.copy(alpha = 0.5f),
-            shadowColor
+            MaterialTheme.colorScheme.background,
+            shadowColor.copy(alpha = 0.75F)
         ),
         start = Offset(0f, 0f), // Horizontal animation
         end = Offset(

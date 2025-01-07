@@ -145,9 +145,7 @@ fun MovieCategoryItemWithText(
         if (categoryMovieItem.movieGenres.isNotEmpty()) {
             Text(
                 text = categoryMovieItem.movieGenres.first(),
-                style = MaterialTheme.typography.bodySmall.copy(
-                    color = MaterialTheme.colorScheme.scrim
-                )
+                style = MaterialTheme.typography.bodySmall
             )
         }
     }

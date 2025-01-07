@@ -7,6 +7,6 @@ import androidx.palette.graphics.Palette
 
 fun Bitmap.extractDominantColor() : Color {
     val palette = Palette.from(this).generate()
-    val dominantColor = palette.getDominantColor(Color.White.toArgb())
+    val dominantColor = palette.getVibrantColor(Color.White.toArgb())
     return Color(dominantColor)
 }

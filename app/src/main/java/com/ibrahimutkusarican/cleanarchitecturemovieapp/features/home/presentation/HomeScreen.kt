@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,10 +29,14 @@ fun HomeScreen(
 ) {
     val homeUiState by homeViewModel.homeUiState.collectAsStateWithLifecycle()
     val movies by homeViewModel.movies.collectAsStateWithLifecycle()
+    Log.d("Utku","UI State $homeUiState")
     when (homeUiState) {
         is UiState.Error -> ErrorScreen(exception = (homeUiState as UiState.Error).exception)
         UiState.Loading -> LoadingScreen()
         is UiState.Success -> HomeSuccessScreen(movies = movies, seeAllClickAction = {})
+        else -> {
+            Log.d("Utku","UI State null")
+        }
     }
 }
 

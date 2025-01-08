@@ -35,16 +35,13 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.HomeMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.blurTransition
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.carouselTransition
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.extractDominantColor
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
-import kotlin.math.absoluteValue
 
 @Composable
 fun BannerMoviesList(
@@ -58,14 +55,16 @@ fun BannerMoviesList(
         contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.x_x_x_large_padding)),
         pageSpacing = dimensionResource(R.dimen.large_padding)
     ) { page ->
-        BannerMovieItem(
-            modifier = modifier.carouselTransition(page, pagerState),
-            bannerMovie = homeMovieModels[page],
-            page = page,
-            pagerState = pagerState,
-            isSelected = pagerState.currentPage == page,
-            dominantColor = homeMovieModels[page].movieDominantColor ?: MaterialTheme.colorScheme.onBackground
-        )
+        homeMovieModels[page].movieDominantColor?.let { dominantColor ->
+            BannerMovieItem(
+                modifier = modifier.carouselTransition(page, pagerState),
+                bannerMovie = homeMovieModels[page],
+                page = page,
+                pagerState = pagerState,
+                isSelected = pagerState.currentPage == page,
+                dominantColor = dominantColor
+            )
+        }
     }
 }
 
@@ -103,9 +102,9 @@ fun BannerMovieItem(
     // Gradient for the moving border
     val animatedBrush = Brush.linearGradient(
         colors = listOf(
-            dominantColor,
+            dominantColor.copy(alpha = 2F),
             dominantColor.copy(alpha = 0.5f),
-            dominantColor
+            dominantColor.copy(alpha = 2F),
         ),
         start = Offset(0f, 0f), // Horizontal animation
         end = Offset(

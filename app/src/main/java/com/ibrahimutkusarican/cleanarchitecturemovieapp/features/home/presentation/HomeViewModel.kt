@@ -17,17 +17,16 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getHomeMoviesUseCase: GetHomeMoviesUseCase
-): BaseViewModel() {
+) : BaseViewModel() {
 
     private val _movies = MutableStateFlow<Map<MovieType, List<HomeMovieModel>>>(mapOf())
-    val movies : StateFlow<Map<MovieType, List<HomeMovieModel>>> = _movies
+    val movies: StateFlow<Map<MovieType, List<HomeMovieModel>>> = _movies
 
-    private val _homeUiState = MutableStateFlow<UiState<*>>(UiState.Loading)
-    val homeUiState : StateFlow<UiState<*>> = _homeUiState
+    private val _homeUiState = MutableStateFlow<UiState<Map<MovieType, List<HomeMovieModel>>>>(UiState.Loading)
+    val homeUiState: StateFlow<UiState<Map<MovieType, List<HomeMovieModel>>>> = _homeUiState
 
     init {
-        val movies = getHomeMoviesUseCase.getHomeMoviesUseCase()
-        movies.doOnSuccess {
+        getHomeMoviesUseCase.getHomeMoviesUseCase().doOnSuccess {
             _movies.value = it
         }.onEach { uiState ->
             _homeUiState.value = uiState

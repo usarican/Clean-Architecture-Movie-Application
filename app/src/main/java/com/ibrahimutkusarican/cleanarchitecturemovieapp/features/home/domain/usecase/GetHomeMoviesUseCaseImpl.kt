@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
@@ -27,59 +28,61 @@ class GetHomeMoviesUseCaseImpl @Inject constructor(
     private val coilHelper: CoilHelper
 ) : GetHomeMoviesUseCase {
     override fun getHomeMoviesUseCase(): Flow<UiState<Map<MovieType, List<HomeMovieModel>>>> {
-        return combine(
-            getMovieGenreUseCase.getMovieGenresUseCase(),
-            movieRepository.getMoviesByType(MovieType.NOW_PLAYING, limit = 10),
-            movieRepository.getMoviesByType(MovieType.POPULAR),
-            movieRepository.getMoviesByType(MovieType.TOP_RATED),
-            movieRepository.getMoviesByType(MovieType.UPCOMING)
-        ) { stateGenres, stateNowPlaying, statePopular, stateTopRated, stateUpcoming ->
-            UiState.Loading
-            val genreModelList = stateGenres.getSuccessOrThrow()
-            val nowPlayingList = stateNowPlaying.getSuccessOrThrow()
-            val popularList = statePopular.getSuccessOrThrow()
-            val topRatedList = stateTopRated.getSuccessOrThrow()
-            val upcomingList = stateUpcoming.getSuccessOrThrow()
+        return flow {
+            emit(UiState.Loading)
+            combine(
+                getMovieGenreUseCase.getMovieGenresUseCase(),
+                movieRepository.getMoviesByType(MovieType.NOW_PLAYING, limit = 10),
+                movieRepository.getMoviesByType(MovieType.POPULAR),
+                movieRepository.getMoviesByType(MovieType.TOP_RATED),
+                movieRepository.getMoviesByType(MovieType.UPCOMING)
+            ) { stateGenres, stateNowPlaying, statePopular, stateTopRated, stateUpcoming ->
+                // Process and return UiState.Success if all data is fetched successfully
+                val genreModelList = stateGenres.getSuccessOrThrow()
+                val nowPlayingList = stateNowPlaying.getSuccessOrThrow()
+                val popularList = statePopular.getSuccessOrThrow()
+                val topRatedList = stateTopRated.getSuccessOrThrow()
+                val upcomingList = stateUpcoming.getSuccessOrThrow()
 
-            val nowPlayingMovieModelList = nowPlayingList.map { movieEntity ->
-                val nowPlayingHomeMovieModel = movieModelMapper.mapEntityToModel(
-                    entity = movieEntity,
-                    genreList = genreModelList,
-                    posterSize = MoviePosterSize.W780
-                )
-                val dominantColor =
-                    getMovieImageDominantColor(nowPlayingHomeMovieModel.moviePosterImageUrl)
-                nowPlayingHomeMovieModel.copy(movieDominantColor = dominantColor)
-            }
-            val popularMovieModelList = popularList.map { movieEntity ->
-                movieModelMapper.mapEntityToModel(
-                    entity = movieEntity,
-                    genreList = genreModelList
-                )
-            }
-            val topRatedMovieModelList = topRatedList.map { movieEntity ->
-                movieModelMapper.mapEntityToModel(
-                    entity = movieEntity,
-                    genreList = genreModelList
-                )
-            }
-            val upComingMovieModelList = upcomingList.map { movieEntity ->
-                movieModelMapper.mapEntityToModel(
-                    entity = movieEntity,
-                    genreList = genreModelList
-                )
-            }
+                val nowPlayingMovieModelList = nowPlayingList.map { movieEntity ->
+                    val nowPlayingHomeMovieModel = movieModelMapper.mapEntityToModel(
+                        entity = movieEntity,
+                        genreList = genreModelList,
+                        posterSize = MoviePosterSize.W780
+                    )
+                    val dominantColor =
+                        getMovieImageDominantColor(nowPlayingHomeMovieModel.moviePosterImageUrl)
+                    nowPlayingHomeMovieModel.copy(movieDominantColor = dominantColor)
+                }
+                val popularMovieModelList = popularList.map { movieEntity ->
+                    movieModelMapper.mapEntityToModel(
+                        entity = movieEntity, genreList = genreModelList
+                    )
+                }
+                val topRatedMovieModelList = topRatedList.map { movieEntity ->
+                    movieModelMapper.mapEntityToModel(
+                        entity = movieEntity, genreList = genreModelList
+                    )
+                }
+                val upComingMovieModelList = upcomingList.map { movieEntity ->
+                    movieModelMapper.mapEntityToModel(
+                        entity = movieEntity, genreList = genreModelList
+                    )
+                }
 
-            val movieMap = mapOf(
-                MovieType.NOW_PLAYING to nowPlayingMovieModelList,
-                MovieType.POPULAR to popularMovieModelList,
-                MovieType.TOP_RATED to topRatedMovieModelList,
-                MovieType.UPCOMING to upComingMovieModelList
-            )
-            UiState.Success(movieMap)
+                val movieMap = mapOf(
+                    MovieType.NOW_PLAYING to nowPlayingMovieModelList,
+                    MovieType.POPULAR to popularMovieModelList,
+                    MovieType.TOP_RATED to topRatedMovieModelList,
+                    MovieType.UPCOMING to upComingMovieModelList
+                )
+
+                UiState.Success(movieMap)
+            }.collect { uiState ->
+                emit(uiState)
+            }
         }.catch { exp ->
-            Log.d("UseCaseImp", exp.message.toString())
-            UiState.Error(MovieExceptions.GeneralException(exp.message))
+            emit(UiState.Error(MovieExceptions.GeneralException(exp.message)))
         }.flowOn(Dispatchers.IO)
     }
 

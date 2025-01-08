@@ -8,8 +8,10 @@ import coil3.request.SuccessResult
 import coil3.request.allowHardware
 import coil3.toBitmap
 
-object CoilHelper {
-    suspend fun loadBitmapFromImageUrl(imageUrl: String?, context: Context): Bitmap? {
+class CoilHelper(
+    private val context: Context
+) {
+    suspend fun loadBitmapFromImageUrl(imageUrl: String?): Bitmap? {
         val imageLoader = ImageLoader(context)
         val request = ImageRequest.Builder(context)
             .data(imageUrl)

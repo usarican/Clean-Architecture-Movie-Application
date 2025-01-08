@@ -9,7 +9,6 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -22,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,18 +40,17 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.HomeMovieModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.CoilHelper.loadBitmapFromImageUrl
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.blurTransition
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.carouselTransition
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.extractDominantColor
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
+import kotlin.math.absoluteValue
 
 @Composable
 fun BannerMoviesList(
     modifier: Modifier = Modifier, homeMovieModels: List<HomeMovieModel>
 ) {
     val pagerState: PagerState = rememberPagerState(pageCount = { homeMovieModels.size })
-    var dominantColor by remember { mutableStateOf(Color.White) }
 
     HorizontalPager(
         modifier = modifier,
@@ -59,18 +58,13 @@ fun BannerMoviesList(
         contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.x_x_x_large_padding)),
         pageSpacing = dimensionResource(R.dimen.large_padding)
     ) { page ->
-        val context = LocalContext.current
-        LaunchedEffect(homeMovieModels[page]) {
-            val bitmap = loadBitmapFromImageUrl(homeMovieModels[page].moviePosterImageUrl, context)
-            dominantColor = bitmap?.extractDominantColor() ?: Color.White
-        }
         BannerMovieItem(
             modifier = modifier.carouselTransition(page, pagerState),
             bannerMovie = homeMovieModels[page],
             page = page,
             pagerState = pagerState,
             isSelected = pagerState.currentPage == page,
-            shadowColor = dominantColor
+            dominantColor = homeMovieModels[page].movieDominantColor ?: MaterialTheme.colorScheme.onBackground
         )
     }
 }
@@ -82,7 +76,7 @@ fun BannerMovieItem(
     page: Int,
     pagerState: PagerState,
     isSelected: Boolean,
-    shadowColor: Color
+    dominantColor: Color
 ) {
     val animatedElevation by animateDpAsState(
         targetValue = if (isSelected) 4.dp else 0.dp, // Higher elevation for selected item
@@ -90,7 +84,7 @@ fun BannerMovieItem(
     )
 
     val animatedStrokeWidth by animateDpAsState(
-        targetValue = if (isSelected && shadowColor != Color.White) 12.dp else 0.dp,
+        targetValue = if (isSelected && dominantColor != Color.White) 12.dp else 0.dp,
         animationSpec = tween(durationMillis = 1000), label = ""
     )
 
@@ -109,9 +103,9 @@ fun BannerMovieItem(
     // Gradient for the moving border
     val animatedBrush = Brush.linearGradient(
         colors = listOf(
-            shadowColor,
-            shadowColor.copy(alpha = 0.5f),
-            shadowColor
+            dominantColor,
+            dominantColor.copy(alpha = 0.5f),
+            dominantColor
         ),
         start = Offset(0f, 0f), // Horizontal animation
         end = Offset(

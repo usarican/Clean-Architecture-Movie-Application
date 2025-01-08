@@ -21,7 +21,7 @@ class MovieRepositoryImpl @Inject constructor(
 
     private val refreshMutex = Mutex()
 
-    override fun getMoviesByType(movieType: MovieType): Flow<ApiState<List<MovieEntity>>> {
+    override fun getMoviesByType(movieType: MovieType, limit: Int,): Flow<ApiState<List<MovieEntity>>> {
         return apiCall {
             val movieEntities = movieLocalDataSource.getMoviesByType(movieType)
             Log.d("Repository","Movie Entites Ids ${movieEntities.map { it.id }} and Type $movieType")

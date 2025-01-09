@@ -89,7 +89,7 @@ fun BannerMovieItem(
 
     var composableSize by remember { mutableStateOf(Size.Zero) }
 
-    val infiniteTransition = rememberInfiniteTransition()
+    val infiniteTransition = rememberInfiniteTransition(label = "")
     val animatedOffset by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 1f,
@@ -106,20 +106,20 @@ fun BannerMovieItem(
             dominantColor.copy(alpha = 0.5f),
             dominantColor.copy(alpha = 2F),
         ),
-        start = Offset(0f, 0f), // Horizontal animation
+        start = Offset(0f, 0f),
         end = Offset(
             animatedOffset * composableSize.width,
             animatedOffset * composableSize.height
-        ) // Vertical animation
+        )
     )
     Card(
         elevation = CardDefaults.cardElevation(animatedElevation),// Dynamic elevation
-        shape = RoundedCornerShape(16.dp), // Match the border shape
+        shape = RoundedCornerShape(16.dp),
         modifier = modifier
             .onGloballyPositioned { coordinates ->
-                val size = coordinates.size // IntSize in pixels
+                val size = coordinates.size
                 composableSize = Size(size.width.toFloat(), size.height.toFloat())
-            }// Space for the border
+            }
             .drawBehind {
                 if (isSelected) {
                     val strokeWidth = animatedStrokeWidth.toPx()
@@ -130,7 +130,7 @@ fun BannerMovieItem(
                         cornerRadius = CornerRadius(16.dp.toPx())
                     )
                 }
-            } // Add space around the card
+            }
     ) {
         MovieImage(
             modifier = Modifier

@@ -13,8 +13,10 @@
     <dimen name="x_large_padding">32dp</dimen>
     <dimen name="x_x_large_padding">48dp</dimen>
     <dimen name="x_x_x_large_padding">56dp</dimen>
+    <dimen name="small_card_elevation">2dp</dimen>
     <dimen name="zero_dp">0dp</dimen>
     <dimen name="twenty_dp">20dp</dimen>
+    <dimen name="error_icon_size">36dp</dimen>
 
 
     <dimen name="movie_category_item_title_size">14sp</dimen>

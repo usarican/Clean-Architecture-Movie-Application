@@ -5,11 +5,27 @@
     <string name="my_list">My List</string>
     <string name="settings">Settings</string>
     <string name="tv_series">TV Series</string>
-    <string name="error_message">Error Occurs</string>
     <string name="error_snackbar_title">Something goes wrong..</string>
     <string name="popular_movies">Popular Movies</string>
     <string name="up_coming_movies">Up Coming Movies</string>
     <string name="top_rated_movies">Top Rated Movies</string>
     <string name="see_all">See All</string>
     <string name="retry">RETRY</string>
+    <string name="try_again">Try Again</string>
+
+    <!-- Error Texts -->
+    <string name="error_title_coil">Image Load Error</string>
+    <string name="error_content_coil">Failed to load the image. Please try again.</string>
+    <string name="error_title_general">Error</string>
+    <string name="error_message">An unexpected error occurred. Please try again later.</string>
+    <string name="error_title_http">HTTP Error: %1$d</string>
+    <string name="error_content_http">The server responded with an error: %1$s</string>
+    <string name="error_title_server">Server Error</string>
+    <string name="error_content_server">The server encountered an internal error. Please try again later.</string>
+    <string name="error_title_no_internet">No Internet Connection</string>
+    <string name="error_content_no_internet">Please check your internet connection and try again.</string>
+    <string name="error_title_not_found">Not Found</string>
+    <string name="error_content_not_found">The requested resource could not be found.</string>
+    <string name="error_title_unauthorized">Unauthorized</string>
+    <string name="error_content_unauthorized">You are not authorized to perform this action. Please log in again.</string>
 </resources>

@@ -6,8 +6,10 @@
     <string name="settings">Settings</string>
     <string name="tv_series">TV Series</string>
     <string name="error_message">Error Occurs</string>
+    <string name="error_snackbar_title">Something goes wrong..</string>
     <string name="popular_movies">Popular Movies</string>
     <string name="up_coming_movies">Up Coming Movies</string>
     <string name="top_rated_movies">Top Rated Movies</string>
     <string name="see_all">See All</string>
+    <string name="retry">RETRY</string>
 </resources>

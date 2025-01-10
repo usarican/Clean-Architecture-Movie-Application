@@ -19,27 +19,39 @@ class MovieRepositoryImpl @Inject constructor(
     private val movieResultResponseMapper: MovieResultResponseMapper
 ) : BaseRepository(), MovieRepository {
 
-    private val refreshMutex = Mutex()
+    private val lock = Mutex()
+    private val refreshLock = Mutex()
 
-    override fun getMoviesByType(movieType: MovieType, limit: Int,): Flow<ApiState<List<MovieEntity>>> {
+    override fun getMoviesByType(movieType: MovieType, limit: Int): Flow<ApiState<List<MovieEntity>>> {
         return apiCall {
             val movieEntities = movieLocalDataSource.getMoviesByType(movieType)
             Log.d("Repository","Movie Entites Ids ${movieEntities.map { it.id }} and Type $movieType")
             return@apiCall if (movieEntities.isEmpty()) {
-                refreshMutex.withLock {
+                lock.withLock {
                     fetchAndSaveMoviesFromRemote(
                         movieType = movieType
                     )
                 }
             } else {
                 if (isDataStale(movieEntities.first())) {
-                   refreshMutex.withLock {
+                   lock.withLock {
                        movieLocalDataSource.deleteMoviesByType(movieType)
                        fetchAndSaveMoviesFromRemote(movieType)
                    }
                 } else {
                     movieEntities
                 }
+            }
+        }
+    }
+
+    override fun refreshMoviesByType(
+        movieType: MovieType,
+        limit: Int
+    ): Flow<ApiState<List<MovieEntity>>> {
+        return apiCall {
+            refreshLock.withLock {
+                fetchAndSaveMoviesFromRemote(movieType)
             }
         }
     }

@@ -21,7 +21,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieExceptions
 @Preview
 fun ErrorScreen(
     modifier : Modifier = Modifier,
-    exception: MovieExceptions = MovieExceptions.ApiException("Error")){
+    exception: MovieExceptions = MovieExceptions.NoInternetException("Error")){
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,

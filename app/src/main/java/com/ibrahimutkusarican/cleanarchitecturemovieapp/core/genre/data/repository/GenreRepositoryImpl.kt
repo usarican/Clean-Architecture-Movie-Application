@@ -7,7 +7,9 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.Ge
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.entity.GenreEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.remote.GenreRemoteDataSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import javax.inject.Inject
+import kotlin.math.exp
 
 class GenreRepositoryImpl @Inject constructor(
     private val genreRemoteDataSource: GenreRemoteDataSource,

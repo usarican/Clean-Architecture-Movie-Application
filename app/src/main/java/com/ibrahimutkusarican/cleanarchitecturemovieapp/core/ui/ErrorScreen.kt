@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
@@ -7,6 +8,8 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.repeatable
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +24,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -44,28 +50,36 @@ fun ErrorScreen(
     exception: MovieExceptions = MovieExceptions.NoInternetException("Error"),
     tryAgainOnClickAction: () -> Unit = {}
 ) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        ErrorImage(
-            modifier = Modifier.padding(dimensionResource(R.dimen.medium_padding)),
-            exception = exception
-        )
-        ErrorTitleText(
-            modifier = Modifier.padding(bottom = dimensionResource(R.dimen.small_padding)),
-            exception = exception
-        )
-        ErrorContentText(
-            modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.large_padding)),
-            exception = exception
-        )
-        TryAgainButton(
-            modifier = Modifier.padding(top = dimensionResource(R.dimen.medium_padding)),
-            onClick = tryAgainOnClickAction
-        )
+    var visibility by remember { mutableStateOf(false) }
+    LaunchedEffect(true) {
+        delay(300)
+        visibility = true
     }
+    AnimatedVisibility(modifier = modifier.fillMaxSize(), visible = visibility) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            ErrorImage(
+                modifier = Modifier.padding(dimensionResource(R.dimen.medium_padding)),
+                exception = exception
+            )
+            ErrorTitleText(
+                modifier = Modifier.padding(bottom = dimensionResource(R.dimen.small_padding)),
+                exception = exception
+            )
+            ErrorContentText(
+                modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.large_padding)),
+                exception = exception
+            )
+            TryAgainButton(
+                modifier = Modifier.padding(top = dimensionResource(R.dimen.medium_padding)),
+                onClick = tryAgainOnClickAction
+            )
+        }
+    }
+
 }
 
 @Composable
@@ -104,7 +118,9 @@ fun ErrorContentText(modifier: Modifier = Modifier, exception: MovieExceptions) 
         is MovieExceptions.UnauthorizedException -> stringResource(R.string.error_content_unauthorized)
     }
     Text(
-        modifier = modifier.fillMaxWidth(), text = text, style = MaterialTheme.typography.bodyMedium.copy(
+        modifier = modifier.fillMaxWidth(),
+        text = text,
+        style = MaterialTheme.typography.bodyMedium.copy(
             color = MaterialTheme.colorScheme.scrim
         ),
         textAlign = TextAlign.Center
@@ -199,9 +215,7 @@ fun ErrorImage(modifier: Modifier = Modifier, exception: MovieExceptions) {
             .fillMaxHeight(0.3f)
             .fillMaxWidth(0.5f)
             .graphicsLayer(
-                scaleX = scale.value,
-                scaleY = scale.value,
-                alpha = alpha.value
+                scaleX = scale.value, scaleY = scale.value, alpha = alpha.value
             ),
         colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error)
     )

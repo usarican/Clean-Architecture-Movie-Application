@@ -43,8 +43,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.HomeMovieModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.ObserveAsEvents
-import kotlinx.coroutines.flow.SharedFlow
+
 
 @Composable
 fun HomeScreen(
@@ -54,12 +53,12 @@ fun HomeScreen(
     val movies by homeViewModel.movies.collectAsStateWithLifecycle()
     val refreshUiState by homeViewModel.refreshUiState.collectAsStateWithLifecycle()
     when (homeUiState) {
-        is UiState.Error -> ErrorScreen(exception = (homeUiState as UiState.Error).exception)
+        is UiState.Error -> ErrorScreen(exception = (homeUiState as UiState.Error).exception,
+            tryAgainOnClickAction = { homeViewModel.handleUiAction(HomeUiAction.ErrorRetryAction) })
+
         UiState.Loading -> LoadingScreen()
         is UiState.Success -> HomeSuccessScreen(
-            movies = movies,
-            refreshUiState = refreshUiState,
-            action = homeViewModel::handleUiAction
+            movies = movies, refreshUiState = refreshUiState, action = homeViewModel::handleUiAction
         )
     }
 }
@@ -104,8 +103,7 @@ fun HomeSuccessScreen(
             }
             if (refreshUiState is UiState.Error) {
                 ErrorSnackBar(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter),
+                    modifier = Modifier.align(Alignment.BottomCenter),
                     errorMessage = (refreshUiState).exception.message,
                     actionLabel = context.getString(R.string.retry),
                     action = {

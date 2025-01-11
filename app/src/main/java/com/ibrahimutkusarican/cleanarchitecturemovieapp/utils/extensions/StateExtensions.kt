@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.transform
 fun <T, R> ApiState<T>.map(transform: (T) -> R): ApiState<R> {
     return when (this) {
         is ApiState.Success -> ApiState.Success(transform(data))
-        is ApiState.Error -> ApiState.Error(throwable)
+        is ApiState.Error -> ApiState.Error(exception)
     }
 }
 
@@ -40,6 +40,6 @@ fun <T> Flow<UiState<T>>.doOnLoading(action: suspend () -> Unit): Flow<UiState<T
 fun <T> ApiState<T>.getSuccessOrThrow(): T {
     return when (this) {
         is ApiState.Success -> data
-        is ApiState.Error -> throw throwable
+        is ApiState.Error -> throw exception
     }
 }

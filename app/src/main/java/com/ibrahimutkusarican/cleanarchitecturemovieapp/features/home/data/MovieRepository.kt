@@ -7,5 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface MovieRepository {
-    fun getMoviesByType(movieType: MovieType) : Flow<ApiState<List<MovieEntity>>>
+    fun getMoviesByType(movieType: MovieType,limit : Int = 20) : Flow<ApiState<List<MovieEntity>>>
+    fun refreshMoviesByType(movieType: MovieType,limit : Int = 20) : Flow<ApiState<List<MovieEntity>>>
 }

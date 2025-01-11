@@ -11,7 +11,7 @@ espressoCore = "3.6.1"
 kotlinxSerializationJson = "1.5.3"
 lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.3"
-composeBom = "2024.04.01"
+composeBom = "2024.12.01"
 paletteKtx = "1.0.0"
 retrofitVersion = "2.9.0"
 okhttpVersion = "4.11.0"
@@ -26,6 +26,7 @@ pagingCommon = "3.1.1"
 secretsGradlePlugin = "2.0.1"
 uiTextGoogleFonts = "1.7.5"
 navigation = "2.8.4"
+animationGraphicsAndroid = "1.7.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -67,6 +68,7 @@ pagingCommon = { module = "androidx.paging:paging-common-ktx", version.ref = "pa
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
+androidx-animation-graphics-android = { group = "androidx.compose.animation", name = "animation-graphics-android", version.ref = "animationGraphicsAndroid" }
 
 
 [plugins]

@@ -11,8 +11,8 @@ interface MovieDao {
     @Upsert
     suspend fun insertMovies(movies: List<MovieEntity>)
 
-    @Query("SELECT * FROM movie_table WHERE movie_types LIKE '%' || :movieType || '%' ORDER BY popularity DESC")
-    suspend fun getMoviesByType(movieType: MovieType): List<MovieEntity>
+    @Query("SELECT * FROM movie_table WHERE movie_types LIKE '%' || :movieType || '%' ORDER BY popularity DESC LIMIT :limit")
+    suspend fun getMoviesByType(movieType: MovieType,limit : Int = 20): List<MovieEntity>
 
     @Query("DELETE FROM movie_table WHERE movie_types LIKE '%' || :movieType || '%'")
     suspend fun deleteMoviesByType(movieType: MovieType)

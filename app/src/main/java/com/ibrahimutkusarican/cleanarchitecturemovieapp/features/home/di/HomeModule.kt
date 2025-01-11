@@ -8,6 +8,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.MovieService
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.usecase.GetHomeMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.usecase.GetHomeMoviesUseCaseImpl
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.usecase.RefreshHomeMoviesUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.usecase.RefreshHomeMoviesUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -25,6 +27,10 @@ abstract class HomeModule {
 
     @Binds
     abstract fun bindGetHomeMoviesUseCase(getHomeMoviesUseCaseImpl: GetHomeMoviesUseCaseImpl): GetHomeMoviesUseCase
+
+    @Binds
+    abstract fun bindRefreshHomeMoviesUseCase(refreshHomeMoviesUseCaseImpl: RefreshHomeMoviesUseCaseImpl): RefreshHomeMoviesUseCase
+
 
     companion object {
         @Provides

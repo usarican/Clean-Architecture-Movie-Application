@@ -55,6 +55,7 @@ class HomeViewModel @Inject constructor(
     fun handleUiAction(action: HomeUiAction) {
         when (action) {
             is HomeUiAction.PullToRefreshAction -> refreshMovies()
+            is HomeUiAction.ErrorRetryAction -> getMovies()
             else -> {}
         }
     }

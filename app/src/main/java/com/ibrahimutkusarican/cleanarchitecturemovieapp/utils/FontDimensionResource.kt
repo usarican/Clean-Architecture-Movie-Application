@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils
 
 import androidx.annotation.DimenRes
 import androidx.compose.runtime.Composable

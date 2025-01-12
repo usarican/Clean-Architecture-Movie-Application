@@ -15,13 +15,10 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,7 +41,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.carouse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 
 @Composable
-fun BannerMoviesList(
+fun HomeBannerMoviesList(
     modifier: Modifier = Modifier, homeMovieModels: List<HomeMovieModel>
 ) {
     val pagerState: PagerState = rememberPagerState(pageCount = { homeMovieModels.size })

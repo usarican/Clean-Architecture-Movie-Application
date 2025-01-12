@@ -84,7 +84,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.lifecycle.livedata)
     implementation(libs.lifecycle.viewmodel)
-    implementation(libs.paging.runtime)
     implementation(libs.room.paging)
     implementation(libs.retrofit)
     implementation(libs.converter.moshi)
@@ -104,4 +103,6 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation (libs.androidx.palette.ktx)
+    implementation (libs.androidx.paging.runtime)
+    implementation (libs.androidx.paging.compose)
    }

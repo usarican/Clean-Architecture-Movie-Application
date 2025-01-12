@@ -24,16 +24,13 @@ fun TopBar(
     onBackClick: () -> Unit = {}
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
         IconButton(
-            modifier = Modifier.align(Alignment.CenterStart),
-            onClick = onBackClick
+            modifier = Modifier.align(Alignment.CenterStart), onClick = onBackClick
         ) {
             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back Icon")
         }
-
         Text(
             modifier = Modifier.align(Alignment.Center),
             text = title,

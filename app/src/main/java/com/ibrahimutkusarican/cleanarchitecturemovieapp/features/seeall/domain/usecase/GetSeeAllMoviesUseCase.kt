@@ -5,6 +5,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.model.SeeAllMovieModel
 import kotlinx.coroutines.flow.Flow
 
-interface GetPagingSeeAllMoviesUseCase {
-    fun getPagingSeeAllMoviesByType(movieType: MovieType) : Flow<PagingData<SeeAllMovieModel>>
+interface GetSeeAllMoviesUseCase {
+    fun getSeeAllMoviesByType(movieType: MovieType) : Flow<PagingData<SeeAllMovieModel>>
 }

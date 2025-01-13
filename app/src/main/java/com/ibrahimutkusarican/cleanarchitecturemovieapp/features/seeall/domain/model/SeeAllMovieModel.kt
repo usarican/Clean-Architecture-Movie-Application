@@ -7,5 +7,5 @@ data class SeeAllMovieModel(
     val movieContent : String,
     val moviePosterImageUrl : String?,
     val movieTMDBScore : Double,
-    val movieTime : String,
+    val movieReleaseTime : String,
 )

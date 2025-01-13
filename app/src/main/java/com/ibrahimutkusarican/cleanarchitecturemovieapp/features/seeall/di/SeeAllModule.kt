@@ -4,15 +4,15 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.See
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllRepositoryImpl
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.usecase.GetCachedSeeAllMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.usecase.GetCachedSeeAllMoviesUseCaseUseCaseImpl
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.usecase.GetPagingSeeAllMoviesUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.usecase.GetPagingSeeAllMoviesUseCaseImpl
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.usecase.GetSeeAllMoviesUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.usecase.GetSeeAllMoviesUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.android.components.ViewModelComponent
 
 @Module
-@InstallIn(ViewModelScoped::class)
+@InstallIn(ViewModelComponent::class)
 abstract class SeeAllModule {
     @Binds
     abstract fun bindSeeAllRepository(seeAllRepositoryImpl: SeeAllRepositoryImpl): SeeAllRepository
@@ -21,6 +21,6 @@ abstract class SeeAllModule {
    abstract fun bindGetCachedSeeAllMoviesUseCase(getCachedSeeAllMoviesUseCaseImpl: GetCachedSeeAllMoviesUseCaseUseCaseImpl): GetCachedSeeAllMoviesUseCase
 
    @Binds
-   abstract fun bingGetPagingSeeAllMoviesUseCase(getPagingSeeAllMoviesUseCaseImpl: GetPagingSeeAllMoviesUseCaseImpl): GetPagingSeeAllMoviesUseCase
+   abstract fun bingGetPagingSeeAllMoviesUseCase(getPagingSeeAllMoviesUseCaseImpl: GetSeeAllMoviesUseCaseImpl): GetSeeAllMoviesUseCase
 
 }

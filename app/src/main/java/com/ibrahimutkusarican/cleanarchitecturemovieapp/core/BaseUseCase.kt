@@ -15,8 +15,8 @@ abstract class BaseUseCase {
     }.catch { exp ->
         exp.printStackTrace()
         when (exp) {
-            is MovieExceptions -> emit(UiState.Error(exp))
-            else -> emit(UiState.Error(MovieExceptions.GeneralException(exp.message)))
+            is MovieException -> emit(UiState.Error(exp))
+            else -> emit(UiState.Error(MovieException.GeneralException(exp.message)))
         }
     }.flowOn(Dispatchers.IO)
 }

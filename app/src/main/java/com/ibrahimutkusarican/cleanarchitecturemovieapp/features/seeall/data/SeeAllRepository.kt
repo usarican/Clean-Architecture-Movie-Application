@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface SeeAllRepository {
     suspend fun getCachedMoviesByType(movieType: MovieType) : List<MovieEntity>
-    fun getPagingMoviesByType(movieType: MovieType) : Flow<PagingData<MovieResultResponse>>
+    fun getSeeAllMoviesByType(movieType: MovieType) : Flow<PagingData<MovieResultResponse>>
 }

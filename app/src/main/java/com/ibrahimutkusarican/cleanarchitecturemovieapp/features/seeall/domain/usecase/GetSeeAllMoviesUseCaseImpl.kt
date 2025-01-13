@@ -14,17 +14,17 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetPagingSeeAllMoviesUseCaseImpl @Inject constructor(
+class GetSeeAllMoviesUseCaseImpl @Inject constructor(
     private val seeAllRepository: SeeAllRepository,
     private val seeAllMovieModelMapper: SeeAllMovieModelMapper,
     private val getMovieGenreUseCase: GetMovieGenresUseCase
-) : GetPagingSeeAllMoviesUseCase {
+) : GetSeeAllMoviesUseCase {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getPagingSeeAllMoviesByType(movieType: MovieType): Flow<PagingData<SeeAllMovieModel>> {
+    override fun getSeeAllMoviesByType(movieType: MovieType): Flow<PagingData<SeeAllMovieModel>> {
         return getMovieGenreUseCase.getMovieGenresUseCase().flatMapLatest { genreState ->
             val genreList = genreState.getSuccessOrThrow()
-            seeAllRepository.getPagingMoviesByType(movieType).map { pagingData ->
+            seeAllRepository.getSeeAllMoviesByType(movieType).map { pagingData ->
                 pagingData.map { response ->
                     seeAllMovieModelMapper.responseToModel(
                         movieResultResponse = response, genreList = genreList

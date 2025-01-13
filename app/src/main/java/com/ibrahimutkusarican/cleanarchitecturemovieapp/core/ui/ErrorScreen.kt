@@ -8,8 +8,6 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.repeatable
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,7 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieExceptions
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieException
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -47,7 +45,7 @@ import kotlinx.coroutines.launch
 @Preview(showBackground = true)
 fun ErrorScreen(
     modifier: Modifier = Modifier,
-    exception: MovieExceptions = MovieExceptions.NoInternetException("Error"),
+    exception: MovieException = MovieException.NoInternetException("Error"),
     tryAgainOnClickAction: () -> Unit = {}
 ) {
     var visibility by remember { mutableStateOf(false) }
@@ -83,18 +81,18 @@ fun ErrorScreen(
 }
 
 @Composable
-fun ErrorTitleText(modifier: Modifier = Modifier, exception: MovieExceptions) {
+fun ErrorTitleText(modifier: Modifier = Modifier, exception: MovieException) {
     val text = when (exception) {
-        is MovieExceptions.CoilHttpException -> stringResource(R.string.error_title_coil)
-        is MovieExceptions.GeneralException -> stringResource(R.string.error_title_general)
-        is MovieExceptions.GeneralHttpException -> stringResource(
+        is MovieException.CoilHttpException -> stringResource(R.string.error_title_coil)
+        is MovieException.GeneralException -> stringResource(R.string.error_title_general)
+        is MovieException.GeneralHttpException -> stringResource(
             R.string.error_title_http, exception.code
         )
 
-        is MovieExceptions.InternalServerErrorException -> stringResource(R.string.error_title_server)
-        is MovieExceptions.NoInternetException -> stringResource(R.string.error_title_no_internet)
-        is MovieExceptions.NotFoundException -> stringResource(R.string.error_title_not_found)
-        is MovieExceptions.UnauthorizedException -> stringResource(R.string.error_title_unauthorized)
+        is MovieException.InternalServerErrorException -> stringResource(R.string.error_title_server)
+        is MovieException.NoInternetException -> stringResource(R.string.error_title_no_internet)
+        is MovieException.NotFoundException -> stringResource(R.string.error_title_not_found)
+        is MovieException.UnauthorizedException -> stringResource(R.string.error_title_unauthorized)
     }
     Text(
         modifier = modifier, text = text, style = MaterialTheme.typography.titleLarge.copy(
@@ -104,18 +102,18 @@ fun ErrorTitleText(modifier: Modifier = Modifier, exception: MovieExceptions) {
 }
 
 @Composable
-fun ErrorContentText(modifier: Modifier = Modifier, exception: MovieExceptions) {
+fun ErrorContentText(modifier: Modifier = Modifier, exception: MovieException) {
     val text = when (exception) {
-        is MovieExceptions.CoilHttpException -> stringResource(R.string.error_content_coil)
-        is MovieExceptions.GeneralException -> stringResource(R.string.error_message)
-        is MovieExceptions.GeneralHttpException -> stringResource(
+        is MovieException.CoilHttpException -> stringResource(R.string.error_content_coil)
+        is MovieException.GeneralException -> stringResource(R.string.error_message)
+        is MovieException.GeneralHttpException -> stringResource(
             R.string.error_content_http, exception.message ?: Constants.EMPTY_STRING
         )
 
-        is MovieExceptions.InternalServerErrorException -> stringResource(R.string.error_content_server)
-        is MovieExceptions.NoInternetException -> stringResource(R.string.error_content_no_internet)
-        is MovieExceptions.NotFoundException -> stringResource(R.string.error_content_not_found)
-        is MovieExceptions.UnauthorizedException -> stringResource(R.string.error_content_unauthorized)
+        is MovieException.InternalServerErrorException -> stringResource(R.string.error_content_server)
+        is MovieException.NoInternetException -> stringResource(R.string.error_content_no_internet)
+        is MovieException.NotFoundException -> stringResource(R.string.error_content_not_found)
+        is MovieException.UnauthorizedException -> stringResource(R.string.error_content_unauthorized)
     }
     Text(
         modifier = modifier.fillMaxWidth(),
@@ -175,14 +173,14 @@ fun TryAgainButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
 }
 
 @Composable
-fun ErrorImage(modifier: Modifier = Modifier, exception: MovieExceptions) {
+fun ErrorImage(modifier: Modifier = Modifier, exception: MovieException) {
     val vectorImage = when (exception) {
-        is MovieExceptions.CoilHttpException -> R.drawable.ic_palette
-        is MovieExceptions.GeneralException, is MovieExceptions.GeneralHttpException, is MovieExceptions.InternalServerErrorException -> R.drawable.ic_very_sad
+        is MovieException.CoilHttpException -> R.drawable.ic_palette
+        is MovieException.GeneralException, is MovieException.GeneralHttpException, is MovieException.InternalServerErrorException -> R.drawable.ic_very_sad
 
-        is MovieExceptions.NoInternetException -> R.drawable.ic_no_internet_connection
-        is MovieExceptions.NotFoundException -> R.drawable.ic_search_global
-        is MovieExceptions.UnauthorizedException -> R.drawable.ic_signuture
+        is MovieException.NoInternetException -> R.drawable.ic_no_internet_connection
+        is MovieException.NotFoundException -> R.drawable.ic_search_global
+        is MovieException.UnauthorizedException -> R.drawable.ic_signuture
     }
 
     val scale = remember { Animatable(0.6f) }

@@ -1,12 +1,23 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentation
+
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import kotlinx.serialization.Serializable
 
-@Serializable
+
 sealed class NavigationRoutes(
-    val route : String
 ) {
-    @Serializable data object Settings : NavigationRoutes("Settings")
-    @Serializable data object Home : NavigationRoutes("Home")
-    @Serializable data object MyList : NavigationRoutes("MyList")
-    @Serializable data object Explore : NavigationRoutes("Explore")
+    @Serializable
+    data object Settings : NavigationRoutes()
+
+    @Serializable
+    data object Home : NavigationRoutes()
+
+    @Serializable
+    data object MyList : NavigationRoutes()
+
+    @Serializable
+    data object Explore : NavigationRoutes()
+
+    @Serializable
+    data class SeeAll(val movieType: MovieType) : NavigationRoutes()
 }

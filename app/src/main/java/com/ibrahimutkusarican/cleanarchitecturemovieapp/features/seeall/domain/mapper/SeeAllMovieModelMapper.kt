@@ -23,7 +23,7 @@ class SeeAllMovieModelMapper @Inject constructor(
                 movieGenres = genreIdsToGenreNameListMapper.getGenreNames(genreIds,genreList),
                 moviePosterImageUrl = imageUrlHelper.getPosterUrl(posterPath),
                 movieTMDBScore = voteAverage,
-                movieTime = formatHelper.formatReleaseDate(releaseDate, language = "en")
+                movieReleaseTime = formatHelper.formatReleaseDate(releaseDate, language = "en")
             )
         }
     }
@@ -37,7 +37,7 @@ class SeeAllMovieModelMapper @Inject constructor(
                 movieGenres = genreIdsToGenreNameListMapper.getGenreNames(genreIds,genreList),
                 moviePosterImageUrl = imageUrlHelper.getPosterUrl(posterPath),
                 movieTMDBScore = voteAverage,
-                movieTime = formatHelper.formatReleaseDate(releaseDate, language = "en")
+                movieReleaseTime = formatHelper.formatReleaseDate(releaseDate, language = "en")
             )
         }
     }

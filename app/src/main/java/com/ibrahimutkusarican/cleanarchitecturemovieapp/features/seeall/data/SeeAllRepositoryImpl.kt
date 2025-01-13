@@ -16,17 +16,21 @@ import javax.inject.Inject
 
 class SeeAllRepositoryImpl @Inject constructor(
     private val movieRemoteDataSource: MovieRemoteDataSource,
-    private val movieLocalDataSource: MovieLocalDataSource
+    private val movieLocalDataSource: MovieLocalDataSource,
+    private val movieEntityToResponseMapper: MovieEntityToResponseMapper
 ) : SeeAllRepository, BaseRepository() {
 
     override suspend fun getCachedMoviesByType(movieType: MovieType): List<MovieEntity> {
         return movieLocalDataSource.getMoviesByType(movieType)
     }
 
-    override fun getPagingMoviesByType(movieType: MovieType): Flow<PagingData<MovieResultResponse>> {
+    override fun getSeeAllMoviesByType(movieType: MovieType): Flow<PagingData<MovieResultResponse>> {
         return Pager(config = PagingConfig(pageSize = MOVIE_PAGE_SIZE), pagingSourceFactory = {
             SeeAllMoviePagingSource(
-                movieRemoteDataSource = movieRemoteDataSource, movieType = movieType
+                movieRemoteDataSource = movieRemoteDataSource,
+                movieType = movieType,
+                movieLocalDataSource = movieLocalDataSource,
+                entityToResponseMapper = movieEntityToResponseMapper
             )
         }).flow
     }

@@ -48,7 +48,7 @@ fun SeeAllMovies(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(vertical = dimensionResource(R.dimen.large_padding)),
+                    .padding(horizontal = dimensionResource(R.dimen.large_padding)),
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
                 ) {
                 items(pagingMovies.itemCount) { index ->
@@ -79,7 +79,9 @@ fun SeeAllMovieItem(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.small_card_elevation))
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background
+        )
     ) {
         Row(
             modifier = Modifier

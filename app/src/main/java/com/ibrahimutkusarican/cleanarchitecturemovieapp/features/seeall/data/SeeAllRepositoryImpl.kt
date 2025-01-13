@@ -3,7 +3,6 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ApiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.MovieLocalDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieEntity

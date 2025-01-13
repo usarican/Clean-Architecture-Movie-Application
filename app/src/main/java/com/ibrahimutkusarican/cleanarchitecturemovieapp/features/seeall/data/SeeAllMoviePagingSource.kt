@@ -25,24 +25,29 @@ class SeeAllMoviePagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieResultResponse> {
         try {
             val nextPageNumber = params.key ?: STARTING_PAGE_INDEX
-            val movieResponse = when (movieType) {
-                MovieType.NOW_PLAYING -> movieRemoteDataSource.getNowPlayingMovies(nextPageNumber)
-                MovieType.POPULAR -> movieRemoteDataSource.getPopularMovies(nextPageNumber)
-                MovieType.TOP_RATED -> movieRemoteDataSource.getTopRatedMovies(nextPageNumber)
-                MovieType.UPCOMING -> movieRemoteDataSource.getUpComingMovies(nextPageNumber)
-            }
+            var responsePage: Int? = null
 
             val data = if (nextPageNumber == STARTING_PAGE_INDEX) {
                 val movieEntitiesByType = movieLocalDataSource.getMoviesByType(movieType)
                 movieEntitiesByType.map { entityToResponseMapper.entityToResponse(it) }
             } else {
+                val movieResponse = when (movieType) {
+                    MovieType.NOW_PLAYING -> movieRemoteDataSource.getNowPlayingMovies(
+                        nextPageNumber
+                    )
+
+                    MovieType.POPULAR -> movieRemoteDataSource.getPopularMovies(nextPageNumber)
+                    MovieType.TOP_RATED -> movieRemoteDataSource.getTopRatedMovies(nextPageNumber)
+                    MovieType.UPCOMING -> movieRemoteDataSource.getUpComingMovies(nextPageNumber)
+                }
+                responsePage = movieResponse.page
                 movieResponse.movieResultResponse
             }
 
             return LoadResult.Page(
                 data = data,
                 prevKey = if (nextPageNumber == STARTING_PAGE_INDEX) null else nextPageNumber - 1,
-                nextKey = if (data.isEmpty()) null else movieResponse.page + 1
+                nextKey = if (data.isEmpty()) null else (responsePage ?: STARTING_PAGE_INDEX) + 1
             )
         } catch (exception: IOException) {
             return LoadResult.Error(exception)

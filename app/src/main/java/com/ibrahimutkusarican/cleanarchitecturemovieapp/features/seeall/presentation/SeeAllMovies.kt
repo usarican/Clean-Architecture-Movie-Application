@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
@@ -107,7 +108,8 @@ fun SeeAllMovieItem(
                 Text(
                     text = seeAllMovie.movieTitle,
                     style = MaterialTheme.typography.titleMedium.copy(
-                        fontSize = fontDimensionResource(R.dimen.movie_category_item_title_size)
+                        fontSize = fontDimensionResource(R.dimen.movie_category_item_title_size),
+                        fontWeight = FontWeight.Bold
                     )
                 )
                 Text(

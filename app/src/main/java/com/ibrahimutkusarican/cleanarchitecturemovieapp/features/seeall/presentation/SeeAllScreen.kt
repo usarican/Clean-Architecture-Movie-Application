@@ -18,8 +18,8 @@ fun SeeAllScreen(
     modifier: Modifier = Modifier, viewModel: SeeAllViewModel
 ) {
     val movieType by viewModel.movieType.collectAsStateWithLifecycle()
+    val searchText by viewModel.searchText.collectAsStateWithLifecycle()
     val pagingMovies = viewModel.pagingMovies.collectAsLazyPagingItems()
-    val cachedMoviesByType by viewModel.cachedMovies.collectAsStateWithLifecycle()
     Column(
         modifier = modifier.fillMaxSize()
     ) {
@@ -33,13 +33,12 @@ fun SeeAllScreen(
                 }
             )
         )
-        MySearchBar(onSearch = { searchText ->
+        MySearchBar(searchText = searchText, onSearch = { searchText ->
             viewModel.handleUiActions(SeeAllUiAction.SearchAction(searchText))
         })
         SeeAllMovies(
             modifier = Modifier.weight(1F),
             pagingMovies = pagingMovies,
-            cachedMovies = cachedMoviesByType
         )
     }
 }

@@ -27,18 +27,4 @@ class SeeAllMovieModelMapper @Inject constructor(
             )
         }
     }
-
-    fun entityToModel(movieEntity: MovieEntity,genreList: List<GenreModel>) : SeeAllMovieModel {
-        return with(movieEntity){
-            SeeAllMovieModel(
-                movieId = id,
-                movieTitle = title,
-                movieContent = overview,
-                movieGenres = genreIdsToGenreNameListMapper.getGenreNames(genreIds,genreList),
-                moviePosterImageUrl = imageUrlHelper.getPosterUrl(posterPath),
-                movieTMDBScore = voteAverage,
-                movieReleaseTime = formatHelper.formatReleaseDate(releaseDate, language = "en")
-            )
-        }
-    }
 }

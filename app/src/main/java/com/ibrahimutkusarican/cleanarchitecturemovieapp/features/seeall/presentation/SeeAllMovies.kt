@@ -37,7 +37,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 fun SeeAllMovies(
     modifier: Modifier = Modifier,
     pagingMovies: LazyPagingItems<SeeAllMovieModel>,
-    cachedMovies: List<SeeAllMovieModel>
 ) {
     when (pagingMovies.loadState.refresh) {
         is LoadState.Error -> {

@@ -9,4 +9,5 @@ internal object Constants {
     const val EMPTY_STRING = ""
     const val MOVIE_PAGE_SIZE = 20
     const val STARTING_PAGE_INDEX = 1
+    const val SEARCH_DEBOUNCE_TIME = 1000L
 }

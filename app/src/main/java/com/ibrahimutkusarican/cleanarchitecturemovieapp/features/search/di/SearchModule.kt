@@ -3,6 +3,8 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.di
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.SearchRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.SearchRepositoryImpl
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.SearchService
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.SearchSeeAllMoviesUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.SearchSeeAllMoviesUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -16,6 +18,9 @@ abstract class SearchModule {
 
     @Binds
     abstract fun bindSearchRepository(searchRepositoryImpl: SearchRepositoryImpl): SearchRepository
+
+    @Binds
+    abstract fun bindSearchSeeAllMoviesUseCase(searchSeeAllMoviesUseCaseImpl: SearchSeeAllMoviesUseCaseImpl): SearchSeeAllMoviesUseCase
 
     companion object {
         @Provides

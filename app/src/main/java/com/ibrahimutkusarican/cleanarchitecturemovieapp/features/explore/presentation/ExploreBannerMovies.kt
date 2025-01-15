@@ -1,12 +1,10 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation
-
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.presentation
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -20,41 +18,36 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.blurTransition
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.carouselTransition
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 
 @Composable
-fun HomeBannerMoviesList(
-    modifier: Modifier = Modifier, basicMovieModels: List<BasicMovieModel>
+fun ExploreBannerMovies(
+    modifier : Modifier = Modifier,
+    bannerMovies : List<BasicMovieModel>
 ) {
-    val pagerState: PagerState = rememberPagerState(pageCount = { basicMovieModels.size })
-
+    val state = rememberPagerState { bannerMovies.size }
     HorizontalPager(
         modifier = modifier,
-        state = pagerState,
-        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.x_x_x_large_padding)),
-        pageSpacing = dimensionResource(R.dimen.large_padding)
+        state = state,
+        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.forty_dp)),
+        pageSpacing = dimensionResource(R.dimen.twelve_padding),
     ) { page ->
-        BannerMovieItem(
-            modifier = modifier.carouselTransition(page = page, pagerState =  pagerState),
-            bannerMovie = basicMovieModels[page],
-            page = page,
-            pagerState = pagerState,
-            isSelected = pagerState.currentPage == page,
+        ExploreBannerMovieItem(
+            modifier = Modifier.carouselTransition(startValue = 0.9F, page = page, pagerState = state),
+            bannerMovie = bannerMovies[page],
+            isSelected = state.currentPage == page
         )
     }
 }
 
 
 @Composable
-fun BannerMovieItem(
-    modifier: Modifier = Modifier,
-    bannerMovie: BasicMovieModel,
-    page: Int,
-    pagerState: PagerState,
-    isSelected: Boolean
-) {
+fun ExploreBannerMovieItem(
+    modifier : Modifier = Modifier,
+    bannerMovie : BasicMovieModel,
+    isSelected : Boolean
+){
     val animatedElevation by animateDpAsState(
         targetValue = if (isSelected) 4.dp else 0.dp,
         animationSpec = tween(durationMillis = 500),
@@ -69,10 +62,10 @@ fun BannerMovieItem(
         MovieImage(
             modifier = Modifier
                 .fillMaxSize()
-                .blurTransition(page, pagerState)
                 .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.x_small_border))),
             imageUrl = bannerMovie.moviePosterImageUrl,
             contentScale = ContentScale.FillBounds
         )
     }
 }
+

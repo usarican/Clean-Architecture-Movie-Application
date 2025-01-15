@@ -1,7 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets
 
 
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,12 +13,8 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,7 +28,8 @@ fun MySearchBar(
     modifier: Modifier = Modifier,
     onSearch: (String) -> Unit = {},
     searchText: String = "asd",
-    showFilterIcon: Boolean = true
+    showFilterIcon: Boolean = false,
+    isEnable: Boolean = true
 ) {
 
     val isFocused by rememberUpdatedState(searchText.isNotEmpty())

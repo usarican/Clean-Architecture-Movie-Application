@@ -2,6 +2,7 @@
     <string name="app_name">CleanArchitectureMovieApp</string>
     <string name="movies">Movies</string>
     <string name="search">Search</string>
+    <string name="explore">Explore</string>
     <string name="search_placeholder">Search…</string>
     <string name="my_list">My List</string>
     <string name="settings">Settings</string>
@@ -13,6 +14,8 @@
     <string name="see_all">See All</string>
     <string name="retry">RETRY</string>
     <string name="try_again">Try Again</string>
+    <string name="categories">Categories</string>
+    <string name="most_popular">Most Popular</string>
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

@@ -20,9 +20,9 @@ data class BottomNavigationItems(
             ),
             BottomNavigationItems(
                 itemName = "search",
-                itemLabel = R.string.search,
+                itemLabel = R.string.explore,
                 navigationRoute = NavigationRoutes.Explore,
-                iconResourceId = R.drawable.ic_search
+                iconResourceId = R.drawable.ic_search_global
             ),
             BottomNavigationItems(
                 itemName = "myList",

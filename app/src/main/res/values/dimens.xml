@@ -11,6 +11,7 @@
     <dimen name="large_border">32dp</dimen>
     <dimen name="x_small_padding">4dp</dimen>
     <dimen name="small_padding">8dp</dimen>
+    <dimen name="twelve_padding">12dp</dimen>
     <dimen name="medium_padding">16dp</dimen>
     <dimen name="large_padding">24dp</dimen>
     <dimen name="x_large_padding">32dp</dimen>
@@ -19,6 +20,8 @@
     <dimen name="small_card_elevation">2dp</dimen>
     <dimen name="zero_dp">0dp</dimen>
     <dimen name="twenty_dp">20dp</dimen>
+    <dimen name="thirty_dp">30dp</dimen>
+    <dimen name="forty_dp">40dp</dimen>
     <dimen name="dp_64">64dp</dimen>
     <dimen name="error_icon_size">36dp</dimen>
 

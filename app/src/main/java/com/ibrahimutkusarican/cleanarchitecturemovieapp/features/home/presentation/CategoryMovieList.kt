@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.HomeMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getStringRes
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
@@ -33,26 +33,23 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResou
 @Composable
 fun MovieCategoryList(
     modifier: Modifier,
-    movies: Map<MovieType, List<HomeMovieModel>>,
+    movies: Map<MovieType, List<BasicMovieModel>>,
     seeAllClickAction: (movieType: MovieType) -> Unit
 ) {
     MovieCategory(
-        modifier = modifier
-            .wrapContentHeight(),
+        modifier = modifier.wrapContentHeight(),
         movieType = MovieType.POPULAR,
         movies = movies[MovieType.POPULAR],
         seeAllClickAction = seeAllClickAction
     )
     MovieCategory(
-        modifier = modifier
-            .wrapContentHeight(),
+        modifier = modifier.wrapContentHeight(),
         movieType = MovieType.TOP_RATED,
         movies = movies[MovieType.TOP_RATED],
         seeAllClickAction = seeAllClickAction
     )
     MovieCategory(
-        modifier = modifier
-            .wrapContentHeight(),
+        modifier = modifier.wrapContentHeight(),
         movieType = MovieType.UPCOMING,
         movies = movies[MovieType.UPCOMING],
         seeAllClickAction = seeAllClickAction
@@ -62,8 +59,12 @@ fun MovieCategoryList(
 
 @Composable
 fun MovieCategory(
-    modifier: Modifier, movieType: MovieType, movies: List<HomeMovieModel>?,
-    seeAllClickAction: (movieType: MovieType) -> Unit
+    modifier: Modifier,
+    movieType: MovieType,
+    movies: List<BasicMovieModel>?,
+    title: String? = null,
+    seeAllClickAction: (movieType: MovieType) -> Unit,
+    movieClickAction: (movieId: Int) -> Unit = {}
 ) {
     if (movies != null) {
         Column(
@@ -75,7 +76,7 @@ fun MovieCategory(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(movieType.getStringRes()),
+                    text = title ?: stringResource(movieType.getStringRes()),
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold
                     ),
@@ -86,8 +87,7 @@ fun MovieCategory(
                     }),
                     text = stringResource(R.string.see_all),
                     style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                        fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary
                     ),
                 )
             }
@@ -110,14 +110,7 @@ fun MovieCategory(
 }
 
 @Composable
-fun MovieCategoryItemList(movie: HomeMovieModel) {
-    MovieCategoryItemWithText(movie)
-}
-
-@Composable
-fun MovieCategoryItemWithText(
-    categoryMovieItem: HomeMovieModel
-) {
+fun MovieCategoryItemList(movie: BasicMovieModel) {
     Column(
         modifier = Modifier.width(dimensionResource(R.dimen.home_category_movie_width)),
     ) {
@@ -128,12 +121,12 @@ fun MovieCategoryItemWithText(
             shape = RoundedCornerShape(dimensionResource(R.dimen.s_medium_border)),
         ) {
             MovieImage(
-                imageUrl = categoryMovieItem.moviePosterImageUrl
+                imageUrl = movie.moviePosterImageUrl
             )
         }
         Text(
             modifier = Modifier.padding(top = dimensionResource(R.dimen.x_small_padding)),
-            text = categoryMovieItem.movieTitle,
+            text = movie.movieTitle,
             style = MaterialTheme.typography.titleMedium.copy(
                 fontSize = fontDimensionResource(R.dimen.movie_category_item_title_size),
                 fontWeight = FontWeight.Bold
@@ -141,10 +134,9 @@ fun MovieCategoryItemWithText(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        if (categoryMovieItem.movieGenres.isNotEmpty()) {
+        if (movie.movieGenres.isNotEmpty()) {
             Text(
-                text = categoryMovieItem.movieGenres.first(),
-                style = MaterialTheme.typography.bodySmall
+                text = movie.movieGenres.first(), style = MaterialTheme.typography.bodySmall
             )
         }
     }

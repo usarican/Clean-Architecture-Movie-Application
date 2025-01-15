@@ -16,22 +16,22 @@ abstract class BaseRepository {
     }.catch { exp ->
         exp.printStackTrace()
         val error = when (exp) {
-            is IOException -> MovieExceptions.NoInternetException("No Internet Connection")
+            is IOException -> MovieException.NoInternetException("No Internet Connection")
             is HttpException -> {
                 when (exp.code()) {
-                    401 -> MovieExceptions.UnauthorizedException("Unauthorized Access")
-                    404 -> MovieExceptions.NotFoundException("Resource Not Found")
-                    500 -> MovieExceptions.InternalServerErrorException("Internal Server Error")
-                    else -> MovieExceptions.GeneralHttpException(
+                    401 -> MovieException.UnauthorizedException("Unauthorized Access")
+                    404 -> MovieException.NotFoundException("Resource Not Found")
+                    500 -> MovieException.InternalServerErrorException("Internal Server Error")
+                    else -> MovieException.GeneralHttpException(
                         code = exp.code(), message = "HTTP Error: ${exp.code()} ${exp.message}"
                     )
 
                 }
             }
-            is coil3.network.HttpException -> MovieExceptions.CoilHttpException(exp.message)
-            is SQLiteException -> MovieExceptions.GeneralException("Database Error: ${exp.message}")
-            is TimeoutCancellationException -> MovieExceptions.GeneralException("Request Timeout")
-            else -> MovieExceptions.GeneralException("Unknown Error: ${exp.localizedMessage}")
+            is coil3.network.HttpException -> MovieException.CoilHttpException(exp.message)
+            is SQLiteException -> MovieException.GeneralException("Database Error: ${exp.message}")
+            is TimeoutCancellationException -> MovieException.GeneralException("Request Timeout")
+            else -> MovieException.GeneralException("Unknown Error: ${exp.localizedMessage}")
         }
         emit(ApiState.Error(error))
     }.flowOn(Dispatchers.IO)

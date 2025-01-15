@@ -28,7 +28,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.HomeMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getStringRes
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.fontDimensionResource
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 
 @Composable
 fun MovieCategoryList(

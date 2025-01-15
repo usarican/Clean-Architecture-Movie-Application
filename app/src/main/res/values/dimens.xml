@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="home_category_movie_height">200dp</dimen>
-    <dimen name="home_category_movie_width">140dp</dimen>
+    <dimen name="home_category_movie_height">180dp</dimen>
+    <dimen name="home_category_movie_width">120dp</dimen>
+    <dimen name="see_all_movie_height">80dp</dimen>
+    <dimen name="see_all_category_movie_width">120dp</dimen>
     <dimen name="x_small_border">4dp</dimen>
     <dimen name="small_border">8dp</dimen>
     <dimen name="s_medium_border">12dp</dimen>
     <dimen name="medium_border">16dp</dimen>
+    <dimen name="large_border">32dp</dimen>
     <dimen name="x_small_padding">4dp</dimen>
     <dimen name="small_padding">8dp</dimen>
     <dimen name="medium_padding">16dp</dimen>
@@ -21,4 +24,5 @@
 
 
     <dimen name="movie_category_item_title_size">14sp</dimen>
+    <dimen name="see_all_movie_item_content_text_size">10sp</dimen>
 </resources>

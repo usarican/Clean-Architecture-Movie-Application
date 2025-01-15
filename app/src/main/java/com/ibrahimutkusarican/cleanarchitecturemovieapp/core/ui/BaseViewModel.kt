@@ -12,5 +12,9 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
+    protected fun sendEvent(event: MyEvent) {
+        EventListener.sendEvent(event)
+    }
+
     protected open fun observeMyEvents(event: MyEvent) {}
 }

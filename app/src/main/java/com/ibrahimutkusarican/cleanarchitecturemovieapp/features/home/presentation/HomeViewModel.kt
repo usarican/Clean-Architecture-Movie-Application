@@ -1,6 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation
 
 import androidx.lifecycle.viewModelScope
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
@@ -56,6 +57,7 @@ class HomeViewModel @Inject constructor(
         when (action) {
             is HomeUiAction.PullToRefreshAction -> refreshMovies()
             is HomeUiAction.ErrorRetryAction -> getMovies()
+            is HomeUiAction.SeeAllClickAction -> sendEvent(MyEvent.SeeAllClickEvent(action.movieType))
             else -> {}
         }
     }

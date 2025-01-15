@@ -1,6 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets
 
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,7 +13,13 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,20 +30,35 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 @Composable
 @Preview(showBackground = true)
 fun MySearchBar(
-    modifier: Modifier = Modifier, onSearch: (String) -> Unit = {}, searchText: String = ""
+    modifier: Modifier = Modifier,
+    onSearch: (String) -> Unit = {},
+    searchText: String = "asd",
+    showFilterIcon: Boolean = true
 ) {
 
-    OutlinedTextField(modifier = modifier
-        .fillMaxWidth()
-        .padding(dimensionResource(R.dimen.large_padding)),
+    val isFocused by rememberUpdatedState(searchText.isNotEmpty())
+
+    OutlinedTextField(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(dimensionResource(R.dimen.large_padding)),
         value = searchText,
         onValueChange = onSearch,
         leadingIcon = {
-            Icon(Icons.Default.Search, contentDescription = "Search Icon")
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "Search Icon",
+                tint = if (isFocused) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+            )
         },
-        trailingIcon = if (searchText.isNotEmpty()) {
+        trailingIcon = if (isFocused && showFilterIcon) {
             {
-                Icon(painterResource(R.drawable.ic_filter), contentDescription = "Filter Icon")
+                Icon(
+                    modifier = Modifier.padding(end = dimensionResource(R.dimen.small_padding)),
+                    painter = painterResource(R.drawable.ic_filter),
+                    contentDescription = "Filter Icon",
+                    tint = MaterialTheme.colorScheme.primary
+                )
             }
         } else null,
         singleLine = true,

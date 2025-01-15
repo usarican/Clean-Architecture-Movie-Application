@@ -31,7 +31,11 @@ fun MainScreen(viewModel: MainViewModel) {
     }) { innerPadding ->
         LaunchedEffect(true) {
             viewModel.navigationChannel.consumeAsFlow().collectLatest { route ->
-                navController.navigate(route)
+                if (route != null) {
+                    navController.navigate(route)
+                } else {
+                    navController.popBackStack()
+                }
             }
         }
         NavHost(

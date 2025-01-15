@@ -23,16 +23,16 @@ fun SeeAllScreen(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        TopBar(
-            title = stringResource(
-                when (movieType) {
-                    MovieType.NOW_PLAYING, null -> R.string.see_all
-                    MovieType.POPULAR -> R.string.popular_movies
-                    MovieType.TOP_RATED -> R.string.top_rated_movies
-                    MovieType.UPCOMING -> R.string.up_coming_movies
-                }
-            )
-        )
+        TopBar(title = stringResource(
+            when (movieType) {
+                MovieType.NOW_PLAYING, null -> R.string.see_all
+                MovieType.POPULAR -> R.string.popular_movies
+                MovieType.TOP_RATED -> R.string.top_rated_movies
+                MovieType.UPCOMING -> R.string.up_coming_movies
+            }
+        ), onBackClick = {
+            viewModel.handleUiActions(SeeAllUiAction.OnBackPress)
+        })
         MySearchBar(searchText = searchText, onSearch = { searchText ->
             viewModel.handleUiActions(SeeAllUiAction.SearchAction(searchText))
         })

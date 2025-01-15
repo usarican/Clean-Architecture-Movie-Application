@@ -50,8 +50,9 @@ fun SeeAllMovies(
                     .fillMaxSize()
                     .padding(horizontal = dimensionResource(R.dimen.large_padding)),
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
-                ) {
-                items(pagingMovies.itemCount) { index ->
+            ) {
+                items(count = pagingMovies.itemCount,
+                    key = { index -> index }) { index ->
                     pagingMovies[index]?.let { movie ->
                         SeeAllMovieItem(
                             seeAllMovie = movie
@@ -78,8 +79,7 @@ fun SeeAllMovieItem(
     )
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
+        modifier = modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         )
     ) {

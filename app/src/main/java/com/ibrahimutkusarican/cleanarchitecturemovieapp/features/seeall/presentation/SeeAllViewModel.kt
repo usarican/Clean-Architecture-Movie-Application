@@ -2,10 +2,10 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.present
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.SearchSeeAllMoviesUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.model.SeeAllMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.usecase.GetSeeAllMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.EMPTY_STRING
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.SEARCH_DEBOUNCE_TIME
@@ -52,7 +52,7 @@ class SeeAllViewModel @Inject constructor(
     fun handleUiActions(uiAction: SeeAllUiAction) {
         when (uiAction) {
             is SeeAllUiAction.MovieClick -> TODO()
-            SeeAllUiAction.OnBackPress -> TODO()
+            SeeAllUiAction.OnBackPress -> sendEvent(MyEvent.OnBackPressed)
             is SeeAllUiAction.SearchAction -> {
                 _searchText.value = uiAction.searchText
             }

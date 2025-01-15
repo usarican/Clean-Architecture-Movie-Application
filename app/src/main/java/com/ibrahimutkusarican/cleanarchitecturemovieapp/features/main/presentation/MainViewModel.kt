@@ -11,13 +11,19 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor() : BaseViewModel() {
 
-    val navigationChannel = Channel<NavigationRoutes>(Channel.UNLIMITED)
+    val navigationChannel = Channel<NavigationRoutes?>(Channel.UNLIMITED)
 
     override fun observeMyEvents(event: MyEvent) {
         when (event) {
             is MyEvent.SeeAllClickEvent -> {
                 viewModelScope.launch {
                     navigationChannel.send(NavigationRoutes.SeeAll(event.movieType))
+                }
+            }
+
+            MyEvent.OnBackPressed -> {
+                viewModelScope.launch {
+                    navigationChannel.send(null)
                 }
             }
 

@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
@@ -36,7 +37,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 fun SeeAllMovies(
     modifier: Modifier = Modifier,
     pagingMovies: LazyPagingItems<SeeAllMovieModel>,
-    cachedMovies: List<SeeAllMovieModel>
 ) {
     when (pagingMovies.loadState.refresh) {
         is LoadState.Error -> {
@@ -50,8 +50,9 @@ fun SeeAllMovies(
                     .fillMaxSize()
                     .padding(horizontal = dimensionResource(R.dimen.large_padding)),
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
-                ) {
-                items(pagingMovies.itemCount) { index ->
+            ) {
+                items(count = pagingMovies.itemCount,
+                    key = { index -> index }) { index ->
                     pagingMovies[index]?.let { movie ->
                         SeeAllMovieItem(
                             seeAllMovie = movie
@@ -78,8 +79,7 @@ fun SeeAllMovieItem(
     )
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
+        modifier = modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         )
     ) {
@@ -107,7 +107,8 @@ fun SeeAllMovieItem(
                 Text(
                     text = seeAllMovie.movieTitle,
                     style = MaterialTheme.typography.titleMedium.copy(
-                        fontSize = fontDimensionResource(R.dimen.movie_category_item_title_size)
+                        fontSize = fontDimensionResource(R.dimen.movie_category_item_title_size),
+                        fontWeight = FontWeight.Bold
                     )
                 )
                 Text(

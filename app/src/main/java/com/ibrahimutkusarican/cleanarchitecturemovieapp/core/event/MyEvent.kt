@@ -5,4 +5,5 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local
 
 sealed class MyEvent {
     data class SeeAllClickEvent(val movieType: MovieType) : MyEvent()
+    data object OnBackPressed : MyEvent()
 }

@@ -1,18 +1,22 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.presentation
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.SearchBar
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.MovieCategory
@@ -22,18 +26,36 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBa
 @Composable
 @Preview(showBackground = true)
 fun ExploreScreen() {
+    val viewModel = hiltViewModel<ExploreViewModel>()
+    val uiState by viewModel.exploreUiState.collectAsStateWithLifecycle()
+    val data by viewModel.exploreInitialData.collectAsStateWithLifecycle()
+    when (uiState) {
+        is UiState.Error -> ErrorScreen(exception = (uiState as UiState.Error).exception,
+            tryAgainOnClickAction = { viewModel.handleUiAction(ExploreUiAction.ErrorRetryAction) })
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        MySearchBar(
-            showFilterIcon = true,
-            isEnable = false
-        )
-        ExploreBannerMovies(bannerMovies = emptyList())
-        CategoriesView()
-        MostPopularMovies(movies = emptyList())
+        UiState.Loading -> LoadingScreen()
+        is UiState.Success -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                MySearchBar(
+                    searchText = "", showFilterIcon = true, isEnable = false
+                )
+                ExploreBannerMovies(
+                    modifier = Modifier.height(dimensionResource(R.dimen.explore_banner_movie_height)),
+                    bannerMovies = data.bannerMovies
+                )
+                CategoriesView(genres = data.genreList)
+                MostPopularMovies(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = dimensionResource(R.dimen.large_padding)),
+                    movies = data.popularMovies
+                )
+            }
+        }
     }
+
 }
 
 @Composable

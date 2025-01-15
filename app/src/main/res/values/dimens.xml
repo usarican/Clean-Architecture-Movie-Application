@@ -4,6 +4,7 @@
     <dimen name="home_category_movie_width">120dp</dimen>
     <dimen name="see_all_movie_height">80dp</dimen>
     <dimen name="see_all_category_movie_width">120dp</dimen>
+    <dimen name="explore_banner_movie_height">160dp</dimen>
     <dimen name="x_small_border">4dp</dimen>
     <dimen name="small_border">8dp</dimen>
     <dimen name="s_medium_border">12dp</dimen>

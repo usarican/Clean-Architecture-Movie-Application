@@ -6,5 +6,8 @@ data class BasicMovieModel(
     val movieTitle : String,
     val movieGenres : List<String>,
     val moviePosterImageUrl : String?,
-    val movieBackdropImageUrl : String?
+    val movieBackdropImageUrl : String?,
+    val movieOverview : String,
+    val releaseDate : String,
+    val movieVotePoint : String,
 )

@@ -77,7 +77,7 @@ fun MovieCategory(
             ) {
                 Text(
                     text = title ?: stringResource(movieType.getStringRes()),
-                    style = MaterialTheme.typography.titleLarge.copy(
+                    style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.Bold
                     ),
                 )

@@ -4,7 +4,7 @@
     <dimen name="home_category_movie_width">120dp</dimen>
     <dimen name="see_all_movie_height">80dp</dimen>
     <dimen name="see_all_category_movie_width">120dp</dimen>
-    <dimen name="explore_banner_movie_height">160dp</dimen>
+    <dimen name="explore_banner_movie_height">200dp</dimen>
     <dimen name="x_small_border">4dp</dimen>
     <dimen name="small_border">8dp</dimen>
     <dimen name="s_medium_border">12dp</dimen>
@@ -25,6 +25,8 @@
     <dimen name="forty_dp">40dp</dimen>
     <dimen name="dp_64">64dp</dimen>
     <dimen name="error_icon_size">36dp</dimen>
+    <dimen name="for_you_card_icon_size">32dp</dimen>
+    <dimen name="one_dp">1dp</dimen>
 
     <dimen name="pager_indicator_big_dot_width">24dp</dimen>
     <dimen name="pager_indicator_dot_height">8dp</dimen>

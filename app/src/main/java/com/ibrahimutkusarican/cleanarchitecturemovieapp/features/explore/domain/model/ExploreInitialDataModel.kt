@@ -5,5 +5,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.mod
 data class ExploreInitialDataModel(
     val genreList : List<ExploreGenreModel> = emptyList(),
     val bannerMovies : List<BasicMovieModel> = emptyList(),
-    val popularMovies : List<BasicMovieModel> = emptyList()
+    val popularMovies : List<BasicMovieModel> = emptyList(),
+    val forYouMovie : BasicMovieModel? = null
 )

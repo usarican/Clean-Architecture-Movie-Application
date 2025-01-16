@@ -31,7 +31,7 @@ class GetExploreInitialDataUseCaseImpl @Inject constructor(
             combine(
                 getMovieGenreUseCase.getMovieGenresUseCase(),
                 movieRepository.getMoviesByType(MovieType.UPCOMING, limit = 10),
-                movieRepository.getMoviesByType(MovieType.POPULAR),
+                movieRepository.getMoviesByType(MovieType.POPULAR)
             ) { stateGenres, stateUpcoming, statePopular ->
                 val genreModelList = stateGenres.getSuccessOrThrow()
                 val upcomingList = stateUpcoming.getSuccessOrThrow()
@@ -65,7 +65,8 @@ class GetExploreInitialDataUseCaseImpl @Inject constructor(
                 ExploreInitialDataModel(
                     genreList = exploreGenreModel,
                     bannerMovies = bannerMovieList,
-                    popularMovies = popularMovieModelList
+                    popularMovies = popularMovieModelList,
+                    forYouMovie = popularMovieModelList[(0..10).random()]
                 )
             }.first()
         }

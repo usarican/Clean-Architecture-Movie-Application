@@ -50,7 +50,7 @@ fun ExploreBannerMovies(
     ) { page ->
         ExploreBannerMovieItem(
             modifier = Modifier.carouselTransition(
-                startValue = 0.9F, page = page, pagerState = state
+                startValue = 0.85F, page = page, pagerState = state
             ), bannerMovie = bannerMovies[page], isSelected = state.currentPage == page
         )
     }
@@ -112,8 +112,7 @@ fun ExploreBannerMovieItem(
     ) {
         MovieImage(
             modifier = Modifier
-                .fillMaxSize()
-                .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.x_small_border))),
+                .fillMaxSize(),
             imageUrl = bannerMovie.moviePosterImageUrl,
             contentScale = ContentScale.FillBounds
         )

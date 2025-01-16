@@ -17,6 +17,7 @@
     <string name="categories">Categories</string>
     <string name="most_popular">Most Popular</string>
     <string name="all">All</string>
+    <string name="for_you">Recommended Movie for You</string>
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

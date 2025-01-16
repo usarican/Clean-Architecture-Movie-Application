@@ -10,4 +10,6 @@ internal object Constants {
     const val MOVIE_PAGE_SIZE = 20
     const val STARTING_PAGE_INDEX = 1
     const val SEARCH_DEBOUNCE_TIME = 1000L
+    const val ALL_GENRE_ID = -1
+    const val BANNER_EXPLORE_PAGER_DOT_INDICATOR_COUNT = 3
 }

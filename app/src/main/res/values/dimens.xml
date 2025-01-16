@@ -26,6 +26,10 @@
     <dimen name="dp_64">64dp</dimen>
     <dimen name="error_icon_size">36dp</dimen>
 
+    <dimen name="pager_indicator_big_dot_width">24dp</dimen>
+    <dimen name="pager_indicator_dot_height">8dp</dimen>
+    <dimen name="pager_indicator_dot_width">8dp</dimen>
+
 
     <dimen name="movie_category_item_title_size">14sp</dimen>
     <dimen name="see_all_movie_item_content_text_size">10sp</dimen>

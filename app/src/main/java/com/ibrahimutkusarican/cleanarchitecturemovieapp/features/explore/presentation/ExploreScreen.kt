@@ -17,6 +17,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.domain.model.ExploreGenreModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.domain.model.ExploreInitialDataModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.MovieCategory
@@ -24,7 +26,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.Categories
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
 
 @Composable
-@Preview(showBackground = true)
 fun ExploreScreen() {
     val viewModel = hiltViewModel<ExploreViewModel>()
     val uiState by viewModel.exploreUiState.collectAsStateWithLifecycle()
@@ -35,27 +36,45 @@ fun ExploreScreen() {
 
         UiState.Loading -> LoadingScreen()
         is UiState.Success -> {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                MySearchBar(
-                    searchText = "", showFilterIcon = true, isEnable = false
-                )
-                ExploreBannerMovies(
-                    modifier = Modifier.height(dimensionResource(R.dimen.explore_banner_movie_height)),
-                    bannerMovies = data.bannerMovies
-                )
-                CategoriesView(genres = data.genreList)
-                MostPopularMovies(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = dimensionResource(R.dimen.large_padding)),
-                    movies = data.popularMovies
-                )
-            }
+            ExploreSuccessScreen(data)
         }
     }
 
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun ExploreSuccessScreen(
+    data: ExploreInitialDataModel = ExploreInitialDataModel(
+        genreList = listOf(
+            ExploreGenreModel(-1, "All", true),
+            ExploreGenreModel(-1, "Action"),
+            ExploreGenreModel(-1, "Horror"),
+            ExploreGenreModel(-1, "Comedy")
+        )
+    )
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        MySearchBar(
+            searchText = "", showFilterIcon = true, isEnable = false
+        )
+        ExploreBannerMovies(
+            modifier = Modifier.height(dimensionResource(R.dimen.explore_banner_movie_height)),
+            bannerMovies = data.bannerMovies
+        )
+        CategoriesView(
+            modifier = Modifier.padding(dimensionResource(R.dimen.large_padding)),
+            genres = data.genreList
+        )
+        MostPopularMovies(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = dimensionResource(R.dimen.large_padding)),
+            movies = data.popularMovies
+        )
+    }
 }
 
 @Composable

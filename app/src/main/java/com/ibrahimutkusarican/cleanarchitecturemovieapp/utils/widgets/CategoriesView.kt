@@ -38,7 +38,6 @@ fun CategoriesView(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(dimensionResource(R.dimen.large_padding))
     ) {
         Text(
             text = stringResource(R.string.categories),
@@ -47,7 +46,7 @@ fun CategoriesView(
             )
         )
         LazyRow(
-            modifier = Modifier.fillMaxWidth().padding(top = dimensionResource(R.dimen.medium_padding)),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding))
         ) {
             items(genres){ genre ->

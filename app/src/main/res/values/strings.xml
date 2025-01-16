@@ -16,6 +16,7 @@
     <string name="try_again">Try Again</string>
     <string name="categories">Categories</string>
     <string name="most_popular">Most Popular</string>
+    <string name="all">All</string>
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

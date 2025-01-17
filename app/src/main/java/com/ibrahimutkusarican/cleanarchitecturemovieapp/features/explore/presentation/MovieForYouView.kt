@@ -76,7 +76,7 @@ fun ExploreForYouMovieView(
                     Card(
                         modifier = Modifier
                             .height(dimensionResource(R.dimen.home_category_movie_height))
-                            .width(dimensionResource(R.dimen.home_category_movie_width)),
+                            .width(dimensionResource(R.dimen.explore_for_you_movie_width)),
                         shape = RoundedCornerShape(dimensionResource(R.dimen.s_medium_border)),
                     ) {
                         MovieImage(
@@ -135,7 +135,7 @@ fun TextWithIcon(
         modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            modifier = Modifier.size(dimensionResource(R.dimen.for_you_card_icon_size)),
+            modifier = Modifier,
             painter = icon, tint = MaterialTheme.colorScheme.outline, contentDescription = "text"
         )
         Text(
@@ -172,7 +172,7 @@ fun ForYouMovieGenreView(modifier: Modifier = Modifier, genreList: List<String>)
 fun ForYouMovieGenreItem(showIcon: Boolean = false, genreText: String) {
     if (showIcon) {
         Icon(
-            modifier = Modifier.size(dimensionResource(R.dimen.for_you_card_icon_size)),
+            modifier = Modifier,
             painter = painterResource(R.drawable.ic_genre),
             tint = MaterialTheme.colorScheme.outline,
             contentDescription = "text"
@@ -192,7 +192,6 @@ fun ForYouMovieGenreItem(showIcon: Boolean = false, genreText: String) {
                     vertical = dimensionResource(R.dimen.x_small_padding),
                     horizontal = dimensionResource(R.dimen.small_padding)
                 ), text = genreText, style = MaterialTheme.typography.labelMedium.copy(
-                    fontStyle = FontStyle.Italic,
                     fontWeight = FontWeight.Bold
                 )
             )

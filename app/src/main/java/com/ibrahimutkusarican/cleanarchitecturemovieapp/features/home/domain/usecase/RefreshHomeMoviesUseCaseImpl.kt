@@ -6,8 +6,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.MovieRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.mapper.HomeMovieModelMapper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.HomeMovieModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.CoilHelper
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.MoviePosterSize
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getSuccessOrThrow
 import kotlinx.coroutines.Dispatchers
@@ -22,9 +21,8 @@ class RefreshHomeMoviesUseCaseImpl @Inject constructor(
     private val movieRepository: MovieRepository,
     private val movieModelMapper: HomeMovieModelMapper,
     private val getMovieGenreUseCase: GetMovieGenresUseCase,
-    private val coilHelper: CoilHelper
 ) : RefreshHomeMoviesUseCase {
-    override fun refreshHomeMovies(): Flow<UiState<Map<MovieType, List<HomeMovieModel>>>> {
+    override fun refreshHomeMovies(): Flow<UiState<Map<MovieType, List<BasicMovieModel>>>> {
         return flow {
             emit(UiState.Loading)
             combine(
@@ -42,14 +40,11 @@ class RefreshHomeMoviesUseCaseImpl @Inject constructor(
                 val upcomingList = stateUpcoming.getSuccessOrThrow()
 
                 val nowPlayingMovieModelList = nowPlayingList.map { movieEntity ->
-                    val nowPlayingHomeMovieModel = movieModelMapper.mapEntityToModel(
+                    movieModelMapper.mapEntityToModel(
                         entity = movieEntity,
                         genreList = genreModelList,
                         posterSize = MoviePosterSize.W780
                     )
-                    val dominantColor =
-                        coilHelper.getMovieImageDominantColor(nowPlayingHomeMovieModel.moviePosterImageUrl)
-                    nowPlayingHomeMovieModel.copy(movieDominantColor = dominantColor)
                 }
                 val popularMovieModelList = popularList.map { movieEntity ->
                     movieModelMapper.mapEntityToModel(

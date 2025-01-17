@@ -28,7 +28,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorSnackBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.HomeMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 
 
 @Composable
@@ -53,8 +53,8 @@ fun HomeScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeSuccessScreen(
-    movies: Map<MovieType, List<HomeMovieModel>>,
-    refreshUiState: UiState<Map<MovieType, List<HomeMovieModel>>>?,
+    movies: Map<MovieType, List<BasicMovieModel>>,
+    refreshUiState: UiState<Map<MovieType, List<BasicMovieModel>>>?,
     action: (HomeUiAction) -> Unit
 ) {
     val screenHeightDp = LocalConfiguration.current.screenHeightDp.dp
@@ -78,7 +78,7 @@ fun HomeSuccessScreen(
                         .height(screenHeightDp * 0.4F)
                         .fillMaxWidth()
                         .padding(vertical = dimensionResource(R.dimen.small_padding)),
-                    homeMovieModels = movies[MovieType.NOW_PLAYING] ?: emptyList()
+                    basicMovieModels = movies[MovieType.NOW_PLAYING] ?: emptyList()
                 )
                 MovieCategoryList(modifier = Modifier
                     .fillMaxWidth()

@@ -8,14 +8,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import kotlin.math.absoluteValue
 
-fun Modifier.carouselTransition(page: Int, pagerState: PagerState) =
+fun Modifier.carouselTransition(startValue : Float = 0.8F,page: Int, pagerState: PagerState) =
     graphicsLayer {
         val pageOffset =
             ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
 
         val transformation =
             lerp(
-                start = 0.8f,
+                start = startValue,
                 stop = 1f,
                 fraction = 1f - pageOffset.coerceIn(0f, 1f)
             )

@@ -1,7 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets
 
 
-import androidx.compose.foundation.focusable
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,9 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,15 +31,23 @@ fun MySearchBar(
     modifier: Modifier = Modifier,
     onSearch: (String) -> Unit = {},
     searchText: String = "asd",
-    showFilterIcon: Boolean = true
+    showFilterIcon: Boolean = false,
+    isEnable: Boolean = true,
+    readOnly: Boolean = false,
+    onClickAction: (() -> Unit)? = null
 ) {
 
     val isFocused by rememberUpdatedState(searchText.isNotEmpty())
+    val interactionSource = remember { MutableInteractionSource() }
 
     OutlinedTextField(
         modifier = modifier
             .fillMaxWidth()
-            .padding(dimensionResource(R.dimen.large_padding)),
+            .padding(dimensionResource(R.dimen.large_padding))
+            .clickable(
+                indication = null,
+                interactionSource = interactionSource,
+                onClick = { onClickAction?.invoke() }),
         value = searchText,
         onValueChange = onSearch,
         leadingIcon = {
@@ -62,6 +68,7 @@ fun MySearchBar(
             }
         } else null,
         singleLine = true,
+        enabled = isEnable,
         shape = RoundedCornerShape(dimensionResource(R.dimen.large_border)),
         textStyle = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
         placeholder = {

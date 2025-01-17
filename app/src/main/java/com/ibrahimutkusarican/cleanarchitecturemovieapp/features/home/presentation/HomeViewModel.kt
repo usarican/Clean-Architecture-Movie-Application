@@ -5,7 +5,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.HomeMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.usecase.GetHomeMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.usecase.RefreshHomeMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
@@ -22,16 +22,16 @@ class HomeViewModel @Inject constructor(
     private val refreshHomeMoviesUseCase: RefreshHomeMoviesUseCase
 ) : BaseViewModel() {
 
-    private val _movies = MutableStateFlow<Map<MovieType, List<HomeMovieModel>>>(mapOf())
-    val movies: StateFlow<Map<MovieType, List<HomeMovieModel>>> = _movies
+    private val _movies = MutableStateFlow<Map<MovieType, List<BasicMovieModel>>>(mapOf())
+    val movies: StateFlow<Map<MovieType, List<BasicMovieModel>>> = _movies
 
     private val _homeUiState =
-        MutableStateFlow<UiState<Map<MovieType, List<HomeMovieModel>>>>(UiState.Loading)
-    val homeUiState: StateFlow<UiState<Map<MovieType, List<HomeMovieModel>>>> = _homeUiState
+        MutableStateFlow<UiState<Map<MovieType, List<BasicMovieModel>>>>(UiState.Loading)
+    val homeUiState: StateFlow<UiState<Map<MovieType, List<BasicMovieModel>>>> = _homeUiState
 
     private val _refreshUiState =
-        MutableStateFlow<UiState<Map<MovieType, List<HomeMovieModel>>>?>(null)
-    val refreshUiState: StateFlow<UiState<Map<MovieType, List<HomeMovieModel>>>?> = _refreshUiState
+        MutableStateFlow<UiState<Map<MovieType, List<BasicMovieModel>>>?>(null)
+    val refreshUiState: StateFlow<UiState<Map<MovieType, List<BasicMovieModel>>>?> = _refreshUiState
 
     init {
         getMovies()

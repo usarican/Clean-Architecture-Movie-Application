@@ -133,16 +133,16 @@ fun TryAgainButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
             delay(2000)
             repeat(3) {
                 rotationZ.animateTo(
-                    targetValue = -2f, // Rotate counter-clockwise
+                    targetValue = -2f,
                     animationSpec = tween(durationMillis = 50, easing = LinearEasing)
                 )
                 rotationZ.animateTo(
-                    targetValue = 2f, // Rotate clockwise
+                    targetValue = 2f,
                     animationSpec = tween(durationMillis = 50, easing = LinearEasing)
                 )
             }
             rotationZ.animateTo(
-                targetValue = 0f, // Return to original position
+                targetValue = 0f,
                 animationSpec = tween(durationMillis = 50, easing = LinearEasing)
             )
             delay(2000)

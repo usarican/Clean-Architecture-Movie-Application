@@ -54,8 +54,7 @@ private fun ExploreSuccessScreen(
             ExploreGenreModel(-1, "Action"),
             ExploreGenreModel(-1, "Horror"),
             ExploreGenreModel(-1, "Comedy")
-        ),
-        forYouMovie = BasicMovieModel(
+        ), forYouMovie = BasicMovieModel(
             movieId = 1,
             movieTitle = "The Batman",
             movieGenres = listOf("Action", "Drama", "Scientfic"),
@@ -68,12 +67,13 @@ private fun ExploreSuccessScreen(
     )
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(bottom = dimensionResource(R.dimen.medium_padding))
     ) {
         MySearchBar(
-            searchText = "", showFilterIcon = true, isEnable = false
+            searchText = "", showFilterIcon = true, isEnable = false, readOnly = true, onClickAction = {}
         )
         ExploreBannerMovies(
             modifier = Modifier.height(dimensionResource(R.dimen.explore_banner_movie_height)),
@@ -81,14 +81,19 @@ private fun ExploreSuccessScreen(
         )
         data.forYouMovie?.let {
             ExploreForYouMovieView(
-                modifier = Modifier.padding(start = dimensionResource(R.dimen.large_padding), end = dimensionResource(R.dimen.large_padding), top = dimensionResource(R.dimen.medium_padding)),
-                movie = data.forYouMovie
+                modifier = Modifier.padding(
+                    start = dimensionResource(R.dimen.large_padding),
+                    end = dimensionResource(R.dimen.large_padding),
+                    top = dimensionResource(R.dimen.medium_padding)
+                ), movie = data.forYouMovie
             )
         }
 
         CategoriesView(
-            modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.large_padding), vertical = dimensionResource(R.dimen.medium_padding)),
-            genres = data.genreList
+            modifier = Modifier.padding(
+                horizontal = dimensionResource(R.dimen.large_padding),
+                vertical = dimensionResource(R.dimen.medium_padding)
+            ), genres = data.genreList
         )
         MostPopularMovies(
             modifier = Modifier

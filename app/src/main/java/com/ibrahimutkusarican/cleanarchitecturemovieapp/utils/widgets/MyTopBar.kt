@@ -18,7 +18,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResou
 
 @Preview(showBackground = true)
 @Composable
-fun TopBar(
+fun MyTopBar(
     modifier: Modifier = Modifier,
     title: String = stringResource(R.string.top_rated_movies),
     onBackClick: () -> Unit = {}

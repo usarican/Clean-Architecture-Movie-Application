@@ -3,6 +3,6 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.present
 import androidx.compose.runtime.Composable
 
 @Composable
-fun LastSearchedMovies(){
+fun LastSearch(){
 
 }

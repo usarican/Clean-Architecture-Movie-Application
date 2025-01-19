@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MyTopBar
@@ -13,6 +14,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MyTopBar
 @Composable
 @Preview(showBackground = true)
 fun SearchScreen(){
+    val viewModel = hiltViewModel<SearchViewModel>()
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -20,8 +23,8 @@ fun SearchScreen(){
             title = stringResource(R.string.search)
         )
         MySearchBar()
-        LastSearchedMovies()
-        TopSearchedMovies()
+        TopSearch()
+        LastSearch()
         RecommendedMoviesForYou()
         RecentlyViewedMovies()
         SearchedMoviesList()
@@ -29,19 +32,7 @@ fun SearchScreen(){
     }
 }
 
-@Composable
-fun RecommendedMoviesForYou() {
-    TODO("Not yet implemented")
-}
 
-@Composable
-fun RecentlyViewedMovies() {
-    TODO("Not yet implemented")
-}
 
-@Composable
-fun TopSearchedMovies() {
-    TODO("Not yet implemented")
-}
 
 

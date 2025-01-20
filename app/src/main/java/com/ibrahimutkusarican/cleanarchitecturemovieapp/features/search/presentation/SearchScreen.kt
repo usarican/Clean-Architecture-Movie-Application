@@ -11,6 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposable
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MyTopBar
 
@@ -20,6 +21,7 @@ fun SearchScreen() {
     val viewModel = hiltViewModel<SearchViewModel>()
     val searchScreenModel by viewModel.searchScreenModel.collectAsStateWithLifecycle()
     val searchedMovies = viewModel.searchedMovies.collectAsLazyPagingItems()
+    val uiState by viewModel.searchScreenUiState.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -40,24 +42,28 @@ fun SearchScreen() {
                 )
             }
         )
-        TopSearch(
-            topSearchMovieNames = searchScreenModel.topSearchedMovies
-        )
-        LastSearch(
-            lastSearch = searchScreenModel.lastSearchKeys
-        )
-        RecommendedMoviesForYou(
-            movies = searchScreenModel.recommendedMoviesForYou
-        )
-        RecentlyViewedMovies(
-            movies = searchScreenModel.recentlyViewedMovies
-        )
-        if (searchScreenModel.searchText.isNotEmpty()) {
-            SearchedMoviesList(
-                pagingMovies = searchedMovies
+        BaseUiStateComposable(
+            uiState = uiState,
+            tryAgainOnClickAction = {}
+        ) {
+            TopSearch(
+                topSearchMovieNames = searchScreenModel.topSearchedMovies
             )
+            LastSearch(
+                lastSearch = searchScreenModel.lastSearchKeys
+            )
+            RecommendedMoviesForYou(
+                movies = searchScreenModel.recommendedMoviesForYou
+            )
+            RecentlyViewedMovies(
+                movies = searchScreenModel.recentlyViewedMovies
+            )
+            if (searchScreenModel.searchText.isNotEmpty()) {
+                SearchedMoviesList(
+                    pagingMovies = searchedMovies
+                )
+            }
         }
-
     }
 }
 

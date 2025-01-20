@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,7 +37,17 @@ class SearchViewModel @Inject constructor(
             searchMoviesUseCase.searchSeeAllMovies(searchText = searchQuery)
         }.cachedIn(viewModelScope)
 
-    fun handleSearchScreenAction(){
+    fun handleSearchScreenAction(searchUiAction: SearchUiAction) {
+        when (searchUiAction) {
+            is SearchUiAction.MovieClick -> TODO()
+            SearchUiAction.OnBackPress -> TODO()
+            is SearchUiAction.SearchAction -> {
+                setSearchText(searchUiAction.searchText)
+            }
+        }
+    }
 
+    private fun setSearchText(searchText: String) {
+        _searchScreenModel.update { it.copy(searchText = searchText) }
     }
 }

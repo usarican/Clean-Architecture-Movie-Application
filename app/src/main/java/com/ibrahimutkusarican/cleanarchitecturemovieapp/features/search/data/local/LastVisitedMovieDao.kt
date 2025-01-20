@@ -12,7 +12,7 @@ interface LastVisitedMovieDao {
     suspend fun insertLastVisitedMovie(movie : LastVisitedMovieEntity )
 
     @Query("SELECT * FROM last_visited_movie")
-    fun getLastVisitedMoviesPaging() : PagingSource<Int,LastVisitedMovieEntity>
+    fun getLastVisitedMoviesPaging() : List<LastVisitedMovieEntity>
 
     @Delete
     suspend fun deleteLastVisitedMovie(movie : LastVisitedMovieEntity)

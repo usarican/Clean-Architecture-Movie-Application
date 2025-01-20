@@ -5,5 +5,5 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.m
 import kotlinx.coroutines.flow.Flow
 
 interface GetSearchScreenModelUseCase {
-    fun getScreenModelUseCase(movieId : Int) : Flow<UiState<SearchScreenModel>>
+    fun getScreenModelUseCase(movieId : Int?) : Flow<UiState<SearchScreenModel>>
 }

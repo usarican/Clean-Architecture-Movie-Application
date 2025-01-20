@@ -15,6 +15,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.present
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.HomeScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.HomeViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.presentation.MyListScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation.SearchScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation.SearchViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.presentation.SeeAllScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.presentation.SeeAllViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.presentation.SettingsScreen
@@ -61,6 +63,12 @@ fun MainScreen(viewModel: MainViewModel) {
                 val movieType = backStackEntry.toRoute<NavigationRoutes.SeeAll>().movieType
                 seeAllViewModel.setMovieType(movieType)
                 SeeAllScreen(viewModel = seeAllViewModel)
+            }
+            composable<NavigationRoutes.Search> { backStackEntry ->
+                val searchViewModel = hiltViewModel<SearchViewModel>()
+                val recommendedMovieId =
+                    backStackEntry.toRoute<NavigationRoutes.Search>().recommendedMovieId
+                SearchScreen(viewModel = searchViewModel, recommendedMovieId = recommendedMovieId)
             }
         }
     }

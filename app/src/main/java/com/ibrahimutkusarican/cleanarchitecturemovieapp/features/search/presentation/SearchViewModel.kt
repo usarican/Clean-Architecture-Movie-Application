@@ -7,7 +7,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchScreenModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchScreenModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.SearchMoviesUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.EMPTY_STRING
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.SEARCH_DEBOUNCE_TIME
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,7 +36,7 @@ class SearchViewModel @Inject constructor(
     val searchScreenUiState : StateFlow<UiState<SearchScreenModel>> = _searchScreenUiState
 
 
-    fun getSearchScreenModel(recommendedMovieId : Int) {
+    fun getSearchScreenModel(recommendedMovieId : Int?) {
         getSearchScreenModelUseCase.getScreenModelUseCase(movieId = recommendedMovieId)
             .doOnSuccess { model -> _searchScreenModel.value = model }
             .onEach { state -> _searchScreenUiState.value = state }

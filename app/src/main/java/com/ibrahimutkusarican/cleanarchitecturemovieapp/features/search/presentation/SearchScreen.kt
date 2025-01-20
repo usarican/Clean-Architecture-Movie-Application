@@ -3,11 +3,10 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.present
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
@@ -16,9 +15,10 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBa
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MyTopBar
 
 @Composable
-@Preview(showBackground = true)
-fun SearchScreen() {
-    val viewModel = hiltViewModel<SearchViewModel>()
+fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
+    LaunchedEffect(recommendedMovieId) {
+        viewModel.getSearchScreenModel(recommendedMovieId)
+    }
     val searchScreenModel by viewModel.searchScreenModel.collectAsStateWithLifecycle()
     val searchedMovies = viewModel.searchedMovies.collectAsLazyPagingItems()
     val uiState by viewModel.searchScreenUiState.collectAsStateWithLifecycle()

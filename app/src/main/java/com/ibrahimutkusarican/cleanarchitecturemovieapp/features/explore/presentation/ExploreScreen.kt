@@ -39,7 +39,9 @@ fun ExploreScreen() {
 
         UiState.Loading -> LoadingScreen()
         is UiState.Success -> {
-            ExploreSuccessScreen(data)
+            ExploreSuccessScreen(data, searchBarClickAction = {
+                viewModel.handleUiAction(ExploreUiAction.SearchBarClickAction(data.forYouMovie?.movieId))
+            })
         }
     }
 
@@ -64,7 +66,8 @@ private fun ExploreSuccessScreen(
             movieBackdropImageUrl = null,
             movieVotePoint = "8.2"
         )
-    )
+    ),
+    searchBarClickAction: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -73,7 +76,11 @@ private fun ExploreSuccessScreen(
             .padding(bottom = dimensionResource(R.dimen.medium_padding))
     ) {
         MySearchBar(
-            searchText = "", showFilterIcon = true, isEnable = false, readOnly = true, onClickAction = {}
+            searchText = "",
+            showFilterIcon = true,
+            isEnable = false,
+            readOnly = true,
+            onClickAction = searchBarClickAction
         )
         ExploreBannerMovies(
             modifier = Modifier.height(dimensionResource(R.dimen.explore_banner_movie_height)),

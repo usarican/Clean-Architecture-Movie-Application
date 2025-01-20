@@ -15,18 +15,15 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
 
     override fun observeMyEvents(event: MyEvent) {
         when (event) {
-            is MyEvent.SeeAllClickEvent -> {
-                viewModelScope.launch {
-                    navigationChannel.send(NavigationRoutes.SeeAll(event.movieType))
-                }
-            }
+            is MyEvent.SeeAllClickEvent -> navigationRouteAction(NavigationRoutes.SeeAll(event.movieType))
+            is MyEvent.OnBackPressed -> navigationRouteAction(null)
+            is MyEvent.SearchBarClickEvent -> navigationRouteAction(NavigationRoutes.Search(event.recommendedMovieId))
+        }
+    }
 
-            MyEvent.OnBackPressed -> {
-                viewModelScope.launch {
-                    navigationChannel.send(null)
-                }
-            }
-
+    private fun navigationRouteAction(navigationRoutes: NavigationRoutes?) {
+        viewModelScope.launch {
+            navigationChannel.send(navigationRoutes)
         }
     }
 }

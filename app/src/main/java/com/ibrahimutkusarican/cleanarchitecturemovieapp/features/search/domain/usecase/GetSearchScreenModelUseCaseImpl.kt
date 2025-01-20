@@ -1,6 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieException
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.usecase.GetMovieGenresUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.mapper.HomeMovieModelMapper
@@ -19,30 +20,33 @@ class GetSearchScreenModelUseCaseImpl @Inject constructor(
     private val homeMovieModelMapper: HomeMovieModelMapper,
     private val seeAllMovieModelMapper: SeeAllMovieModelMapper,
 ) : GetSearchScreenModelUseCase, BaseUseCase() {
-    override fun getScreenModelUseCase(movieId: Int): Flow<UiState<SearchScreenModel>> {
+    override fun getScreenModelUseCase(movieId: Int?): Flow<UiState<SearchScreenModel>> {
         return execute {
             /// TODO: LastSearch Keys Implementation Need Now just Custom
-            combine(
-                getMovieGenreUseCase.getMovieGenresUseCase(),
-                searchRepository.getRecommendedMovieById(movieId),
-                searchRepository.getRecentlyViewedMovies()
-            ) { genreState, recommendedMovieState, recentlyViewedMovieState ->
-                val genreList = genreState.getSuccessOrThrow()
-                val recommendedMovieResponse = recommendedMovieState.getSuccessOrThrow()
-                val recentlyViewedMovie = recentlyViewedMovieState.getSuccessOrThrow()
+            movieId?.let {
+                combine(
+                    getMovieGenreUseCase.getMovieGenresUseCase(),
+                    searchRepository.getRecommendedMovieById(movieId),
+                    searchRepository.getRecentlyViewedMovies()
+                ) { genreState, recommendedMovieState, recentlyViewedMovieState ->
+                    val genreList = genreState.getSuccessOrThrow()
+                    val recommendedMovieResponse = recommendedMovieState.getSuccessOrThrow()
+                    val recentlyViewedMovie = recentlyViewedMovieState.getSuccessOrThrow()
 
-                val recommendedMovieList = recommendedMovieResponse.map { response ->
-                    homeMovieModelMapper.mapResponseToModel(response, genreList)
-                }
+                    val recommendedMovieList = recommendedMovieResponse.map { response ->
+                        homeMovieModelMapper.mapResponseToModel(response, genreList)
+                    }
 
-                val recentlyViewedMovieList = recentlyViewedMovie.map { entity ->
-                    seeAllMovieModelMapper.entityToModel(entity, genreList)
-                }
-                SearchScreenModel(
-                    recommendedMoviesForYou = recommendedMovieList,
-                    recentlyViewedMovies = recentlyViewedMovieList
-                )
-            }.first()
+                    val recentlyViewedMovieList = recentlyViewedMovie.map { entity ->
+                        seeAllMovieModelMapper.entityToModel(entity, genreList)
+                    }
+                    SearchScreenModel(
+                        recommendedMoviesForYou = recommendedMovieList,
+                        recentlyViewedMovies = recentlyViewedMovieList
+                    )
+                }.first()
+            } ?: throw MovieException.GeneralException(message = null)
+
         }
     }
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.mapper.GenreIdsToGenreNameListMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.model.GenreModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BackdropSize
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.FormatHelper
@@ -24,6 +25,32 @@ class HomeMovieModelMapper @Inject constructor(
         backdropSize: BackdropSize = BackdropSize.W780
     ): BasicMovieModel {
         return with(entity) {
+            BasicMovieModel(
+                movieId = id,
+                movieTitle = title,
+                movieGenres = genreIdsToGenreNameListMapper.getGenreNames(
+                    genreIds = genreIds, genres = genreList
+                ),
+                moviePosterImageUrl = imageUrlHelper.getPosterUrl(
+                    posterPath = posterPath, size = posterSize
+                ),
+                movieBackdropImageUrl = imageUrlHelper.getBackdropUrl(
+                    backdropPath = backdropPath, size = backdropSize
+                ),
+                movieOverview = overview,
+                releaseDate = formatHelper.formatReleaseDate(releaseDate, language = "en"),
+                movieVotePoint = String.format("%.1f", voteAverage)
+            )
+        }
+    }
+
+    @SuppressLint("DefaultLocale")
+    fun mapResponseToModel(
+        movieResultResponse: MovieResultResponse, genreList: List<GenreModel>,
+        posterSize: MoviePosterSize = MoviePosterSize.W500,
+        backdropSize: BackdropSize = BackdropSize.W780
+    ): BasicMovieModel {
+        return with(movieResultResponse) {
             BasicMovieModel(
                 movieId = id,
                 movieTitle = title,

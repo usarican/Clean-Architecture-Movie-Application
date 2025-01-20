@@ -110,9 +110,17 @@ fun MovieCategory(
 }
 
 @Composable
-fun MovieCategoryItemList(movie: BasicMovieModel) {
+fun MovieCategoryItemList(
+    modifier: Modifier = Modifier,
+    movie: BasicMovieModel,
+    movieClickAction: (movieId: Int) -> Unit = {}
+) {
     Column(
-        modifier = Modifier.width(dimensionResource(R.dimen.home_category_movie_width)),
+        modifier = modifier
+            .width(dimensionResource(R.dimen.home_category_movie_width))
+            .clickable {
+                movieClickAction(movie.movieId)
+            },
     ) {
         Card(
             modifier = Modifier

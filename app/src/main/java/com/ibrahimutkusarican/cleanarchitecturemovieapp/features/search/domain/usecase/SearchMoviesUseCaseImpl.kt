@@ -13,11 +13,11 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class SearchSeeAllMoviesUseCaseImpl @Inject constructor(
+class SearchMoviesUseCaseImpl @Inject constructor(
     private val searchRepository: SearchRepository,
     private val seeAllMovieMapper: SeeAllMovieModelMapper,
     private val getMovieGenreUseCase: GetMovieGenresUseCase
-) : SearchSeeAllMoviesUseCase {
+) : SearchMoviesUseCase {
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun searchSeeAllMovies(searchText: String): Flow<PagingData<SeeAllMovieModel>> {
         return getMovieGenreUseCase.getMovieGenresUseCase().flatMapLatest { genreState ->

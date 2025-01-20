@@ -8,12 +8,18 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.Ge
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.entity.GenreEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.MovieDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.local.MyListMovieDao
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.local.MyListMovieEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.LastVisitedMovieDao
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.LastVisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Converters
 
 @Database(
     entities = [
         GenreEntity::class,
-        MovieEntity::class
+        MovieEntity::class,
+        MyListMovieEntity::class,
+        LastVisitedMovieEntity::class
     ],
     version = DATABASE_VERSION
 )
@@ -21,8 +27,10 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Converters
 abstract class MovieDatabase : RoomDatabase() {
     abstract fun genreDao(): GenreDao
     abstract fun movieDao(): MovieDao
+    abstract fun myListMovieDao(): MyListMovieDao
+    abstract fun lastVisitedMovieDao(): LastVisitedMovieDao
 
     companion object {
-        const val DATABASE_VERSION = 6
+        const val DATABASE_VERSION = 7
     }
 }

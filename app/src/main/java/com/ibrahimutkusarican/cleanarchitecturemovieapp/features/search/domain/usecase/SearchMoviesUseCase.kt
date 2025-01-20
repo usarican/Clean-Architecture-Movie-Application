@@ -4,6 +4,6 @@ import androidx.paging.PagingData
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.model.SeeAllMovieModel
 import kotlinx.coroutines.flow.Flow
 
-interface SearchSeeAllMoviesUseCase {
+interface SearchMoviesUseCase {
     fun searchSeeAllMovies(searchText : String): Flow<PagingData<SeeAllMovieModel>>
 }

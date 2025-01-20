@@ -1,9 +1,42 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation
 
+import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchScreenModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchScreenModelUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.SearchMoviesUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.EMPTY_STRING
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.SEARCH_DEBOUNCE_TIME
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor() : BaseViewModel() {
+class SearchViewModel @Inject constructor(
+    private val searchMoviesUseCase: SearchMoviesUseCase,
+    private val getSearchScreenModelUseCase: GetSearchScreenModelUseCase
+) : BaseViewModel() {
+
+    private val _searchScreenModel = MutableStateFlow(SearchScreenModel())
+    val searchScreenModel: StateFlow<SearchScreenModel> = _searchScreenModel
+
+    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
+    val searchedMovies =
+        _searchScreenModel.map { it.searchText }.filter { it.isNotEmpty() }.debounce(
+            SEARCH_DEBOUNCE_TIME
+        ).flatMapLatest { searchQuery ->
+            searchMoviesUseCase.searchSeeAllMovies(searchText = searchQuery)
+        }.cachedIn(viewModelScope)
+
+    fun handleSearchScreenAction(){
+
+    }
 }

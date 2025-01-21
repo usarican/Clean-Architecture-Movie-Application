@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -34,11 +37,13 @@ fun SearchedMoviesList(
     BasePagingComposable(
         pagingItems = pagingMovies,
     ) {
-        LazyColumn(
+        LazyVerticalGrid (
+            columns = GridCells.Fixed(3),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = dimensionResource(R.dimen.large_padding)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
+            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.twelve_padding)),
         ) {
             items(count = pagingMovies.itemCount,
                 key = { index -> index }) { index ->

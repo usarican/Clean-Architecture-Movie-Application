@@ -38,7 +38,7 @@ fun LastSearch(
         ) {
             Text(
                 text = stringResource(R.string.last_search),
-                style = MaterialTheme.typography.titleSmall.copy(
+                style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Bold
                 )
             )
@@ -47,16 +47,16 @@ fun LastSearch(
                     clearAllAction()
                 },
                 text = stringResource(R.string.clear_all),
-                style = MaterialTheme.typography.titleSmall.copy(
+                style = MaterialTheme.typography.bodyMedium.copy(
                     color = MaterialTheme.colorScheme.primary
                 )
             )
         }
         FlowRow(
             modifier = Modifier.fillMaxWidth()
-                .padding(top = dimensionResource(R.dimen.medium_padding)),
-            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding))
+                .padding(top = dimensionResource(R.dimen.small_padding)),
+            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding)),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding))
         ) {
             lastSearch.forEach { item ->
                 SearchItem(

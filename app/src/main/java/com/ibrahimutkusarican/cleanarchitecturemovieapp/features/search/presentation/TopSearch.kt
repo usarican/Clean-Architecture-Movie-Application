@@ -41,7 +41,7 @@ fun TopSearch(
             )
             Text(
                 modifier = Modifier.padding(
-                    start = dimensionResource(R.dimen.small_padding)
+                    start = dimensionResource(R.dimen.x_small_padding)
                 ),
                 text = stringResource(R.string.top_search),
                 style = MaterialTheme.typography.titleSmall.copy(
@@ -51,9 +51,9 @@ fun TopSearch(
         }
         FlowRow(
             modifier = Modifier.fillMaxWidth()
-                .padding(top = dimensionResource(R.dimen.medium_padding)),
-            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding))
+                .padding(top = dimensionResource(R.dimen.small_padding)),
+            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding)),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding))
         ) {
             topSearchMovieNames.forEach { item ->
                 SearchItem(

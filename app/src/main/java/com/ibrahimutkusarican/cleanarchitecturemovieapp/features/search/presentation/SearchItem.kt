@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -23,7 +24,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 @Preview(showBackground = true)
 fun SearchItem(
     modifier: Modifier = Modifier,
-    searchItemType: SearchItemType = SearchItemType.TOP_SEARCH,
+    searchItemType: SearchItemType = SearchItemType.LAST_SEARCH,
     itemName: String = "Movie1",
     lastSearchItemRemoveClickAction: (itemId: Int) -> Unit = {},
 ) {
@@ -44,13 +45,13 @@ fun SearchItem(
     ) {
         Row(
             modifier = Modifier.padding(
-                vertical = dimensionResource(R.dimen.twelve_padding),
-                horizontal = dimensionResource(R.dimen.twenty_padding)
+                vertical = dimensionResource(R.dimen.six_padding),
+                horizontal = dimensionResource(R.dimen.twelve_padding)
             ),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = itemName, style = MaterialTheme.typography.bodySmall
+                text = itemName, style = MaterialTheme.typography.labelSmall
             )
             if (searchItemType == SearchItemType.LAST_SEARCH) {
                 Icon(
@@ -58,6 +59,7 @@ fun SearchItem(
                         .clickable {
                             lastSearchItemRemoveClickAction(0)
                         }
+                        .size(dimensionResource(R.dimen.last_search_close_icon_size))
                         .padding(start = dimensionResource(R.dimen.six_padding)),
                     imageVector = Icons.Default.Clear,
                     contentDescription = "RemoveSearchItemIcon"

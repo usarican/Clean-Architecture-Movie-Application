@@ -47,36 +47,38 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                 )
             }
         )
-        BaseUiStateComposable(
-            uiState = uiState,
-            tryAgainOnClickAction = {}
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(dimensionResource(R.dimen.medium_padding))
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
+        if (searchScreenModel.searchText.isEmpty()){
+            BaseUiStateComposable(
+                uiState = uiState,
+                tryAgainOnClickAction = {}
             ) {
-                TopSearch(
-                    topSearchMovieNames = searchScreenModel.topSearchedMovies
-                )
-                LastSearch(
-                    lastSearch = searchScreenModel.lastSearchKeys
-                )
-                RecommendedMoviesForYou(
-                    movies = searchScreenModel.recommendedMoviesForYou
-                )
-                RecentlyViewedMovies(
-                    movies = searchScreenModel.recentlyViewedMovies
-                )
-                if (searchScreenModel.searchText.isNotEmpty()) {
-                    SearchedMoviesList(
-                        pagingMovies = searchedMovies
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(dimensionResource(R.dimen.medium_padding))
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
+                ) {
+                    TopSearch(
+                        topSearchMovieNames = searchScreenModel.topSearchedMovies
                     )
+                    LastSearch(
+                        lastSearch = searchScreenModel.lastSearchKeys
+                    )
+                    RecommendedMoviesForYou(
+                        movies = searchScreenModel.recommendedMoviesForYou
+                    )
+                    if(searchScreenModel.recentlyViewedMovies.isNotEmpty()){
+                        RecentlyViewedMovies(
+                            movies = searchScreenModel.recentlyViewedMovies
+                        )
+                    }
                 }
             }
-
+        } else {
+            SearchedMoviesList(
+                pagingMovies = searchedMovies
+            )
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.presentation
 
 import androidx.lifecycle.viewModelScope
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.domain.model.ExploreInitialDataModel
@@ -35,6 +36,9 @@ class ExploreViewModel @Inject constructor(
             is ExploreUiAction.MovieClickAction -> TODO()
             is ExploreUiAction.SeeAllClickAction -> TODO()
             ExploreUiAction.ErrorRetryAction -> TODO()
+            is ExploreUiAction.SearchBarClickAction -> {
+                sendEvent(MyEvent.SearchBarClickEvent(action.recommendedMovieId))
+            }
         }
     }
 

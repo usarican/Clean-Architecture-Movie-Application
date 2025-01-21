@@ -5,7 +5,7 @@ import androidx.paging.cachedIn
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.SearchSeeAllMoviesUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.SearchMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.usecase.GetSeeAllMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.EMPTY_STRING
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.SEARCH_DEBOUNCE_TIME
@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SeeAllViewModel @Inject constructor(
     private val getSeeAllMoviesUseCase: GetSeeAllMoviesUseCase,
-    private val searchSeeAllMoviesUseCase: SearchSeeAllMoviesUseCase
+    private val searchMoviesUseCase: SearchMoviesUseCase
 ) : BaseViewModel() {
 
     private val _movieType = MutableStateFlow<MovieType?>(null)
@@ -41,7 +41,7 @@ class SeeAllViewModel @Inject constructor(
         SEARCH_DEBOUNCE_TIME
     ).flatMapLatest { searchQuery ->
         if (searchQuery.isNotEmpty()) {
-            searchSeeAllMoviesUseCase.searchSeeAllMovies(searchText = searchQuery)
+            searchMoviesUseCase.searchSeeAllMovies(searchText = searchQuery)
         } else {
             movieType.filterNotNull().flatMapLatest { movieType ->
                 getSeeAllMoviesUseCase.getSeeAllMoviesByType(movieType)

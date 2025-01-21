@@ -1,7 +1,8 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.paging
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BasePagingSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.remote.SearchRemoteDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.STARTING_PAGE_INDEX
 
 class SearchMoviePagingSource(

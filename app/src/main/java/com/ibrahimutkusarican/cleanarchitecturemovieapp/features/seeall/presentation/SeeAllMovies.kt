@@ -68,7 +68,8 @@ fun SeeAllMovies(
 @Composable
 @Preview(showBackground = true)
 fun SeeAllMovieItem(
-    modifier: Modifier = Modifier, seeAllMovie: SeeAllMovieModel = SeeAllMovieModel(
+    modifier: Modifier = Modifier,
+    seeAllMovie: SeeAllMovieModel = SeeAllMovieModel(
         movieId = 0,
         movieTitle = "Spiderman No Way Home",
         movieContent = LoremIpsum(50).values.joinToString(),
@@ -76,7 +77,8 @@ fun SeeAllMovieItem(
         movieGenres = listOf("Action", "Scintfic", "Drama"),
         movieTMDBScore = 7.4,
         movieReleaseTime = "2022-12-15"
-    )
+    ),
+    movieClickAction : (movieId : Int) -> Unit = {}
 ) {
     Card(
         modifier = modifier.fillMaxWidth(), colors = CardDefaults.cardColors(

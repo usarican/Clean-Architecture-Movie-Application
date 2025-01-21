@@ -4,6 +4,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.mapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.model.GenreModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.LastVisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.model.SeeAllMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.FormatHelper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.ImageUrlHelper
@@ -16,6 +17,20 @@ class SeeAllMovieModelMapper @Inject constructor(
 ) {
     fun responseToModel(movieResultResponse: MovieResultResponse,genreList: List<GenreModel>) : SeeAllMovieModel {
         return with(movieResultResponse){
+            SeeAllMovieModel(
+                movieId = id,
+                movieTitle = title,
+                movieContent = overview,
+                movieGenres = genreIdsToGenreNameListMapper.getGenreNames(genreIds,genreList),
+                moviePosterImageUrl = imageUrlHelper.getPosterUrl(posterPath),
+                movieTMDBScore = voteAverage,
+                movieReleaseTime = formatHelper.formatReleaseDate(releaseDate, language = "en")
+            )
+        }
+    }
+
+    fun entityToModel(entity : LastVisitedMovieEntity, genreList: List<GenreModel>) : SeeAllMovieModel {
+        return with(entity){
             SeeAllMovieModel(
                 movieId = id,
                 movieTitle = title,

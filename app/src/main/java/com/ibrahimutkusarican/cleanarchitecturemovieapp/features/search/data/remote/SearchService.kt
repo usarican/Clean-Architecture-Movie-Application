@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.remote
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResponse
 import retrofit2.http.GET

@@ -11,7 +11,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.TopBar
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MyTopBar
 
 @Composable
 fun SeeAllScreen(
@@ -23,7 +23,7 @@ fun SeeAllScreen(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        TopBar(title = stringResource(
+        MyTopBar(title = stringResource(
             when (movieType) {
                 MovieType.NOW_PLAYING, null -> R.string.see_all
                 MovieType.POPULAR -> R.string.popular_movies

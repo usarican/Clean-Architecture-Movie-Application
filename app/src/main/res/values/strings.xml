@@ -18,6 +18,11 @@
     <string name="most_popular">Most Popular</string>
     <string name="all">All</string>
     <string name="for_you">Recommended Movie for You</string>
+    <string name="top_search">Top Search</string>
+    <string name="last_search">Last Search</string>
+    <string name="clear_all">Clear All</string>
+    <string name="recommended_for_you">Recommended for You</string>
+    <string name="recently_viewed">Recently Viewed</string>
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

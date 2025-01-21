@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ApiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.LastVisitedMovieEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.VisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.SearchLocalDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.paging.SearchMoviePagingSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.remote.SearchRemoteDataSource
@@ -32,7 +32,7 @@ class SearchRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getRecentlyViewedMovies(): Flow<ApiState<List<LastVisitedMovieEntity>>> {
+    override fun getRecentlyViewedMovies(): Flow<ApiState<List<VisitedMovieEntity>>> {
         return apiCall {
             searchLocalDataSource.getLastVisitedMovies()
         }

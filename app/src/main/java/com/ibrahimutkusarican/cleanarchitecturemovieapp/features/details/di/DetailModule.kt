@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.di
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieDatabase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.LastVisitedMovieDao
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.VisitedMovieDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.MovieDetailService
 import dagger.Module
 import dagger.Provides
@@ -19,7 +19,7 @@ abstract class DetailModule {
         }
 
         @Provides
-        fun provideLastVisitedMovieDao(movieDatabase: MovieDatabase): LastVisitedMovieDao =
+        fun provideLastVisitedMovieDao(movieDatabase: MovieDatabase): VisitedMovieDao =
             movieDatabase.lastVisitedMovieDao()
     }
 }

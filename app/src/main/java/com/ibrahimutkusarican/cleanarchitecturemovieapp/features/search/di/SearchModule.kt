@@ -1,10 +1,9 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.di
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieDatabase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.GenreDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.SearchRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.SearchRepositoryImpl
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.LastVisitedMovieDao
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.LastVisitedMovieDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.remote.SearchService
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchScreenModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchScreenModelUseCaseImpl
@@ -34,9 +33,5 @@ abstract class SearchModule {
         @Provides
         fun provideSearchService(retrofit: Retrofit): SearchService =
             retrofit.create(SearchService::class.java)
-
-        @Provides
-        fun provideLastVisitedMovieDao(movieDatabase: MovieDatabase) : LastVisitedMovieDao =
-            movieDatabase.lastVisitedMovieDao()
     }
 }

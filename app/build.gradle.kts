@@ -105,4 +105,5 @@
         implementation (libs.androidx.paging.compose)
         implementation(libs.room.paging)
         ksp(libs.moshi.kotlin.codegen)
+        implementation (libs.androidx.constraintlayout.compose)
        }

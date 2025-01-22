@@ -23,6 +23,10 @@
     <string name="clear_all">Clear All</string>
     <string name="recommended_for_you">Recommended for You</string>
     <string name="recently_viewed">Recently Viewed</string>
+    <string name="about">About</string>
+    <string name="recommended">Recommended</string>
+    <string name="reviews">Reviews</string>
+    <string name="trailers">Trailers</string>
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

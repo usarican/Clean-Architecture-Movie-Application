@@ -36,6 +36,6 @@ val mockMovieDetail = MovieDetailModel(
     isAddedToWatchList = true,
     budget = "160000000",
     revenue = "829895144",
-    runtime = "148",
+    runtime = "2h 20m",
     status = "Released"
 )

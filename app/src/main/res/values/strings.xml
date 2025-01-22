@@ -27,6 +27,11 @@
     <string name="recommended">Recommended</string>
     <string name="reviews">Reviews</string>
     <string name="trailers">Trailers</string>
+    <string name="share">Share</string>
+    <string name="add_favorite">Add Favorite</string>
+    <string name="remove_favorite">Remove Favorite</string>
+    <string name="add_watch_list">Add Watch List</string>
+    <string name="remove_watch_list">Remove Watch List</string>
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

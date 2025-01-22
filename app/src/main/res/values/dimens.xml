@@ -37,6 +37,7 @@
     <dimen name="search_chip_corner_radius">10dp</dimen>
     <dimen name="blur">15dp</dimen>
     <dimen name="three_dp">3dp</dimen>
+    <dimen name="circle_icon_radius_size">36dp</dimen>
 
     <dimen name="pager_indicator_big_dot_width">24dp</dimen>
     <dimen name="pager_indicator_dot_height">8dp</dimen>

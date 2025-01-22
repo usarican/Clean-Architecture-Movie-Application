@@ -2,17 +2,16 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presen
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
@@ -21,23 +20,22 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -64,9 +62,106 @@ fun MovieDetailScreen(
     ) {
         MovieDetailImage()
         MovieDetailInfo()
+        MovieDetailActionButtons()
         MovieDetailPager()
     }
 
+}
+
+@Composable
+private fun MovieDetailActionButtons(
+    modifier: Modifier = Modifier
+) {
+    val actionButtons = listOf(
+        MovieDetailActionButtonData(
+            selectIcon = R.drawable.ic_share,
+            selectText = R.string.share,
+            type = MovieDetailActionButtonType.SHARE
+        ),
+        MovieDetailActionButtonData(
+            selectIcon = R.drawable.ic_like,
+            unSelectIcon = R.drawable.ic_dislike,
+            type = MovieDetailActionButtonType.ADD_FAVORITE,
+            isSelected = false
+        ),
+        MovieDetailActionButtonData(
+            selectIcon = R.drawable.ic_my_list,
+            unSelectIcon = R.drawable.ic_un_my_list,
+            type = MovieDetailActionButtonType.ADD_WATCH_LIST
+        ),
+    )
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                start = dimensionResource(R.dimen.dp_64),
+                end = dimensionResource(R.dimen.dp_64),
+                bottom = dimensionResource(R.dimen.twelve_padding)
+            ),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        actionButtons.forEach { button ->
+            MovieDetailActionButton(
+                movieDetailActionButtonData = button
+            )
+        }
+    }
+}
+
+@Composable
+private fun MovieDetailActionButton(
+    movieDetailActionButtonData: MovieDetailActionButtonData,
+    clickAction: (type: MovieDetailActionButtonType) -> Unit = {}
+) {
+    when (movieDetailActionButtonData.type) {
+        MovieDetailActionButtonType.SHARE -> {
+            OutlinedButton(
+                onClick = { clickAction(movieDetailActionButtonData.type) },
+                shape =  RoundedCornerShape(dimensionResource(R.dimen.medium_border)),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = if (!movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.background,
+                    contentColor = if (!movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onBackground,
+                ),
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        painter = painterResource(movieDetailActionButtonData.getIcon()),
+                        contentDescription = "MovieDetailActionButtonIcon"
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = dimensionResource(R.dimen.small_padding)),
+                        text = stringResource(movieDetailActionButtonData.selectText),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+        }
+
+        MovieDetailActionButtonType.ADD_FAVORITE, MovieDetailActionButtonType.ADD_WATCH_LIST -> {
+            OutlinedButton(
+                modifier = Modifier.size(dimensionResource(R.dimen.circle_icon_radius_size)),
+                onClick = { clickAction(movieDetailActionButtonData.type) },
+                shape = CircleShape,
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = if (!movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.background,
+                    contentColor = if (!movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onBackground,
+                ),
+                contentPadding = PaddingValues(0.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        painter = painterResource(movieDetailActionButtonData.getIcon()),
+                        contentDescription = "MovieDetailActionButtonIcon"
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -101,30 +196,32 @@ private fun MovieDetailPager(
 private fun TabLayout(
     modifier: Modifier = Modifier, pages: List<MovieDetailPage>, currentPageIndex: Int
 ) {
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp
-    val paddingValue = dimensionResource(R.dimen.medium_padding)
-    val itemWidth = ((screenWidth - paddingValue.value) / 3).dp
+
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
-        LazyRow(
-            modifier = Modifier.fillMaxWidth()
-                .wrapContentHeight()
-                .padding(horizontal = paddingValue)
-        ) {
-            items(pages) { page ->
-                TabLayoutItem(
-                    modifier = Modifier.width(itemWidth),
-                    page = page,
-                    isSelected = currentPageIndex == page.index
-                )
-            }
-        }
-        HorizontalDivider(
+        BoxWithConstraints(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = dimensionResource(R.dimen.medium_padding)),
+                .wrapContentHeight()
+                .padding(horizontal = dimensionResource(R.dimen.medium_padding))
+        ) {
+            val itemWidth = maxWidth / 3
+            LazyRow(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                items(pages) { page ->
+                    TabLayoutItem(
+                        modifier = Modifier.width(itemWidth),
+                        page = page,
+                        isSelected = currentPageIndex == page.index
+                    )
+                }
+            }
+        }
+
+        HorizontalDivider(
+            modifier = Modifier.fillMaxWidth(),
             thickness = dimensionResource(R.dimen.one_dp),
             color = MaterialTheme.colorScheme.outline
         )
@@ -155,7 +252,8 @@ private fun TabLayoutItem(
 
         if (isSelected) {
             HorizontalDivider(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .clip(CircleShape),
                 thickness = dimensionResource(R.dimen.three_dp),
                 color = MaterialTheme.colorScheme.primary
@@ -235,14 +333,28 @@ private fun IconWithText(
 
 @Composable
 private fun MovieDetailImage(
-    modifier: Modifier = Modifier, movieDetailModel: MovieDetailModel = mockMovieDetail
+    modifier: Modifier = Modifier,
+    movieDetailModel: MovieDetailModel = mockMovieDetail,
+    backClickAction: () -> Unit = {}
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp
     ConstraintLayout(
         modifier = modifier.fillMaxWidth()
     ) {
-        val (backdropImage, posterImage) = createRefs()
+        val (backdropImage, posterImage, backIcon) = createRefs()
         val topMargin = dimensionResource(R.dimen.x_x_large_padding)
+
+        IconButton(onClick = backClickAction, modifier = Modifier
+            .constrainAs(backIcon) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+            }
+            .zIndex(2F)) {
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back",
+            )
+        }
 
         MovieImage(modifier = Modifier
             .fillMaxWidth()
@@ -276,3 +388,17 @@ private fun MovieDetailImage(
 data class MovieDetailPage(
     @StringRes val title: Int, val index: Int
 )
+
+data class MovieDetailActionButtonData(
+    @DrawableRes val selectIcon: Int,
+    @DrawableRes val unSelectIcon: Int? = null,
+    @StringRes val selectText: Int = 0,
+    val type: MovieDetailActionButtonType,
+    val isSelected: Boolean = true
+) {
+    fun getIcon() = (if (!isSelected) selectIcon else unSelectIcon) ?: selectIcon
+}
+
+enum class MovieDetailActionButtonType {
+    SHARE, ADD_FAVORITE, ADD_WATCH_LIST
+}

@@ -1,6 +1,5 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.model.GenreModel
 
 data class MovieDetailModel(
     val movieId: Int,
@@ -12,14 +11,16 @@ data class MovieDetailModel(
     val releaseYear: String,
     val voteAverage: Double,
     val voteCount: Int,
-    val genre: String,
+    val genres: List<String>,
     val isFavorite: Boolean,
     val isAddedToWatchList: Boolean,
     val budget: String?,
     val revenue: String?,
     val runtime: String,
-    val status: String?
+    val status: String?,
 )
+
+
 
 val mockMovieDetail = MovieDetailModel(
     movieId = 123,
@@ -31,7 +32,7 @@ val mockMovieDetail = MovieDetailModel(
     releaseYear = "2010",
     voteAverage = 8.8,
     voteCount = 32000,
-    genre = "Action",
+    genres = listOf("Action","Horror","Drama"),
     isFavorite = false,
     isAddedToWatchList = true,
     budget = "160000000",

@@ -4,39 +4,78 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain
 data class MovieDetailModel(
     val movieId: Int,
     val title: String,
-    val overview: String,
     val tagline: String,
     val posterImageUrl: String?,
     val backgroundImageUrl: String?,
     val releaseYear: String,
-    val voteAverage: Double,
-    val voteCount: Int,
-    val genres: List<String>,
-    val isFavorite: Boolean,
     val isAddedToWatchList: Boolean,
-    val budget: String?,
-    val revenue: String?,
     val runtime: String,
-    val status: String?,
 )
-
 
 
 val mockMovieDetail = MovieDetailModel(
-    movieId = 123,
-    title = "Inception",
-    overview = "A skilled thief is offered a chance at redemption if he can successfully plant an idea into a target's subconscious.",
-    tagline = "Your mind is the scene of the crime.Your mind is the scene of the crime.Your mind is the scene of the crime.Your mind is the scene of the crime.",
-    posterImageUrl = "https://example.com/posters/inception.jpg",
-    backgroundImageUrl = "https://example.com/backdrops/inception_bg.jpg",
-    releaseYear = "2010",
-    voteAverage = 8.8,
-    voteCount = 32000,
-    genres = listOf("Action","Horror","Drama"),
-    isFavorite = false,
-    isAddedToWatchList = true,
-    budget = "160000000",
-    revenue = "829895144",
-    runtime = "2h 20m",
-    status = "Released"
+    movieId = 12345,
+    title = "Mock Movie Title",
+    tagline = "This is a mock tagline",
+    posterImageUrl = "https://example.com/mock-poster.jpg",
+    backgroundImageUrl = "https://example.com/mock-background.jpg",
+    releaseYear = "2023",
+    isAddedToWatchList = false,
+    runtime = "120 minutes",
 )
+val aboutPageModel = MovieDetailAboutModel(
+    budget = "100,000,000",
+    revenue = "300,000,000",
+    status = "Released",
+    genres = listOf("Action", "Drama"),
+    voteCount = 2000,
+    voteAverage = 7.8,
+    fullReleaseDate = "15 May 2023",
+    casts = listOf(
+        CastModel(
+            characterName = "John Wick",
+            gender = 2,
+            order = 1,
+            originalName = "Keanu Reeves",
+            profileImage = "https://example.com/mock-profile-1.jpg"
+        ),
+        CastModel(
+            characterName = "Sofia",
+            gender = 1,
+            order = 2,
+            originalName = "Halle Berry",
+            profileImage = "https://example.com/mock-profile-2.jpg"
+        )
+    )
+)
+val videosModel = MovieDetailVideosModel(
+    id = "mock_video_id"
+)
+val reviewsModel = MovieDetailReviewModel(
+    reviews = listOf(
+        AuthorModel(
+            authorName = "Reviewer One",
+            review = "Amazing movie. Lots of action!",
+            updateTime = "2023-05-01",
+            rating = 8.5,
+            authorNickName = "ActionFan",
+            authorProfilePhoto = null
+        ),
+        AuthorModel(
+            authorName = "Reviewer Two",
+            review = "A bit over the top, but fun overall.",
+            updateTime = "2023-05-02",
+            rating = 7.2,
+            authorNickName = "CineLover",
+            authorProfilePhoto = "https://example.com/mock-reviewer-2.jpg"
+        )
+    )
+)
+val recommendedMoviesModel = MovieDetailRecommendedMovieModel(
+    movieId = 67890,
+    movieTitle = "Recommended Action Flick",
+    movieGenres = listOf("Action", "Thriller"),
+    moviePosterImageUrl = "https://example.com/mock-recommendation-poster.jpg",
+    movieTMDBScore = 6.9
+)
+

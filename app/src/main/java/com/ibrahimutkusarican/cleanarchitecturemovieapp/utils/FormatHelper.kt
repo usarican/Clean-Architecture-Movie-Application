@@ -29,6 +29,36 @@ class FormatHelper @Inject constructor() {
             e.printStackTrace()
             return Constants.EMPTY_STRING
         }
+    }
 
+    @SuppressLint("NewApi")
+    fun formatMovieReleaseDateToYear(dateString: String, language: String): String {
+        return try {
+            val parsedDate = LocalDate.parse(dateString)
+            val locale = when (language.lowercase()) {
+                "turkish", "tr" -> Locale("tr", "TR") // Turkish
+                "english", "en" -> Locale("en", "US") // English
+                else -> Locale.getDefault() // Fallback to system default
+            }
+            parsedDate.format(DateTimeFormatter.ofPattern("yyyy", locale))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return Constants.EMPTY_STRING
+        }
+    }
+
+    fun formatRuntime(runtimeInMinutes: Int): String {
+        if (runtimeInMinutes <= 0) {
+            return Constants.EMPTY_STRING
+        }
+
+        val hours = runtimeInMinutes / 60
+        val minutes = runtimeInMinutes % 60
+
+        return if (hours > 0) {
+            "${hours}h ${minutes}m"
+        } else {
+            "${minutes}m"
+        }
     }
 }

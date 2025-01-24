@@ -5,4 +5,5 @@ data class MovieDetailModel(
     val movieDetailAboutModel: MovieDetailAboutModel,
     val movieDetailRecommendedMovies: List<MovieDetailRecommendedMovieModel>,
     val movieDetailReviewModel: MovieDetailReviewModel,
+    val movieDetailTrailerModel: MovieDetailTrailerModel
 )

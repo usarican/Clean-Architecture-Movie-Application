@@ -19,5 +19,5 @@ data class CastResponse(
     @Json(name = "original_name")
     val originalName: String,
     @Json(name = "profile_path")
-    val profilePath: String
+    val profilePath: String?
 )

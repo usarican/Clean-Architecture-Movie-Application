@@ -23,4 +23,8 @@ sealed class NavigationRoutes(
 
     @Serializable
     data class Search(val recommendedMovieId : Int?) : NavigationRoutes()
+
+    @Serializable
+    data class MovieDetail(val movieId : Int) : NavigationRoutes()
+
 }

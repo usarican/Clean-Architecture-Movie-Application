@@ -7,4 +7,5 @@ sealed class MyEvent {
     data class SeeAllClickEvent(val movieType: MovieType) : MyEvent()
     data object OnBackPressed : MyEvent()
     data class SearchBarClickEvent(val recommendedMovieId : Int?) : MyEvent()
+    data class MovieClickEvent(val movieId : Int) : MyEvent()
 }

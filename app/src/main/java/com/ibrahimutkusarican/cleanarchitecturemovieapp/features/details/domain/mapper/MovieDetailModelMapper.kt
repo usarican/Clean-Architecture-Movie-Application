@@ -83,7 +83,7 @@ class MovieDetailModelMapper @Inject constructor(
 
     fun movieTrailerResponseToMovieDetailTrailerModel(movieVideoResponse: MovieVideoResponse): MovieDetailTrailerModel =
         with(movieVideoResponse) {
-            MovieDetailTrailerModel(trailers = movieVideoResponse.videoResponses.map { response ->
+            MovieDetailTrailerModel(trailers = videoResponses.map { response ->
                 TrailerModel(
                     name = response.name, key = response.key
                 )

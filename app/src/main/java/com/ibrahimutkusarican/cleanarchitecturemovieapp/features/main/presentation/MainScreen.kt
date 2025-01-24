@@ -11,6 +11,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.presentation.ExploreScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.HomeScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.HomeViewModel
@@ -69,6 +71,12 @@ fun MainScreen(viewModel: MainViewModel) {
                 val recommendedMovieId =
                     backStackEntry.toRoute<NavigationRoutes.Search>().recommendedMovieId
                 SearchScreen(viewModel = searchViewModel, recommendedMovieId = recommendedMovieId)
+            }
+            composable<NavigationRoutes.MovieDetail> { backStackEntry ->
+                val detailViewModel = hiltViewModel<MovieDetailViewModel>()
+                val movieId = backStackEntry.toRoute<NavigationRoutes.MovieDetail>().movieId
+                detailViewModel.getMovieDetail(movieId)
+                MovieDetailScreen(viewModel = detailViewModel)
             }
         }
     }

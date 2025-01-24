@@ -2,6 +2,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presen
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -47,7 +48,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailInfoModel
@@ -59,16 +59,17 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 
 @Composable
 fun MovieDetailScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: MovieDetailViewModel
 ) {
-    val viewModel = hiltViewModel<MovieDetailViewModel>()
+
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val movieDetailModel by viewModel.movieDetailModel.collectAsStateWithLifecycle()
     BaseUiStateComposable(uiState = uiState, tryAgainOnClickAction = {}) {
-        movieDetailModel?.let {
+        movieDetailModel?.let { model ->
             MovieDetailSuccessScreen(
                 modifier = modifier,
-                movieDetailModel = it
+                movieDetailModel = model
             )
         }
     }
@@ -316,7 +317,8 @@ private fun MovieDetailInfo(
             textAlign = TextAlign.Center
         )
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .padding(horizontal = dimensionResource(R.dimen.large_padding)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
@@ -385,7 +387,7 @@ private fun MovieDetailImage(
 
         MovieImage(modifier = Modifier
             .fillMaxWidth()
-            .height((screenHeight / 4).dp)
+            .height((screenHeight / 2.5).dp)
             .constrainAs(backdropImage) {
                 top.linkTo(parent.top)
                 start.linkTo(parent.start)
@@ -403,7 +405,8 @@ private fun MovieDetailImage(
                     end.linkTo(parent.end)
                 },
             elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.card_elevation)),
-            shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border))
+            shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border)),
+            border = BorderStroke(dimensionResource(R.dimen.one_dp),MaterialTheme.colorScheme.onBackground)
         ) {
             MovieImage(
                 modifier = Modifier.fillMaxSize(), imageUrl = movieDetailInfoModel.posterImageUrl

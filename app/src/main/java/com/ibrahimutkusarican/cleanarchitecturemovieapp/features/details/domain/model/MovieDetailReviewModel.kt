@@ -5,10 +5,10 @@ data class MovieDetailReviewModel(
 )
 
 data class AuthorModel(
-    val authorName : String,
-    val review : String,
+    val authorName : String?,
+    val review : String?,
     val updateTime : String,
-    val rating : Double,
-    val authorNickName : String,
+    val rating : Double?,
+    val authorNickName : String?,
     val authorProfilePhoto : String?
 )

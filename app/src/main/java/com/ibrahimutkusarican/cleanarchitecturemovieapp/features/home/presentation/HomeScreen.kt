@@ -86,6 +86,9 @@ fun HomeSuccessScreen(
                     movies = movies,
                     seeAllClickAction = { movieType ->
                         action.invoke(HomeUiAction.SeeAllClickAction(movieType))
+                    },
+                    movieClickAction = { movieId ->
+                        action.invoke(HomeUiAction.MovieClickAction(movieId))
                     })
             }
             if (refreshUiState is UiState.Error) {

@@ -8,12 +8,12 @@ import androidx.room.Upsert
 @Dao
 interface VisitedMovieDao {
     @Upsert
-    suspend fun insertLastVisitedMovie(movie : VisitedMovieEntity)
+    suspend fun insertVisitedMovie(movie : VisitedMovieEntity)
 
     @Query("SELECT * FROM visited_movie")
-    suspend fun getLastVisitedMovies() : List<VisitedMovieEntity>
+    suspend fun getVisitedMovies() : List<VisitedMovieEntity>
 
     @Delete
-    suspend fun deleteLastVisitedMovie(movie : VisitedMovieEntity)
+    suspend fun deleteVisitedMovie(movie : VisitedMovieEntity)
 
 }

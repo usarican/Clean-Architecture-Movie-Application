@@ -47,7 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailInfoModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.mockMovieDetail
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
@@ -264,7 +264,7 @@ private fun TabLayoutItem(
 
 @Composable
 private fun MovieDetailInfo(
-    modifier: Modifier = Modifier, movieDetailModel: MovieDetailModel = mockMovieDetail
+    modifier: Modifier = Modifier, movieDetailInfoModel: MovieDetailInfoModel = mockMovieDetail
 ) {
     Column(
         modifier = modifier
@@ -276,7 +276,7 @@ private fun MovieDetailInfo(
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = movieDetailModel.title,
+            text = movieDetailInfoModel.title,
             style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold
             ),
@@ -284,7 +284,7 @@ private fun MovieDetailInfo(
         )
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = movieDetailModel.tagline,
+            text = movieDetailInfoModel.tagline,
             style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center
         )
@@ -294,13 +294,13 @@ private fun MovieDetailInfo(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             IconWithText(
-                iconId = R.drawable.ic_calender_2, text = movieDetailModel.releaseYear
+                iconId = R.drawable.ic_calender_2, text = movieDetailInfoModel.releaseYear
             )
             IconWithText(
-                iconId = R.drawable.ic_time, text = movieDetailModel.runtime
+                iconId = R.drawable.ic_time, text = movieDetailInfoModel.runtime
             )
             IconWithText(
-                iconId = R.drawable.ic_genre_2, text = movieDetailModel.genre
+                iconId = R.drawable.ic_genre_2, text = movieDetailInfoModel.genre
             )
         }
 
@@ -334,7 +334,7 @@ private fun IconWithText(
 @Composable
 private fun MovieDetailImage(
     modifier: Modifier = Modifier,
-    movieDetailModel: MovieDetailModel = mockMovieDetail,
+    movieDetailInfoModel: MovieDetailInfoModel = mockMovieDetail,
     backClickAction: () -> Unit = {}
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp
@@ -365,7 +365,7 @@ private fun MovieDetailImage(
                 end.linkTo(parent.end)
             }
             .blur(dimensionResource(R.dimen.blur)),
-            imageUrl = movieDetailModel.backgroundImageUrl)
+            imageUrl = movieDetailInfoModel.backgroundImageUrl)
         Card(
             modifier = Modifier
                 .height(dimensionResource(R.dimen.movie_detail_poster_height))
@@ -379,7 +379,7 @@ private fun MovieDetailImage(
             shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border))
         ) {
             MovieImage(
-                modifier = Modifier.fillMaxSize(), imageUrl = movieDetailModel.posterImageUrl
+                modifier = Modifier.fillMaxSize(), imageUrl = movieDetailInfoModel.posterImageUrl
             )
         }
     }

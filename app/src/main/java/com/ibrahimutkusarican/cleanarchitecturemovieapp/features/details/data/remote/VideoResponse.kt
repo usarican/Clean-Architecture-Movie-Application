@@ -6,10 +6,6 @@ import com.squareup.moshi.Json
 data class VideoResponse(
     @Json(name = "id")
     val id: String,
-    @Json(name = "iso_3166_1")
-    val iso31661: String,
-    @Json(name = "iso_639_1")
-    val iso6391: String,
     @Json(name = "key")
     val key: String,
     @Json(name = "name")
@@ -25,3 +21,26 @@ data class VideoResponse(
     @Json(name = "type")
     val type: String
 )
+
+enum class VideoSite(val value: String) {
+    YOUTUBE(value = "Youtube");
+
+    companion object {
+        fun fromValue(value: String): VideoSite? = when (value) {
+            "Youtube" -> YOUTUBE
+            else -> null
+        }
+    }
+}
+
+enum class VideoType(val value: String) {
+    CLIP(value = "Clip"), TRAILER(value = "Trailer");
+
+    companion object {
+        fun fromValue(value: String): VideoType = when (value) {
+            "Clip" -> CLIP
+            "Trailer" -> TRAILER
+            else -> throw IllegalArgumentException()
+        }
+    }
+}

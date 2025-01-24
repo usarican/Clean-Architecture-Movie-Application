@@ -8,9 +8,9 @@ class SearchLocalDataSource @Inject constructor(
     private val visitedMovieDao: VisitedMovieDao
 ) {
     suspend fun insertLastVisitedMovie(entity: VisitedMovieEntity) {
-        visitedMovieDao.insertLastVisitedMovie(movie = entity)
+        visitedMovieDao.insertVisitedMovie(movie = entity)
     }
 
     suspend fun getLastVisitedMovies() : List<VisitedMovieEntity> =
-        visitedMovieDao.getLastVisitedMovies()
+        visitedMovieDao.getVisitedMovies()
 }

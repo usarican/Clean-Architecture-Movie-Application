@@ -3,7 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain
 data class MovieDetailModel(
     val movieDetailInfoModel: MovieDetailInfoModel,
     val movieDetailAboutModel: MovieDetailAboutModel,
-    val movieDetailRecommendedMovies: List<MovieDetailRecommendedMovieModel>,
+    val movieDetailRecommendedMovies: MovieDetailRecommendedMovieModel,
     val movieDetailReviewModel: MovieDetailReviewModel,
     val movieDetailTrailerModel: MovieDetailTrailerModel
 )

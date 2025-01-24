@@ -1,6 +1,10 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model
 
 data class MovieDetailRecommendedMovieModel(
+    val recommendedMovies : List<RecommendedMovieModel>
+)
+
+data class RecommendedMovieModel(
     val movieId : Int,
     val movieTitle : String,
     val movieGenres : List<String>,

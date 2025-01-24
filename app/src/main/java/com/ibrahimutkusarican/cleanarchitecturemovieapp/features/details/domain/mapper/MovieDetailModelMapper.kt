@@ -15,6 +15,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailRecommendedMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailReviewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailTrailerModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.RecommendedMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.TrailerModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.FormatHelper
@@ -70,8 +71,8 @@ class MovieDetailModelMapper @Inject constructor(
 
     fun movieResponseToMovieDetailRecommendedMovieModel(
         movieResultResponse: MovieResultResponse, genreList: List<GenreModel>
-    ): MovieDetailRecommendedMovieModel = with(movieResultResponse) {
-        MovieDetailRecommendedMovieModel(
+    ): RecommendedMovieModel = with(movieResultResponse) {
+        RecommendedMovieModel(
             movieId = id,
             movieTitle = title,
             movieGenres = genreIdsToGenreNameListMapper.getGenreNames(genreIds, genreList),

@@ -16,7 +16,7 @@ class MovieDetailRepositoryImpl @Inject constructor(
     private val detailRemoteDataSource: DetailRemoteDataSource,
     private val detailLocalDataSource: DetailLocalDataSource,
     private val movieDetailResponseMapper: MovieDetailResponseMapper
-) : BaseRepository(), MovieDetailRepository {
+) :BaseRepository(), MovieDetailRepository {
     override suspend fun getMovieDetailResponse(movieId: Int): Flow<ApiState<MovieDetailResponse>> {
         return apiCall {
             val movieDetailResponse = detailRemoteDataSource.getMovieDetail(movieId)

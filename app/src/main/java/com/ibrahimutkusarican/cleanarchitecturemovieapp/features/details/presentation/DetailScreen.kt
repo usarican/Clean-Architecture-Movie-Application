@@ -32,6 +32,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -46,26 +47,51 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailInfoModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.mockMovieDetail
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.mockMovieDetailModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposable
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 
 @Composable
-@Preview(showBackground = true)
 fun MovieDetailScreen(
     modifier: Modifier = Modifier
+) {
+    val viewModel = hiltViewModel<MovieDetailViewModel>()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val movieDetailModel by viewModel.movieDetailModel.collectAsStateWithLifecycle()
+    BaseUiStateComposable(uiState = uiState, tryAgainOnClickAction = {}) {
+        movieDetailModel?.let {
+            MovieDetailSuccessScreen(
+                modifier = modifier,
+                movieDetailModel = it
+            )
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun MovieDetailSuccessScreen(
+    modifier: Modifier = Modifier,
+    movieDetailModel: MovieDetailModel = mockMovieDetailModel
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
-        MovieDetailImage()
-        MovieDetailInfo()
+        MovieDetailImage(
+            movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
+        )
+        MovieDetailInfo(
+            movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
+        )
         MovieDetailActionButtons()
-        MovieDetailPager()
+        MovieDetailPager(movieDetailModel = movieDetailModel)
     }
-
 }
 
 @Composable
@@ -118,7 +144,7 @@ private fun MovieDetailActionButton(
         MovieDetailActionButtonType.SHARE -> {
             OutlinedButton(
                 onClick = { clickAction(movieDetailActionButtonData.type) },
-                shape =  RoundedCornerShape(dimensionResource(R.dimen.medium_border)),
+                shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border)),
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = if (!movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.background,
                     contentColor = if (!movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onBackground,
@@ -166,7 +192,8 @@ private fun MovieDetailActionButton(
 
 @Composable
 private fun MovieDetailPager(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    movieDetailModel: MovieDetailModel
 ) {
     val pages = listOf(
         MovieDetailPage(R.string.about, 0),
@@ -183,10 +210,10 @@ private fun MovieDetailPager(
                 .padding(top = dimensionResource(R.dimen.large_padding)), state = pagerState
         ) { page ->
             when (page) {
-                0 -> AboutPageScreen()
-                1 -> TrailersPageScreen()
-                2 -> ReviewsPageScreen()
-                3 -> RecommendedPageScreen()
+                0 -> AboutPageScreen(movieDetailAboutModel = movieDetailModel.movieDetailAboutModel)
+                1 -> TrailersPageScreen(movieDetailTrailerModel = movieDetailModel.movieDetailTrailerModel)
+                2 -> ReviewsPageScreen(movieDetailReviewModel = movieDetailModel.movieDetailReviewModel)
+                3 -> RecommendedPageScreen(movieDetailRecommendedMovieModel = movieDetailModel.movieDetailRecommendedMovies)
             }
         }
     }
@@ -264,7 +291,7 @@ private fun TabLayoutItem(
 
 @Composable
 private fun MovieDetailInfo(
-    modifier: Modifier = Modifier, movieDetailInfoModel: MovieDetailInfoModel = mockMovieDetail
+    modifier: Modifier = Modifier, movieDetailInfoModel: MovieDetailInfoModel
 ) {
     Column(
         modifier = modifier
@@ -334,7 +361,7 @@ private fun IconWithText(
 @Composable
 private fun MovieDetailImage(
     modifier: Modifier = Modifier,
-    movieDetailInfoModel: MovieDetailInfoModel = mockMovieDetail,
+    movieDetailInfoModel: MovieDetailInfoModel,
     backClickAction: () -> Unit = {}
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp

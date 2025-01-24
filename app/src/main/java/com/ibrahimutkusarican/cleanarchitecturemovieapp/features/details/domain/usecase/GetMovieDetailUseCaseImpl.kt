@@ -6,6 +6,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.MovieDetailRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.mapper.MovieDetailModelMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailRecommendedMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getSuccessOrThrow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -45,7 +46,9 @@ class GetMovieDetailUseCaseImpl @Inject constructor(
                 val movieDetailTrailersResponse = movieDetailTrailersState.getSuccessOrThrow()
 
                 val movieDetailInfoModel =
-                    movieDetailModelMapper.movieDetailResponseToMovieDetailInfoModel(movieDetailResponse)
+                    movieDetailModelMapper.movieDetailResponseToMovieDetailInfoModel(
+                        movieDetailResponse
+                    )
                 val movieDetailAboutModel =
                     movieDetailModelMapper.movieDetailResponseToMovieDetailAboutModel(
                         movieDetailResponse,
@@ -63,14 +66,20 @@ class GetMovieDetailUseCaseImpl @Inject constructor(
                 MovieDetailModel(
                     movieDetailInfoModel = movieDetailInfoModel,
                     movieDetailAboutModel = movieDetailAboutModel,
-                    movieDetailRecommendedMovies = emptyList(),
+                    movieDetailRecommendedMovies = MovieDetailRecommendedMovieModel(
+                        recommendedMovies = emptyList()
+                    ),
                     movieDetailReviewModel = movieDetailReviewModel,
                     movieDetailTrailerModel = movieDetailTrailerModel
                 )
             }
 
             movieDetailModelWithoutRecommendedMoviesFlow.combine(movieDetailRecommendedMovieFlow) { movieDetailModel, recommendedMovies ->
-                movieDetailModel.copy(movieDetailRecommendedMovies = recommendedMovies)
+                movieDetailModel.copy(
+                    movieDetailRecommendedMovies = MovieDetailRecommendedMovieModel(
+                        recommendedMovies = recommendedMovies
+                    )
+                )
             }.first()
         }
     }

@@ -29,7 +29,7 @@ class MovieDetailViewModel @Inject constructor(
             .doOnSuccess { model ->
                 _movieDetailModel.value = model
             }
-            .onEach { state -> _uiState.value }
+            .onEach { state -> _uiState.value = state }
             .launchIn(viewModelScope)
     }
 }

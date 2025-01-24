@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentation
 
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -45,7 +46,7 @@ fun MainScreen(viewModel: MainViewModel) {
         NavHost(
             navController = navController,
             startDestination = NavigationRoutes.Home,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())
         ) {
             composable<NavigationRoutes.Home> {
                 val homeViewModel = hiltViewModel<HomeViewModel>()

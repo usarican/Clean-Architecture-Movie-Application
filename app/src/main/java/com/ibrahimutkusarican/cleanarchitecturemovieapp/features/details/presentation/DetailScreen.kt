@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -29,6 +32,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -38,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -123,6 +128,7 @@ private fun MovieDetailActionButtons(
             .padding(
                 start = dimensionResource(R.dimen.dp_64),
                 end = dimensionResource(R.dimen.dp_64),
+                top = dimensionResource(R.dimen.small_padding),
                 bottom = dimensionResource(R.dimen.twelve_padding)
             ),
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -147,8 +153,8 @@ private fun MovieDetailActionButton(
                 onClick = { clickAction(movieDetailActionButtonData.type) },
                 shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border)),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = if (!movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.background,
-                    contentColor = if (!movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onBackground,
+                    containerColor = if (movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.background,
+                    contentColor = if (movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onBackground,
                 ),
             ) {
                 Row(
@@ -298,9 +304,10 @@ private fun MovieDetailInfo(
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                vertical = dimensionResource(R.dimen.medium_padding),
                 horizontal = dimensionResource(R.dimen.large_padding)
-            ), verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding))
+            )
+            .padding(top = dimensionResource(R.dimen.medium_padding)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding))
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -310,14 +317,17 @@ private fun MovieDetailInfo(
             ),
             textAlign = TextAlign.Center
         )
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = movieDetailInfoModel.tagline,
-            style = MaterialTheme.typography.bodySmall,
-            textAlign = TextAlign.Center
-        )
+        if (movieDetailInfoModel.tagline.isNotEmpty()){
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = movieDetailInfoModel.tagline,
+                style = MaterialTheme.typography.bodySmall,
+                textAlign = TextAlign.Center
+            )
+        }
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(horizontal = dimensionResource(R.dimen.large_padding)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -374,11 +384,18 @@ private fun MovieDetailImage(
         val topMargin = dimensionResource(R.dimen.x_x_large_padding)
 
         IconButton(onClick = backClickAction, modifier = Modifier
+            .windowInsetsPadding(WindowInsets.statusBars)
             .constrainAs(backIcon) {
                 top.linkTo(parent.top)
                 start.linkTo(parent.start)
             }
-            .zIndex(2F)) {
+            .padding(start = dimensionResource(R.dimen.small_padding))
+            .zIndex(2F)
+            .clip(CircleShape),
+            colors = IconButtonDefaults.iconButtonColors(
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.onBackground
+            )) {
             Icon(
                 Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back",
@@ -394,7 +411,9 @@ private fun MovieDetailImage(
                 end.linkTo(parent.end)
             }
             .blur(dimensionResource(R.dimen.blur)),
-            imageUrl = movieDetailInfoModel.backgroundImageUrl)
+            imageUrl = movieDetailInfoModel.backgroundImageUrl,
+            contentScale = ContentScale.Crop
+        )
         Card(
             modifier = Modifier
                 .height(dimensionResource(R.dimen.movie_detail_poster_height))
@@ -406,7 +425,10 @@ private fun MovieDetailImage(
                 },
             elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.card_elevation)),
             shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border)),
-            border = BorderStroke(dimensionResource(R.dimen.one_dp),MaterialTheme.colorScheme.onBackground)
+            border = BorderStroke(
+                dimensionResource(R.dimen.one_dp),
+                MaterialTheme.colorScheme.onBackground
+            )
         ) {
             MovieImage(
                 modifier = Modifier.fillMaxSize(), imageUrl = movieDetailInfoModel.posterImageUrl

@@ -33,6 +33,7 @@ val mockMovieDetailModel = MovieDetailModel(
         voteCount = 2000,
         voteAverage = 7.8,
         fullReleaseDate = "15 May 2023",
+        overview = "This is a mock overview of the movie.",
         casts = listOf(
             CastModel(
                 characterName = "John Wick",

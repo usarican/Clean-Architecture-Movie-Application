@@ -4,6 +4,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain
 data class MovieDetailAboutModel(
     val budget: String?,
     val revenue: String?,
+    val overview : String,
     val status: String?,
     val genres : List<String>,
     val fullReleaseDate : String,

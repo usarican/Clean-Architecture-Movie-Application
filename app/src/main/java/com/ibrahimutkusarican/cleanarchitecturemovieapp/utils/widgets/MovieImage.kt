@@ -21,3 +21,7 @@ fun MovieImage(
         contentScale = contentScale,
     )
 }
+
+
+
+

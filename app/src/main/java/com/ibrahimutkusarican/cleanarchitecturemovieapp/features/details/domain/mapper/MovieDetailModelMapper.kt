@@ -48,13 +48,15 @@ class MovieDetailModelMapper @Inject constructor(
         movieDetailResponse: MovieDetailResponse,
         movieDetailCreditResponse: MovieDetailCreditResponse
     ): MovieDetailAboutModel = with(movieDetailResponse) {
-        MovieDetailAboutModel(budget = budget.toString(),
+        MovieDetailAboutModel(
+            budget = budget.toString(),
             revenue = revenue.toString(),
             status = status,
             genres = genres.map { it.genreName },
             fullReleaseDate = formatHelper.formatReleaseDate(releaseDate, language = "en"),
             voteCount = voteCount,
             voteAverage = voteAverage,
+            overview = overview,
             casts = movieDetailCreditResponse.castResponse.map { castResponse ->
                 castResponseToCastModel(
                     castResponse

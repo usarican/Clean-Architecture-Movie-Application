@@ -39,6 +39,7 @@
     <string name="genres">Genres</string>
     <string name="synopsis">Synopsis</string>
     <string name="cast">Cast</string>
+    <string name="anonymous">Anonymous</string>
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

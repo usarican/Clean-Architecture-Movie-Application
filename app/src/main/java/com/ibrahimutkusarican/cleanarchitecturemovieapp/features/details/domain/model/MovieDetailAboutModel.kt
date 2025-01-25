@@ -8,8 +8,7 @@ data class MovieDetailAboutModel(
     val status: String?,
     val genres : List<String>,
     val fullReleaseDate : String,
-    val voteCount: Int,
-    val voteAverage: Double,
+    val rating: String,
     val casts : List<CastModel>
 )
 

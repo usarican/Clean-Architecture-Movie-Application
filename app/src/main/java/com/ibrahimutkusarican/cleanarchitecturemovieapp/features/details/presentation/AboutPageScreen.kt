@@ -1,8 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -68,7 +66,7 @@ private fun MovieBudgetDurationInformationSection(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         MovieInformationItem(
-            value = movieDetailAboutModel.voteAverage.toString(),
+            value = movieDetailAboutModel.rating,
             label = stringResource(R.string.rating)
         )
         MovieInformationItem(
@@ -95,7 +93,7 @@ private fun MovieInformationItem(
     Column {
         Text(
             text = value, style = MaterialTheme.typography.labelLarge.copy(
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.SemiBold
             )
         )
         Text(
@@ -184,7 +182,10 @@ private fun MovieCastSection(
         LazyRow(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(top = dimensionResource(R.dimen.small_padding), bottom = dimensionResource(R.dimen.medium_padding)),
+                .padding(
+                    top = dimensionResource(R.dimen.small_padding),
+                    bottom = dimensionResource(R.dimen.medium_padding)
+                ),
             horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.twelve_padding))
         ) {
             items(movieDetailAboutModel.casts) { cast ->

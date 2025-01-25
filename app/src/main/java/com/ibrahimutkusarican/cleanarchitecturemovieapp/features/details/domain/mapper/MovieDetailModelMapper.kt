@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.mapper
 
+import android.annotation.SuppressLint
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.mapper.GenreIdsToGenreNameListMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.model.GenreModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.AuthorResponse
@@ -12,7 +13,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.CastModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailAboutModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailInfoModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailRecommendedMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailReviewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailTrailerModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.RecommendedMovieModel
@@ -49,13 +49,16 @@ class MovieDetailModelMapper @Inject constructor(
         movieDetailCreditResponse: MovieDetailCreditResponse
     ): MovieDetailAboutModel = with(movieDetailResponse) {
         MovieDetailAboutModel(
-            budget = budget.toString(),
-            revenue = revenue.toString(),
+            budget = formatHelper.formatMoney(language = "en", amount = budget.toLong()),
+            revenue = formatHelper.formatMoney(language = "en", amount = revenue.toLong()),
             status = status,
             genres = genres.map { it.genreName },
             fullReleaseDate = formatHelper.formatReleaseDate(releaseDate, language = "en"),
-            voteCount = voteCount,
-            voteAverage = voteAverage,
+            rating = formatHelper.formatVoteAverageAndVoteCount(
+                voteAverage = voteAverage,
+                voteCount = voteCount,
+                language = "en"
+            ),
             overview = overview,
             casts = movieDetailCreditResponse.castResponse.map { castResponse ->
                 castResponseToCastModel(

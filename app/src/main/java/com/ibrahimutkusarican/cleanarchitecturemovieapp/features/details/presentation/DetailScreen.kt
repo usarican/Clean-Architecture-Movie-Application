@@ -206,7 +206,7 @@ private fun MovieDetailPager(
         MovieDetailPage(R.string.about, 0),
         MovieDetailPage(R.string.trailers, 1),
         MovieDetailPage(R.string.reviews, 2),
-        MovieDetailPage(R.string.recommended, 3)
+        MovieDetailPage(R.string.similar, 3)
     )
     val pagerState = rememberPagerState { pages.size }
     Column {
@@ -214,7 +214,7 @@ private fun MovieDetailPager(
         HorizontalPager(
             modifier = modifier
                 .fillMaxSize()
-                .padding(top = dimensionResource(R.dimen.large_padding)), state = pagerState
+                .padding(top = dimensionResource(R.dimen.medium_padding)), state = pagerState
         ) { page ->
             when (page) {
                 0 -> AboutPageScreen(movieDetailAboutModel = movieDetailModel.movieDetailAboutModel)
@@ -275,7 +275,7 @@ private fun TabLayoutItem(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = dimensionResource(R.dimen.medium_padding)),
+                .padding(horizontal = dimensionResource(R.dimen.small_padding)),
             text = stringResource(page.title),
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,

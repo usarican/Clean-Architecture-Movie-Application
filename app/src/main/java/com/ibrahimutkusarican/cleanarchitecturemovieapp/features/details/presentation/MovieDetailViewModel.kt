@@ -1,6 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation
 
 import androidx.lifecycle.viewModelScope
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
@@ -31,5 +32,14 @@ class MovieDetailViewModel @Inject constructor(
             }
             .onEach { state -> _uiState.value = state }
             .launchIn(viewModelScope)
+    }
+
+    fun handleUiAction(action: DetailUiAction){
+        when(action){
+            DetailUiAction.ErrorRetryAction -> TODO()
+            is DetailUiAction.RecommendedMovieClickAction -> TODO()
+            DetailUiAction.OnBackPressClickAction -> sendEvent(MyEvent.OnBackPressed)
+            is DetailUiAction.SeeAllClickAction -> TODO()
+        }
     }
 }

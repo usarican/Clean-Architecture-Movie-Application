@@ -77,7 +77,8 @@ fun MovieDetailScreen(
     BaseUiStateComposable(uiState = uiState, tryAgainOnClickAction = {}) {
         movieDetailModel?.let { model ->
             MovieDetailSuccessScreen(
-                modifier = modifier, movieDetailModel = model
+                modifier = modifier, movieDetailModel = model,
+                backClickAction = { viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction) }
             )
         }
     }
@@ -86,13 +87,15 @@ fun MovieDetailScreen(
 @Composable
 @Preview(showBackground = true)
 private fun MovieDetailSuccessScreen(
-    modifier: Modifier = Modifier, movieDetailModel: MovieDetailModel = mockMovieDetailModel
+    modifier: Modifier = Modifier, movieDetailModel: MovieDetailModel = mockMovieDetailModel,
+    backClickAction: () -> Unit = {}
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
         MovieDetailImage(
-            movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
+            movieDetailInfoModel = movieDetailModel.movieDetailInfoModel,
+            backClickAction = backClickAction
         )
         MovieDetailInfo(
             movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
@@ -306,7 +309,7 @@ private fun TabLayoutItem(
                 .padding(bottom = dimensionResource(R.dimen.small_padding)),
             text = stringResource(page.title),
             style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                fontWeight = if (isSelected) FontWeight.W600 else FontWeight.W400,
                 color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
             ),
             textAlign = TextAlign.Center

@@ -8,7 +8,8 @@ data class MovieDetailInfoModel(
     val posterImageUrl: String?,
     val backgroundImageUrl: String?,
     val releaseYear: String,
-    val isAddedToWatchList: Boolean,
+    val isAddedToWatchList: Boolean = false,
+    val isFavorite : Boolean = false,
     val runtime: String,
     val genre: String,
 )
@@ -23,7 +24,8 @@ val mockMovieDetailModel = MovieDetailModel(
         releaseYear = "2023",
         isAddedToWatchList = false,
         runtime = "120 minutes",
-        genre = "Action"
+        genre = "Action",
+        isFavorite = true
     ),
     movieDetailAboutModel = MovieDetailAboutModel(
         budget = "100,000,000",

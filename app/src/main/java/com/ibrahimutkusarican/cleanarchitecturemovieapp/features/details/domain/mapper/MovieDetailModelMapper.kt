@@ -51,7 +51,8 @@ class MovieDetailModelMapper @Inject constructor(
                 ),
                 isAddedToWatchList = false,
                 runtime = formatHelper.formatRuntime(runtime),
-                genre = genres.firstOrNull()?.genreName.orEmpty()
+                genre = genres.firstOrNull()?.genreName.orEmpty(),
+                isFavorite = false,
             )
         }
 

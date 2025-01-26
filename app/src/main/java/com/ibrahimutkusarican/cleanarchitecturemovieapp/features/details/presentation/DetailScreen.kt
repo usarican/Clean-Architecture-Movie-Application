@@ -69,8 +69,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MovieDetailScreen(
-    modifier: Modifier = Modifier,
-    viewModel: MovieDetailViewModel
+    modifier: Modifier = Modifier, viewModel: MovieDetailViewModel
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -78,8 +77,7 @@ fun MovieDetailScreen(
     BaseUiStateComposable(uiState = uiState, tryAgainOnClickAction = {}) {
         movieDetailModel?.let { model ->
             MovieDetailSuccessScreen(
-                modifier = modifier,
-                movieDetailModel = model
+                modifier = modifier, movieDetailModel = model
             )
         }
     }
@@ -88,8 +86,7 @@ fun MovieDetailScreen(
 @Composable
 @Preview(showBackground = true)
 private fun MovieDetailSuccessScreen(
-    modifier: Modifier = Modifier,
-    movieDetailModel: MovieDetailModel = mockMovieDetailModel
+    modifier: Modifier = Modifier, movieDetailModel: MovieDetailModel = mockMovieDetailModel
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -107,32 +104,39 @@ private fun MovieDetailSuccessScreen(
 
 @Composable
 private fun MovieDetailActionButtons(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    movieDetailInfoModel: MovieDetailInfoModel = mockMovieDetailModel.movieDetailInfoModel
 ) {
     val actionButtons = listOf(
         MovieDetailActionButtonData(
-            selectIcon = R.drawable.ic_share,
-            selectText = R.string.share,
-            type = MovieDetailActionButtonType.SHARE
+            selectIcon = R.drawable.ic_play,
+            selectText = R.string.play,
+            type = MovieDetailActionButtonType.PLAY
         ),
         MovieDetailActionButtonData(
-            selectIcon = R.drawable.ic_like,
-            unSelectIcon = R.drawable.ic_dislike,
-            type = MovieDetailActionButtonType.ADD_FAVORITE,
+            selectIcon = R.drawable.ic_share,
+            selectText = R.string.share,
+            type = MovieDetailActionButtonType.SHARE,
             isSelected = false
+        ),
+        MovieDetailActionButtonData(
+            selectIcon = R.drawable.ic_favorite,
+            unSelectIcon = R.drawable.ic_not_favorite,
+            type = MovieDetailActionButtonType.ADD_FAVORITE,
+            isSelected = movieDetailInfoModel.isFavorite
         ),
         MovieDetailActionButtonData(
             selectIcon = R.drawable.ic_my_list,
             unSelectIcon = R.drawable.ic_un_my_list,
-            type = MovieDetailActionButtonType.ADD_WATCH_LIST
+            type = MovieDetailActionButtonType.ADD_WATCH_LIST,
+            isSelected = movieDetailInfoModel.isAddedToWatchList
         ),
     )
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .padding(horizontal = dimensionResource(R.dimen.x_x_large_padding))
             .padding(
-                start = dimensionResource(R.dimen.dp_64),
-                end = dimensionResource(R.dimen.dp_64),
                 top = dimensionResource(R.dimen.small_padding),
                 bottom = dimensionResource(R.dimen.twelve_padding)
             ),
@@ -153,39 +157,47 @@ private fun MovieDetailActionButton(
     clickAction: (type: MovieDetailActionButtonType) -> Unit = {}
 ) {
     when (movieDetailActionButtonData.type) {
-        MovieDetailActionButtonType.SHARE -> {
+        MovieDetailActionButtonType.PLAY -> {
             OutlinedButton(
+                modifier = Modifier.height(dimensionResource(R.dimen.detail_icon_size)),
                 onClick = { clickAction(movieDetailActionButtonData.type) },
-                shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border)),
+                shape = RoundedCornerShape(dimensionResource(R.dimen.large_border)),
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = if (movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.background,
                     contentColor = if (movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onBackground,
                 ),
+                contentPadding = PaddingValues(0.dp)
             ) {
                 Row(
+                    modifier = Modifier.padding(
+                        horizontal = dimensionResource(R.dimen.twenty_dp),
+                    ),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
+                        modifier = Modifier.size(dimensionResource(R.dimen.small_icon_size)),
                         painter = painterResource(movieDetailActionButtonData.getIcon()),
                         contentDescription = "MovieDetailActionButtonIcon"
                     )
                     Text(
                         modifier = Modifier.padding(start = dimensionResource(R.dimen.small_padding)),
                         text = stringResource(movieDetailActionButtonData.selectText),
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.W600
+                        )
                     )
                 }
             }
         }
 
-        MovieDetailActionButtonType.ADD_FAVORITE, MovieDetailActionButtonType.ADD_WATCH_LIST -> {
+        MovieDetailActionButtonType.SHARE, MovieDetailActionButtonType.ADD_FAVORITE, MovieDetailActionButtonType.ADD_WATCH_LIST -> {
             OutlinedButton(
-                modifier = Modifier.size(dimensionResource(R.dimen.circle_icon_radius_size)),
+                modifier = Modifier.size(dimensionResource(R.dimen.detail_icon_size)),
                 onClick = { clickAction(movieDetailActionButtonData.type) },
                 shape = CircleShape,
                 colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = if (!movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.background,
-                    contentColor = if (!movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onBackground,
+                    containerColor = MaterialTheme.colorScheme.background,
+                    contentColor = if (movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
                 ),
                 contentPadding = PaddingValues(0.dp)
             ) {
@@ -204,8 +216,7 @@ private fun MovieDetailActionButton(
 
 @Composable
 private fun MovieDetailPager(
-    modifier: Modifier = Modifier,
-    movieDetailModel: MovieDetailModel
+    modifier: Modifier = Modifier, movieDetailModel: MovieDetailModel
 ) {
     val pages = listOf(
         MovieDetailPage(R.string.about, 0),
@@ -236,7 +247,9 @@ private fun MovieDetailPager(
 
 @Composable
 private fun TabLayout(
-    modifier: Modifier = Modifier, pages: List<MovieDetailPage>, currentPageIndex: Int,
+    modifier: Modifier = Modifier,
+    pages: List<MovieDetailPage>,
+    currentPageIndex: Int,
     clickAction: (index: Int) -> Unit = {}
 ) {
     val rowState = rememberLazyListState()
@@ -254,8 +267,7 @@ private fun TabLayout(
         ) {
             val itemWidth = maxWidth / 3
             LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                state = rowState
+                modifier = Modifier.fillMaxWidth(), state = rowState
             ) {
                 items(pages) { page ->
                     TabLayoutItem(
@@ -285,13 +297,13 @@ private fun TabLayoutItem(
     clickAction: (index: Int) -> Unit = {}
 ) {
     Column(
-        modifier = modifier
-            .clickable { clickAction(page.index) },
+        modifier = modifier.clickable { clickAction(page.index) },
     ) {
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = dimensionResource(R.dimen.small_padding)),
+                .padding(horizontal = dimensionResource(R.dimen.small_padding))
+                .padding(bottom = dimensionResource(R.dimen.small_padding)),
             text = stringResource(page.title),
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
@@ -399,15 +411,16 @@ private fun MovieDetailImage(
         val (backdropImage, posterImage, backIcon) = createRefs()
         val topMargin = dimensionResource(R.dimen.x_x_large_padding)
 
-        IconButton(onClick = backClickAction, modifier = Modifier
-            .windowInsetsPadding(WindowInsets.statusBars)
-            .constrainAs(backIcon) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-            }
-            .padding(start = dimensionResource(R.dimen.small_padding))
-            .zIndex(2F)
-            .clip(CircleShape),
+        IconButton(onClick = backClickAction,
+            modifier = Modifier
+                .windowInsetsPadding(WindowInsets.statusBars)
+                .constrainAs(backIcon) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                }
+                .padding(start = dimensionResource(R.dimen.small_padding))
+                .zIndex(2F)
+                .clip(CircleShape),
             colors = IconButtonDefaults.iconButtonColors(
                 containerColor = MaterialTheme.colorScheme.background,
                 contentColor = MaterialTheme.colorScheme.onBackground
@@ -428,8 +441,7 @@ private fun MovieDetailImage(
             }
             .blur(dimensionResource(R.dimen.blur)),
             imageUrl = movieDetailInfoModel.backgroundImageUrl,
-            contentScale = ContentScale.Crop
-        )
+            contentScale = ContentScale.Crop)
         Card(
             modifier = Modifier
                 .height(dimensionResource(R.dimen.movie_detail_poster_height))
@@ -442,8 +454,7 @@ private fun MovieDetailImage(
             elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.card_elevation)),
             shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border)),
             border = BorderStroke(
-                dimensionResource(R.dimen.one_dp),
-                MaterialTheme.colorScheme.onBackground
+                dimensionResource(R.dimen.one_dp), MaterialTheme.colorScheme.onBackground
             )
         ) {
             MovieImage(
@@ -464,9 +475,9 @@ data class MovieDetailActionButtonData(
     val type: MovieDetailActionButtonType,
     val isSelected: Boolean = true
 ) {
-    fun getIcon() = (if (!isSelected) selectIcon else unSelectIcon) ?: selectIcon
+    fun getIcon() = (if (isSelected) selectIcon else unSelectIcon) ?: selectIcon
 }
 
 enum class MovieDetailActionButtonType {
-    SHARE, ADD_FAVORITE, ADD_WATCH_LIST
+    PLAY, SHARE, ADD_FAVORITE, ADD_WATCH_LIST
 }

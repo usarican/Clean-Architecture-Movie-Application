@@ -23,24 +23,9 @@ data class VideoResponse(
 )
 
 enum class VideoSite(val value: String) {
-    YOUTUBE(value = "Youtube");
-
-    companion object {
-        fun fromValue(value: String): VideoSite? = when (value) {
-            "Youtube" -> YOUTUBE
-            else -> null
-        }
-    }
+    YOUTUBE(value = "YouTube")
 }
 
 enum class VideoType(val value: String) {
-    CLIP(value = "Clip"), TRAILER(value = "Trailer");
-
-    companion object {
-        fun fromValue(value: String): VideoType = when (value) {
-            "Clip" -> CLIP
-            "Trailer" -> TRAILER
-            else -> throw IllegalArgumentException()
-        }
-    }
+   TRAILER(value = "Trailer")
 }

@@ -106,4 +106,5 @@
         implementation(libs.room.paging)
         ksp(libs.moshi.kotlin.codegen)
         implementation (libs.androidx.constraintlayout.compose)
+        implementation (libs.youtube.player)
        }

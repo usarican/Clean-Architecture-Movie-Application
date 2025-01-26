@@ -2,6 +2,8 @@
 <resources>
     <dimen name="home_category_movie_height">180dp</dimen>
     <dimen name="home_category_movie_width">120dp</dimen>
+    <dimen name="movie_detail_poster_height">240dp</dimen>
+    <dimen name="movie_detail_poster_width">180dp</dimen>
     <dimen name="explore_for_you_movie_width">140dp</dimen>
     <dimen name="see_all_movie_height">80dp</dimen>
     <dimen name="see_all_category_movie_width">120dp</dimen>
@@ -22,6 +24,7 @@
     <dimen name="x_x_large_padding">48dp</dimen>
     <dimen name="x_x_x_large_padding">56dp</dimen>
     <dimen name="small_card_elevation">2dp</dimen>
+    <dimen name="card_elevation">6dp</dimen>
     <dimen name="zero_dp">0dp</dimen>
     <dimen name="twenty_dp">20dp</dimen>
     <dimen name="thirty_dp">30dp</dimen>
@@ -32,6 +35,14 @@
     <dimen name="for_you_card_icon_size">32dp</dimen>
     <dimen name="one_dp">1dp</dimen>
     <dimen name="search_chip_corner_radius">10dp</dimen>
+    <dimen name="blur">5dp</dimen>
+    <dimen name="three_dp">3dp</dimen>
+    <dimen name="circle_icon_radius_size">36dp</dimen>
+    <dimen name="small_icon_size">24dp</dimen>
+    <dimen name="detail_icon_size">48dp</dimen>
+    <dimen name="cast_card_radius">50dp</dimen>
+    <dimen name="cast_image_size">48dp</dimen>
+    <dimen name="author_image_size">48dp</dimen>
 
     <dimen name="pager_indicator_big_dot_width">24dp</dimen>
     <dimen name="pager_indicator_dot_height">8dp</dimen>
@@ -40,4 +51,5 @@
 
     <dimen name="movie_category_item_title_size">14sp</dimen>
     <dimen name="see_all_movie_item_content_text_size">10sp</dimen>
+    <dimen name="movie_detail_info_row_text_size">10sp</dimen>
 </resources>

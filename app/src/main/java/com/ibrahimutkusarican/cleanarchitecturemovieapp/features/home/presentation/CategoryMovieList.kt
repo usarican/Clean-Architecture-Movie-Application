@@ -34,25 +34,29 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResou
 fun MovieCategoryList(
     modifier: Modifier,
     movies: Map<MovieType, List<BasicMovieModel>>,
-    seeAllClickAction: (movieType: MovieType) -> Unit
+    seeAllClickAction: (movieType: MovieType) -> Unit,
+    movieClickAction: (movieId: Int) -> Unit
 ) {
     MovieCategory(
         modifier = modifier.wrapContentHeight(),
         movieType = MovieType.POPULAR,
         movies = movies[MovieType.POPULAR],
-        seeAllClickAction = seeAllClickAction
+        seeAllClickAction = seeAllClickAction,
+        movieClickAction = movieClickAction
     )
     MovieCategory(
         modifier = modifier.wrapContentHeight(),
         movieType = MovieType.TOP_RATED,
         movies = movies[MovieType.TOP_RATED],
-        seeAllClickAction = seeAllClickAction
+        seeAllClickAction = seeAllClickAction,
+        movieClickAction = movieClickAction
     )
     MovieCategory(
         modifier = modifier.wrapContentHeight(),
         movieType = MovieType.UPCOMING,
         movies = movies[MovieType.UPCOMING],
-        seeAllClickAction = seeAllClickAction
+        seeAllClickAction = seeAllClickAction,
+        movieClickAction = movieClickAction
     )
 }
 
@@ -100,7 +104,8 @@ fun MovieCategory(
             ) {
                 items(movies) { movie ->
                     MovieCategoryItemList(
-                        movie = movie
+                        movie = movie,
+                        movieClickAction = movieClickAction
                     )
                 }
             }

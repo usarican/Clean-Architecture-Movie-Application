@@ -1,6 +1,8 @@
 [versions]
 agp = "8.6.0"
 coilCompose = "3.0.4"
+constraintlayoutCompose = "1.1.0"
+youtube_player = "12.1.1"
 dotlottieAndroid = "0.4.1"
 hiltNavigationCompose = "1.2.0"
 kotlin = "1.9.0"
@@ -12,13 +14,13 @@ kotlinxSerializationJson = "1.5.3"
 lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.3"
 composeBom = "2024.12.01"
+moshiKotlinCodegen = "1.15.0"
 pagingRuntime = "3.3.5"
 paletteKtx = "1.0.0"
 retrofitVersion = "2.9.0"
 okhttpVersion = "4.11.0"
 loggingInterceptorVersion = "4.10.0"
 moshiConverterVersion = "1.15.1"
-paging = "3.3.2"
 hiltVersion = "2.50"
 roomVersion = "2.6.1"
 lifecycleVersion = "2.8.6"
@@ -30,6 +32,7 @@ navigation = "2.8.4"
 animationGraphicsAndroid = "1.7.6"
 
 [libraries]
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingRuntime" }
@@ -37,6 +40,7 @@ androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.r
 androidx-palette-ktx = { module = "androidx.palette:palette-ktx", version.ref = "paletteKtx" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilCompose" }
+youtube-player = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:core", version.ref = "youtube_player" }
 dotlottie-android = { module = "com.github.LottieFiles:dotlottie-android", version.ref = "dotlottieAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -54,6 +58,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 hilt-android = { group = "com.google.dagger", name = "hilt-android" , version.ref = "hiltVersion"}
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler" , version.ref = "hiltVersion"}
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshiKotlinCodegen" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomVersion" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomVersion" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofitVersion" }

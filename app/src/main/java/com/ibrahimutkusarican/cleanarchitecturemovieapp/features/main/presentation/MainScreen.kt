@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentation
 
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -11,6 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.presentation.ExploreScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.HomeScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.HomeViewModel
@@ -43,7 +46,7 @@ fun MainScreen(viewModel: MainViewModel) {
         NavHost(
             navController = navController,
             startDestination = NavigationRoutes.Home,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())
         ) {
             composable<NavigationRoutes.Home> {
                 val homeViewModel = hiltViewModel<HomeViewModel>()
@@ -69,6 +72,12 @@ fun MainScreen(viewModel: MainViewModel) {
                 val recommendedMovieId =
                     backStackEntry.toRoute<NavigationRoutes.Search>().recommendedMovieId
                 SearchScreen(viewModel = searchViewModel, recommendedMovieId = recommendedMovieId)
+            }
+            composable<NavigationRoutes.MovieDetail> { backStackEntry ->
+                val detailViewModel = hiltViewModel<MovieDetailViewModel>()
+                val movieId = backStackEntry.toRoute<NavigationRoutes.MovieDetail>().movieId
+                detailViewModel.getMovieDetail(movieId)
+                MovieDetailScreen(viewModel = detailViewModel)
             }
         }
     }

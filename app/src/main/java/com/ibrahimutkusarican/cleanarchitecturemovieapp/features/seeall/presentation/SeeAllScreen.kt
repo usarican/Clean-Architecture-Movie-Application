@@ -1,7 +1,10 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.presentation
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -21,7 +24,9 @@ fun SeeAllScreen(
     val searchText by viewModel.searchText.collectAsStateWithLifecycle()
     val pagingMovies = viewModel.pagingMovies.collectAsLazyPagingItems()
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.statusBars)
     ) {
         MyTopBar(title = stringResource(
             when (movieType) {

@@ -58,7 +58,7 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.PullToRefreshAction -> refreshMovies()
             is HomeUiAction.ErrorRetryAction -> getMovies()
             is HomeUiAction.SeeAllClickAction -> sendEvent(MyEvent.SeeAllClickEvent(action.movieType))
-            else -> {}
+            is HomeUiAction.MovieClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
         }
     }
 }

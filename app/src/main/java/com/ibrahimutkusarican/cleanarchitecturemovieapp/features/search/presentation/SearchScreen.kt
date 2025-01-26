@@ -2,8 +2,11 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.present
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -30,6 +33,7 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
 
     Column(
         modifier = Modifier.fillMaxSize()
+            .windowInsetsPadding(WindowInsets.statusBars)
     ) {
         MyTopBar(
             title = stringResource(R.string.search),

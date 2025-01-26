@@ -1,8 +1,13 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.di
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieDatabase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.LastVisitedMovieDao
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.MovieDetailRepository
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.MovieDetailRepositoryImpl
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.VisitedMovieDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.MovieDetailService
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieDetailUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieDetailUseCaseImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,6 +17,12 @@ import retrofit2.Retrofit
 @Module
 @InstallIn(ViewModelComponent::class)
 abstract class DetailModule {
+    @Binds
+    abstract fun bindMovieDetailRepository(movieDetailRepositoryImpl: MovieDetailRepositoryImpl): MovieDetailRepository
+
+    @Binds
+    abstract fun bindMovieDetailUseCase(getMovieDetailUseCaseImpl: GetMovieDetailUseCaseImpl): GetMovieDetailUseCase
+
     companion object {
         @Provides
         fun provideMovieDetailService(retrofit: Retrofit): MovieDetailService {
@@ -19,7 +30,7 @@ abstract class DetailModule {
         }
 
         @Provides
-        fun provideLastVisitedMovieDao(movieDatabase: MovieDatabase): LastVisitedMovieDao =
+        fun provideLastVisitedMovieDao(movieDatabase: MovieDatabase): VisitedMovieDao =
             movieDatabase.lastVisitedMovieDao()
     }
 }

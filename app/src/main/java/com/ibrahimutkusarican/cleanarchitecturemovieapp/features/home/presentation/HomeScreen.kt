@@ -4,10 +4,14 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -62,7 +66,7 @@ fun HomeSuccessScreen(
     val context = LocalContext.current
 
 
-    PullToRefreshBox(state = state, isRefreshing = refreshUiState == UiState.Loading, onRefresh = {
+    PullToRefreshBox(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars), state = state, isRefreshing = refreshUiState == UiState.Loading, onRefresh = {
         action.invoke(HomeUiAction.PullToRefreshAction)
     }) {
         Box {
@@ -86,6 +90,9 @@ fun HomeSuccessScreen(
                     movies = movies,
                     seeAllClickAction = { movieType ->
                         action.invoke(HomeUiAction.SeeAllClickAction(movieType))
+                    },
+                    movieClickAction = { movieId ->
+                        action.invoke(HomeUiAction.MovieClickAction(movieId))
                     })
             }
             if (refreshUiState is UiState.Error) {

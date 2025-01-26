@@ -1,16 +1,16 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.LastVisitedMovieDao
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.LastVisitedMovieEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.VisitedMovieDao
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.VisitedMovieEntity
 import javax.inject.Inject
 
 class SearchLocalDataSource @Inject constructor(
-    private val lastVisitedMovieDao: LastVisitedMovieDao
+    private val visitedMovieDao: VisitedMovieDao
 ) {
-    suspend fun insertLastVisitedMovie(entity: LastVisitedMovieEntity) {
-        lastVisitedMovieDao.insertLastVisitedMovie(movie = entity)
+    suspend fun insertLastVisitedMovie(entity: VisitedMovieEntity) {
+        visitedMovieDao.insertVisitedMovie(movie = entity)
     }
 
-    suspend fun getLastVisitedMovies() : List<LastVisitedMovieEntity> =
-        lastVisitedMovieDao.getLastVisitedMovies()
+    suspend fun getLastVisitedMovies() : List<VisitedMovieEntity> =
+        visitedMovieDao.getVisitedMovies()
 }

@@ -38,7 +38,7 @@ class GetSearchScreenModelUseCaseImpl @Inject constructor(
                     }
 
                     val recentlyViewedMovieList = recentlyViewedMovie.map { entity ->
-                        seeAllMovieModelMapper.entityToModel(entity, genreList)
+                        seeAllMovieModelMapper.entityToModel(entity)
                     }
                     SearchScreenModel(
                         recommendedMoviesForYou = recommendedMovieList,

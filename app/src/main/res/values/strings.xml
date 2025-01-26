@@ -23,6 +23,24 @@
     <string name="clear_all">Clear All</string>
     <string name="recommended_for_you">Recommended for You</string>
     <string name="recently_viewed">Recently Viewed</string>
+    <string name="about">About</string>
+    <string name="similar">Similar</string>
+    <string name="reviews">Reviews</string>
+    <string name="trailers">Trailers</string>
+    <string name="share">Share</string>
+    <string name="play">Play</string>
+    <string name="add_favorite">Add Favorite</string>
+    <string name="remove_favorite">Remove Favorite</string>
+    <string name="add_watch_list">Add Watch List</string>
+    <string name="remove_watch_list">Remove Watch List</string>
+    <string name="revenue">Revenue</string>
+    <string name="rating">Rating</string>
+    <string name="release">Release</string>
+    <string name="budget">Budget</string>
+    <string name="genres">Genres</string>
+    <string name="synopsis">Synopsis</string>
+    <string name="cast">Cast</string>
+    <string name="anonymous">Anonymous</string>
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

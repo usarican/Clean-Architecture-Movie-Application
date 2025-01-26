@@ -36,7 +36,9 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 @Composable
 fun RecommendedPageScreen(
     modifier: Modifier = Modifier,
-    movieDetailRecommendedMovieModel: MovieDetailRecommendedMovieModel = mockMovieDetailModel.movieDetailRecommendedMovies
+    movieDetailRecommendedMovieModel: MovieDetailRecommendedMovieModel = mockMovieDetailModel.movieDetailRecommendedMovies,
+    movieClickAction: (movieId: Int) -> Unit = {},
+    seeAllClickAction: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -73,7 +75,10 @@ fun RecommendedPageScreen(
             horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
         ) {
             items(movieDetailRecommendedMovieModel.recommendedMovies) { model ->
-                RecommendedMovieItem(recommendedMovieModel = model)
+                RecommendedMovieItem(
+                    recommendedMovieModel = model,
+                    movieClickAction = movieClickAction
+                )
             }
         }
     }
@@ -115,7 +120,8 @@ private fun RecommendedMovieItem(
         )
         if (recommendedMovieModel.movieGenres.isNotEmpty()) {
             Text(
-                text = recommendedMovieModel.movieGenres.first(), style = MaterialTheme.typography.bodySmall
+                text = recommendedMovieModel.movieGenres.first(),
+                style = MaterialTheme.typography.bodySmall
             )
         }
     }

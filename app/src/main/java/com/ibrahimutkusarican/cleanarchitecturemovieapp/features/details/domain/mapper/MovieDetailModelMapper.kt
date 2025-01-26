@@ -104,7 +104,7 @@ class MovieDetailModelMapper @Inject constructor(
                 updateTime = updatedAt,
                 rating = authorDetailResponse.rating,
                 authorNickName = authorDetailResponse.username,
-                authorProfilePhoto = authorDetailResponse.avatarPath
+                authorProfilePhoto = imageUrlHelper.getProfileUrl(authorDetailResponse.avatarPath)
             )
         }
 

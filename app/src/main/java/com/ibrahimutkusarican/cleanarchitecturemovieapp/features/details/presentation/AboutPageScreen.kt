@@ -232,7 +232,7 @@ private fun MovieCastItem(
 }
 
 @Composable
-fun CastImage(
+private fun CastImage(
     modifier: Modifier = Modifier,
     imageUrl: String?,
     contentScale: ContentScale = ContentScale.FillBounds
@@ -249,6 +249,5 @@ fun CastImage(
             contentScale = contentScale,
         )
     }
-
 }
 

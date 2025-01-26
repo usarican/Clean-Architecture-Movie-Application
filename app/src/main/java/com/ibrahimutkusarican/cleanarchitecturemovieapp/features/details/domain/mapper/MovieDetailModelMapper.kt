@@ -1,6 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.mapper
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.mapper.GenreIdsToGenreNameListMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.model.GenreModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.AuthorResponse
@@ -9,6 +11,9 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.re
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.MovieDetailResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.MovieReviewResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.MovieVideoResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.VideoResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.VideoSite
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.VideoType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.AuthorModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.CastModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailAboutModel
@@ -20,6 +25,12 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.FormatHelper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.ImageUrlHelper
+import java.text.SimpleDateFormat
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 import javax.inject.Inject
 
 class MovieDetailModelMapper @Inject constructor(
@@ -88,12 +99,44 @@ class MovieDetailModelMapper @Inject constructor(
 
     fun movieTrailerResponseToMovieDetailTrailerModel(movieVideoResponse: MovieVideoResponse): MovieDetailTrailerModel =
         with(movieVideoResponse) {
-            MovieDetailTrailerModel(trailers = videoResponses.map { response ->
-                TrailerModel(
-                    name = response.name, key = response.key
-                )
-            })
+            val filteredMovieTrailerResponse = filterMovieTrailerResponse(videoResponses)
+            val orderMovieTrailerResponse = orderVideoTrailersByUpdateTimeDescending(filteredMovieTrailerResponse)
+            MovieDetailTrailerModel(trailers = orderMovieTrailerResponse
+                .map { response ->
+                    TrailerModel(
+                        name = response.name, key = response.key
+                    )
+                })
         }
+
+    private fun filterMovieTrailerResponse(list: List<VideoResponse>): List<VideoResponse> {
+        return list.filter { response -> response.site == VideoSite.YOUTUBE.value }
+            .filter { response -> response.type == VideoType.TRAILER.value }
+
+    }
+
+    private fun orderVideoTrailersByUpdateTimeDescending(list: List<VideoResponse>): List<VideoResponse> {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return list.sortedByDescending { video ->
+                ZonedDateTime.parse(video.publishedAt, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+                    .toInstant()
+            }
+        } else {
+            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
+            sdf.timeZone = TimeZone.getTimeZone("UTC")
+
+            return list.sortedByDescending { video ->
+                val parsedDate: Date? = try {
+                    sdf.parse(video.publishedAt)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    null
+                }
+                // Sort by the Date's time in milliseconds; default to 0 if null
+                parsedDate?.time ?: 0L
+            }
+        }
+    }
 
 
     private fun authorResponseToAuthorModel(authorResponse: AuthorResponse): AuthorModel =

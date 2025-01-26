@@ -3,6 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presen
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -37,7 +39,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -61,6 +65,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposable
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
+import kotlinx.coroutines.launch
 
 @Composable
 fun MovieDetailScreen(
@@ -209,8 +214,11 @@ private fun MovieDetailPager(
         MovieDetailPage(R.string.similar, 3)
     )
     val pagerState = rememberPagerState { pages.size }
+    val coroutineScope = rememberCoroutineScope()
     Column {
-        TabLayout(pages = pages, currentPageIndex = pagerState.currentPage)
+        TabLayout(pages = pages, currentPageIndex = pagerState.currentPage, clickAction = { index ->
+            coroutineScope.launch { pagerState.animateScrollToPage(index) }
+        })
         HorizontalPager(
             modifier = modifier
                 .fillMaxSize()
@@ -228,9 +236,13 @@ private fun MovieDetailPager(
 
 @Composable
 private fun TabLayout(
-    modifier: Modifier = Modifier, pages: List<MovieDetailPage>, currentPageIndex: Int
+    modifier: Modifier = Modifier, pages: List<MovieDetailPage>, currentPageIndex: Int,
+    clickAction: (index: Int) -> Unit = {}
 ) {
-
+    val rowState = rememberLazyListState()
+    LaunchedEffect(currentPageIndex) {
+        rowState.animateScrollToItem(currentPageIndex)
+    }
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
@@ -242,13 +254,15 @@ private fun TabLayout(
         ) {
             val itemWidth = maxWidth / 3
             LazyRow(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                state = rowState
             ) {
                 items(pages) { page ->
                     TabLayoutItem(
                         modifier = Modifier.width(itemWidth),
                         page = page,
-                        isSelected = currentPageIndex == page.index
+                        isSelected = currentPageIndex == page.index,
+                        clickAction = clickAction
                     )
                 }
             }
@@ -267,10 +281,12 @@ private fun TabLayout(
 private fun TabLayoutItem(
     modifier: Modifier = Modifier,
     page: MovieDetailPage = MovieDetailPage(R.string.about, 0),
-    isSelected: Boolean = true
+    isSelected: Boolean = true,
+    clickAction: (index: Int) -> Unit = {}
 ) {
     Column(
         modifier = modifier
+            .clickable { clickAction(page.index) },
     ) {
         Text(
             modifier = Modifier
@@ -317,7 +333,7 @@ private fun MovieDetailInfo(
             ),
             textAlign = TextAlign.Center
         )
-        if (movieDetailInfoModel.tagline.isNotEmpty()){
+        if (movieDetailInfoModel.tagline.isNotEmpty()) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = movieDetailInfoModel.tagline,

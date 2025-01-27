@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.Flow
 interface MyListRepository {
     fun getFavoriteMoviesPaging(): Flow<PagingData<MyListMovieEntity>>
     fun getWatchListMoviesPaging(): Flow<PagingData<MyListMovieEntity>>
-    fun insertMyListMovie(movieEntity: MyListMovieEntity) : Flow<ApiState<MyListMovieEntity>>
-    fun deleteMyListMovie(movieEntity: MyListMovieEntity) : Flow<ApiState<MyListMovieEntity>>
+    fun insertMyListMovie(movieEntity: MyListMovieEntity) : Flow<ApiState<Unit>>
+    fun deleteMyListMovie(movieEntity: MyListMovieEntity) : Flow<ApiState<Unit>>
 }

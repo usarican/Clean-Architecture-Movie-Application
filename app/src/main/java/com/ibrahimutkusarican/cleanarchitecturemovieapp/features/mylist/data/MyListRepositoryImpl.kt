@@ -26,11 +26,11 @@ class MyListRepositoryImpl @Inject constructor(
         }).flow
     }
 
-    override fun insertMyListMovie(movieEntity: MyListMovieEntity): Flow<ApiState<MyListMovieEntity>> {
-        TODO("Not yet implemented")
+    override fun insertMyListMovie(movieEntity: MyListMovieEntity): Flow<ApiState<Unit>> {
+        return apiCall { myListLocalDataSource.insertMyListMovie(movieEntity) }
     }
 
-    override fun deleteMyListMovie(movieEntity: MyListMovieEntity): Flow<ApiState<MyListMovieEntity>> {
-        TODO("Not yet implemented")
+    override fun deleteMyListMovie(movieEntity: MyListMovieEntity): Flow<ApiState<Unit>> {
+        return apiCall { myListLocalDataSource.deleteMyListMovie(movieEntity) }
     }
 }

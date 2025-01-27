@@ -41,6 +41,8 @@
     <string name="synopsis">Synopsis</string>
     <string name="cast">Cast</string>
     <string name="anonymous">Anonymous</string>
+    <string name="watch_list">Watch List</string>">
+    <string name="favorite">Favorite</string>">
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

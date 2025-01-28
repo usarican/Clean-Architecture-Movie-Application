@@ -46,7 +46,17 @@ class MyListMovieModelMapper @Inject constructor(
     }
 
     fun basicMovieModelToMyListMovieModel(basicMovieModel: BasicMovieModel) = with(basicMovieModel){
-
+        MyListMovieModel(
+            movieId = movieId,
+            genres = movieGenres,
+            overview = movieOverview,
+            posterPath = moviePosterImageUrl,
+            releaseDate = releaseDate,
+            title = movieTitle,
+            movieRating = movieVotePoint,
+            isFavorite = isFavorite,
+            isAddedWatchList = isAddedToWatchList
+        )
     }
 
     fun modelToEntity(model: MyListMovieModel,genreList: List<GenreModel>) = with(model){

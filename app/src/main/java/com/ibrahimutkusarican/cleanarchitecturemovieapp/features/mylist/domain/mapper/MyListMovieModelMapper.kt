@@ -22,40 +22,40 @@ class MyListMovieModelMapper @Inject constructor(
                 movieId = movieId,
                 genres = genreIdsToGenreNameListMapper.getGenreNames(genreIds, genreList),
                 overview = overview,
-                posterPath = imageUrlHelper.getPosterUrl(posterPath),
-                releaseDate = formatHelper.formatReleaseDate(releaseDate, language = "en"),
+                posterPath = posterPath,
+                releaseDate = releaseDate,
                 title = title,
-                movieRating = formatHelper.formatVoteAverage(voteAverage, language = "en"),
+                movieRating = voteAverage,
                 isFavorite = isFavorite,
                 isAddedWatchList = addWatchList
             )
         }
 
-    fun movieDetailModelToMyListMovieModel(movieDetailModel: MovieDetailModel) = with(movieDetailModel){
-        MyListMovieModel(
+    fun movieDetailModelToMyListMovieEntity(movieDetailModel: MovieDetailModel,genreList: List<GenreModel>) = with(movieDetailModel){
+        MyListMovieEntity(
             movieId = movieDetailInfoModel.movieId,
-            genres = movieDetailAboutModel.genres,
+            genreIds = genreIdsToGenreNameListMapper.getGenreIds(genreNames = movieDetailAboutModel.genres, genres = genreList),
             overview = movieDetailAboutModel.overview,
             posterPath = movieDetailInfoModel.posterImageUrl,
-            releaseDate = movieDetailInfoModel.releaseYear,
+            releaseDate = movieDetailAboutModel.fullReleaseDate,
             title = movieDetailInfoModel.title,
-            movieRating = movieDetailAboutModel.rating,
+            voteAverage = movieDetailAboutModel.rating,
             isFavorite = movieDetailInfoModel.isFavorite,
-            isAddedWatchList = movieDetailInfoModel.isAddedToWatchList
+            addWatchList = movieDetailInfoModel.isAddedToWatchList
         )
     }
 
-    fun basicMovieModelToMyListMovieModel(basicMovieModel: BasicMovieModel) = with(basicMovieModel){
-        MyListMovieModel(
+    fun basicMovieModelToMyListMovieEntity(basicMovieModel: BasicMovieModel,genreList: List<GenreModel>) = with(basicMovieModel){
+        MyListMovieEntity(
             movieId = movieId,
-            genres = movieGenres,
+            genreIds = genreIdsToGenreNameListMapper.getGenreIds(genreNames = movieGenres, genres = genreList),
             overview = movieOverview,
             posterPath = moviePosterImageUrl,
             releaseDate = releaseDate,
             title = movieTitle,
-            movieRating = movieVotePoint,
+            voteAverage = movieVotePoint,
             isFavorite = isFavorite,
-            isAddedWatchList = isAddedToWatchList
+            addWatchList = isAddedToWatchList
         )
     }
 
@@ -67,7 +67,7 @@ class MyListMovieModelMapper @Inject constructor(
             posterPath = posterPath,
             releaseDate = releaseDate,
             title = title,
-            voteAverage = movieRating.toDouble(),
+            voteAverage = movieRating,
             isFavorite = isFavorite,
             addWatchList = isAddedWatchList
         )

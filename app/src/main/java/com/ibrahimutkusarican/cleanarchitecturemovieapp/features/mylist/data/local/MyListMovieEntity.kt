@@ -13,7 +13,7 @@ data class MyListMovieEntity(
     @ColumnInfo(name = "poster_path") val posterPath: String?,
     @ColumnInfo(name = "release_date") val releaseDate: String,
     @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "vote_average") val voteAverage: Double,
+    @ColumnInfo(name = "vote_average") val voteAverage: String,
     @ColumnInfo(name = "is_favorite") var isFavorite: Boolean = false,
     @ColumnInfo(name = "add_watch_list") var addWatchList: Boolean = false,
 )

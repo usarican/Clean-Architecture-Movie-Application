@@ -3,7 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.
 import androidx.annotation.StringRes
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 
-enum class MyListPages(
+enum class MyListPage(
     val index: Int,
     @StringRes val title: Int
 ) {

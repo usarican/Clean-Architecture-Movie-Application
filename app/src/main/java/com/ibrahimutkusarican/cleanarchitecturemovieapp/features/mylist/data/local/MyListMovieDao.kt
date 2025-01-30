@@ -12,10 +12,10 @@ interface MyListMovieDao {
     @Upsert
     suspend fun insertMyListMovie(movie: MyListMovieEntity)
 
-    @Query("SELECT * FROM my_list_movie WHERE is_favorite = 1")
+    @Query("SELECT * FROM my_list_movie WHERE is_favorite = 1 ORDER BY added_time DESC")
     fun getFavoriteMoviesPaging(): PagingSource<Int, MyListMovieEntity>
 
-    @Query("SELECT * FROM my_list_movie WHERE add_watch_list = 1")
+    @Query("SELECT * FROM my_list_movie WHERE add_watch_list = 1 ORDER BY added_time DESC")
     fun getWatchListMoviesPaging(): PagingSource<Int, MyListMovieEntity>
 
     @Delete

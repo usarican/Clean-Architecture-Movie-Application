@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,14 +51,26 @@ class MovieDetailViewModel @Inject constructor(
                     MovieDetailActionButtonType.SHARE -> TODO()
                     MovieDetailActionButtonType.ADD_FAVORITE -> {
                         movieDetailModel.value?.let { model ->
-                            if (model.movieDetailInfoModel.isAddedToWatchList){
-                                addMyListMovieUseCase.addMyListMovieFromDetail(
-                                    movieDetailModel = model.copy(movieDetailInfoModel =  model.movieDetailInfoModel.copy(
+                            addMyListMovieUseCase.addMyListMovieFromDetail(
+                                movieDetailModel = model.copy(
+                                    movieDetailInfoModel = model.movieDetailInfoModel.copy(
                                         isFavorite = !model.movieDetailInfoModel.isFavorite
-                                    ))
+                                    )
                                 )
-                            } else {
-                                deleteMyListMovieUseCase.deleteMyListMovieFromDetail(movieDetailModel = model)
+                            ).doOnSuccess {
+                                _movieDetailModel.update {
+                                    movieDetailModel.value?.copy(
+                                        movieDetailInfoModel = model.movieDetailInfoModel.copy(
+                                            isFavorite = !model.movieDetailInfoModel.isFavorite
+                                        )
+                                    )
+                                }
+                                /// TODO: ShowSnackBar!
+                            }.launchIn(viewModelScope)
+                            if (model.movieDetailInfoModel.isAddedToWatchList) {
+                                deleteMyListMovieUseCase.deleteMyListMovieFromDetail(
+                                    movieDetailModel = model
+                                ).launchIn(viewModelScope)
                             }
                         }
                     }
@@ -65,10 +78,26 @@ class MovieDetailViewModel @Inject constructor(
                     MovieDetailActionButtonType.ADD_WATCH_LIST -> {
                         movieDetailModel.value?.let { model ->
                             addMyListMovieUseCase.addMyListMovieFromDetail(
-                                movieDetailModel = model.copy(movieDetailInfoModel =  model.movieDetailInfoModel.copy(
-                                    isAddedToWatchList = !model.movieDetailInfoModel.isAddedToWatchList
-                                ))
-                            )
+                                movieDetailModel = model.copy(
+                                    movieDetailInfoModel = model.movieDetailInfoModel.copy(
+                                        isAddedToWatchList = !model.movieDetailInfoModel.isAddedToWatchList
+                                    )
+                                )
+                            ).doOnSuccess {
+                                _movieDetailModel.update {
+                                    movieDetailModel.value?.copy(
+                                        movieDetailInfoModel = model.movieDetailInfoModel.copy(
+                                            isAddedToWatchList = !model.movieDetailInfoModel.isAddedToWatchList
+                                        )
+                                    )
+                                }
+                            }.launchIn(viewModelScope)
+                            if (model.movieDetailInfoModel.isFavorite) {
+                                deleteMyListMovieUseCase.deleteMyListMovieFromDetail(
+                                    movieDetailModel = model
+                                ).launchIn(viewModelScope)
+                            }
+
                         }
                     }
                 }

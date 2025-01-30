@@ -90,7 +90,7 @@ fun MovieDetailScreen(
 private fun MovieDetailSuccessScreen(
     modifier: Modifier = Modifier, movieDetailModel: MovieDetailModel = mockMovieDetailModel,
     backClickAction: () -> Unit = {},
-    action : (action : DetailUiAction) -> Unit = {}
+    action: (action: DetailUiAction) -> Unit = {}
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -102,7 +102,10 @@ private fun MovieDetailSuccessScreen(
         MovieDetailInfo(
             movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
         )
-        MovieDetailActionButtons(action = action)
+        MovieDetailActionButtons(
+            action = action,
+            movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
+        )
         MovieDetailPager(movieDetailModel = movieDetailModel)
     }
 }
@@ -111,7 +114,7 @@ private fun MovieDetailSuccessScreen(
 private fun MovieDetailActionButtons(
     modifier: Modifier = Modifier,
     movieDetailInfoModel: MovieDetailInfoModel = mockMovieDetailModel.movieDetailInfoModel,
-    action : (action : DetailUiAction) -> Unit
+    action: (action: DetailUiAction) -> Unit
 ) {
     val actionButtons = listOf(
         MovieDetailActionButtonData(

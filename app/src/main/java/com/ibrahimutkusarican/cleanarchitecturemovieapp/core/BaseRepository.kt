@@ -11,7 +11,7 @@ import retrofit2.HttpException
 import java.io.IOException
 
 abstract class BaseRepository {
-    fun <T : Any> apiCall(call: suspend () -> T): Flow<ApiState<T>> = flow {
+    fun <T : Any?> apiCall(call: suspend () -> T): Flow<ApiState<T>> = flow {
         emit(ApiState.Success(data = call.invoke()) as ApiState<T>)
     }.catch { exp ->
         exp.printStackTrace()

@@ -20,4 +20,8 @@ interface MyListMovieDao {
 
     @Delete
     suspend fun deleteMyListMovie(movie: MyListMovieEntity)
+
+    @Query("SELECT is_favorite as isAddedFavorite ,add_watch_list as isAddedWatchList FROM my_list_movie WHERE movie_id = :movieId")
+    suspend fun getMyListMovieFavoriteAndWatchListStatus(movieId: Int): MovieFavoriteAndWatchListStatus?
+
 }

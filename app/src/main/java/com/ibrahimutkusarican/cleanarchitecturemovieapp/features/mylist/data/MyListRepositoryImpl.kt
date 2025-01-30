@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ApiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseRepository
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.local.MovieFavoriteAndWatchListStatus
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.local.MyListLocalDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.local.MyListMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.MY_LIST_PAGE_SIZE
@@ -33,4 +34,7 @@ class MyListRepositoryImpl @Inject constructor(
     override fun deleteMyListMovie(movieEntity: MyListMovieEntity): Flow<ApiState<Unit>> {
         return apiCall { myListLocalDataSource.deleteMyListMovie(movieEntity) }
     }
+
+    override fun getMyListMovieFavoriteAndWatchListStatus(movieId: Int): Flow<ApiState<MovieFavoriteAndWatchListStatus?>> =
+        apiCall{ myListLocalDataSource.getMyListMovieFavoriteAndWatchListStatus(movieId) }
 }

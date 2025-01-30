@@ -7,6 +7,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.Mo
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.mapper.MovieDetailModelMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailRecommendedMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.MyListRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getSuccessOrThrow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -16,6 +17,7 @@ import javax.inject.Inject
 class GetMovieDetailUseCaseImpl @Inject constructor(
     private val movieDetailRepository: MovieDetailRepository,
     private val movieDetailModelMapper: MovieDetailModelMapper,
+    private val myListRepository: MyListRepository,
     private val genresUseCase: GetMovieGenresUseCase
 ) : BaseUseCase(), GetMovieDetailUseCase {
     override fun getMovieDetail(movieId: Int): Flow<UiState<MovieDetailModel>> {
@@ -74,8 +76,17 @@ class GetMovieDetailUseCaseImpl @Inject constructor(
                 )
             }
 
-            movieDetailModelWithoutRecommendedMoviesFlow.combine(movieDetailRecommendedMovieFlow) { movieDetailModel, recommendedMovies ->
+            combine(
+                movieDetailModelWithoutRecommendedMoviesFlow,
+                movieDetailRecommendedMovieFlow,
+                myListRepository.getMyListMovieFavoriteAndWatchListStatus(movieId)
+            ) { movieDetailModel, recommendedMovies, myListStatus ->
+                val favoriteAndWatchListAddStatus = myListStatus.getSuccessOrThrow()
                 movieDetailModel.copy(
+                    movieDetailInfoModel = movieDetailModel.movieDetailInfoModel.copy(
+                        isFavorite = favoriteAndWatchListAddStatus?.isAddedFavorite ?: false,
+                        isAddedToWatchList = favoriteAndWatchListAddStatus?.isAddedWatchList ?: false
+                    ),
                     movieDetailRecommendedMovies = MovieDetailRecommendedMovieModel(
                         recommendedMovies = recommendedMovies
                     )

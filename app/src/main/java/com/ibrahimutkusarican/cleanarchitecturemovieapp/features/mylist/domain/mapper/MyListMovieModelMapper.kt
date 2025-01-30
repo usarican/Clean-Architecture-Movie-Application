@@ -31,7 +31,7 @@ class MyListMovieModelMapper @Inject constructor(
             )
         }
 
-    fun movieDetailModelToMyListMovieEntity(movieDetailModel: MovieDetailModel,genreList: List<GenreModel>) = with(movieDetailModel){
+    fun movieDetailModelToMyListMovieEntity(movieDetailModel: MovieDetailModel,genreList: List<GenreModel> = emptyList()) = with(movieDetailModel){
         MyListMovieEntity(
             movieId = movieDetailInfoModel.movieId,
             genreIds = genreIdsToGenreNameListMapper.getGenreIds(genreNames = movieDetailAboutModel.genres, genres = genreList),
@@ -45,7 +45,7 @@ class MyListMovieModelMapper @Inject constructor(
         )
     }
 
-    fun basicMovieModelToMyListMovieEntity(basicMovieModel: BasicMovieModel,genreList: List<GenreModel>) = with(basicMovieModel){
+    fun basicMovieModelToMyListMovieEntity(basicMovieModel: BasicMovieModel,genreList: List<GenreModel> = emptyList()) = with(basicMovieModel){
         MyListMovieEntity(
             movieId = movieId,
             genreIds = genreIdsToGenreNameListMapper.getGenreIds(genreNames = movieGenres, genres = genreList),

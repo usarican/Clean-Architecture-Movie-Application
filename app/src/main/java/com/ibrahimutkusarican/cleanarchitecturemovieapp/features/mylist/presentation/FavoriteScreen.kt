@@ -3,4 +3,6 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.present
 import androidx.compose.runtime.Composable
 
 @Composable
-fun FavoriteScreen(){}
+fun FavoriteScreen(){
+
+}

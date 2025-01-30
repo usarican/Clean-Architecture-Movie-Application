@@ -78,7 +78,8 @@ fun MovieDetailScreen(
         movieDetailModel?.let { model ->
             MovieDetailSuccessScreen(
                 modifier = modifier, movieDetailModel = model,
-                backClickAction = { viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction) }
+                backClickAction = { viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction) },
+                action = viewModel::handleUiAction
             )
         }
     }
@@ -88,7 +89,8 @@ fun MovieDetailScreen(
 @Preview(showBackground = true)
 private fun MovieDetailSuccessScreen(
     modifier: Modifier = Modifier, movieDetailModel: MovieDetailModel = mockMovieDetailModel,
-    backClickAction: () -> Unit = {}
+    backClickAction: () -> Unit = {},
+    action : (action : DetailUiAction) -> Unit = {}
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -100,7 +102,7 @@ private fun MovieDetailSuccessScreen(
         MovieDetailInfo(
             movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
         )
-        MovieDetailActionButtons()
+        MovieDetailActionButtons(action = action)
         MovieDetailPager(movieDetailModel = movieDetailModel)
     }
 }
@@ -108,7 +110,8 @@ private fun MovieDetailSuccessScreen(
 @Composable
 private fun MovieDetailActionButtons(
     modifier: Modifier = Modifier,
-    movieDetailInfoModel: MovieDetailInfoModel = mockMovieDetailModel.movieDetailInfoModel
+    movieDetailInfoModel: MovieDetailInfoModel = mockMovieDetailModel.movieDetailInfoModel,
+    action : (action : DetailUiAction) -> Unit
 ) {
     val actionButtons = listOf(
         MovieDetailActionButtonData(
@@ -148,7 +151,8 @@ private fun MovieDetailActionButtons(
     ) {
         actionButtons.forEach { button ->
             MovieDetailActionButton(
-                movieDetailActionButtonData = button
+                movieDetailActionButtonData = button,
+                clickAction = { action(DetailUiAction.DetailButtonClickAction(it)) }
             )
         }
     }
@@ -157,13 +161,13 @@ private fun MovieDetailActionButtons(
 @Composable
 private fun MovieDetailActionButton(
     movieDetailActionButtonData: MovieDetailActionButtonData,
-    clickAction: (type: MovieDetailActionButtonType) -> Unit = {}
+    clickAction: (data: MovieDetailActionButtonData) -> Unit = {}
 ) {
     when (movieDetailActionButtonData.type) {
         MovieDetailActionButtonType.PLAY -> {
             OutlinedButton(
                 modifier = Modifier.height(dimensionResource(R.dimen.detail_icon_size)),
-                onClick = { clickAction(movieDetailActionButtonData.type) },
+                onClick = { clickAction(movieDetailActionButtonData) },
                 shape = RoundedCornerShape(dimensionResource(R.dimen.large_border)),
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = if (movieDetailActionButtonData.isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.background,
@@ -196,7 +200,7 @@ private fun MovieDetailActionButton(
         MovieDetailActionButtonType.SHARE, MovieDetailActionButtonType.ADD_FAVORITE, MovieDetailActionButtonType.ADD_WATCH_LIST -> {
             OutlinedButton(
                 modifier = Modifier.size(dimensionResource(R.dimen.detail_icon_size)),
-                onClick = { clickAction(movieDetailActionButtonData.type) },
+                onClick = { clickAction(movieDetailActionButtonData) },
                 shape = CircleShape,
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = MaterialTheme.colorScheme.background,

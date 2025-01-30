@@ -26,6 +26,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
 import kotlinx.coroutines.launch
@@ -37,8 +39,11 @@ fun MyListScreen() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val viewModel = hiltViewModel<MyListViewModel>()
         val state = rememberPagerState { MyListPage.entries.size }
         val coroutineScope = rememberCoroutineScope()
+        val favoriteMovies = viewModel.favoriteMovies.collectAsLazyPagingItems()
+        val watchListMovies = viewModel.watchListMovies.collectAsLazyPagingItems()
         MyListTabLayout(
             modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.medium_padding)),
             currentPage = state.currentPage,
@@ -51,8 +56,8 @@ fun MyListScreen() {
             state = state,
         ) { page ->
             when(page){
-                0 -> FavoriteScreen()
-                1 -> WatchListScreen()
+                0 -> MyListPageScreen(movies = favoriteMovies)
+                1 -> MyListPageScreen(movies = watchListMovies)
             }
         }
     }

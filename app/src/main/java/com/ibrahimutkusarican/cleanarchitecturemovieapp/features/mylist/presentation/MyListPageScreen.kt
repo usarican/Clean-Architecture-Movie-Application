@@ -35,7 +35,7 @@ fun MyListPageScreen(movies : LazyPagingItems<MyListMovieModel>){
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = dimensionResource(R.dimen.large_padding)),
+                .padding(horizontal = dimensionResource(R.dimen.medium_padding)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
         ) {
             items(count = movies.itemCount,

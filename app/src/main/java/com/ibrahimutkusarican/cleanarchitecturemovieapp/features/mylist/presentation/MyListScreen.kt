@@ -52,7 +52,8 @@ fun MyListScreen() {
             }
         )
         HorizontalPager(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize()
+                .padding(vertical = dimensionResource(R.dimen.medium_padding)),
             state = state,
         ) { page ->
             when(page){

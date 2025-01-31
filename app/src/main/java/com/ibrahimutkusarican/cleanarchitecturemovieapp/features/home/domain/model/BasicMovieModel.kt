@@ -10,4 +10,6 @@ data class BasicMovieModel(
     val movieOverview : String,
     val releaseDate : String,
     val movieVotePoint : String,
+    val isFavorite : Boolean = false,
+    val isAddedToWatchList : Boolean = false
 )

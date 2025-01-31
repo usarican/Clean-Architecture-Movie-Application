@@ -9,4 +9,10 @@ class GenreIdsToGenreNameListMapper @Inject constructor() {
             genres.find { it.movieGenreId == id }?.movieGenreName
         }
     }
+
+    fun getGenreIds(genreNames: List<String>, genres: List<GenreModel>): List<Int> {
+        return genreNames.mapNotNull { name ->
+            genres.find { it.movieGenreName == name }?.movieGenreId
+        }
+    }
 }

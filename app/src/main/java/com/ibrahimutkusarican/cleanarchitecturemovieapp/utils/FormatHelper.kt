@@ -108,6 +108,15 @@ class FormatHelper @Inject constructor() {
         }
     }
 
+    fun formatVoteAverage(voteAverage: Double,language: String) : String {
+        val locale = when (language.lowercase()) {
+            "turkish", "tr" -> Locale("tr", "TR") // Turkish
+            "english", "en" -> Locale("en", "US") // English
+            else -> Locale.getDefault() // Fallback to system default
+        }
+        return String.format(locale,"%.1f", voteAverage).removeSuffix(".0")
+    }
+
     fun formatVoteAverageAndVoteCount(voteAverage: Double, voteCount: Int,language: String): String {
         val locale = when (language.lowercase()) {
             "turkish", "tr" -> Locale("tr", "TR") // Turkish

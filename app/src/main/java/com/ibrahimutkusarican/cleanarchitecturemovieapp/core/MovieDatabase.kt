@@ -31,6 +31,6 @@ abstract class MovieDatabase : RoomDatabase() {
     abstract fun lastVisitedMovieDao(): VisitedMovieDao
 
     companion object {
-        const val DATABASE_VERSION = 8
+        const val DATABASE_VERSION = 10
     }
 }

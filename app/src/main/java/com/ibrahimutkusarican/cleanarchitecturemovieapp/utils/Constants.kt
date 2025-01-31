@@ -8,6 +8,7 @@ internal object Constants {
     const val MOVIE_IMAGE_API_URL = "https://image.tmdb.org/t/p/"
     const val EMPTY_STRING = ""
     const val MOVIE_PAGE_SIZE = 20
+    const val MY_LIST_PAGE_SIZE = 10
     const val STARTING_PAGE_INDEX = 1
     const val SEARCH_DEBOUNCE_TIME = 1000L
     const val ALL_GENRE_ID = -1

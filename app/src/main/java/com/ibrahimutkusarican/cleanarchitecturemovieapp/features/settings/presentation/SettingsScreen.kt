@@ -2,6 +2,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.prese
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -38,6 +40,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,18 +48,23 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.SettingsType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.UserSettings
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,7 +76,7 @@ fun SettingsScreen() {
     var selectedLanguage by remember { mutableStateOf("English") }
 
     // The items to pick from
-    val languages = listOf("Turkish", "English")
+    val languages = listOf("Turkish", "English","Spanish","German")
 
     Box(modifier = Modifier.fillMaxSize()){
         LazyColumn(
@@ -223,25 +231,27 @@ fun TopBarWithActions(
         verticalAlignment = Alignment.CenterVertically
     ) {
         TextButton(onClick = onCancel) {
-            Text("Cancel")
+            Text(stringResource(R.string.cancel), style = MaterialTheme.typography.titleSmall.copy(
+                color = MaterialTheme.colorScheme.secondary
+            ))
         }
         // Title in the center (weight 1f)
         Text(
             modifier = Modifier.weight(1f),
             text = title,
+            textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onSurface
         )
         TextButton(onClick = onDone) {
-            Text("Done")
+            Text(stringResource(R.string.done), style = MaterialTheme.typography.titleSmall.copy(
+                color = MaterialTheme.colorScheme.secondary,
+                fontWeight = FontWeight.W500
+            ))
         }
     }
 }
 
-/**
- * A simple iOS-like “wheel” or “picker” for a list of items
- * Shows the “selected” item in the center with highlight lines.
- */
 @Composable
 fun LanguagePicker(
     items: List<String>,
@@ -249,111 +259,141 @@ fun LanguagePicker(
     onSelected: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // For the “wheel” effect, we’ll use a fixed height with a “center highlight”
-    val pickerHeight = 200.dp  // total visible area
-    val itemHeight = 48.dp     // each row’s height
+    // Each row’s height
+    val itemHeight = 48.dp
+
+    // Show 3 rows at a time if items.size > 3
+    val visibleCount = if (items.size > 3) 3 else items.size
+    val pickerHeight = itemHeight * visibleCount
+
+    // We'll keep track of the selected index internally
+    var selectedIndex by remember { mutableStateOf(items.indexOf(selectedItem).coerceAtLeast(0)) }
 
     val listState = rememberLazyListState()
 
-    // Find the index of the selected item
-    val initialIndex = items.indexOf(selectedItem).coerceAtLeast(0)
-
-    // Scroll to the selected item (only first time)
-    LaunchedEffect(key1 = Unit) {
-        listState.scrollToItem(initialIndex)
+    // Scroll to the selected item initially
+    LaunchedEffect(Unit) {
+        listState.scrollToItem(selectedIndex)
     }
 
-    // We need to “snap” to items. You can also use custom fling behavior.
-    // For simplicity, we’ll just listen to when scrolling stops and find the closest item.
-    // Then call onSelected for that item.
-    val scope = rememberCoroutineScope()
-    val localDensity = LocalDensity.current
-    LaunchedEffect(listState) {
-        // This snippet is a naive approach; in real code, use
-        // snapshotFlow { listState.isScrollInProgress } or
-        // a custom fling Behavior with snap.
-    }
-
-    // The center highlight lines
+    // Main container with a fixed height
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(pickerHeight)
     ) {
-        // 1) The LazyColumn that shows items
+        // LazyColumn with vertical padding if > 3 items
         LazyColumn(
             state = listState,
-            modifier = Modifier
-                .fillMaxSize(),
-            contentPadding = PaddingValues(vertical = (pickerHeight - itemHeight) / 2)
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = if (items.size > 3) {
+                PaddingValues(vertical = itemHeight)  // center the middle item
+            } else {
+                PaddingValues(0.dp)
+            }
         ) {
             itemsIndexed(items) { index, language ->
-                // Each row
-                Box(
-                    modifier = Modifier
-                        .height(itemHeight)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = language,
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = if (language == selectedItem) FontWeight.Bold else FontWeight.Normal
-                        )
-                    )
-                }
+                PickerItem(
+                    index = index,
+                    language = language,
+                    selectedIndex = selectedIndex,
+                    itemHeight = itemHeight,
+                    onClick = {
+                        // If user clicks the row: scroll & select
+                        selectedIndex = index
+                        onSelected(language)
+                    }
+                )
             }
         }
 
-        // 2) The “highlight” lines or box in the center
-        val lineColor = Color.LightGray.copy(alpha = 0.5f)
-        val lineThickness = 1.dp
-        val center = pickerHeight / 2
-        // Horizontal lines: top & bottom of the center item
-        Box(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .offset(y = -itemHeight / 2)
-                .fillMaxWidth()
-                .height(lineThickness)
-                .background(lineColor)
-        )
-        Box(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .offset(y = itemHeight / 2)
-                .fillMaxWidth()
-                .height(lineThickness)
-                .background(lineColor)
-        )
+        // Optional "highlight" lines around the center row
+        if (items.size > 1) {
+            val lineColor = Color.LightGray.copy(alpha = 0.5f)
+            val lineThickness = 1.dp
+            // Top line
+            Box(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .offset(y = -itemHeight / 2)
+                    .fillMaxWidth()
+                    .height(lineThickness)
+                    .background(lineColor)
+            )
+            // Bottom line
+            Box(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .offset(y = itemHeight / 2)
+                    .fillMaxWidth()
+                    .height(lineThickness)
+                    .background(lineColor)
+            )
+        }
     }
 
-    // 3) Detect fling/scroll end & snap
-    // A simple approach: once the user stops scrolling, snap to the nearest item
-    // This can be done with:
-    // - `SnapFlingBehavior`
-    // - or manual logic in `LaunchedEffect(...)` + `snapshotFlow { listState.isScrollInProgress }`
+    // --- Snap to the nearest row when scrolling stops ---
+    val scope = rememberCoroutineScope()
+    val density = LocalDensity.current
 
-    // For demonstration, we’ll watch for isScrollInProgress == false
-    // and find the closest item, then scroll to it exactly and call onSelected.
     LaunchedEffect(listState.isScrollInProgress) {
         if (!listState.isScrollInProgress) {
             val firstVisible = listState.firstVisibleItemIndex
             val offset = listState.firstVisibleItemScrollOffset
-            // Determine which item is "closest" to center
-            // If offset > itemHeight/2, pick next item
-            val itemIndex = if (offset > with(localDensity) { itemHeight.toPx() } / 2) {
+            // if offset > half itemHeight => next item
+            val targetIndex = if (offset > with(density) { itemHeight.toPx() } / 2) {
                 firstVisible + 1
             } else {
                 firstVisible
             }.coerceIn(items.indices)
 
-            // Snap to that item
+            // Animate scroll to that item
             scope.launch {
-                listState.animateScrollToItem(itemIndex)
+                listState.animateScrollToItem(targetIndex)
             }
-            // Update selected
-            onSelected(items[itemIndex])
+
+            // Update selected index + callback
+            selectedIndex = targetIndex
+            onSelected(items[targetIndex])
         }
+    }
+}
+
+/**
+ * A single row in the picker. Only the *selected* index is bigger & bolder.
+ * All others remain normal size, normal color.
+ */
+@Composable
+fun PickerItem(
+    index: Int,
+    language: String,
+    selectedIndex: Int,
+    itemHeight: Dp,
+    onClick: () -> Unit
+) {
+    val isSelected = index == selectedIndex
+
+    // If selected: bigger scale, brand color, bold
+    // If unselected: normal scale, normal color, normal weight
+    val scale = if (isSelected) 1.2f else 1.0f
+    val alpha = 1f // keep everything fully opaque, or set 0.8f if you want
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(itemHeight)
+            .alpha(alpha)
+            .scale(scale)
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = language,
+            style = MaterialTheme.typography.titleMedium.copy(
+                color = if (isSelected) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.onSurface,
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+            )
+        )
     }
 }

@@ -51,6 +51,8 @@
     <string name="language_en">English</string>
     <string name="language_tr">Turkish</string>
     <string name="delete">Delete</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

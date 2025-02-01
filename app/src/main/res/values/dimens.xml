@@ -46,6 +46,8 @@
     <dimen name="cast_image_size">48dp</dimen>
     <dimen name="author_image_size">48dp</dimen>
 
+    <dimen name="setting_picker_item_height">48.dp</dimen>
+
     <dimen name="pager_indicator_big_dot_width">24dp</dimen>
     <dimen name="pager_indicator_dot_height">8dp</dimen>
     <dimen name="pager_indicator_dot_width">8dp</dimen>

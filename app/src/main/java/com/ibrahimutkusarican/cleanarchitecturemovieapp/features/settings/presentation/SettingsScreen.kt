@@ -1,6 +1,9 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.presentation
 
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -42,6 +45,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -232,10 +236,10 @@ fun TopBarWithActions(
     ) {
         TextButton(onClick = onCancel) {
             Text(stringResource(R.string.cancel), style = MaterialTheme.typography.titleSmall.copy(
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.W600
             ))
         }
-        // Title in the center (weight 1f)
         Text(
             modifier = Modifier.weight(1f),
             text = title,
@@ -246,7 +250,7 @@ fun TopBarWithActions(
         TextButton(onClick = onDone) {
             Text(stringResource(R.string.done), style = MaterialTheme.typography.titleSmall.copy(
                 color = MaterialTheme.colorScheme.secondary,
-                fontWeight = FontWeight.W500
+                fontWeight = FontWeight.W600
             ))
         }
     }
@@ -260,14 +264,14 @@ fun LanguagePicker(
     modifier: Modifier = Modifier
 ) {
     // Each row’s height
-    val itemHeight = 48.dp
+    val itemHeight = dimensionResource(R.dimen.setting_picker_item_height)
 
     // Show 3 rows at a time if items.size > 3
     val visibleCount = if (items.size > 3) 3 else items.size
     val pickerHeight = itemHeight * visibleCount
 
     // We'll keep track of the selected index internally
-    var selectedIndex by remember { mutableStateOf(items.indexOf(selectedItem).coerceAtLeast(0)) }
+    var selectedIndex by remember { mutableIntStateOf(items.indexOf(selectedItem).coerceAtLeast(0)) }
 
     val listState = rememberLazyListState()
 
@@ -373,10 +377,28 @@ fun PickerItem(
 ) {
     val isSelected = index == selectedIndex
 
-    // If selected: bigger scale, brand color, bold
-    // If unselected: normal scale, normal color, normal weight
-    val scale = if (isSelected) 1.2f else 1.0f
-    val alpha = 1f // keep everything fully opaque, or set 0.8f if you want
+    // Animate scale between 0.8 (unselected) and 1.2 (selected)
+    val scale by animateFloatAsState(
+        targetValue = if (isSelected) 1.2f else 0.8f,
+        animationSpec = tween(durationMillis = 300) // adjust duration as desired
+    )
+
+    // Animate alpha between 0.8 (unselected) and 1f (selected)
+    val alpha by animateFloatAsState(
+        targetValue = if (isSelected) 1f else 0.8f,
+        animationSpec = tween(durationMillis = 300)
+    )
+
+    // Animate text color between onSurface (unselected) and primary (selected)
+    val animatedColor by animateColorAsState(
+        targetValue = if (isSelected) MaterialTheme.colorScheme.primary
+        else MaterialTheme.colorScheme.onSurface,
+        animationSpec = tween(durationMillis = 300)
+    )
+
+    // Font weight can toggle immediately (you can also animate weight if you want,
+    // but typically bold vs normal is just a direct jump).
+    val fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
 
     Box(
         modifier = Modifier
@@ -390,9 +412,8 @@ fun PickerItem(
         Text(
             text = language,
             style = MaterialTheme.typography.titleMedium.copy(
-                color = if (isSelected) MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.onSurface,
-                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                color = animatedColor,
+                fontWeight = fontWeight
             )
         )
     }

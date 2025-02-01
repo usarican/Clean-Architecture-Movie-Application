@@ -50,6 +50,7 @@
     <string name="about_me">About Me</string>
     <string name="language_en">English</string>
     <string name="language_tr">Turkish</string>
+    <string name="delete">Delete</string>
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

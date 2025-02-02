@@ -60,22 +60,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.Language
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.SettingsType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.SettingsItem
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.SettingsModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview(showBackground = true)
 fun SettingsScreen() {
+    val viewModel = hiltViewModel<SettingsViewModel>()
     var showBottomSheet by remember { mutableStateOf(false) }
 
-    // Example: Track selected language
-    var selectedLanguage by remember { mutableStateOf("English") }
-
-    // The items to pick from
-    val languages = listOf("Turkish", "English","Spanish","German")
+    val userSettings by viewModel.userSettings.collectAsStateWithLifecycle()
 
     Box(modifier = Modifier.fillMaxSize()){
         LazyColumn(
@@ -91,11 +92,13 @@ fun SettingsScreen() {
             items(SettingsItem.entries) { item ->
                 SettingsItem(
                     item = item,
+                    settingsModel = userSettings,
                     clickAction = {
                         if (item.settingsType == SettingsType.TEXT_AND_CLICK){
                             showBottomSheet = true
                         }
-                    }
+                    },
+                    uiAction = viewModel::handleUiAction
                 )
             }
         }
@@ -106,20 +109,20 @@ fun SettingsScreen() {
                     skipPartiallyExpanded = true
                 )
             ) {
+                var selectedLanguage by remember { mutableStateOf(userSettings.selectedLanguage) }
                 TopBarWithActions(
                     title = "Language",
                     onCancel = {
                         showBottomSheet = false
                     },
                     onDone = {
-                        // Apply the chosen language
                         showBottomSheet = false
-                        // Example: do something with selectedLanguage
+                        viewModel.handleUiAction(SettingsUiAction.ChangeLanguage(selectedLanguage.languageCode))
                     }
                 )
 
                 LanguagePicker(
-                    items = languages,
+                    items = Language.entries,
                     selectedItem = selectedLanguage,
                     onSelected = { language ->
                         selectedLanguage = language
@@ -134,7 +137,7 @@ fun SettingsScreen() {
 
 @Composable
 @Preview(showBackground = true)
-fun SettingsItem(modifier: Modifier = Modifier, item: SettingsItem = SettingsItem.LANGUAGE, clickAction : () -> Unit = {}) {
+fun SettingsItem(modifier: Modifier = Modifier,settingsModel: SettingsModel = SettingsModel(),uiAction : (SettingsUiAction) -> Unit = {},item: SettingsItem = SettingsItem.LANGUAGE, clickAction : () -> Unit = {}) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(dimensionResource(R.dimen.small_border)),
@@ -179,8 +182,20 @@ fun SettingsItem(modifier: Modifier = Modifier, item: SettingsItem = SettingsIte
             when (item.settingsType) {
                 SettingsType.SWITCH -> Switch(
                     modifier = Modifier.height(dimensionResource(R.dimen.settings_icon_size)),
-                    checked = false,
-                    onCheckedChange = {},
+                    checked = when (item) {
+                        SettingsItem.DARK_MODE -> settingsModel.isDarkModeEnabled
+                        SettingsItem.NOTIFICATION -> settingsModel.isNotificationEnabled
+                        else -> {
+                            false
+                        }
+                    },
+                    onCheckedChange = {
+                        when (item) {
+                            SettingsItem.DARK_MODE -> uiAction(SettingsUiAction.ChangeDarkMode(it))
+                            SettingsItem.NOTIFICATION -> uiAction(SettingsUiAction.ChangeNotification(it))
+                            else -> {}
+                        }
+                    },
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = MaterialTheme.colorScheme.primary,
                         checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
@@ -246,9 +261,9 @@ fun TopBarWithActions(
 
 @Composable
 fun LanguagePicker(
-    items: List<String>,
-    selectedItem: String,
-    onSelected: (String) -> Unit,
+    items: List<Language>,
+    selectedItem: Language,
+    onSelected: (language : Language) -> Unit,
     modifier: Modifier = Modifier
 ) {
     // Each row’s height
@@ -291,7 +306,6 @@ fun LanguagePicker(
                     selectedIndex = selectedIndex,
                     itemHeight = itemHeight,
                     onClick = {
-                        // If user clicks the row: scroll & select
                         selectedIndex = index
                         onSelected(language)
                     }
@@ -358,7 +372,7 @@ fun LanguagePicker(
 @Composable
 fun PickerItem(
     index: Int,
-    language: String,
+    language: Language,
     selectedIndex: Int,
     itemHeight: Dp,
     onClick: () -> Unit
@@ -398,7 +412,7 @@ fun PickerItem(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = language,
+            text = stringResource(language.languageText),
             style = MaterialTheme.typography.titleMedium.copy(
                 color = animatedColor,
                 fontWeight = fontWeight

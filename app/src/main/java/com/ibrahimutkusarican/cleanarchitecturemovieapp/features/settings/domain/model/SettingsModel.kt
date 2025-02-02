@@ -4,9 +4,9 @@ import androidx.annotation.StringRes
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 
 data class SettingsModel(
-    val isDarkModeEnabled: Boolean,
-    val selectedLanguage: Language,
-    val isNotificationEnabled: Boolean
+    val isDarkModeEnabled: Boolean = false,
+    val selectedLanguage: Language = Language.EN,
+    val isNotificationEnabled: Boolean = false
 )
 
 enum class Language(

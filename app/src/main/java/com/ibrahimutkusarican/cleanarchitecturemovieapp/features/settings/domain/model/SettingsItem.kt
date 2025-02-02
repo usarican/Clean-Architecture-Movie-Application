@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 
-enum class UserSettings(
+enum class SettingsItem(
     @StringRes val text: Int,
     @DrawableRes val icon: Int,
     val settingsType: SettingsType
@@ -22,7 +22,7 @@ enum class UserSettings(
     NOTIFICATION(
         text = R.string.notification,
         icon = R.drawable.ic_notifications,
-        settingsType = SettingsType.CLICK
+        settingsType = SettingsType.SWITCH
     ),
     ABOUT_ME(
         text = R.string.about_me,

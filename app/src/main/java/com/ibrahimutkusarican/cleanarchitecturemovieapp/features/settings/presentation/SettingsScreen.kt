@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -28,9 +27,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -43,7 +40,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -66,9 +62,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.SettingsType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.UserSettings
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.SettingsItem
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -93,16 +88,12 @@ fun SettingsScreen() {
                 ),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding))
         ) {
-            items(UserSettings.entries) { item ->
+            items(SettingsItem.entries) { item ->
                 SettingsItem(
                     item = item,
                     clickAction = {
-                        when(item.settingsType){
-                            SettingsType.SWITCH -> TODO()
-                            SettingsType.TEXT_AND_CLICK -> {
-                                showBottomSheet = true
-                            }
-                            SettingsType.CLICK -> TODO()
+                        if (item.settingsType == SettingsType.TEXT_AND_CLICK){
+                            showBottomSheet = true
                         }
                     }
                 )
@@ -110,13 +101,11 @@ fun SettingsScreen() {
         }
         if (showBottomSheet) {
             ModalBottomSheet(
-                // onDismissRequest if user clicks outside the sheet or presses back
                 onDismissRequest = { showBottomSheet = false },
                 sheetState = rememberModalBottomSheetState(
-                    skipPartiallyExpanded = true // optional
+                    skipPartiallyExpanded = true
                 )
             ) {
-                // 2.1) The top bar (Cancel - Title - Done)
                 TopBarWithActions(
                     title = "Language",
                     onCancel = {
@@ -129,7 +118,6 @@ fun SettingsScreen() {
                     }
                 )
 
-                // 2.2) The Picker (like iOS wheel)
                 LanguagePicker(
                     items = languages,
                     selectedItem = selectedLanguage,
@@ -146,7 +134,7 @@ fun SettingsScreen() {
 
 @Composable
 @Preview(showBackground = true)
-fun SettingsItem(modifier: Modifier = Modifier, item: UserSettings = UserSettings.LANGUAGE,clickAction : () -> Unit = {}) {
+fun SettingsItem(modifier: Modifier = Modifier, item: SettingsItem = SettingsItem.LANGUAGE, clickAction : () -> Unit = {}) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(dimensionResource(R.dimen.small_border)),

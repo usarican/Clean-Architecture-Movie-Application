@@ -268,10 +268,7 @@ fun LanguagePicker(
 ) {
     // Each row’s height
     val itemHeight = dimensionResource(R.dimen.setting_picker_item_height)
-
-    // Show 3 rows at a time if items.size > 3
-    val visibleCount = if (items.size > 3) 3 else items.size
-    val pickerHeight = itemHeight * visibleCount
+    val pickerHeight = itemHeight * 3
 
     // We'll keep track of the selected index internally
     var selectedIndex by remember { mutableIntStateOf(items.indexOf(selectedItem).coerceAtLeast(0)) }
@@ -289,15 +286,11 @@ fun LanguagePicker(
             .fillMaxWidth()
             .height(pickerHeight)
     ) {
-        // LazyColumn with vertical padding if > 3 items
         LazyColumn(
             state = listState,
             modifier = Modifier.fillMaxSize(),
-            contentPadding = if (items.size > 3) {
-                PaddingValues(vertical = itemHeight)  // center the middle item
-            } else {
-                PaddingValues(0.dp)
-            }
+            contentPadding = PaddingValues(vertical = itemHeight)  // center the middle item
+
         ) {
             itemsIndexed(items) { index, language ->
                 PickerItem(

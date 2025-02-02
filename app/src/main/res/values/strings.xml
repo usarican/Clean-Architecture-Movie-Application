@@ -41,8 +41,18 @@
     <string name="synopsis">Synopsis</string>
     <string name="cast">Cast</string>
     <string name="anonymous">Anonymous</string>
-    <string name="watch_list">Watch List</string>">
-    <string name="favorite">Favorite</string>">
+    <string name="watch_list">Watch List</string>
+    <string name="favorite">Favorite</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="language">Language</string>
+    <string name="notification">Notification</string>
+    <string name="help_center">Help Center</string>
+    <string name="about_me">About Me</string>
+    <string name="language_en">English</string>
+    <string name="language_tr">Turkish</string>
+    <string name="delete">Delete</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

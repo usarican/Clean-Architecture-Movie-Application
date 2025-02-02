@@ -107,4 +107,5 @@
         ksp(libs.moshi.kotlin.codegen)
         implementation (libs.androidx.constraintlayout.compose)
         implementation (libs.youtube.player)
+        implementation (libs.androidx.datastore.preferences     )
        }

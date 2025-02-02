@@ -206,11 +206,21 @@ fun SettingsItem(modifier: Modifier = Modifier,settingsModel: SettingsModel = Se
                 )
 
                 SettingsType.TEXT_AND_CLICK -> {
-                    Icon(
-                        modifier = Modifier.size(dimensionResource(R.dimen.icon_size)),
-                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                        contentDescription = "Right Arrow",
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(end = dimensionResource(R.dimen.small_padding)),
+                            text = stringResource(settingsModel.selectedLanguage.languageText), style = MaterialTheme.typography.bodyMedium.copy(
+                            color = MaterialTheme.colorScheme.secondary,
+                            fontWeight = FontWeight.W600
+                        ))
+                        Icon(
+                            modifier = Modifier.size(dimensionResource(R.dimen.icon_size)),
+                            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            contentDescription = "Right Arrow",
+                        )
+                    }
                 }
 
                 SettingsType.CLICK -> {

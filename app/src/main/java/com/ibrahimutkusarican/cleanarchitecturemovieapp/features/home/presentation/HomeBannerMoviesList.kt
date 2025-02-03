@@ -3,6 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentat
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
@@ -26,7 +27,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 
 @Composable
 fun HomeBannerMoviesList(
-    modifier: Modifier = Modifier, basicMovieModels: List<BasicMovieModel>
+    modifier: Modifier = Modifier, basicMovieModels: List<BasicMovieModel>,
+    movieClickAction : (movieIndex : Int) -> Unit
 ) {
     val pagerState: PagerState = rememberPagerState(pageCount = { basicMovieModels.size })
 
@@ -42,6 +44,7 @@ fun HomeBannerMoviesList(
             page = page,
             pagerState = pagerState,
             isSelected = pagerState.currentPage == page,
+            movieClickAction = movieClickAction
         )
     }
 }
@@ -53,7 +56,8 @@ fun BannerMovieItem(
     bannerMovie: BasicMovieModel,
     page: Int,
     pagerState: PagerState,
-    isSelected: Boolean
+    isSelected: Boolean,
+    movieClickAction : (movieIndex : Int) -> Unit
 ) {
     val animatedElevation by animateDpAsState(
         targetValue = if (isSelected) 4.dp else 0.dp,
@@ -70,7 +74,10 @@ fun BannerMovieItem(
             modifier = Modifier
                 .fillMaxSize()
                 .blurTransition(page, pagerState)
-                .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.x_small_border))),
+                .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.x_small_border)))
+                .clickable {
+                    movieClickAction(page)
+                },
             imageUrl = bannerMovie.moviePosterImageUrl,
             contentScale = ContentScale.FillBounds
         )

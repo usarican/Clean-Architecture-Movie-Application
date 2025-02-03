@@ -19,6 +19,7 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
             is MyEvent.OnBackPressed -> navigationRouteAction(null)
             is MyEvent.SearchBarClickEvent -> navigationRouteAction(NavigationRoutes.Search(event.recommendedMovieId))
             is MyEvent.MovieClickEvent -> navigationRouteAction(NavigationRoutes.MovieDetail(event.movieId))
+            is MyEvent.BannerMovieClickEvent -> navigationRouteAction(NavigationRoutes.BannerMovies(event.clickedMovieIndex))
         }
     }
 

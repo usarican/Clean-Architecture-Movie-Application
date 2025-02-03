@@ -1,6 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model
 
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class BasicMovieModel(
     val movieId : Int,
     val movieTitle : String,

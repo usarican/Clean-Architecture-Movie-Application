@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -82,7 +81,13 @@ fun HomeSuccessScreen(
                         .height(screenHeightDp * 0.4F)
                         .fillMaxWidth()
                         .padding(vertical = dimensionResource(R.dimen.small_padding)),
-                    basicMovieModels = movies[MovieType.NOW_PLAYING] ?: emptyList()
+                    basicMovieModels = movies[MovieType.NOW_PLAYING] ?: emptyList(),
+                    movieClickAction = { index ->
+                        movies[MovieType.NOW_PLAYING]?.let { list ->
+                            action.invoke(HomeUiAction.BannerMovieClickAction(list,index))
+                        }
+
+                    }
                 )
                 MovieCategoryList(modifier = Modifier
                     .fillMaxWidth()

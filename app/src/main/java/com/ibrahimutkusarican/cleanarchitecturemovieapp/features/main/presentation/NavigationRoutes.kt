@@ -1,6 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentation
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import kotlinx.serialization.Serializable
 
 
@@ -26,5 +27,8 @@ sealed class NavigationRoutes(
 
     @Serializable
     data class MovieDetail(val movieId : Int) : NavigationRoutes()
+
+    @Serializable
+    data class BannerMovies(val clickedItemIndex : Int) : NavigationRoutes()
 
 }

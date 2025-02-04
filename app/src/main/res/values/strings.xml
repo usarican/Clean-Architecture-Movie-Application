@@ -53,6 +53,7 @@
     <string name="delete">Delete</string>
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
+    <string name="see_more">See More</string>
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

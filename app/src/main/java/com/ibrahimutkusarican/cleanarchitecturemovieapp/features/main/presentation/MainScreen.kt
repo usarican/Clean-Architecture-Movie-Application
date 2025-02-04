@@ -15,6 +15,7 @@ import androidx.navigation.toRoute
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.presentation.ExploreScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.BannerMoviesScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.HomeScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.HomeViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.presentation.MyListScreen
@@ -78,6 +79,10 @@ fun MainScreen(viewModel: MainViewModel) {
                 val movieId = backStackEntry.toRoute<NavigationRoutes.MovieDetail>().movieId
                 detailViewModel.getMovieDetail(movieId)
                 MovieDetailScreen(viewModel = detailViewModel)
+            }
+            composable<NavigationRoutes.BannerMovies> { backStackEntry ->
+                val clickedItemIndex = backStackEntry.toRoute<NavigationRoutes.BannerMovies>().clickedItemIndex
+                BannerMoviesScreen(clickItemIndex = clickedItemIndex)
             }
         }
     }

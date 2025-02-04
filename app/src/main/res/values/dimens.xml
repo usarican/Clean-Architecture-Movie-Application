@@ -30,6 +30,7 @@
     <dimen name="thirty_dp">30dp</dimen>
     <dimen name="forty_dp">40dp</dimen>
     <dimen name="dp_64">64dp</dimen>
+    <dimen name="dp_80">80dp</dimen>
     <dimen name="error_icon_size">36dp</dimen>
     <dimen name="settings_icon_size">32dp</dimen>
     <dimen name="last_search_close_icon_size">24dp</dimen>

@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -22,7 +21,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -49,12 +47,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.presentation.ForYouMovieGenreItem
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.EMPTY_STRING
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.carouselTransition
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
+import kotlinx.coroutines.delay
 
 @Composable
 @Preview(showBackground = true)
@@ -69,8 +66,12 @@ fun BannerMoviesScreen(
     val topMargin = dimensionResource(R.dimen.dp_64)
 
 
-    LaunchedEffect(Unit) {
-        pagerState.animateScrollToPage(clickItemIndex)
+    LaunchedEffect(movies) {
+        movies[MovieType.NOW_PLAYING]?.let { nowPlayingMovies ->
+            if (nowPlayingMovies.isNotEmpty()) {
+                pagerState.animateScrollToPage(clickItemIndex)
+            }
+        }
     }
 
     Column(modifier = Modifier.fillMaxSize()) {

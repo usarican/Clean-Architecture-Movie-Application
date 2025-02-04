@@ -83,10 +83,7 @@ fun HomeSuccessScreen(
                         .padding(vertical = dimensionResource(R.dimen.small_padding)),
                     basicMovieModels = movies[MovieType.NOW_PLAYING] ?: emptyList(),
                     movieClickAction = { index ->
-                        movies[MovieType.NOW_PLAYING]?.let { list ->
-                            action.invoke(HomeUiAction.BannerMovieClickAction(list,index))
-                        }
-
+                        action.invoke(HomeUiAction.BannerMovieClickAction(index))
                     }
                 )
                 MovieCategoryList(modifier = Modifier

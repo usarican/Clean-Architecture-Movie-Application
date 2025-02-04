@@ -59,7 +59,7 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.ErrorRetryAction -> getMovies()
             is HomeUiAction.SeeAllClickAction -> sendEvent(MyEvent.SeeAllClickEvent(action.movieType))
             is HomeUiAction.MovieClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
-            is HomeUiAction.BannerMovieClickAction -> sendEvent(MyEvent.BannerMovieClickEvent(action.bannerMovies,action.clickIndex))
+            is HomeUiAction.BannerMovieClickAction -> sendEvent(MyEvent.BannerMovieClickEvent(action.clickIndex))
         }
     }
 }

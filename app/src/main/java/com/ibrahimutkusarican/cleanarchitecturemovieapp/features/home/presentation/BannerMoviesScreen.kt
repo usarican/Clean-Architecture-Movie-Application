@@ -51,12 +51,11 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.carouselTransition
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
-import kotlinx.coroutines.delay
 
 @Composable
 @Preview(showBackground = true)
 fun BannerMoviesScreen(
-    clickItemIndex: Int = 0
+    clickItemIndex: Int = 0,
 ) {
     val viewModel = hiltViewModel<HomeViewModel>()
     val movies by viewModel.movies.collectAsStateWithLifecycle()
@@ -115,7 +114,12 @@ fun BannerMoviesScreen(
                         .padding(
                             horizontal = dimensionResource(R.dimen.x_x_x_large_padding),
                             vertical = dimensionResource(R.dimen.x_large_padding)
-                        ), bannerMovie = it, seeDetailClickAction = {})
+                        ),
+                    bannerMovie = it,
+                    seeMoreClickAction = { movieId ->
+                        viewModel.handleUiAction(HomeUiAction.MovieClickAction(movieId))
+                    }
+                )
             }
     }
 }
@@ -123,7 +127,7 @@ fun BannerMoviesScreen(
 @Composable
 private fun BannerMovieInfo(
     bannerMovie: BasicMovieModel,
-    seeDetailClickAction: (movieId: Int) -> Unit,
+    seeMoreClickAction: (movieId: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -168,14 +172,14 @@ private fun BannerMovieInfo(
                 )
             )
         }
-        MovieGenreView(modifier = Modifier.weight(1f),genreList = bannerMovie.movieGenres)
+        MovieGenreView(modifier = Modifier.weight(1f), genreList = bannerMovie.movieGenres)
         Button(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = dimensionResource(R.dimen.large_padding)),
             shape = RoundedCornerShape(dimensionResource(R.dimen.small_border)),
             onClick = {
-                seeDetailClickAction(bannerMovie.movieId)
+                seeMoreClickAction(bannerMovie.movieId)
             },
             colors = ButtonDefaults.buttonColors(
                 contentColor = MaterialTheme.colorScheme.onPrimary,

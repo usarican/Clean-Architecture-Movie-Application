@@ -8,4 +8,5 @@ sealed class HomeUiAction {
     data object PullToRefreshAction : HomeUiAction()
     data object ErrorRetryAction : HomeUiAction()
     data class BannerMovieClickAction(val clickIndex : Int) : HomeUiAction()
+    data class BannerMovieSeeMoreClickAction(val movieId : Int) : HomeUiAction()
 }

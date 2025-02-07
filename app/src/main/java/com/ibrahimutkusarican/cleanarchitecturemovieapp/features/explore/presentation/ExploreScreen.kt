@@ -28,7 +28,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.domain.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.MovieCategory
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.CategoriesView
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
 
 @Composable
@@ -100,16 +99,13 @@ private fun ExploreSuccessScreen(
             )
         }
 
-        CategoriesView(
-            modifier = Modifier.padding(
-                horizontal = dimensionResource(R.dimen.large_padding),
-                vertical = dimensionResource(R.dimen.medium_padding)
-            ), genres = data.genreList
-        )
         MostPopularMovies(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = dimensionResource(R.dimen.large_padding)),
+                .padding(
+                    horizontal = dimensionResource(R.dimen.large_padding),
+                    vertical = dimensionResource(R.dimen.medium_padding)
+                ),
             movies = data.popularMovies
         )
     }

@@ -92,7 +92,7 @@ fun BannerMoviesScreen(
                     .fillMaxSize()
                     .padding(top = dimensionResource(R.dimen.dp_80)),
                 state = pagerState,
-                contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.x_x_x_large_padding)),
+                contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.dp_64)),
                 pageSpacing = dimensionResource(R.dimen.large_padding)
             ) { page ->
                 movies[MovieType.NOW_PLAYING]?.get(page)?.let { movie ->
@@ -112,7 +112,7 @@ fun BannerMoviesScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(
-                            horizontal = dimensionResource(R.dimen.x_x_x_large_padding),
+                            horizontal = dimensionResource(R.dimen.dp_64),
                             vertical = dimensionResource(R.dimen.x_large_padding)
                         ),
                     bannerMovie = it,
@@ -239,9 +239,7 @@ private fun MovieGenreView(modifier: Modifier = Modifier, genreList: List<String
 private fun MovieGenreItem(genreText: String, index: Int) {
     Card(
         modifier = Modifier.padding(
-            start = if (index % 3 != 0) dimensionResource(R.dimen.small_padding) else dimensionResource(
-                R.dimen.zero_dp
-            )
+            start = dimensionResource(R.dimen.small_padding)
         ),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background

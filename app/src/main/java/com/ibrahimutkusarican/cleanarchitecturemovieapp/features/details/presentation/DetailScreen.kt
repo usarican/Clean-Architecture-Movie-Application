@@ -2,11 +2,6 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presen
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -69,7 +64,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailInfoModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.mockMovieDetailModel
@@ -87,15 +82,15 @@ fun MovieDetailScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val movieDetailModel by viewModel.movieDetailModel.collectAsStateWithLifecycle()
-    var snackBarType by remember { mutableStateOf<SnackBarType?>(null) }
+    var snackBarModel by remember { mutableStateOf<MySnackBarModel?>(null) }
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        viewModel.showSnackBar.collectLatest { type ->
-            snackBarType = type
+        viewModel.showSnackBar.collectLatest { model ->
+            snackBarModel = model
             coroutineScope.launch {
                 delay(3000)
-                snackBarType = null
+                snackBarModel = null
             }
         }
     }
@@ -107,12 +102,11 @@ fun MovieDetailScreen(
                     backClickAction = { viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction) },
                     action = viewModel::handleUiAction
                 )
-                snackBarType?.let {
+                snackBarModel?.let {
                     MySnackBar(
-                        snackBarType = it,
+                        snackBarModel = it,
                         visible = true,
                         modifier = Modifier.align(Alignment.BottomCenter),
-                        message = stringResource(R.string.movie_added_to_favorite),
                         actionLabel = ""
                     )
                 }

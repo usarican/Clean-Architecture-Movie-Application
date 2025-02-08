@@ -54,7 +54,7 @@
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
     <string name="see_more">See More</string>
-    <string name="movie_added_to_favorite">Movie Added to Favorite List.</string>
+    <string name="movie_added_to_favorite">%1$s Added to Favorite List.</string>
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

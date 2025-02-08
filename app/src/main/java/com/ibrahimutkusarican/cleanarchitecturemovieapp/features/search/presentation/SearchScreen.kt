@@ -59,8 +59,7 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(dimensionResource(R.dimen.medium_padding))
-                        .verticalScroll(rememberScrollState()),
+                        .padding(dimensionResource(R.dimen.medium_padding)),
                     verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
                 ) {
                     TopSearch(

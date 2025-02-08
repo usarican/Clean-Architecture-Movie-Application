@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorScreen
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorSnackBar
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
@@ -98,7 +98,7 @@ fun HomeSuccessScreen(
                     })
             }
             if (refreshUiState is UiState.Error) {
-                ErrorSnackBar(
+                MySnackBar(
                     modifier = Modifier.align(Alignment.BottomCenter),
                     errorMessage = (refreshUiState).exception.message,
                     actionLabel = context.getString(R.string.retry),

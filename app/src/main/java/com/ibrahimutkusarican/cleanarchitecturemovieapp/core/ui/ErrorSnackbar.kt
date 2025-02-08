@@ -2,12 +2,9 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -37,8 +34,9 @@ import kotlinx.coroutines.delay
 
 @Composable
 @Preview(showBackground = true)
-fun ErrorSnackBar(
+fun MySnackBar(
     modifier: Modifier = Modifier,
+    snackBarType: SnackBarType = SnackBarType.ERROR,
     errorMessage: String? = "Oh god!",
     actionLabel: String = stringResource(R.string.retry),
     action: () -> Unit = {},
@@ -68,8 +66,8 @@ fun ErrorSnackBar(
             shape = RoundedCornerShape(dimensionResource(R.dimen.small_border)),
             elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.small_padding)),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.errorContainer,
-                contentColor = MaterialTheme.colorScheme.onErrorContainer
+                containerColor = snackBarType.containerColor,
+                contentColor = snackBarType.onContainerColor
             )
         ) {
             Row(
@@ -83,7 +81,7 @@ fun ErrorSnackBar(
                     painterResource(R.drawable.ic_error_outline),
                     contentDescription = errorMessage,
                     modifier = Modifier.size(dimensionResource(R.dimen.error_icon_size)),
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error)
+                    colorFilter = ColorFilter.tint(snackBarType.lightColor)
                 )
                 Column(
                     modifier = Modifier
@@ -121,4 +119,37 @@ fun ErrorSnackBar(
         }
     }
 }
+
+enum class SnackBarType(
+    val lightColor: Color,
+    val onLightColor: Color,
+    val containerColor: Color,
+    val onContainerColor: Color
+) {
+    SUCCESS(
+        lightColor = Color(0xFF1E7D3A),
+        onLightColor = Color(0xFFFFFFFF),
+        containerColor = Color(0xFFD3F6E6),
+        onContainerColor = Color(0xFF003214)
+    ),
+    INFO(
+        lightColor = Color(0xFF005FCC),
+        onLightColor = Color(0xFFFFFFFF),
+        containerColor = Color(0xFFD5E3FF),
+        onContainerColor = Color(0xFF001A3C)
+    ),
+    WARNING(
+        lightColor = Color(0xFFDC7800),
+        onLightColor = Color(0xFFFFFFFF),
+        containerColor = Color(0xFFFFE7C2),
+        onContainerColor = Color(0xFF3B2100)
+    ),
+    ERROR(
+        lightColor = Color(0xFFBA1A1A),
+        onLightColor = Color(0xFFFFFFFF),
+        containerColor = Color(0xFFFFDAD6),
+        onContainerColor = Color(0xFF410002)
+    )
+}
+
 

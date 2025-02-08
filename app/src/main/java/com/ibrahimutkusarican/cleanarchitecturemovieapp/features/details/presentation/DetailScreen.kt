@@ -2,9 +2,15 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presen
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -41,7 +47,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -59,12 +68,16 @@ import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailInfoModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.mockMovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposable
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -74,13 +87,36 @@ fun MovieDetailScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val movieDetailModel by viewModel.movieDetailModel.collectAsStateWithLifecycle()
+    var snackBarType by remember { mutableStateOf<SnackBarType?>(null) }
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        viewModel.showSnackBar.collectLatest { type ->
+            snackBarType = type
+            coroutineScope.launch {
+                delay(3000)
+                snackBarType = null
+            }
+        }
+    }
     BaseUiStateComposable(uiState = uiState, tryAgainOnClickAction = {}) {
         movieDetailModel?.let { model ->
-            MovieDetailSuccessScreen(
-                modifier = modifier, movieDetailModel = model,
-                backClickAction = { viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction) },
-                action = viewModel::handleUiAction
-            )
+            Box(modifier = modifier.fillMaxSize()) {
+                MovieDetailSuccessScreen(
+                    modifier = modifier, movieDetailModel = model,
+                    backClickAction = { viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction) },
+                    action = viewModel::handleUiAction
+                )
+                snackBarType?.let {
+                    MySnackBar(
+                        snackBarType = it,
+                        visible = true,
+                        modifier = Modifier.align(Alignment.BottomCenter),
+                        message = stringResource(R.string.movie_added_to_favorite),
+                        actionLabel = ""
+                    )
+                }
+            }
         }
     }
 }

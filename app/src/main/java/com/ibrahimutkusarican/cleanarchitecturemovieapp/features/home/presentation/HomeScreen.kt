@@ -100,7 +100,7 @@ fun HomeSuccessScreen(
             if (refreshUiState is UiState.Error) {
                 MySnackBar(
                     modifier = Modifier.align(Alignment.BottomCenter),
-                    errorMessage = (refreshUiState).exception.message,
+                    message = (refreshUiState).exception.message,
                     actionLabel = context.getString(R.string.retry),
                     action = {
                         action.invoke(HomeUiAction.PullToRefreshAction)

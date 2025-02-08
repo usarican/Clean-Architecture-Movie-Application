@@ -1,6 +1,10 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -37,7 +41,7 @@ import kotlinx.coroutines.delay
 fun MySnackBar(
     modifier: Modifier = Modifier,
     snackBarType: SnackBarType = SnackBarType.ERROR,
-    errorMessage: String? = "Oh god!",
+    message: String? = "Oh god!",
     actionLabel: String = stringResource(R.string.retry),
     action: () -> Unit = {},
     visible: Boolean = true
@@ -53,7 +57,9 @@ fun MySnackBar(
         visibility = false
     }
     AnimatedVisibility(
-        visible = visibility, modifier = modifier
+        visible = visibility, modifier = modifier,
+        enter = fadeIn() + slideInVertically(),
+        exit = fadeOut() + slideOutVertically()
     ) {
 
         Card(
@@ -79,7 +85,7 @@ fun MySnackBar(
             ) {
                 Image(
                     painterResource(R.drawable.ic_error_outline),
-                    contentDescription = errorMessage,
+                    contentDescription = message,
                     modifier = Modifier.size(dimensionResource(R.dimen.error_icon_size)),
                     colorFilter = ColorFilter.tint(snackBarType.lightColor)
                 )
@@ -97,7 +103,7 @@ fun MySnackBar(
                         maxLines = 1,
                     )
                     Text(
-                        text = errorMessage ?: stringResource(R.string.error_message),
+                        text = message ?: stringResource(R.string.error_message),
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = MaterialTheme.colorScheme.onErrorContainer
                         ),

@@ -3,6 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presen
 import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieDetailUseCase
@@ -10,7 +11,9 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.u
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.DeleteMyListMovieUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -29,6 +32,9 @@ class MovieDetailViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<UiState<MovieDetailModel>>(UiState.Loading)
     val uiState: StateFlow<UiState<MovieDetailModel>> = _uiState
+
+    private val _showSnackBar = MutableSharedFlow<SnackBarType>()
+    val showSnackBar : SharedFlow<SnackBarType> = _showSnackBar
 
     fun getMovieDetail(movieId: Int) {
         getMovieDetailUseCase.getMovieDetail(movieId)
@@ -65,7 +71,7 @@ class MovieDetailViewModel @Inject constructor(
                                         )
                                     )
                                 }
-                                /// TODO: ShowSnackBar!
+                                _showSnackBar.emit(SnackBarType.SUCCESS)
                             }.launchIn(viewModelScope)
                             if (model.movieDetailInfoModel.isAddedToWatchList) {
                                 deleteMyListMovieUseCase.deleteMyListMovieFromDetail(

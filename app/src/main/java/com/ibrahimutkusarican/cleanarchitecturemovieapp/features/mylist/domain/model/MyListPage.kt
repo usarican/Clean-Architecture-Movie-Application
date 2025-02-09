@@ -7,5 +7,6 @@ enum class MyListPage(
     val index: Int,
     @StringRes val title: Int
 ) {
-    FAVORITE(index = 0, R.string.favorite), WATCH_LIST(index = 1, title = R.string.watch_list)
+    FAVORITE(index = 0, R.string.favorite), WATCH_LIST(index = 1, title = R.string.watch_list);
+
 }

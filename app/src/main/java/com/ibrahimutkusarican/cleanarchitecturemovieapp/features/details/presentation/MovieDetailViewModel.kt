@@ -9,8 +9,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieDetailUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.AddMyListMovieUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.DeleteMyListMovieUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListUpdatePage
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.UpdateMyListMovieUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,8 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
-    private val addMyListMovieUseCase: AddMyListMovieUseCase,
-    private val deleteMyListMovieUseCase: DeleteMyListMovieUseCase,
+    private val updateMyListMovieUseCase: UpdateMyListMovieUseCase,
     private val stringProvider: StringProvider
 ) : BaseViewModel() {
 
@@ -59,68 +58,54 @@ class MovieDetailViewModel @Inject constructor(
                 when (action.data.type) {
                     MovieDetailActionButtonType.PLAY -> TODO()
                     MovieDetailActionButtonType.SHARE -> TODO()
-                    MovieDetailActionButtonType.ADD_FAVORITE -> {
-                        movieDetailModel.value?.let { model ->
-                            addMyListMovieUseCase.addMyListMovieFromDetail(
-                                movieDetailModel = model.copy(
-                                    movieDetailInfoModel = model.movieDetailInfoModel.copy(
-                                        isFavorite = !model.movieDetailInfoModel.isFavorite
-                                    )
-                                )
-                            ).doOnSuccess {
-                                _movieDetailModel.update {
-                                    movieDetailModel.value?.copy(
-                                        movieDetailInfoModel = model.movieDetailInfoModel.copy(
-                                            isFavorite = !model.movieDetailInfoModel.isFavorite
-                                        )
-                                    )
-                                }
-                                _showSnackBar.emit(
-                                    MySnackBarModel(
-                                        title = if (model.movieDetailInfoModel.isFavorite) stringProvider.getStringFromResource(R.string.remove_favorite) else stringProvider.getStringFromResource(R.string.add_favorite),
-                                        message = stringProvider.getStringFromResource(
-                                            R.string.movie_added_to_favorite,
-                                            model.movieDetailInfoModel.title
-                                        ),
-                                        type = SnackBarType.SUCCESS
-                                    )
-                                )
-                            }.launchIn(viewModelScope)
-                            if (model.movieDetailInfoModel.isAddedToWatchList) {
-                                deleteMyListMovieUseCase.deleteMyListMovieFromDetail(
-                                    movieDetailModel = model
-                                ).launchIn(viewModelScope)
-                            }
-                        }
-                    }
-
-                    MovieDetailActionButtonType.ADD_WATCH_LIST -> {
-                        movieDetailModel.value?.let { model ->
-                            addMyListMovieUseCase.addMyListMovieFromDetail(
-                                movieDetailModel = model.copy(
-                                    movieDetailInfoModel = model.movieDetailInfoModel.copy(
-                                        isAddedToWatchList = !model.movieDetailInfoModel.isAddedToWatchList
-                                    )
-                                )
-                            ).doOnSuccess {
-                                _movieDetailModel.update {
-                                    movieDetailModel.value?.copy(
-                                        movieDetailInfoModel = model.movieDetailInfoModel.copy(
-                                            isAddedToWatchList = !model.movieDetailInfoModel.isAddedToWatchList
-                                        )
-                                    )
-                                }
-                            }.launchIn(viewModelScope)
-                            if (model.movieDetailInfoModel.isFavorite) {
-                                deleteMyListMovieUseCase.deleteMyListMovieFromDetail(
-                                    movieDetailModel = model
-                                ).launchIn(viewModelScope)
-                            }
-
-                        }
-                    }
+                    MovieDetailActionButtonType.ADD_FAVORITE -> addMovieFavoriteList(movieDetailModel.value)
+                    MovieDetailActionButtonType.ADD_WATCH_LIST -> addMovieWatchList(movieDetailModel.value)
                 }
             }
         }
     }
+
+    private fun addMovieFavoriteList(model: MovieDetailModel?) {
+        model?.let {
+            updateMyListMovieUseCase.updateFavoriteMovieFromDetail(
+                movieDetailModel = model, myListUpdatePage = MyListUpdatePage.FAVORITE
+            ).doOnSuccess { updateModel ->
+                _movieDetailModel.update { updateModel }
+                _showSnackBar.emit(
+                    MySnackBarModel(
+                        title = if (model.movieDetailInfoModel.isFavorite) stringProvider.getStringFromResource(
+                            R.string.remove_favorite
+                        ) else stringProvider.getStringFromResource(R.string.add_favorite),
+                        message = stringProvider.getStringFromResource(
+                            R.string.movie_added_to_favorite, model.movieDetailInfoModel.title
+                        ),
+                        type = SnackBarType.SUCCESS
+                    )
+                )
+            }.launchIn(viewModelScope)
+        }
+    }
+
+    private fun addMovieWatchList(model: MovieDetailModel?) {
+        model?.let {
+            updateMyListMovieUseCase.updateFavoriteMovieFromDetail(
+                movieDetailModel = model, myListUpdatePage = MyListUpdatePage.WATCH_LIST
+            ).doOnSuccess { updateModel ->
+                _movieDetailModel.update { updateModel }
+                _showSnackBar.emit(
+                    MySnackBarModel(
+                        title = if (model.movieDetailInfoModel.isFavorite) stringProvider.getStringFromResource(
+                            R.string.remove_favorite
+                        ) else stringProvider.getStringFromResource(R.string.add_favorite),
+                        message = stringProvider.getStringFromResource(
+                            R.string.movie_added_to_favorite, model.movieDetailInfoModel.title
+                        ),
+                        type = SnackBarType.SUCCESS
+                    )
+                )
+            }.launchIn(viewModelScope)
+        }
+    }
 }
+
+

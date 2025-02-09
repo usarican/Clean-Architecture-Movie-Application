@@ -23,12 +23,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
@@ -100,7 +103,11 @@ fun HomeSuccessScreen(
             if (refreshUiState is UiState.Error) {
                 MySnackBar(
                     modifier = Modifier.align(Alignment.BottomCenter),
-                    message = (refreshUiState).exception.message,
+                    snackBarModel = MySnackBarModel(
+                        title = stringResource(R.string.error_snackbar_title),
+                        message = (refreshUiState).exception.message,
+                        type = SnackBarType.ERROR
+                    ),
                     actionLabel = context.getString(R.string.retry),
                     action = {
                         action.invoke(HomeUiAction.PullToRefreshAction)

@@ -1,6 +1,9 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -40,16 +43,19 @@ import kotlinx.coroutines.delay
 @Preview(showBackground = true)
 fun MySnackBar(
     modifier: Modifier = Modifier,
-    snackBarType: SnackBarType = SnackBarType.ERROR,
-    message: String? = "Oh god!",
-    actionLabel: String = stringResource(R.string.retry),
+    snackBarModel: MySnackBarModel = MySnackBarModel(
+        title = "Information",
+        message = "This is Information SnackBar",
+        type = SnackBarType.INFO
+    ),
+    actionLabel: String? = null,
     action: () -> Unit = {},
     visible: Boolean = true
 ) {
     var visibility by remember { mutableStateOf(visible) }
 
     LaunchedEffect(true) {
-        if (actionLabel.isEmpty()) {
+        if (actionLabel.isNullOrEmpty()) {
             delay(5000)
         } else {
             delay(10000)
@@ -58,8 +64,10 @@ fun MySnackBar(
     }
     AnimatedVisibility(
         visible = visibility, modifier = modifier,
-        enter = fadeIn() + slideInVertically(),
-        exit = fadeOut() + slideOutVertically()
+        enter = slideInVertically(
+            animationSpec = spring(Spring.DampingRatioHighBouncy)
+        ),
+        exit = slideOutVertically()
     ) {
 
         Card(
@@ -72,8 +80,8 @@ fun MySnackBar(
             shape = RoundedCornerShape(dimensionResource(R.dimen.small_border)),
             elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.small_padding)),
             colors = CardDefaults.cardColors(
-                containerColor = snackBarType.containerColor,
-                contentColor = snackBarType.onContainerColor
+                containerColor = snackBarModel.type.containerColor,
+                contentColor = snackBarModel.type.onContainerColor
             )
         ) {
             Row(
@@ -84,28 +92,30 @@ fun MySnackBar(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painterResource(R.drawable.ic_error_outline),
-                    contentDescription = message,
+                    painterResource(snackBarModel.type.iconId),
+                    contentDescription = snackBarModel.message,
                     modifier = Modifier.size(dimensionResource(R.dimen.error_icon_size)),
-                    colorFilter = ColorFilter.tint(snackBarType.lightColor)
+                    colorFilter = ColorFilter.tint(snackBarModel.type.lightColor)
                 )
                 Column(
                     modifier = Modifier
                         .weight(1F)
                         .padding(horizontal = dimensionResource(R.dimen.small_padding))
                 ) {
+                    if (snackBarModel.title != null) {
+                        Text(
+                            text = snackBarModel.title,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                color = snackBarModel.type.onContainerColor,
+                                fontWeight = FontWeight.Bold
+                            ),
+                            maxLines = 1,
+                        )
+                    }
                     Text(
-                        text = stringResource(R.string.error_snackbar_title),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            color = MaterialTheme.colorScheme.onErrorContainer,
-                            fontWeight = FontWeight.Bold
-                        ),
-                        maxLines = 1,
-                    )
-                    Text(
-                        text = message ?: stringResource(R.string.error_message),
+                        text = snackBarModel.message ?: stringResource(R.string.error_message),
                         style = MaterialTheme.typography.bodySmall.copy(
-                            color = MaterialTheme.colorScheme.onErrorContainer
+                            color = snackBarModel.type.onContainerColor
                         ),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
@@ -116,7 +126,7 @@ fun MySnackBar(
                     modifier = Modifier
                         .padding(end = dimensionResource(R.dimen.x_small_padding))
                         .clickable { action() },
-                    text = actionLabel,
+                    text = actionLabel ?: stringResource(R.string.retry),
                     style = MaterialTheme.typography.labelLarge.copy(
                         color = MaterialTheme.colorScheme.scrim, fontWeight = FontWeight.Bold
                     ),
@@ -126,35 +136,41 @@ fun MySnackBar(
     }
 }
 
+data class MySnackBarModel(
+    val title : String?,
+    val message : String?,
+    val type : SnackBarType
+)
+
 enum class SnackBarType(
     val lightColor: Color,
-    val onLightColor: Color,
     val containerColor: Color,
-    val onContainerColor: Color
+    val onContainerColor: Color,
+    @DrawableRes val iconId : Int
 ) {
     SUCCESS(
         lightColor = Color(0xFF1E7D3A),
-        onLightColor = Color(0xFFFFFFFF),
         containerColor = Color(0xFFD3F6E6),
-        onContainerColor = Color(0xFF003214)
+        onContainerColor = Color(0xFF003214),
+        iconId = R.drawable.ic_success_snack_bar
     ),
     INFO(
         lightColor = Color(0xFF005FCC),
-        onLightColor = Color(0xFFFFFFFF),
         containerColor = Color(0xFFD5E3FF),
-        onContainerColor = Color(0xFF001A3C)
+        onContainerColor = Color(0xFF001A3C),
+        iconId = R.drawable.ic_info_snack_bar
     ),
     WARNING(
         lightColor = Color(0xFFDC7800),
-        onLightColor = Color(0xFFFFFFFF),
         containerColor = Color(0xFFFFE7C2),
-        onContainerColor = Color(0xFF3B2100)
+        onContainerColor = Color(0xFF3B2100),
+        iconId = R.drawable.ic_warning_snack_bar
     ),
     ERROR(
         lightColor = Color(0xFFBA1A1A),
-        onLightColor = Color(0xFFFFFFFF),
         containerColor = Color(0xFFFFDAD6),
-        onContainerColor = Color(0xFF410002)
+        onContainerColor = Color(0xFF410002),
+        iconId = R.drawable.ic_error_outline
     )
 }
 

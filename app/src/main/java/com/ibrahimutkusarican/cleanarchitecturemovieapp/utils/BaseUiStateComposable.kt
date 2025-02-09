@@ -7,10 +7,10 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 
 @Composable
-fun BaseUiStateComposable(
-    uiState: UiState<*>,
+fun <T>BaseUiStateComposable(
+    uiState: UiState<T>,
     tryAgainOnClickAction: () -> Unit,
-    successScreen : @Composable () -> Unit
+    successScreen : @Composable (data : T) -> Unit
 ) {
     when (uiState) {
         is UiState.Error -> ErrorScreen(
@@ -19,6 +19,6 @@ fun BaseUiStateComposable(
         )
 
         UiState.Loading -> LoadingScreen()
-        is UiState.Success -> successScreen()
+        is UiState.Success -> successScreen(uiState.data)
     }
 }

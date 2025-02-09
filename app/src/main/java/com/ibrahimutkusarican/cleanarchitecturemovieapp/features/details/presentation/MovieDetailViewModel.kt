@@ -1,14 +1,17 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation
 
 import androidx.lifecycle.viewModelScope
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieDetailUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.AddMyListMovieUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.DeleteMyListMovieUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,7 +27,8 @@ import javax.inject.Inject
 class MovieDetailViewModel @Inject constructor(
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
     private val addMyListMovieUseCase: AddMyListMovieUseCase,
-    private val deleteMyListMovieUseCase: DeleteMyListMovieUseCase
+    private val deleteMyListMovieUseCase: DeleteMyListMovieUseCase,
+    private val stringProvider: StringProvider
 ) : BaseViewModel() {
 
     private val _movieDetailModel = MutableStateFlow<MovieDetailModel?>(null)
@@ -33,8 +37,8 @@ class MovieDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState<MovieDetailModel>>(UiState.Loading)
     val uiState: StateFlow<UiState<MovieDetailModel>> = _uiState
 
-    private val _showSnackBar = MutableSharedFlow<SnackBarType>()
-    val showSnackBar : SharedFlow<SnackBarType> = _showSnackBar
+    private val _showSnackBar = MutableSharedFlow<MySnackBarModel>()
+    val showSnackBar: SharedFlow<MySnackBarModel> = _showSnackBar
 
     fun getMovieDetail(movieId: Int) {
         getMovieDetailUseCase.getMovieDetail(movieId)
@@ -71,7 +75,16 @@ class MovieDetailViewModel @Inject constructor(
                                         )
                                     )
                                 }
-                                _showSnackBar.emit(SnackBarType.SUCCESS)
+                                _showSnackBar.emit(
+                                    MySnackBarModel(
+                                        title = if (model.movieDetailInfoModel.isFavorite) stringProvider.getStringFromResource(R.string.remove_favorite) else stringProvider.getStringFromResource(R.string.add_favorite),
+                                        message = stringProvider.getStringFromResource(
+                                            R.string.movie_added_to_favorite,
+                                            model.movieDetailInfoModel.title
+                                        ),
+                                        type = SnackBarType.SUCCESS
+                                    )
+                                )
                             }.launchIn(viewModelScope)
                             if (model.movieDetailInfoModel.isAddedToWatchList) {
                                 deleteMyListMovieUseCase.deleteMyListMovieFromDetail(

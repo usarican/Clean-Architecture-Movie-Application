@@ -31,8 +31,12 @@
     <string name="play">Play</string>
     <string name="add_favorite">Add Favorite</string>
     <string name="remove_favorite">Remove Favorite</string>
+    <string name="movie_added_to_favorite">%1$s Added to Favorite List.</string>
+    <string name="movie_removed_to_favorite">%1$s Removed to Favorite List.</string>
     <string name="add_watch_list">Add Watch List</string>
     <string name="remove_watch_list">Remove Watch List</string>
+    <string name="movie_added_to_watch_list">%1$s Added to Watch List.</string>
+    <string name="movie_removed_to_watch_list">%1$s Removed to Watch List.</string>
     <string name="revenue">Revenue</string>
     <string name="rating">Rating</string>
     <string name="release">Release</string>
@@ -54,7 +58,7 @@
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
     <string name="see_more">See More</string>
-    <string name="movie_added_to_favorite">%1$s Added to Favorite List.</string>
+
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

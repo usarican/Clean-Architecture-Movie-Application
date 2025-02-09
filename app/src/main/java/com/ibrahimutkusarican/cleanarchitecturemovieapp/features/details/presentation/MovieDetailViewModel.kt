@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
@@ -58,7 +59,10 @@ class MovieDetailViewModel @Inject constructor(
                 when (action.data.type) {
                     MovieDetailActionButtonType.PLAY -> TODO()
                     MovieDetailActionButtonType.SHARE -> TODO()
-                    MovieDetailActionButtonType.ADD_FAVORITE -> addMovieFavoriteList(movieDetailModel.value)
+                    MovieDetailActionButtonType.ADD_FAVORITE -> addMovieFavoriteList(
+                        movieDetailModel.value
+                    )
+
                     MovieDetailActionButtonType.ADD_WATCH_LIST -> addMovieWatchList(movieDetailModel.value)
                 }
             }
@@ -76,7 +80,9 @@ class MovieDetailViewModel @Inject constructor(
                         title = if (model.movieDetailInfoModel.isFavorite) stringProvider.getStringFromResource(
                             R.string.remove_favorite
                         ) else stringProvider.getStringFromResource(R.string.add_favorite),
-                        message = stringProvider.getStringFromResource(
+                        message = if (model.movieDetailInfoModel.isFavorite) stringProvider.getStringFromResource(
+                            R.string.movie_removed_to_favorite, model.movieDetailInfoModel.title
+                        ) else stringProvider.getStringFromResource(
                             R.string.movie_added_to_favorite, model.movieDetailInfoModel.title
                         ),
                         type = SnackBarType.SUCCESS
@@ -94,17 +100,24 @@ class MovieDetailViewModel @Inject constructor(
                 _movieDetailModel.update { updateModel }
                 _showSnackBar.emit(
                     MySnackBarModel(
-                        title = if (model.movieDetailInfoModel.isFavorite) stringProvider.getStringFromResource(
-                            R.string.remove_favorite
-                        ) else stringProvider.getStringFromResource(R.string.add_favorite),
-                        message = stringProvider.getStringFromResource(
-                            R.string.movie_added_to_favorite, model.movieDetailInfoModel.title
+                        title = if (model.movieDetailInfoModel.isAddedToWatchList) stringProvider.getStringFromResource(
+                            R.string.remove_watch_list
+                        ) else stringProvider.getStringFromResource(R.string.add_watch_list),
+                        message = if (model.movieDetailInfoModel.isAddedToWatchList) stringProvider.getStringFromResource(
+                            R.string.movie_removed_to_watch_list, model.movieDetailInfoModel.title
+                        ) else stringProvider.getStringFromResource(
+                            R.string.movie_added_to_watch_list, model.movieDetailInfoModel.title
                         ),
                         type = SnackBarType.SUCCESS
                     )
                 )
             }.launchIn(viewModelScope)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("MovieDetailViewModel", "OnCleared Triggered.")
     }
 }
 

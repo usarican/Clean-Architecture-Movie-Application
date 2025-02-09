@@ -64,10 +64,10 @@ fun MySnackBar(
     }
     AnimatedVisibility(
         visible = visibility, modifier = modifier,
-        enter = fadeIn(
-            animationSpec = spring(Spring.DampingRatioMediumBouncy)
-        ) + slideInVertically(),
-        exit = fadeOut() + slideOutVertically()
+        enter = slideInVertically(
+            animationSpec = spring(Spring.DampingRatioHighBouncy)
+        ),
+        exit = slideOutVertically()
     ) {
 
         Card(

@@ -2,6 +2,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.present
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -18,7 +19,12 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -29,13 +35,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
 fun MyListScreen() {
     Column(
-        modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars).padding(vertical = dimensionResource(R.dimen.medium_padding)).fillMaxSize(),
+        modifier = Modifier
+            .windowInsetsPadding(WindowInsets.statusBars)
+            .padding(vertical = dimensionResource(R.dimen.medium_padding))
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -44,41 +57,79 @@ fun MyListScreen() {
         val coroutineScope = rememberCoroutineScope()
         val favoriteMovies = viewModel.favoriteMovies.collectAsLazyPagingItems()
         val watchListMovies = viewModel.watchListMovies.collectAsLazyPagingItems()
-        MyListTabLayout(
-            modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.medium_padding)),
-            currentPage = state.currentPage,
-            onClickAction = { index ->
-                coroutineScope.launch { state.animateScrollToPage(index) }
-            }
-        )
-        HorizontalPager(
-            modifier = Modifier.fillMaxSize()
-                .padding(vertical = dimensionResource(R.dimen.medium_padding)),
-            state = state,
-        ) { page ->
-            when(page){
-                0 -> MyListPageScreen(movies = favoriteMovies)
-                1 -> MyListPageScreen(movies = watchListMovies)
+        var snackBarModel by remember { mutableStateOf<MySnackBarModel?>(null) }
+
+        LaunchedEffect(Unit) {
+            viewModel.showSnackBar.collectLatest { model ->
+                snackBarModel = model
+                coroutineScope.launch {
+                    delay(3000)
+                    snackBarModel = null
+                }
             }
         }
+
+        Box(Modifier.fillMaxSize()) {
+            MyListTabLayout(
+                modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.medium_padding)),
+                currentPage = state.currentPage,
+                onClickAction = { index ->
+                    coroutineScope.launch { state.animateScrollToPage(index) }
+                }
+            )
+            HorizontalPager(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = dimensionResource(R.dimen.medium_padding)),
+                state = state,
+            ) { page ->
+                when (page) {
+                    0 -> MyListPageScreen(movies = favoriteMovies)
+                    1 -> MyListPageScreen(movies = watchListMovies)
+                }
+            }
+            snackBarModel?.let {
+                MySnackBar(
+                    snackBarModel = it,
+                    visible = true,
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                    actionLabel = stringResource(R.string.delete),
+                    action = {
+                        viewModel.handleUiAction(MyListUiAction.SnackBarDeleteAction(deleteCallBack = {
+
+                        }))
+                    }
+                )
+            }
+        }
+
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-private fun MyListTabLayout(modifier: Modifier = Modifier, currentPage: Int = 0,onClickAction : (index : Int) -> Unit = {}) {
+private fun MyListTabLayout(
+    modifier: Modifier = Modifier,
+    currentPage: Int = 0,
+    onClickAction: (index: Int) -> Unit = {}
+) {
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
         Card(
-            border = BorderStroke(dimensionResource(R.dimen.one_dp), MaterialTheme.colorScheme.outline),
+            border = BorderStroke(
+                dimensionResource(R.dimen.one_dp),
+                MaterialTheme.colorScheme.outline
+            ),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.background
             ),
             shape = RoundedCornerShape(dimensionResource(R.dimen.small_border))
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = dimensionResource(R.dimen.small_padding)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = dimensionResource(R.dimen.small_padding)),
                 horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding))
             ) {
                 MyListPage.entries.forEach { page ->
@@ -113,10 +164,12 @@ private fun MyListTabLayoutItem(
         )
     ) {
         Text(
-            modifier = Modifier.fillMaxWidth().padding(
-                vertical = dimensionResource(R.dimen.small_padding),
-                horizontal = dimensionResource(R.dimen.medium_padding)
-            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    vertical = dimensionResource(R.dimen.small_padding),
+                    horizontal = dimensionResource(R.dimen.medium_padding)
+                ),
             textAlign = TextAlign.Center,
             text = stringResource(page.title), style = MaterialTheme.typography.titleMedium.copy(
                 fontWeight = if (isSelected) FontWeight.W700 else FontWeight.W400,

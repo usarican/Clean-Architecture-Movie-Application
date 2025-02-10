@@ -3,6 +3,6 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.present
 sealed class MyListUiAction {
     data class MovieClickAction(val movieId : Int) : MyListUiAction()
     data class MovieDeleteAction(val data: MyListViewModel.DeleteMovieData) : MyListUiAction()
-    data class UndoAction(val data: MyListViewModel.DeleteMovieData) : MyListUiAction()
-    data class SnackBarDeleteAction(val deleteCallBack : () -> Unit) : MyListUiAction()
+    data object UndoAction : MyListUiAction()
+    data object SnackBarDeleteAction : MyListUiAction()
 }

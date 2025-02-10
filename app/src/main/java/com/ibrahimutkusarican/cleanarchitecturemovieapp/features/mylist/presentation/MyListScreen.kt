@@ -37,6 +37,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -44,13 +45,11 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MyListScreen() {
-    Column(
+    Box(
         modifier = Modifier
             .windowInsetsPadding(WindowInsets.statusBars)
             .padding(vertical = dimensionResource(R.dimen.medium_padding))
             .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val viewModel = hiltViewModel<MyListViewModel>()
         val state = rememberPagerState { MyListPage.entries.size }
@@ -69,7 +68,7 @@ fun MyListScreen() {
             }
         }
 
-        Box(Modifier.fillMaxSize()) {
+        Column(Modifier.fillMaxSize()) {
             MyListTabLayout(
                 modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.medium_padding)),
                 currentPage = state.currentPage,
@@ -84,22 +83,48 @@ fun MyListScreen() {
                 state = state,
             ) { page ->
                 when (page) {
-                    0 -> MyListPageScreen(movies = favoriteMovies)
-                    1 -> MyListPageScreen(movies = watchListMovies)
+                    0 -> MyListPageScreen(
+                        movies = favoriteMovies,
+                        handleUiAction = viewModel::handleUiAction,
+                        pageIndex = page
+                    )
+
+                    1 -> MyListPageScreen(
+                        movies = watchListMovies,
+                        handleUiAction = viewModel::handleUiAction,
+                        pageIndex = page
+                    )
                 }
             }
-            snackBarModel?.let {
-                MySnackBar(
-                    snackBarModel = it,
-                    visible = true,
-                    modifier = Modifier.align(Alignment.BottomCenter),
-                    actionLabel = stringResource(R.string.delete),
-                    action = {
-                        viewModel.handleUiAction(MyListUiAction.SnackBarDeleteAction(deleteCallBack = {
+        }
+        snackBarModel?.let {
+            when (it.type) {
+                SnackBarType.SUCCESS -> {
+                    MySnackBar(
+                        snackBarModel = it,
+                        visible = true,
+                        modifier = Modifier.align(Alignment.BottomCenter),
+                        actionLabel = stringResource(R.string.undo),
+                        action = {
+                            viewModel.handleUiAction(MyListUiAction.UndoAction)
+                        }
+                    )
+                }
 
-                        }))
-                    }
-                )
+                SnackBarType.INFO -> TODO()
+                SnackBarType.WARNING -> {
+                    MySnackBar(
+                        snackBarModel = it,
+                        visible = true,
+                        modifier = Modifier.align(Alignment.BottomCenter),
+                        actionLabel = stringResource(R.string.delete),
+                        action = {
+                            viewModel.handleUiAction(MyListUiAction.SnackBarDeleteAction)
+                        }
+                    )
+                }
+
+                SnackBarType.ERROR -> TODO()
             }
         }
 

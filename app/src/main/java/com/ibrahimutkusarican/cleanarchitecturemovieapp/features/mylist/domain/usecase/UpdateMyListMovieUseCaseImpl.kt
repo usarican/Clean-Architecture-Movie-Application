@@ -12,6 +12,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.m
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getSuccessOrThrow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
@@ -35,9 +36,9 @@ class UpdateMyListMovieUseCaseImpl @Inject constructor(
                         genreList
                     )
                 if (myListUpdatePage.thisMovieModelShouldDeleteFromMyList(basicMovieModel)) {
-                    myListRepository.deleteMyListMovie(movieEntity)
+                    myListRepository.deleteMyListMovie(movieEntity).first().getSuccessOrThrow()
                 } else {
-                    myListRepository.insertMyListMovie(movieEntity)
+                    myListRepository.insertMyListMovie(movieEntity).first().getSuccessOrThrow()
                 }
                 updatedBasicMovieModel
             }
@@ -59,9 +60,9 @@ class UpdateMyListMovieUseCaseImpl @Inject constructor(
                         genreList
                     )
                 if (myListUpdatePage.thisMovieModelShouldDeleteFromMyList(movieDetailModel)) {
-                    myListRepository.deleteMyListMovie(movieEntity)
+                    myListRepository.deleteMyListMovie(movieEntity).first().getSuccessOrThrow()
                 } else {
-                    myListRepository.insertMyListMovie(movieEntity)
+                    myListRepository.insertMyListMovie(movieEntity).first().getSuccessOrThrow()
                 }
                 updatedMovieDetailModel
             }
@@ -84,9 +85,9 @@ class UpdateMyListMovieUseCaseImpl @Inject constructor(
                         genreList
                     )
                 if (myListUpdatePage.thisMovieModelShouldDeleteFromMyList(myListMovieModel)) {
-                    myListRepository.deleteMyListMovie(movieEntity)
+                    myListRepository.deleteMyListMovie(movieEntity).first().getSuccessOrThrow()
                 } else {
-                    myListRepository.insertMyListMovie(movieEntity)
+                    myListRepository.insertMyListMovie(movieEntity).first().getSuccessOrThrow()
                 }
                 updatedMyListMovieModel
             }

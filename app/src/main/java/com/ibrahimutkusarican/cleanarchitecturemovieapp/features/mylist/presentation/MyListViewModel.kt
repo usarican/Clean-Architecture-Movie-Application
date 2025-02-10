@@ -53,7 +53,7 @@ class MyListViewModel @Inject constructor(
 
             is MyListUiAction.UndoAction -> TODO()
             is MyListUiAction.SnackBarDeleteAction -> {
-                deleteMovie(myListUiAction.deleteCallBack)
+                deleteMovie()
             }
         }
     }
@@ -76,7 +76,7 @@ class MyListViewModel @Inject constructor(
         }
     }
 
-    private fun deleteMovie(deleteCallBack : () -> Unit) {
+    private fun deleteMovie() {
         deleteMovieData?.let { data ->
             updateMyListMovieUseCase.updateFavoriteMovieFromMyList(data.movie,data.page)
                 .doOnSuccess {
@@ -91,7 +91,6 @@ class MyListViewModel @Inject constructor(
                             type = SnackBarType.SUCCESS,
                         )
                     )
-                    deleteCallBack.invoke()
                 }
                 .launchIn(viewModelScope)
         }

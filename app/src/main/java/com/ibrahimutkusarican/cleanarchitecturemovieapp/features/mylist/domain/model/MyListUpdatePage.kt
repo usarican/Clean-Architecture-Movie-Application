@@ -68,4 +68,8 @@ enum class MyListUpdatePage(
                 isAddedWatchList = myListMovieModel.isAddedWatchList.not()
             )
         }
+
+    companion object {
+        fun findPageByIndex(index : Int) = entries.firstOrNull { it.index == index } ?: FAVORITE
+    }
 }

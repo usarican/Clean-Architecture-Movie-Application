@@ -34,7 +34,7 @@ class SeeAllMovieModelMapper @Inject constructor(
     fun entityToModel(entity: VisitedMovieEntity): SeeAllMovieModel {
         return with(entity) {
             SeeAllMovieModel(
-                movieId = id,
+                movieId = movieId,
                 movieTitle = title,
                 movieContent = overview,
                 movieGenres = genres.map { it.genreName },

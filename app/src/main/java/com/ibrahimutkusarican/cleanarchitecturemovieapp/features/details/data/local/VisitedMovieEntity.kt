@@ -7,8 +7,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.remote.r
 
 @Entity(tableName = "visited_movie")
 data class VisitedMovieEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "movie_id") val movieId: Int,
+    @PrimaryKey @ColumnInfo(name = "movie_id") val movieId: Int,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "poster_path") val posterPath: String,
     @ColumnInfo(name = "overview") val overview: String,
@@ -22,5 +21,6 @@ data class VisitedMovieEntity(
     @ColumnInfo(name = "runtime") val runtime: Int,
     @ColumnInfo(name = "status") val status: String,
     @ColumnInfo(name = "tagline") val tagline: String,
-    @ColumnInfo(name = "genres") val genres: List<Genre>
+    @ColumnInfo(name = "genres") val genres: List<Genre>,
+    @ColumnInfo(name = "visited_time") val visitedTime: Long = System.currentTimeMillis()
 )

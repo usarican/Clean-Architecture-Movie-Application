@@ -26,7 +26,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.presenta
 fun RecentlyViewedMovies(
     modifier: Modifier = Modifier,
     movies: List<SeeAllMovieModel>,
-    seeAllClickAction: () -> Unit = {},
     movieClickAction: (movieId: Int) -> Unit = {}
 ) {
     Column(
@@ -45,14 +44,14 @@ fun RecentlyViewedMovies(
             )
         }
 
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxSize()
                 .padding(top = dimensionResource(R.dimen.small_padding)),
             verticalArrangement = spacedBy(dimensionResource(R.dimen.medium_padding)),
         ) {
-            items(movies) { movie ->
+            movies.forEach { movie ->
                 SeeAllMovieItem(
                     movieClickAction = movieClickAction,
                     seeAllMovie = movie

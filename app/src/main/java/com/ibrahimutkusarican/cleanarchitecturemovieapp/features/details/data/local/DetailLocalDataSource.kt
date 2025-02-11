@@ -5,12 +5,11 @@ import javax.inject.Inject
 class DetailLocalDataSource @Inject constructor(
     private val visitedMovieDao: VisitedMovieDao
 ) {
-    suspend fun getVisitedMovies() = visitedMovieDao.getVisitedMovies()
-    suspend fun insertVisitedMovie(visitedMovieEntity: VisitedMovieEntity) =
+    suspend fun insertVisitedMovie(visitedMovieEntity: VisitedMovieEntity) {
         visitedMovieDao.insertVisitedMovie(visitedMovieEntity)
-
-    suspend fun deleteVisitedMovie(visitedMovieEntity: VisitedMovieEntity) {
-        visitedMovieDao.deleteVisitedMovie(visitedMovieEntity)
+        val count = visitedMovieDao.getMovieCount()
+        if (count > 10) {
+            visitedMovieDao.deleteOldestMovie()
+        }
     }
-
 }

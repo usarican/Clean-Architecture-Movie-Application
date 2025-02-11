@@ -11,8 +11,8 @@ class MyListLocalDataSource @Inject constructor(
 
     fun getFavoriteMoviesPaging() = myListMovieDao.getFavoriteMoviesPaging()
     fun getWatchListMoviesPaging() = myListMovieDao.getWatchListMoviesPaging()
-    suspend fun deleteMyListMovie(movieEntity: MyListMovieEntity) {
-        myListMovieDao.deleteMyListMovie(movieEntity)
+    suspend fun deleteMyListMovie(movieEntity: MyListMovieEntity) : Int {
+        return myListMovieDao.deleteMyListMovie(movieEntity)
     }
 
     suspend fun getMyListMovieFavoriteAndWatchListStatus(movieId: Int) =

@@ -10,6 +10,6 @@ interface MyListRepository {
     fun getFavoriteMoviesPaging(): Flow<PagingData<MyListMovieEntity>>
     fun getWatchListMoviesPaging(): Flow<PagingData<MyListMovieEntity>>
     fun insertMyListMovie(movieEntity: MyListMovieEntity): Flow<ApiState<Unit>>
-    fun deleteMyListMovie(movieEntity: MyListMovieEntity): Flow<ApiState<Unit>>
+    fun deleteMyListMovie(movieEntity: MyListMovieEntity): Flow<ApiState<Int>>
     fun getMyListMovieFavoriteAndWatchListStatus(movieId: Int): Flow<ApiState<MovieFavoriteAndWatchListStatus?>>
 }

@@ -31,7 +31,7 @@ class MyListRepositoryImpl @Inject constructor(
         return apiCall { myListLocalDataSource.insertMyListMovie(movieEntity) }
     }
 
-    override fun deleteMyListMovie(movieEntity: MyListMovieEntity): Flow<ApiState<Unit>> {
+    override fun deleteMyListMovie(movieEntity: MyListMovieEntity): Flow<ApiState<Int>> {
         return apiCall { myListLocalDataSource.deleteMyListMovie(movieEntity) }
     }
 

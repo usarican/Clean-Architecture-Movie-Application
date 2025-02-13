@@ -31,6 +31,10 @@ class MovieDetailViewModel @Inject constructor(
     private val stringProvider: StringProvider
 ) : BaseViewModel() {
 
+    init {
+        Log.d("MovieDetailViewModel", "Movie DetailViewModel init")
+    }
+
     private val _movieDetailModel = MutableStateFlow<MovieDetailModel?>(null)
     val movieDetailModel: StateFlow<MovieDetailModel?> = _movieDetailModel
 
@@ -41,6 +45,7 @@ class MovieDetailViewModel @Inject constructor(
     val showSnackBar: SharedFlow<MySnackBarModel> = _showSnackBar
 
     fun getMovieDetail(movieId: Int) {
+        Log.d("MovieDetailViewModel", "Get Movie Detail Triggered")
         getMovieDetailUseCase.getMovieDetail(movieId)
             .doOnSuccess { model ->
                 _movieDetailModel.value = model

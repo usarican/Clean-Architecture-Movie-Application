@@ -77,7 +77,9 @@ fun MainScreen(viewModel: MainViewModel) {
             composable<NavigationRoutes.MovieDetail> { backStackEntry ->
                 val detailViewModel = hiltViewModel<MovieDetailViewModel>()
                 val movieId = backStackEntry.toRoute<NavigationRoutes.MovieDetail>().movieId
-                detailViewModel.getMovieDetail(movieId)
+                LaunchedEffect(movieId) {
+                    detailViewModel.getMovieDetail(movieId)
+                }
                 MovieDetailScreen(viewModel = detailViewModel)
             }
             composable<NavigationRoutes.BannerMovies> { backStackEntry ->

@@ -39,6 +39,8 @@ class ExploreViewModel @Inject constructor(
             is ExploreUiAction.SearchBarClickAction -> {
                 sendEvent(MyEvent.SearchBarClickEvent(action.recommendedMovieId))
             }
+
+            is ExploreUiAction.ForYouMovieClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
         }
     }
 

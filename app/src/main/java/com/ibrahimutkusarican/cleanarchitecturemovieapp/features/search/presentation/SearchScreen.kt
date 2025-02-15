@@ -32,7 +32,8 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
     val uiState by viewModel.searchScreenUiState.collectAsStateWithLifecycle()
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .windowInsetsPadding(WindowInsets.statusBars)
     ) {
         MyTopBar(
@@ -51,7 +52,7 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                 )
             }
         )
-        if (searchScreenModel.searchText.isEmpty()){
+        if (searchScreenModel.searchText.isEmpty()) {
             BaseUiStateComposable(
                 uiState = uiState,
                 tryAgainOnClickAction = {}
@@ -64,24 +65,37 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                     verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
                 ) {
                     TopSearch(
-                        topSearchMovieNames = searchScreenModel.topSearchedMovies
+                        topSearchMovieNames = searchScreenModel.topSearchedMovies,
+                        handleSearchUiAction = viewModel::handleSearchScreenAction
                     )
                     LastSearch(
-                        lastSearch = searchScreenModel.lastSearchKeys
+                        lastSearch = searchScreenModel.lastSearchKeys,
+                        handleSearchUiAction = viewModel::handleSearchScreenAction
                     )
                     RecommendedMoviesForYou(
-                        movies = searchScreenModel.recommendedMoviesForYou
+                        movies = searchScreenModel.recommendedMoviesForYou,
+                        movieClickAction = { movieId ->
+                            viewModel.handleSearchScreenAction(SearchUiAction.MovieClick(movieId))
+                        },
+                        seeAllClickAction = {
+                            viewModel.handleSearchScreenAction(SearchUiAction.RecommendedMovieSeeAllClickAction)
+                        }
+                        // TODO: Handle see All action
                     )
-                    if(searchScreenModel.recentlyViewedMovies.isNotEmpty()){
+                    if (searchScreenModel.recentlyViewedMovies.isNotEmpty()) {
                         RecentlyViewedMovies(
-                            movies = searchScreenModel.recentlyViewedMovies
+                            movies = searchScreenModel.recentlyViewedMovies,
+                            movieClickAction = { movieId ->
+                                viewModel.handleSearchScreenAction(SearchUiAction.MovieClick(movieId))
+                            }
                         )
                     }
                 }
             }
         } else {
             SearchedMoviesList(
-                pagingMovies = searchedMovies
+                pagingMovies = searchedMovies,
+                handleUiAction = viewModel::handleSearchScreenAction
             )
         }
     }

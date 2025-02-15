@@ -25,7 +25,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 @Preview(showBackground = true)
 fun TopSearch(
     modifier: Modifier = Modifier,
-    topSearchMovieNames: List<String> = listOf("Movie1", "Movie2", "Movie3")
+    topSearchMovieNames: List<String> = listOf("Movie1", "Movie2", "Movie3"),
+    handleSearchUiAction: (uiAction : SearchUiAction) -> Unit = {}
 ) {
     Column(
         modifier = modifier.fillMaxWidth()
@@ -58,7 +59,10 @@ fun TopSearch(
             topSearchMovieNames.forEach { item ->
                 SearchItem(
                     itemName = item,
-                    searchItemType = SearchItemType.TOP_SEARCH
+                    searchItemType = SearchItemType.TOP_SEARCH,
+                    searchItemClickAction = {
+                        handleSearchUiAction.invoke(SearchUiAction.TopSearchItemClickAction(item))
+                    }
                 )
             }
         }

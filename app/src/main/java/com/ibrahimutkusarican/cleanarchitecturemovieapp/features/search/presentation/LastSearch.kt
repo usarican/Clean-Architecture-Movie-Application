@@ -26,7 +26,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 fun LastSearch(
     modifier: Modifier = Modifier,
     lastSearch: List<String> = listOf("ASDSAD", "Movie5", "Movie8"),
-    clearAllAction : () -> Unit = {}
+    handleSearchUiAction: (uiAction : SearchUiAction) -> Unit = {}
 ){
     Column(
         modifier = modifier.fillMaxWidth()
@@ -44,7 +44,7 @@ fun LastSearch(
             )
             Text(
                 modifier = Modifier.clickable {
-                    clearAllAction()
+                    handleSearchUiAction.invoke(SearchUiAction.LastSearchAllClearAction)
                 },
                 text = stringResource(R.string.clear_all),
                 style = MaterialTheme.typography.bodyMedium.copy(
@@ -61,7 +61,13 @@ fun LastSearch(
             lastSearch.forEach { item ->
                 SearchItem(
                     itemName = item,
-                    searchItemType = SearchItemType.LAST_SEARCH
+                    searchItemType = SearchItemType.LAST_SEARCH,
+                    searchItemRemoveClickAction = {
+                        handleSearchUiAction.invoke(SearchUiAction.LastSearchItemDeleteClickAction(item))
+                    },
+                    searchItemClickAction = {
+                        handleSearchUiAction.invoke(SearchUiAction.LastSearchItemClickAction(item))
+                    }
                 )
             }
         }

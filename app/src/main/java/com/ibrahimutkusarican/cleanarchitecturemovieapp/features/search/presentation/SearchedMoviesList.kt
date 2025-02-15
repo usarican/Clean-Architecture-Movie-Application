@@ -33,13 +33,14 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 fun SearchedMoviesList(
     modifier: Modifier = Modifier,
     pagingMovies: LazyPagingItems<SeeAllMovieModel>,
+    handleUiAction: (uiAction : SearchUiAction) -> Unit
 ) {
     BasePagingComposable(
         pagingItems = pagingMovies,
     ) {
         LazyVerticalGrid (
             columns = GridCells.Fixed(3),
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(horizontal = dimensionResource(R.dimen.large_padding)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
@@ -49,7 +50,10 @@ fun SearchedMoviesList(
                 key = { index -> index }) { index ->
                 pagingMovies[index]?.let { movie ->
                     SearchMovieItem(
-                        movie = movie
+                        movie = movie,
+                        movieClickAction = { movieId ->
+                            handleUiAction.invoke(SearchUiAction.MovieClick(movieId))
+                        }
                     )
                 }
             }

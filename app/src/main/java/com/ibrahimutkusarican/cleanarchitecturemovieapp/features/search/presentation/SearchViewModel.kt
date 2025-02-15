@@ -36,8 +36,11 @@ class SearchViewModel @Inject constructor(
     private val _searchScreenUiState = MutableStateFlow<UiState<SearchScreenModel>>(UiState.Loading)
     val searchScreenUiState : StateFlow<UiState<SearchScreenModel>> = _searchScreenUiState
 
+    private var recommendedMovieId : Int? = null
+
 
     fun getSearchScreenModel(recommendedMovieId : Int?) {
+        this.recommendedMovieId = recommendedMovieId
         getSearchScreenModelUseCase.getScreenModelUseCase(movieId = recommendedMovieId)
             .doOnSuccess { model -> _searchScreenModel.value = model }
             .onEach { state -> _searchScreenUiState.value = state }
@@ -59,6 +62,12 @@ class SearchViewModel @Inject constructor(
             is SearchUiAction.SearchAction -> {
                 setSearchText(searchUiAction.searchText)
             }
+
+            SearchUiAction.LastSearchAllClearAction -> TODO()
+            is SearchUiAction.LastSearchItemClickAction -> setSearchText(searchUiAction.lastSearchItemText)
+            is SearchUiAction.LastSearchItemDeleteClickAction -> TODO()
+            is SearchUiAction.RecommendedMovieSeeAllClickAction -> TODO()
+            is SearchUiAction.TopSearchItemClickAction -> setSearchText(searchUiAction.topSearchItemText)
         }
     }
 

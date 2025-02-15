@@ -26,14 +26,18 @@ fun SearchItem(
     modifier: Modifier = Modifier,
     searchItemType: SearchItemType = SearchItemType.LAST_SEARCH,
     itemName: String = "Movie1",
-    lastSearchItemRemoveClickAction: (itemId: Int) -> Unit = {},
+    searchItemRemoveClickAction: (itemId: Int) -> Unit = {},
+    searchItemClickAction : (itemText : String) -> Unit = {}
 ) {
     val borderAndContentColor = when (searchItemType) {
         SearchItemType.TOP_SEARCH -> MaterialTheme.colorScheme.onBackground
         SearchItemType.LAST_SEARCH -> MaterialTheme.colorScheme.onSurfaceVariant
     }
     Card(
-        modifier = modifier,
+        modifier = modifier
+            .clickable {
+                searchItemClickAction(itemName)
+            },
         shape = RoundedCornerShape(dimensionResource(R.dimen.search_chip_corner_radius)),
         border = BorderStroke(
             dimensionResource(R.dimen.one_dp), borderAndContentColor
@@ -57,7 +61,7 @@ fun SearchItem(
                 Icon(
                     modifier = Modifier
                         .clickable {
-                            lastSearchItemRemoveClickAction(0)
+                            searchItemRemoveClickAction(0)
                         }
                         .size(dimensionResource(R.dimen.last_search_close_icon_size))
                         .padding(start = dimensionResource(R.dimen.six_padding)),

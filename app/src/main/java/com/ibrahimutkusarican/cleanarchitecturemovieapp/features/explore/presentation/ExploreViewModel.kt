@@ -32,13 +32,15 @@ class ExploreViewModel @Inject constructor(
 
     fun handleUiAction(action : ExploreUiAction){
         when(action){
-            is ExploreUiAction.BannerMovieClickAction -> TODO()
-            is ExploreUiAction.MovieClickAction -> TODO()
-            is ExploreUiAction.SeeAllClickAction -> TODO()
-            ExploreUiAction.ErrorRetryAction -> TODO()
+            is ExploreUiAction.BannerMovieClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
+            is ExploreUiAction.MovieClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
+            is ExploreUiAction.SeeAllClickAction -> sendEvent(MyEvent.SeeAllClickEvent(action.movieType))
+            ExploreUiAction.ErrorRetryAction -> getExploreInitialData()
             is ExploreUiAction.SearchBarClickAction -> {
                 sendEvent(MyEvent.SearchBarClickEvent(action.recommendedMovieId))
             }
+
+            is ExploreUiAction.ForYouMovieClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
         }
     }
 

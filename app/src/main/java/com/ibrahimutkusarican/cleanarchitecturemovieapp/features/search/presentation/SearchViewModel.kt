@@ -2,6 +2,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.present
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchScreenModel
@@ -53,8 +54,8 @@ class SearchViewModel @Inject constructor(
 
     fun handleSearchScreenAction(searchUiAction: SearchUiAction) {
         when (searchUiAction) {
-            is SearchUiAction.MovieClick -> TODO()
-            SearchUiAction.OnBackPress -> TODO()
+            is SearchUiAction.MovieClick -> sendEvent(MyEvent.MovieClickEvent(searchUiAction.movieId))
+            SearchUiAction.OnBackPress -> sendEvent(MyEvent.OnBackPressed)
             is SearchUiAction.SearchAction -> {
                 setSearchText(searchUiAction.searchText)
             }

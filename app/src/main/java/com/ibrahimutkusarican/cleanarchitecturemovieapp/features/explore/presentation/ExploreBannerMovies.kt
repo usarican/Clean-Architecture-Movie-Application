@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,7 +40,9 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 
 @Composable
 fun ExploreBannerMovies(
-    modifier: Modifier = Modifier, bannerMovies: List<BasicMovieModel>
+    modifier: Modifier = Modifier,
+    bannerMovies: List<BasicMovieModel>,
+    handleUiAction: (action: ExploreUiAction) -> Unit
 ) {
     val state = rememberPagerState { bannerMovies.size }
     HorizontalPager(
@@ -48,11 +51,14 @@ fun ExploreBannerMovies(
         contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.forty_dp)),
         pageSpacing = dimensionResource(R.dimen.twelve_padding),
     ) { page ->
-        ExploreBannerMovieItem(
-            modifier = Modifier.carouselTransition(
-                startValue = 0.85F, page = page, pagerState = state
-            ), bannerMovie = bannerMovies[page], isSelected = state.currentPage == page
-        )
+        ExploreBannerMovieItem(modifier = Modifier.carouselTransition(
+            startValue = 0.85F, page = page, pagerState = state
+        ),
+            bannerMovie = bannerMovies[page],
+            isSelected = state.currentPage == page,
+            movieClickAction = { movieId ->
+                handleUiAction(ExploreUiAction.BannerMovieClickAction(movieId))
+            })
     }
     Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_padding)))
 
@@ -97,7 +103,10 @@ private fun DotIndicator(state: PagerState) {
 
 @Composable
 fun ExploreBannerMovieItem(
-    modifier: Modifier = Modifier, bannerMovie: BasicMovieModel, isSelected: Boolean
+    modifier: Modifier = Modifier,
+    bannerMovie: BasicMovieModel,
+    isSelected: Boolean,
+    movieClickAction: (movieId: Int) -> Unit
 ) {
     val animatedElevation by animateDpAsState(
         targetValue = if (isSelected) 4.dp else 0.dp,
@@ -105,14 +114,13 @@ fun ExploreBannerMovieItem(
         label = ""
     )
 
-    Card(
-        elevation = CardDefaults.cardElevation(animatedElevation),
+    Card(elevation = CardDefaults.cardElevation(animatedElevation),
         shape = RoundedCornerShape(16.dp),
-        modifier = modifier
-    ) {
+        modifier = modifier.clickable {
+            movieClickAction(bannerMovie.movieId)
+        }) {
         MovieImage(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             imageUrl = bannerMovie.moviePosterImageUrl,
             contentScale = ContentScale.FillBounds
         )

@@ -1,6 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.presentation
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -47,10 +48,12 @@ fun ExploreForYouMovieView(
         moviePosterImageUrl = null,
         movieBackdropImageUrl = null,
         movieVotePoint = "8.2"
-    )
+    ),
+    handleUiAction: (action: ExploreUiAction) -> Unit = {}
 ) {
     Column(
         modifier = modifier.fillMaxWidth()
+            .clickable { handleUiAction(ExploreUiAction.ForYouMovieClickAction(movie.movieId)) }
     ) {
         Text(
             modifier = Modifier.padding(bottom = dimensionResource(R.dimen.small_padding)),

@@ -41,9 +41,7 @@ fun ExploreScreen() {
 
         UiState.Loading -> LoadingScreen()
         is UiState.Success -> {
-            ExploreSuccessScreen(data, searchBarClickAction = {
-                viewModel.handleUiAction(ExploreUiAction.SearchBarClickAction(data.forYouMovie?.movieId))
-            })
+            ExploreSuccessScreen(data, handleUiAction = viewModel::handleUiAction)
         }
     }
 
@@ -69,7 +67,7 @@ private fun ExploreSuccessScreen(
             movieVotePoint = "8.2"
         )
     ),
-    searchBarClickAction: () -> Unit = {},
+    handleUiAction: (action: ExploreUiAction) -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -78,16 +76,17 @@ private fun ExploreSuccessScreen(
             .verticalScroll(rememberScrollState())
             .padding(bottom = dimensionResource(R.dimen.medium_padding))
     ) {
-        MySearchBar(
-            searchText = "",
+        MySearchBar(searchText = "",
             showFilterIcon = true,
             isEnable = false,
             readOnly = true,
-            onClickAction = searchBarClickAction
-        )
+            onClickAction = {
+                handleUiAction(ExploreUiAction.SearchBarClickAction(data.forYouMovie?.movieId))
+            })
         ExploreBannerMovies(
             modifier = Modifier.height(dimensionResource(R.dimen.explore_banner_movie_height)),
-            bannerMovies = data.bannerMovies
+            bannerMovies = data.bannerMovies,
+            handleUiAction = handleUiAction
         )
         data.forYouMovie?.let {
             ExploreForYouMovieView(
@@ -95,19 +94,20 @@ private fun ExploreSuccessScreen(
                     start = dimensionResource(R.dimen.large_padding),
                     end = dimensionResource(R.dimen.large_padding),
                     top = dimensionResource(R.dimen.medium_padding)
-                ), movie = data.forYouMovie
+                ), movie = data.forYouMovie, handleUiAction = handleUiAction
             )
         }
 
-        MostPopularMovies(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = dimensionResource(R.dimen.large_padding),
-                    vertical = dimensionResource(R.dimen.medium_padding)
-                ),
-            movies = data.popularMovies
-        )
+        MostPopularMovies(modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = dimensionResource(R.dimen.large_padding),
+                vertical = dimensionResource(R.dimen.medium_padding)
+            ), movies = data.popularMovies, seeAllClickAction = { movieType ->
+            handleUiAction(ExploreUiAction.SeeAllClickAction(movieType))
+        }, movieClickAction = { movieId ->
+            handleUiAction(ExploreUiAction.MovieClickAction(movieId))
+        })
     }
 }
 

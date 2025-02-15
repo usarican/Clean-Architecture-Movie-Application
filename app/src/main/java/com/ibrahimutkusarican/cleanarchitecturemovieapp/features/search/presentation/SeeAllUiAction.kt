@@ -9,4 +9,5 @@ sealed class SearchUiAction {
     data class LastSearchItemClickAction(val lastSearchItemText : String) : SearchUiAction()
     data class LastSearchItemDeleteClickAction(val lastSearchItemText: String) : SearchUiAction()
     data object RecommendedMovieSeeAllClickAction : SearchUiAction()
+    data object ErrorTryAgainAction : SearchUiAction()
 }

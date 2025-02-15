@@ -19,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposable
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MyTopBar
 
@@ -39,7 +40,11 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
         MyTopBar(
             title = stringResource(R.string.search),
             onBackClick = {
-                viewModel.handleSearchScreenAction(SearchUiAction.OnBackPress)
+                if (searchScreenModel.searchText.isEmpty()) {
+                    viewModel.handleSearchScreenAction(SearchUiAction.OnBackPress)
+                } else {
+                    viewModel.handleSearchScreenAction(SearchUiAction.SearchAction(Constants.EMPTY_STRING))
+                }
             }
         )
         MySearchBar(
@@ -55,7 +60,9 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
         if (searchScreenModel.searchText.isEmpty()) {
             BaseUiStateComposable(
                 uiState = uiState,
-                tryAgainOnClickAction = {}
+                tryAgainOnClickAction = {
+                    viewModel.handleSearchScreenAction(SearchUiAction.ErrorTryAgainAction)
+                }
             ) {
                 Column(
                     modifier = Modifier

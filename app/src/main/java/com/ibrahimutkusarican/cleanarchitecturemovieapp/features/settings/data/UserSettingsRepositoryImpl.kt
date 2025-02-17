@@ -53,6 +53,6 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val DARK_MODE_KEY = booleanPreferencesKey("dark_mode")
         val NOTIFICATION_ENABLED_KEY = booleanPreferencesKey("notification_enabled")
         val LANGUAGE_KEY = stringPreferencesKey("language")
-        val DEFAULT_LANGUAGE = "en"
+        const val DEFAULT_LANGUAGE = "en"
     }
 }

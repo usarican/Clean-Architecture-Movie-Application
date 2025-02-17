@@ -1,6 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
@@ -55,10 +57,7 @@ class SearchViewModel @Inject constructor(
         _searchScreenModel.map { it.searchText }.filter { it.isNotEmpty() }.debounce(
             SEARCH_DEBOUNCE_TIME
         ).flatMapLatest { searchQuery ->
-            flow {
-                emit(PagingData.empty())
-                emitAll(searchMoviesUseCase.searchSeeAllMovies(searchText = searchQuery))
-            }
+            searchMoviesUseCase.searchSeeAllMovies(searchText = searchQuery)
         }.cachedIn(viewModelScope)
 
     fun handleSearchScreenAction(searchUiAction: SearchUiAction) {

@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -78,10 +79,12 @@ fun SeeAllMovieItem(
         movieTMDBScore = 7.4,
         movieReleaseTime = "2022-12-15"
     ),
-    movieClickAction : (movieId : Int) -> Unit = {}
+    movieClickAction: (movieId: Int) -> Unit = {}
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { movieClickAction(seeAllMovie.movieId) }, colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         )
     ) {

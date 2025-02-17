@@ -19,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposable
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MyTopBar
 
@@ -32,13 +33,18 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
     val uiState by viewModel.searchScreenUiState.collectAsStateWithLifecycle()
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .windowInsetsPadding(WindowInsets.statusBars)
     ) {
         MyTopBar(
             title = stringResource(R.string.search),
             onBackClick = {
-                viewModel.handleSearchScreenAction(SearchUiAction.OnBackPress)
+                if (searchScreenModel.searchText.isEmpty()) {
+                    viewModel.handleSearchScreenAction(SearchUiAction.OnBackPress)
+                } else {
+                    viewModel.handleSearchScreenAction(SearchUiAction.SearchAction(Constants.EMPTY_STRING))
+                }
             }
         )
         MySearchBar(
@@ -51,10 +57,12 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                 )
             }
         )
-        if (searchScreenModel.searchText.isEmpty()){
+        if (searchScreenModel.searchText.isEmpty()) {
             BaseUiStateComposable(
                 uiState = uiState,
-                tryAgainOnClickAction = {}
+                tryAgainOnClickAction = {
+                    viewModel.handleSearchScreenAction(SearchUiAction.ErrorTryAgainAction)
+                }
             ) {
                 Column(
                     modifier = Modifier
@@ -64,24 +72,37 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                     verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
                 ) {
                     TopSearch(
-                        topSearchMovieNames = searchScreenModel.topSearchedMovies
+                        topSearchMovieNames = searchScreenModel.topSearchedMovies,
+                        handleSearchUiAction = viewModel::handleSearchScreenAction
                     )
                     LastSearch(
-                        lastSearch = searchScreenModel.lastSearchKeys
+                        lastSearch = searchScreenModel.lastSearchKeys,
+                        handleSearchUiAction = viewModel::handleSearchScreenAction
                     )
                     RecommendedMoviesForYou(
-                        movies = searchScreenModel.recommendedMoviesForYou
+                        movies = searchScreenModel.recommendedMoviesForYou,
+                        movieClickAction = { movieId ->
+                            viewModel.handleSearchScreenAction(SearchUiAction.MovieClick(movieId))
+                        },
+                        seeAllClickAction = {
+                            viewModel.handleSearchScreenAction(SearchUiAction.RecommendedMovieSeeAllClickAction)
+                        }
+                        // TODO: Handle see All action
                     )
-                    if(searchScreenModel.recentlyViewedMovies.isNotEmpty()){
+                    if (searchScreenModel.recentlyViewedMovies.isNotEmpty()) {
                         RecentlyViewedMovies(
-                            movies = searchScreenModel.recentlyViewedMovies
+                            movies = searchScreenModel.recentlyViewedMovies,
+                            movieClickAction = { movieId ->
+                                viewModel.handleSearchScreenAction(SearchUiAction.MovieClick(movieId))
+                            }
                         )
                     }
                 }
             }
         } else {
             SearchedMoviesList(
-                pagingMovies = searchedMovies
+                pagingMovies = searchedMovies,
+                handleUiAction = viewModel::handleSearchScreenAction
             )
         }
     }

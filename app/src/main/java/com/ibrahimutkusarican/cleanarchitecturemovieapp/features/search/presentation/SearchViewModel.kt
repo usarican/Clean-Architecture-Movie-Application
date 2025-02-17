@@ -1,6 +1,9 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
@@ -16,8 +19,10 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -34,10 +39,13 @@ class SearchViewModel @Inject constructor(
     val searchScreenModel: StateFlow<SearchScreenModel> = _searchScreenModel
 
     private val _searchScreenUiState = MutableStateFlow<UiState<SearchScreenModel>>(UiState.Loading)
-    val searchScreenUiState : StateFlow<UiState<SearchScreenModel>> = _searchScreenUiState
+    val searchScreenUiState: StateFlow<UiState<SearchScreenModel>> = _searchScreenUiState
+
+    private var recommendedMovieId: Int? = null
 
 
-    fun getSearchScreenModel(recommendedMovieId : Int?) {
+    fun getSearchScreenModel(recommendedMovieId: Int?) {
+        this.recommendedMovieId = recommendedMovieId
         getSearchScreenModelUseCase.getScreenModelUseCase(movieId = recommendedMovieId)
             .doOnSuccess { model -> _searchScreenModel.value = model }
             .onEach { state -> _searchScreenUiState.value = state }
@@ -59,6 +67,13 @@ class SearchViewModel @Inject constructor(
             is SearchUiAction.SearchAction -> {
                 setSearchText(searchUiAction.searchText)
             }
+
+            SearchUiAction.LastSearchAllClearAction -> TODO()
+            is SearchUiAction.LastSearchItemClickAction -> setSearchText(searchUiAction.lastSearchItemText)
+            is SearchUiAction.LastSearchItemDeleteClickAction -> TODO()
+            is SearchUiAction.RecommendedMovieSeeAllClickAction -> TODO()
+            is SearchUiAction.TopSearchItemClickAction -> setSearchText(searchUiAction.topSearchItemText)
+            SearchUiAction.ErrorTryAgainAction -> TODO()
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.LocaleManager
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
 import dagger.Module
 import dagger.Provides
@@ -34,4 +35,10 @@ object ApplicationModule {
             }
         )
     }
+
+    @Singleton
+    @Provides
+    fun provideLocaleManager(
+        @ApplicationContext context: Context
+    ) : LocaleManager = LocaleManager(context)
 }

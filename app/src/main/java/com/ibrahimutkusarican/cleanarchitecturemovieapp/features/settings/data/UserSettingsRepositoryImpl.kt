@@ -32,6 +32,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
             prefs[LANGUAGE_KEY] = languageCode
         }
         localeManager.saveSelectedLanguage(languageCode)
+        localeManager.setLanguageChangeFlag(languageChange = true)
     }
 
     override fun getDarkMode(): Flow<Boolean> {

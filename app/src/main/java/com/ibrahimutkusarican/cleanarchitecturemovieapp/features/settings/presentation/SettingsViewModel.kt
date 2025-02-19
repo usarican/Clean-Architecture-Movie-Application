@@ -1,6 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.presentation
 
 import androidx.lifecycle.viewModelScope
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.SettingsModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.usecase.ChangeUserSettingsUseCase
@@ -44,7 +45,9 @@ class SettingsViewModel @Inject constructor(
 
     private fun changeLanguage(languageCode: String) {
         viewModelScope.launch {
+            if(userSettings.value.selectedLanguage.languageCode == languageCode) return@launch
             changeUserSettingsUseCase.changeLanguagePreferences(languageCode)
+            sendEvent(MyEvent.RestartApp)
         }
 
     }

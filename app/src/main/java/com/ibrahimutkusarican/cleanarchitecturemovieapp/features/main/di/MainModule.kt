@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.di
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.domain.RestartAppUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.domain.RestartAppUseCaseImpl
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.domain.LanguageChangeUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.domain.LanguageChangeUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -12,6 +12,6 @@ import dagger.hilt.android.components.ViewModelComponent
 abstract class MainModule {
 
     @Binds
-    abstract fun bindRestartAppUseCase(restartAppUseCaseImpl: RestartAppUseCaseImpl): RestartAppUseCase
+    abstract fun bindRestartAppUseCase(restartAppUseCaseImpl: LanguageChangeUseCaseImpl): LanguageChangeUseCase
 
 }

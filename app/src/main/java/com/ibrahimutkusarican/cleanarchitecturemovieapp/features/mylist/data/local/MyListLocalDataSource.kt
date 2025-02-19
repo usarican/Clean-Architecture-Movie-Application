@@ -18,4 +18,6 @@ class MyListLocalDataSource @Inject constructor(
     suspend fun getMyListMovieFavoriteAndWatchListStatus(movieId: Int) =
         myListMovieDao.getMyListMovieFavoriteAndWatchListStatus(movieId)
 
+    suspend fun getMyListMoviesIdList() = myListMovieDao.getMyListMovieIds()
+
 }

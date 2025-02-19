@@ -43,3 +43,11 @@ fun <T> ApiState<T>.getSuccessOrThrow(): T {
         is ApiState.Error -> throw exception
     }
 }
+
+fun <T> UiState<T>.getSuccessOrThrowOrWait(): T? {
+    return when (this) {
+        is UiState.Success -> data
+        is UiState.Error -> throw exception
+        UiState.Loading -> null
+    }
+}

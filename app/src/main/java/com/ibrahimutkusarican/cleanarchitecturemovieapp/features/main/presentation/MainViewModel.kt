@@ -4,13 +4,16 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.domain.RestartAppUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.domain.LanguageChangeUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.SettingsModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.usecase.GetSettingsModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.LocaleManager
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getSettingsModelUseCase: GetSettingsModelUseCase,
-    private val restartAppUseCase: RestartAppUseCase,
+    private val languageChangeUseCase: LanguageChangeUseCase,
     private val localeManager: LocaleManager
 ) : BaseViewModel() {
 
@@ -47,6 +50,11 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             Log.d("MainViewModel","Language Changed")
             localeManager.setLanguageChangeFlag(false)
+            languageChangeUseCase.languageChangeGenreAndHomeMovies()
+                .doOnSuccess {
+                    Log.d("MainViewModel","Language Changed Genre And HomeMovies")
+                }
+                .collect()
         }
     }
 }

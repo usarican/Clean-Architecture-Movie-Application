@@ -2,6 +2,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.mapper.GenreIdsToGenreNameListMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.model.GenreModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.MovieDetailResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.local.MyListMovieEntity
@@ -11,12 +12,10 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.ImageUrlHelper
 import javax.inject.Inject
 
 class MyListMovieModelMapper @Inject constructor(
-    private val imageUrlHelper: ImageUrlHelper,
     private val genreIdsToGenreNameListMapper: GenreIdsToGenreNameListMapper,
-    private val formatHelper: FormatHelper
 ) {
-    fun entityToModel(entity: MyListMovieEntity,genreList: List<GenreModel>) =
-        with(entity){
+    fun entityToModel(entity: MyListMovieEntity, genreList: List<GenreModel>) =
+        with(entity) {
             MyListMovieModel(
                 movieId = movieId,
                 genres = genreIdsToGenreNameListMapper.getGenreNames(genreIds, genreList),
@@ -30,10 +29,16 @@ class MyListMovieModelMapper @Inject constructor(
             )
         }
 
-    fun movieDetailModelToMyListMovieEntity(movieDetailModel: MovieDetailModel,genreList: List<GenreModel> = emptyList()) = with(movieDetailModel){
+    fun movieDetailModelToMyListMovieEntity(
+        movieDetailModel: MovieDetailModel,
+        genreList: List<GenreModel> = emptyList()
+    ) = with(movieDetailModel) {
         MyListMovieEntity(
             movieId = movieDetailInfoModel.movieId,
-            genreIds = genreIdsToGenreNameListMapper.getGenreIds(genreNames = movieDetailAboutModel.genres, genres = genreList),
+            genreIds = genreIdsToGenreNameListMapper.getGenreIds(
+                genreNames = movieDetailAboutModel.genres,
+                genres = genreList
+            ),
             overview = movieDetailAboutModel.overview,
             posterPath = movieDetailInfoModel.posterImageUrl,
             releaseDate = movieDetailAboutModel.fullReleaseDate,
@@ -44,10 +49,16 @@ class MyListMovieModelMapper @Inject constructor(
         )
     }
 
-    fun basicMovieModelToMyListMovieEntity(basicMovieModel: BasicMovieModel,genreList: List<GenreModel> = emptyList()) = with(basicMovieModel){
+    fun basicMovieModelToMyListMovieEntity(
+        basicMovieModel: BasicMovieModel,
+        genreList: List<GenreModel> = emptyList()
+    ) = with(basicMovieModel) {
         MyListMovieEntity(
             movieId = movieId,
-            genreIds = genreIdsToGenreNameListMapper.getGenreIds(genreNames = movieGenres, genres = genreList),
+            genreIds = genreIdsToGenreNameListMapper.getGenreIds(
+                genreNames = movieGenres,
+                genres = genreList
+            ),
             overview = movieOverview,
             posterPath = moviePosterImageUrl,
             releaseDate = releaseDate,
@@ -58,10 +69,13 @@ class MyListMovieModelMapper @Inject constructor(
         )
     }
 
-    fun modelToEntity(model: MyListMovieModel,genreList: List<GenreModel>) = with(model){
+    fun modelToEntity(model: MyListMovieModel, genreList: List<GenreModel>) = with(model) {
         MyListMovieEntity(
             movieId = movieId,
-            genreIds = genreIdsToGenreNameListMapper.getGenreIds(genreNames = genres, genres = genreList),
+            genreIds = genreIdsToGenreNameListMapper.getGenreIds(
+                genreNames = genres,
+                genres = genreList
+            ),
             overview = overview,
             posterPath = posterPath,
             releaseDate = releaseDate,
@@ -70,5 +84,11 @@ class MyListMovieModelMapper @Inject constructor(
             isFavorite = isFavorite,
             addWatchList = isAddedWatchList
         )
+    }
+
+    fun detailResponseForEntityUpdate(response: MovieDetailResponse): Triple<String, String, String> {
+        return with(response) {
+            Triple(title, overview, releaseDate)
+        }
     }
 }

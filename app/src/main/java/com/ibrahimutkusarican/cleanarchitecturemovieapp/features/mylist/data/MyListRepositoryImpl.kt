@@ -37,4 +37,17 @@ class MyListRepositoryImpl @Inject constructor(
 
     override fun getMyListMovieFavoriteAndWatchListStatus(movieId: Int): Flow<ApiState<MovieFavoriteAndWatchListStatus?>> =
         apiCall{ myListLocalDataSource.getMyListMovieFavoriteAndWatchListStatus(movieId) }
+
+    override suspend fun getMyListMoviesIdList(): List<Int> {
+        return myListLocalDataSource.getMyListMoviesIdList()
+    }
+
+    override suspend fun updateMyListMovie(
+        movieId: Int,
+        title: String,
+        overview: String,
+        releaseDate: String
+    ) {
+        myListLocalDataSource.updateMyListMovie(movieId, title, overview, releaseDate)
+    }
 }

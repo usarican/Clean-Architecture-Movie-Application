@@ -12,4 +12,6 @@ interface MyListRepository {
     fun insertMyListMovie(movieEntity: MyListMovieEntity): Flow<ApiState<Unit>>
     fun deleteMyListMovie(movieEntity: MyListMovieEntity): Flow<ApiState<Int>>
     fun getMyListMovieFavoriteAndWatchListStatus(movieId: Int): Flow<ApiState<MovieFavoriteAndWatchListStatus?>>
+    suspend fun getMyListMoviesIdList() : List<Int>
+    suspend fun updateMyListMovie(movieId: Int, title: String, overview: String, releaseDate: String)
 }

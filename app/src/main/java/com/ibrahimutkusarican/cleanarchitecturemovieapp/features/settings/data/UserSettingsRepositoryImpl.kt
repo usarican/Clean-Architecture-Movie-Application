@@ -6,12 +6,14 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.di.UserSettingsDataStore
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.LocaleManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class UserSettingsRepositoryImpl @Inject constructor(
-    @UserSettingsDataStore private val dataStore: DataStore<Preferences>
+    @UserSettingsDataStore private val dataStore: DataStore<Preferences>,
+    private val localeManager: LocaleManager
 ) : UserSettingsRepository {
     override suspend fun setDarkMode(enabled: Boolean) {
         dataStore.edit { prefs ->
@@ -29,6 +31,8 @@ class UserSettingsRepositoryImpl @Inject constructor(
         dataStore.edit { prefs ->
             prefs[LANGUAGE_KEY] = languageCode
         }
+        localeManager.saveSelectedLanguage(languageCode)
+        localeManager.setLanguageChangeFlag(languageChange = true)
     }
 
     override fun getDarkMode(): Flow<Boolean> {
@@ -53,6 +57,6 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val DARK_MODE_KEY = booleanPreferencesKey("dark_mode")
         val NOTIFICATION_ENABLED_KEY = booleanPreferencesKey("notification_enabled")
         val LANGUAGE_KEY = stringPreferencesKey("language")
-        val DEFAULT_LANGUAGE = "en"
+        const val DEFAULT_LANGUAGE = "en"
     }
 }

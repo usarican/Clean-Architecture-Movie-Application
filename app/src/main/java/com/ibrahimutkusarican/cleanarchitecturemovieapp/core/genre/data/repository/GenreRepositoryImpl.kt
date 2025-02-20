@@ -30,4 +30,11 @@ class GenreRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override fun deleteAllGenreList(): Flow<ApiState<Boolean>> {
+        return apiCall {
+            genreLocalDataSource.deleteAllGenres()
+            true
+        }
+    }
 }

@@ -19,9 +19,15 @@ interface MyListMovieDao {
     fun getWatchListMoviesPaging(): PagingSource<Int, MyListMovieEntity>
 
     @Delete
-    suspend fun deleteMyListMovie(movie: MyListMovieEntity) : Int
+    suspend fun deleteMyListMovie(movie: MyListMovieEntity): Int
 
     @Query("SELECT is_favorite as isAddedFavorite ,add_watch_list as isAddedWatchList FROM my_list_movie WHERE movie_id = :movieId")
     suspend fun getMyListMovieFavoriteAndWatchListStatus(movieId: Int): MovieFavoriteAndWatchListStatus?
+
+    @Query("SELECT movie_id FROM my_list_movie")
+    suspend fun getMyListMovieIds(): List<Int>
+
+    @Query("UPDATE my_list_movie SET title = :title, overview = :overview, release_date = :releaseDate WHERE movie_id = :movieId")
+    suspend fun updateMyListMovie(movieId: Int, title: String, overview: String, releaseDate: String)
 
 }

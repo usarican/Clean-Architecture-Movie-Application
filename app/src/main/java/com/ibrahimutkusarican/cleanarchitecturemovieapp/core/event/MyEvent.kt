@@ -9,4 +9,5 @@ sealed class MyEvent {
     data class SearchBarClickEvent(val recommendedMovieId : Int?) : MyEvent()
     data class MovieClickEvent(val movieId : Int) : MyEvent()
     data class BannerMovieClickEvent(val clickedMovieIndex : Int) : MyEvent()
+    data object RestartApp : MyEvent()
 }

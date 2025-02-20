@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface GenreRepository {
     fun getMovieGenreList() : Flow<ApiState<List<GenreEntity>>>
+    fun deleteAllGenreList() : Flow<ApiState<Boolean>>
 }

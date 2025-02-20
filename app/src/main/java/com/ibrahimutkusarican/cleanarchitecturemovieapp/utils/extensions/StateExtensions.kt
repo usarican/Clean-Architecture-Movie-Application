@@ -12,6 +12,14 @@ fun <T, R> ApiState<T>.map(transform: (T) -> R): ApiState<R> {
     }
 }
 
+fun <T, R> UiState<T>.map(transform: (T) -> R): UiState<R> {
+    return when(this){
+        is UiState.Error -> UiState.Error(exception)
+        UiState.Loading -> UiState.Loading
+        is UiState.Success -> UiState.Success(transform(data))
+    }
+}
+
 fun <T> Flow<UiState<T>>.doOnSuccess(action: suspend (T) -> Unit): Flow<UiState<T>> =
     transform { value ->
         if (value is UiState.Success) {

@@ -12,4 +12,7 @@ class GenreLocalDataSource @Inject constructor(
 
     suspend fun getAllGenres(): List<GenreEntity> =
         genreDao.getGenres()
+
+    suspend fun deleteAllGenres() =
+        genreDao.deleteAllGenres()
 }

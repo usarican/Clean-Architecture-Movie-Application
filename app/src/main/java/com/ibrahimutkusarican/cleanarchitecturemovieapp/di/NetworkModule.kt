@@ -1,5 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.di
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.MOVIE_API_URL
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.RequestInterceptor
 import com.squareup.moshi.Moshi
@@ -21,9 +23,11 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient() : OkHttpClient {
+    fun provideOkHttpClient(
+        @UserSettingsDataStore dataStore: DataStore<Preferences>
+    ) : OkHttpClient {
         return OkHttpClient().newBuilder()
-            .addNetworkInterceptor(RequestInterceptor())
+            .addNetworkInterceptor(RequestInterceptor(dataStore))
             .addInterceptor(HttpLoggingInterceptor())
             .readTimeout(15, TimeUnit.SECONDS)
             .connectTimeout(15,TimeUnit.SECONDS)

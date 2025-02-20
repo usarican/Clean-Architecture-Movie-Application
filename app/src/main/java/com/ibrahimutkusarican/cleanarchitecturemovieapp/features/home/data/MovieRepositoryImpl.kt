@@ -56,6 +56,12 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun deleteAllCachedMovies(): Flow<ApiState<Unit>> {
+        return apiCall {
+            movieLocalDataSource.deleteAllMovies()
+        }
+    }
+
     private suspend fun fetchAndSaveMoviesFromRemote(
         movieType: MovieType,
     ): List<MovieEntity> {

@@ -6,6 +6,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.usecase.ChangeUserSettingsUseCaseImpl
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.usecase.GetSettingsModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.usecase.GetSettingsModelUseCaseImpl
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.usecase.RestartAppUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.usecase.RestartAppUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -27,6 +29,9 @@ abstract class SettingsModule {
     @Binds
     abstract fun bindChangeUserSettingsUseCase(
         changeUserSettingsUseCaseImpl: ChangeUserSettingsUseCaseImpl
-    ) : ChangeUserSettingsUseCase
+    ): ChangeUserSettingsUseCase
+
+    @Binds
+    abstract fun bindRestartAppUseCase(restartAppUseCaseImpl: RestartAppUseCaseImpl): RestartAppUseCase
 
 }

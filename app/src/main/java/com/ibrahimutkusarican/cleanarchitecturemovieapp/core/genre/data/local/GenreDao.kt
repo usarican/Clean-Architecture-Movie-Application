@@ -15,5 +15,7 @@ interface GenreDao {
     @Query("SELECT * FROM genres")
     suspend fun getGenres() : List<GenreEntity>
 
+    @Query("DELETE FROM genres")
+    suspend fun deleteAllGenres()
 
 }

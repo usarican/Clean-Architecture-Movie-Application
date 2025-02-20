@@ -35,8 +35,15 @@ class MainViewModel @Inject constructor(
             is MyEvent.OnBackPressed -> navigationRouteAction(null)
             is MyEvent.SearchBarClickEvent -> navigationRouteAction(NavigationRoutes.Search(event.recommendedMovieId))
             is MyEvent.MovieClickEvent -> navigationRouteAction(NavigationRoutes.MovieDetail(event.movieId))
-            is MyEvent.BannerMovieClickEvent -> navigationRouteAction(NavigationRoutes.BannerMovies(event.clickedMovieIndex))
-            else -> throw NotImplementedError("Unknown event: $event")
+            is MyEvent.BannerMovieClickEvent -> navigationRouteAction(
+                NavigationRoutes.BannerMovies(
+                    event.clickedMovieIndex
+                )
+            )
+
+            else -> {
+                Log.d("MainViewModel", "observeMyEvents: $event")
+            }
         }
     }
 
@@ -46,15 +53,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun languageChanged() {
-        viewModelScope.launch {
-            Log.d("MainViewModel","Language Changed")
-            localeManager.setLanguageChangeFlag(false)
-            languageChangeUseCase.languageChangeGenreAndHomeMovies()
-                .doOnSuccess {
-                    Log.d("MainViewModel","Language Changed Genre And HomeMovies")
-                }
-                .collect()
-        }
+    suspend fun languageChanged() {
+        Log.d("MainViewModel", "Language Changed")
+        localeManager.setLanguageChangeFlag(false)
+        languageChangeUseCase.languageChangeForGenre()
+            .doOnSuccess {
+                Log.d("MainViewModel", "Language Changed Genre")
+            }
+            .collect()
     }
 }

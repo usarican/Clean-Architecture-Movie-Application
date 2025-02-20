@@ -7,10 +7,11 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.Mo
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.MyListRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.mapper.MyListMovieModelMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getSuccessOrThrow
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -24,8 +25,8 @@ class LanguageChangeUseCaseImpl @Inject constructor(
         return execute {
             coroutineScope {
                 val myListMoviesIdList = myListRepository.getMyListMoviesIdList()
-                myListMoviesIdList.forEach { movieId ->
-                    launch {
+                val updateJobs =  myListMoviesIdList.map { movieId ->
+                    async {
                         try {
                             val movieDetailResponse =
                                 detailRepository.getMovieDetailResponse(movieId).first()
@@ -44,6 +45,7 @@ class LanguageChangeUseCaseImpl @Inject constructor(
                         }
                     }
                 }
+                updateJobs.awaitAll()
             }
             true
         }

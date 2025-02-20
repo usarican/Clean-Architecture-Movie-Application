@@ -27,4 +27,7 @@ interface MyListMovieDao {
     @Query("SELECT movie_id FROM my_list_movie")
     suspend fun getMyListMovieIds(): List<Int>
 
+    @Query("UPDATE my_list_movie SET title = :title, overview = :overview, release_date = :releaseDate WHERE movie_id = :movieId")
+    suspend fun updateMyListMovie(movieId: Int, title: String, overview: String, releaseDate: String)
+
 }

@@ -20,4 +20,9 @@ class MyListLocalDataSource @Inject constructor(
 
     suspend fun getMyListMoviesIdList() = myListMovieDao.getMyListMovieIds()
 
+    suspend fun updateMyListMovie(movieId: Int, title: String, overview: String, releaseDate: String) {
+        myListMovieDao.updateMyListMovie(movieId, title, overview, releaseDate)
+
+    }
+
 }

@@ -4,15 +4,14 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.domain.LanguageChangeUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.domain.usecase.LanguageChangeUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.SettingsModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.usecase.GetSettingsModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.LocaleManager
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -53,13 +52,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    suspend fun languageChanged() {
-        Log.d("MainViewModel", "Language Changed")
-        localeManager.setLanguageChangeFlag(false)
-        languageChangeUseCase.languageChangeForGenre()
-            .doOnSuccess {
-                Log.d("MainViewModel", "Language Changed Genre")
+    fun languageChanged() {
+        viewModelScope.launch {
+            if (localeManager.getLanguageChangeFlag().first()){
+                localeManager.setLanguageChangeFlag(false)
+                languageChangeUseCase.languageChangeForMyListMovies()
+                    .launchIn(viewModelScope)
             }
-            .collect()
+        }
     }
 }

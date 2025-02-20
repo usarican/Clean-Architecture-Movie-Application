@@ -34,12 +34,6 @@ class GenreRepositoryImpl @Inject constructor(
     override fun deleteAllGenreList(): Flow<ApiState<Boolean>> {
         return apiCall {
             genreLocalDataSource.deleteAllGenres()
-            val genreResponse = genreRemoteDataSource.getMovieGenreList()
-            genreLocalDataSource.insertAllGenres(genreResponse.genreList.map { genre ->
-                genreResponseMapper.mapResponseToEntity(
-                    genre
-                )
-            })
             true
         }
     }

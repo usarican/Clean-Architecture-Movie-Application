@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.di
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.domain.LanguageChangeUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.domain.LanguageChangeUseCaseImpl
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.domain.usecase.LanguageChangeUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.domain.usecase.LanguageChangeUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

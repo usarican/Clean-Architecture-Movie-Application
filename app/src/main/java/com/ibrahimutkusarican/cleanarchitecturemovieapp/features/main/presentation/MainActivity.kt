@@ -31,7 +31,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkLanguageUpdate()
+        mainViewModel.languageChanged()
         observeViewModel()
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.light(
@@ -54,14 +54,6 @@ class MainActivity : BaseActivity() {
             restartApp()
         }
 
-    }
-
-    private fun checkLanguageUpdate() {
-        runBlocking {
-            if (localeManager.getLanguageChangeFlag().first()){
-                mainViewModel.languageChanged()
-            }
-        }
     }
 
     private fun restartApp() {

@@ -6,8 +6,11 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.SettingsModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.usecase.ChangeUserSettingsUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.usecase.GetSettingsModelUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.usecase.RestartAppUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val getSettingsModelUseCase: GetSettingsModelUseCase,
-    private val changeUserSettingsUseCase: ChangeUserSettingsUseCase
+    private val changeUserSettingsUseCase: ChangeUserSettingsUseCase,
+    private val restartAppUseCase: RestartAppUseCase
 ) : BaseViewModel() {
 
     val userSettings = getSettingsModelUseCase.getSettingsModel()
@@ -45,9 +49,9 @@ class SettingsViewModel @Inject constructor(
 
     private fun changeLanguage(languageCode: String) {
         viewModelScope.launch {
-            if(userSettings.value.selectedLanguage.languageCode == languageCode) return@launch
+            if (userSettings.value.selectedLanguage.languageCode == languageCode) return@launch
             changeUserSettingsUseCase.changeLanguagePreferences(languageCode)
-            sendEvent(MyEvent.RestartApp)
+            restartAppUseCase.restartApp().doOnSuccess { sendEvent(MyEvent.RestartApp) }.collect()
         }
 
     }

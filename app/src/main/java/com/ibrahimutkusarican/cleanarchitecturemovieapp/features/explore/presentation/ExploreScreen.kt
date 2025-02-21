@@ -76,7 +76,9 @@ private fun ExploreSuccessScreen(
             .verticalScroll(rememberScrollState())
             .padding(bottom = dimensionResource(R.dimen.medium_padding))
     ) {
-        MySearchBar(searchText = "",
+        MySearchBar(
+            modifier = Modifier.padding(dimensionResource(R.dimen.large_padding)),
+            searchText = "",
             showFilterIcon = true,
             isEnable = false,
             readOnly = true,

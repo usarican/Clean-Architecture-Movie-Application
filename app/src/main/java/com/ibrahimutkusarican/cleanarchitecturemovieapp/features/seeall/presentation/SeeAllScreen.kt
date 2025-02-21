@@ -3,11 +3,13 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.present
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -38,9 +40,11 @@ fun SeeAllScreen(
         ), onBackClick = {
             viewModel.handleUiActions(SeeAllUiAction.OnBackPress)
         })
-        MySearchBar(searchText = searchText, onSearch = { searchText ->
-            viewModel.handleUiActions(SeeAllUiAction.SearchAction(searchText))
-        })
+        MySearchBar(
+            modifier = Modifier.padding(dimensionResource(R.dimen.large_padding)),
+            searchText = searchText, onSearch = { searchText ->
+                viewModel.handleUiActions(SeeAllUiAction.SearchAction(searchText))
+            })
         SeeAllMovies(
             modifier = Modifier.weight(1F),
             pagingMovies = pagingMovies,

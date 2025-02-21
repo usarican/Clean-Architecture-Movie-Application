@@ -13,5 +13,5 @@ internal object Constants {
     const val SEARCH_DEBOUNCE_TIME = 1000L
     const val ALL_GENRE_ID = -1
     const val BANNER_EXPLORE_PAGER_DOT_INDICATOR_COUNT = 3
-    const val USER_SETTINGS_DATASTORE_NAME = "user_settings"
+    const val TIME_OUT_VALUE = 15L
 }

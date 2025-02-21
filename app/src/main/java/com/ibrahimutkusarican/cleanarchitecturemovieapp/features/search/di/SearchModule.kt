@@ -2,6 +2,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.di
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.SearchRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.SearchRepositoryImpl
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.remote.RegionsService
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.remote.SearchService
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchScreenModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchScreenModelUseCaseImpl
@@ -31,5 +32,9 @@ abstract class SearchModule {
         @Provides
         fun provideSearchService(retrofit: Retrofit): SearchService =
             retrofit.create(SearchService::class.java)
+
+        @Provides
+        fun provideRegionService(retrofit: Retrofit) : RegionsService =
+            retrofit.create(RegionsService::class.java)
     }
 }

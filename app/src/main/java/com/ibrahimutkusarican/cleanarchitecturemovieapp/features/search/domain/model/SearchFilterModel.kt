@@ -18,6 +18,7 @@ data class RegionModel(
     val regionName : String,
     val isSelected : Boolean
 )
+
 data class TimePeriodModel(
     val time : Int,
     val name : String,

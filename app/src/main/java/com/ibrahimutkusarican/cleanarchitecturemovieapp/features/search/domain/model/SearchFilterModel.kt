@@ -1,5 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model
 
+import androidx.annotation.StringRes
+
 data class SearchFilterModel(
     val genres : List<FilterGenreModel>,
     val regions : List<RegionModel>,
@@ -19,14 +21,16 @@ data class RegionModel(
     val isSelected : Boolean
 )
 
-data class TimePeriodModel(
-    val time : Int,
-    val name : String,
-    val isSelected : Boolean
+data class SortModel(
+    @StringRes val sortNameRes: Int,
+    val sortCode: String,
+    val isSelected: Boolean
 )
 
-data class SortModel(
-    val sortName : String,
-    val sortCode : String,
-    val isSelected : Boolean
+data class TimePeriodModel(
+    val time: Int,
+    @StringRes val nameRes: Int? = null,
+    val name : String = "",
+    val isSelected: Boolean
 )
+

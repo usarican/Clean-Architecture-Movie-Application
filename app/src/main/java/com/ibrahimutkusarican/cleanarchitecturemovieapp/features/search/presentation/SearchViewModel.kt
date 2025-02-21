@@ -9,6 +9,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchScreenModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchFilterModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchScreenModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.SearchMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.SEARCH_DEBOUNCE_TIME
@@ -32,7 +33,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val searchMoviesUseCase: SearchMoviesUseCase,
-    private val getSearchScreenModelUseCase: GetSearchScreenModelUseCase
+    private val getSearchScreenModelUseCase: GetSearchScreenModelUseCase,
+    private val getSearchFilterModelUseCase: GetSearchFilterModelUseCase
 ) : BaseViewModel() {
 
     private val _searchScreenModel = MutableStateFlow(SearchScreenModel())
@@ -74,8 +76,14 @@ class SearchViewModel @Inject constructor(
             is SearchUiAction.RecommendedMovieSeeAllClickAction -> TODO()
             is SearchUiAction.TopSearchItemClickAction -> setSearchText(searchUiAction.topSearchItemText)
             SearchUiAction.ErrorTryAgainAction -> TODO()
-            is SearchUiAction.FilterAndSortButtonClickAction -> TODO()
+            is SearchUiAction.FilterAndSortButtonClickAction -> getSearchFilterModel()
         }
+    }
+
+    private fun getSearchFilterModel(){
+        getSearchFilterModelUseCase.getSearchFilterModel()
+            .doOnSuccess {  }
+            .launchIn(viewModelScope)
     }
 
     private fun setSearchText(searchText: String) {

@@ -2,9 +2,10 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.lo
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "region")
 data class RegionEntity(
-    @ColumnInfo(name = "region_code") val regionCode : String,
+    @PrimaryKey @ColumnInfo(name = "region_code") val regionCode : String,
     @ColumnInfo(name = "region_name") val regionName : String
 )

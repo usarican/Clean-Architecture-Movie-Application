@@ -10,8 +10,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.m
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SortModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.TimePeriodModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getSuccessOrThrow
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -70,13 +68,19 @@ class GetSearchFilterModelUseCaseImpl @Inject constructor(
                 }
 
                 SearchFilterModel(
+                    genresTitleRes = R.string.genres_title,
                     genres = genreEntities.map { genreEntity ->
                         searchFilterModelMapper.genreEntityToFilterGenreModel(genreEntity)
                     },
+                    regionsTitleRes = R.string.regions_title,
                     regions = regionEntities.map { regionEntity ->
                         searchFilterModelMapper.regionEntityToRegionModel(regionEntity)
                     },
+
+                    sortsTitleRes = R.string.sorts_title,
                     sorts = sorts,
+
+                    timePeriodsTitleRes = R.string.time_periods_title,
                     timePeriods = timePeriods
                 )
             }.first()

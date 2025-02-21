@@ -58,123 +58,141 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
     val uiState by viewModel.searchScreenUiState.collectAsStateWithLifecycle()
     val searchFilterState by viewModel.searchFilterState.collectAsStateWithLifecycle()
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.statusBars)
     ) {
-        MyTopBar(
-            title = stringResource(R.string.search),
-            onBackClick = {
-                if (searchScreenModel.searchText.isEmpty()) {
-                    viewModel.handleSearchScreenAction(SearchUiAction.OnBackPress)
-                } else {
-                    viewModel.handleSearchScreenAction(SearchUiAction.SearchAction(Constants.EMPTY_STRING))
-                }
-            }
-        )
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(dimensionResource(R.dimen.large_padding)),
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxSize()
         ) {
-
-            MySearchBar(
-                modifier = Modifier
-                    .animateContentSize()
-                    .weight(1F),
-                searchText = searchScreenModel.searchText,
-                onSearch = { searchText ->
-                    viewModel.handleSearchScreenAction(
-                        SearchUiAction.SearchAction(
-                            searchText
-                        )
-                    )
-                },
-            )
-            Card(
-                modifier = Modifier
-                    .padding(start = dimensionResource(R.dimen.small_padding))
-                    .size(dimensionResource(R.dimen.circle_icon_size)),
-                shape = CircleShape,
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.small_card_elevation))
-            ) {
-                Box(Modifier
-                    .fillMaxSize()
-                    .clickable {
-                        viewModel.handleSearchScreenAction(
-                            SearchUiAction.FilterAndSortActions.FilterAndSortButtonClickAction(
-                                searchFilterState.second
-                            )
-                        )
-                    }) {
-                    Icon(
-                        modifier = Modifier
-                            .size(dimensionResource(R.dimen.icon_size))
-                            .padding(dimensionResource(R.dimen.small_padding))
-                            .align(Alignment.Center),
-                        painter = painterResource(R.drawable.ic_filter),
-                        contentDescription = "Filter Icon",
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-                }
-
-            }
-
-        }
-
-        if (searchScreenModel.searchText.isEmpty()) {
-            BaseUiStateComposable(
-                uiState = uiState,
-                tryAgainOnClickAction = {
-                    viewModel.handleSearchScreenAction(SearchUiAction.ErrorTryAgainAction)
-                }
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                        .padding(dimensionResource(R.dimen.medium_padding)),
-                    verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
-                ) {
-                    TopSearch(
-                        topSearchMovieNames = searchScreenModel.topSearchedMovies,
-                        handleSearchUiAction = viewModel::handleSearchScreenAction
-                    )
-                    LastSearch(
-                        lastSearch = searchScreenModel.lastSearchKeys,
-                        handleSearchUiAction = viewModel::handleSearchScreenAction
-                    )
-                    RecommendedMoviesForYou(
-                        movies = searchScreenModel.recommendedMoviesForYou,
-                        movieClickAction = { movieId ->
-                            viewModel.handleSearchScreenAction(SearchUiAction.MovieClick(movieId))
-                        },
-                        seeAllClickAction = {
-                            viewModel.handleSearchScreenAction(SearchUiAction.RecommendedMovieSeeAllClickAction)
-                        }
-                        // TODO: Handle see All action
-                    )
-                    if (searchScreenModel.recentlyViewedMovies.isNotEmpty()) {
-                        RecentlyViewedMovies(
-                            movies = searchScreenModel.recentlyViewedMovies,
-                            movieClickAction = { movieId ->
-                                viewModel.handleSearchScreenAction(SearchUiAction.MovieClick(movieId))
-                            }
-                        )
+            MyTopBar(
+                title = stringResource(R.string.search),
+                onBackClick = {
+                    if (searchScreenModel.searchText.isEmpty()) {
+                        viewModel.handleSearchScreenAction(SearchUiAction.OnBackPress)
+                    } else {
+                        viewModel.handleSearchScreenAction(SearchUiAction.SearchAction(Constants.EMPTY_STRING))
                     }
                 }
-            }
-        } else {
-            SearchedMoviesList(
-                pagingMovies = searchedMovies,
-                handleUiAction = viewModel::handleSearchScreenAction
             )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(dimensionResource(R.dimen.large_padding)),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                MySearchBar(
+                    modifier = Modifier
+                        .animateContentSize()
+                        .weight(1F),
+                    searchText = searchScreenModel.searchText,
+                    onSearch = { searchText ->
+                        viewModel.handleSearchScreenAction(
+                            SearchUiAction.SearchAction(
+                                searchText
+                            )
+                        )
+                    },
+                )
+                Card(
+                    modifier = Modifier
+                        .padding(start = dimensionResource(R.dimen.small_padding))
+                        .size(dimensionResource(R.dimen.circle_icon_size)),
+                    shape = CircleShape,
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                    elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.small_card_elevation))
+                ) {
+                    Box(Modifier
+                        .fillMaxSize()
+                        .clickable {
+                            viewModel.handleSearchScreenAction(
+                                SearchUiAction.FilterAndSortActions.FilterAndSortButtonClickAction(
+                                    searchFilterState.second
+                                )
+                            )
+                        }) {
+                        Icon(
+                            modifier = Modifier
+                                .size(dimensionResource(R.dimen.icon_size))
+                                .padding(dimensionResource(R.dimen.small_padding))
+                                .align(Alignment.Center),
+                            painter = painterResource(R.drawable.ic_filter),
+                            contentDescription = "Filter Icon",
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+
+                }
+
+            }
+
+            if (searchScreenModel.searchText.isEmpty()) {
+                BaseUiStateComposable(
+                    uiState = uiState,
+                    tryAgainOnClickAction = {
+                        viewModel.handleSearchScreenAction(SearchUiAction.ErrorTryAgainAction)
+                    }
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                            .padding(dimensionResource(R.dimen.medium_padding)),
+                        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
+                    ) {
+                        TopSearch(
+                            topSearchMovieNames = searchScreenModel.topSearchedMovies,
+                            handleSearchUiAction = viewModel::handleSearchScreenAction
+                        )
+                        LastSearch(
+                            lastSearch = searchScreenModel.lastSearchKeys,
+                            handleSearchUiAction = viewModel::handleSearchScreenAction
+                        )
+                        RecommendedMoviesForYou(
+                            movies = searchScreenModel.recommendedMoviesForYou,
+                            movieClickAction = { movieId ->
+                                viewModel.handleSearchScreenAction(SearchUiAction.MovieClick(movieId))
+                            },
+                            seeAllClickAction = {
+                                viewModel.handleSearchScreenAction(SearchUiAction.RecommendedMovieSeeAllClickAction)
+                            }
+                            // TODO: Handle see All action
+                        )
+                        if (searchScreenModel.recentlyViewedMovies.isNotEmpty()) {
+                            RecentlyViewedMovies(
+                                movies = searchScreenModel.recentlyViewedMovies,
+                                movieClickAction = { movieId ->
+                                    viewModel.handleSearchScreenAction(
+                                        SearchUiAction.MovieClick(
+                                            movieId
+                                        )
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+            } else {
+                SearchedMoviesList(
+                    pagingMovies = searchedMovies,
+                    handleUiAction = viewModel::handleSearchScreenAction
+                )
+            }
+        }
+        searchFilterState.second?.let { filterModel ->
+            if (searchFilterState.first) {
+                FilterAndSortBottomSheet(
+                    searchFilterModel = filterModel,
+                    uiActions = viewModel::handleSearchScreenAction
+                )
+            }
         }
     }
+
 }
 
 

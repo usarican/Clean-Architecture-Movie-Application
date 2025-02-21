@@ -3,11 +3,19 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.
 import androidx.annotation.StringRes
 
 data class SearchFilterModel(
-    val genres : List<FilterGenreModel>,
-    val regions : List<RegionModel>,
-    val timePeriods : List<TimePeriodModel>,
-    val sorts : List<SortModel>
+    @StringRes val genresTitleRes: Int,
+    val genres: List<FilterGenreModel>,
+
+    @StringRes val regionsTitleRes: Int,
+    val regions: List<RegionModel>,
+
+    @StringRes val timePeriodsTitleRes: Int,
+    val timePeriods: List<TimePeriodModel>,
+
+    @StringRes val sortsTitleRes: Int,
+    val sorts: List<SortModel>
 )
+
 
 data class FilterGenreModel(
     val genreName : String,

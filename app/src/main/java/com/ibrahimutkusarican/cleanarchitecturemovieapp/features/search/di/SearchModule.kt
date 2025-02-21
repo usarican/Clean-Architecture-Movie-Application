@@ -1,7 +1,10 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.di
 
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieDatabase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.GenreDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.SearchRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.SearchRepositoryImpl
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.RegionDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.remote.RegionsService
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.remote.SearchService
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchFilterModelUseCase
@@ -41,5 +44,9 @@ abstract class SearchModule {
         @Provides
         fun provideRegionService(retrofit: Retrofit): RegionsService =
             retrofit.create(RegionsService::class.java)
+
+        @Provides
+        fun provideRegionDao(movieDatabase: MovieDatabase) : RegionDao =
+            movieDatabase.regionDao()
     }
 }

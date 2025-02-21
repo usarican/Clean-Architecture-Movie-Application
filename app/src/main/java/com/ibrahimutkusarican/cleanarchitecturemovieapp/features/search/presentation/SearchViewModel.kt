@@ -8,6 +8,7 @@ import androidx.paging.cachedIn
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchFilterModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchScreenModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchFilterModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchScreenModelUseCase
@@ -28,6 +29,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,6 +47,10 @@ class SearchViewModel @Inject constructor(
 
     private var recommendedMovieId: Int? = null
 
+    private lateinit var defaultSearchFilterModel: SearchFilterModel
+    private val _searchFilterState =
+        MutableStateFlow<Pair<Boolean, SearchFilterModel?>>(false to null)
+    val searchFilterState: StateFlow<Pair<Boolean, SearchFilterModel?>> = _searchFilterState
 
     fun getSearchScreenModel(recommendedMovieId: Int?) {
         this.recommendedMovieId = recommendedMovieId
@@ -76,14 +82,40 @@ class SearchViewModel @Inject constructor(
             is SearchUiAction.RecommendedMovieSeeAllClickAction -> TODO()
             is SearchUiAction.TopSearchItemClickAction -> setSearchText(searchUiAction.topSearchItemText)
             SearchUiAction.ErrorTryAgainAction -> TODO()
-            is SearchUiAction.FilterAndSortButtonClickAction -> getSearchFilterModel()
+            is SearchUiAction.FilterAndSortActions.FilterAndSortApplyAction -> {
+                // TODO: Burada gelen modeli kaydedip üstüne discover işlemi yapmak gerekiyor gelen sonucu da paging ile yapmak gerek. 
+            }
+
+            is SearchUiAction.FilterAndSortActions.FilterAndSortButtonClickAction -> getSearchFilterModel(searchUiAction.searchFilterModel)
+            SearchUiAction.FilterAndSortActions.FilterAndSortCloseAction -> filterScreenCloseAction()
+            SearchUiAction.FilterAndSortActions.FilterAndSortResetAction -> filterScreenResetAction()
         }
     }
 
-    private fun getSearchFilterModel(){
-        getSearchFilterModelUseCase.getSearchFilterModel()
-            .doOnSuccess {  }
-            .launchIn(viewModelScope)
+    private fun getSearchFilterModel(searchFilterModel: SearchFilterModel?) {
+        if (searchFilterModel == null) {
+            getSearchFilterModelUseCase.getSearchFilterModel()
+                .doOnSuccess { model ->
+                    _searchFilterState.value = true to model
+                    defaultSearchFilterModel = model
+                }
+                .launchIn(viewModelScope)
+
+        } else {
+            _searchFilterState.update { true to searchFilterModel }
+        }
+    }
+
+    private fun filterScreenCloseAction() {
+        viewModelScope.launch {
+            _searchFilterState.update { false to searchFilterState.value.second }
+        }
+    }
+
+    private fun filterScreenResetAction() {
+        viewModelScope.launch {
+            _searchFilterState.update { true to defaultSearchFilterModel }
+        }
     }
 
     private fun setSearchText(searchText: String) {

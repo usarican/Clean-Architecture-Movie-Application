@@ -72,16 +72,17 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
             }
         )
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .wrapContentHeight()
                 .padding(dimensionResource(R.dimen.large_padding)),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val interactionSource = remember { MutableInteractionSource() }
-            val isFocused by interactionSource.collectIsFocusedAsState()
 
             MySearchBar(
-                modifier = Modifier.animateContentSize().weight(1F),
+                modifier = Modifier
+                    .animateContentSize()
+                    .weight(1F),
                 searchText = searchScreenModel.searchText,
                 onSearch = { searchText ->
                     viewModel.handleSearchScreenAction(
@@ -90,34 +91,28 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                         )
                     )
                 },
-                interactionSource = interactionSource
             )
-            AnimatedVisibility(
-                visible = isFocused,
-                enter = fadeIn(animationSpec = tween(250)) + scaleIn(initialScale = 1f),
-                exit = fadeOut(animationSpec = tween(200)) + scaleOut(targetScale = 0.8f)
-            ) {
-                Card(
-                    modifier = Modifier
-                        .padding(start = dimensionResource(R.dimen.small_padding))
-                        .size(dimensionResource(R.dimen.circle_icon_size)),
-                    shape = CircleShape,
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                    elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.small_card_elevation))
-                ) {
-                    Box(Modifier.fillMaxSize()) {
-                        Icon(
-                            modifier = Modifier
-                                .size(dimensionResource(R.dimen.icon_size))
-                                .padding(dimensionResource(R.dimen.small_padding))
-                                .align(Alignment.Center),
-                            painter = painterResource(R.drawable.ic_filter),
-                            contentDescription = "Filter Icon",
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    }
 
+            Card(
+                modifier = Modifier
+                    .padding(start = dimensionResource(R.dimen.small_padding))
+                    .size(dimensionResource(R.dimen.circle_icon_size)),
+                shape = CircleShape,
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.small_card_elevation))
+            ) {
+                Box(Modifier.fillMaxSize()) {
+                    Icon(
+                        modifier = Modifier
+                            .size(dimensionResource(R.dimen.icon_size))
+                            .padding(dimensionResource(R.dimen.small_padding))
+                            .align(Alignment.Center),
+                        painter = painterResource(R.drawable.ic_filter),
+                        contentDescription = "Filter Icon",
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
                 }
+
             }
 
         }

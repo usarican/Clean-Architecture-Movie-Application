@@ -74,6 +74,7 @@ class SearchViewModel @Inject constructor(
             is SearchUiAction.RecommendedMovieSeeAllClickAction -> TODO()
             is SearchUiAction.TopSearchItemClickAction -> setSearchText(searchUiAction.topSearchItemText)
             SearchUiAction.ErrorTryAgainAction -> TODO()
+            is SearchUiAction.FilterAndSortButtonClickAction -> TODO()
         }
     }
 

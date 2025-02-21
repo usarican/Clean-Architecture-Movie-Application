@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
@@ -83,10 +84,13 @@ class SearchViewModel @Inject constructor(
             is SearchUiAction.TopSearchItemClickAction -> setSearchText(searchUiAction.topSearchItemText)
             SearchUiAction.ErrorTryAgainAction -> TODO()
             is SearchUiAction.FilterAndSortActions.FilterAndSortApplyAction -> {
-                // TODO: Burada gelen modeli kaydedip üstüne discover işlemi yapmak gerekiyor gelen sonucu da paging ile yapmak gerek. 
+                filterApply(searchUiAction.newSearchFilterModel)
             }
 
-            is SearchUiAction.FilterAndSortActions.FilterAndSortButtonClickAction -> getSearchFilterModel(searchUiAction.searchFilterModel)
+            is SearchUiAction.FilterAndSortActions.FilterAndSortButtonClickAction -> getSearchFilterModel(
+                searchUiAction.searchFilterModel
+            )
+
             SearchUiAction.FilterAndSortActions.FilterAndSortCloseAction -> filterScreenCloseAction()
             SearchUiAction.FilterAndSortActions.FilterAndSortResetAction -> filterScreenResetAction()
         }
@@ -108,13 +112,26 @@ class SearchViewModel @Inject constructor(
 
     private fun filterScreenCloseAction() {
         viewModelScope.launch {
-            _searchFilterState.update { false to searchFilterState.value.second }
+            _searchFilterState.value = false to searchFilterState.value.second
         }
     }
 
     private fun filterScreenResetAction() {
         viewModelScope.launch {
-            _searchFilterState.update { true to defaultSearchFilterModel }
+            _searchFilterState.value = true to defaultSearchFilterModel
+        }
+    }
+
+    private fun filterApply(searchFilterModel: SearchFilterModel?) {
+        viewModelScope.launch {
+            val selectedRefreshModel = searchFilterModel?.copy(
+            genres = searchFilterModel.genres.filter { it.isSelected },
+            regions = searchFilterModel.regions.filter { it.isSelected },
+            timePeriods = searchFilterModel.timePeriods.filter { it.isSelected },
+            sorts = searchFilterModel.sorts.filter { it.isSelected }
+            )
+            Log.d("SearchViewModel", "filterApply: $selectedRefreshModel")
+            _searchFilterState.update { false to searchFilterModel }
         }
     }
 

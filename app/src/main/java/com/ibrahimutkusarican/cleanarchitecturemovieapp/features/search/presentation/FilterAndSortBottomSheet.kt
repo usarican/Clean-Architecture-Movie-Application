@@ -3,7 +3,6 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.present
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +18,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,10 +53,13 @@ fun FilterAndSortBottomSheet(
     ModalBottomSheet(
         onDismissRequest = {
             uiActions.invoke(SearchUiAction.FilterAndSortActions.FilterAndSortCloseAction)
-        }
+        },
+        sheetState = rememberModalBottomSheetState(
+            skipPartiallyExpanded = true
+        )
     ) {
         Column(
-            modifier = modifier.fillMaxSize()
+            modifier = modifier
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
@@ -69,8 +72,8 @@ fun FilterAndSortBottomSheet(
             )
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
+                    .padding(dimensionResource(R.dimen.medium_padding)),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding))
             ) {
                 item {
                     FilterSection(
@@ -142,13 +145,13 @@ fun FilterAndSortBottomSheet(
                         vertical = dimensionResource(R.dimen.medium_padding),
                         horizontal = dimensionResource(R.dimen.large_padding)
                     ),
-                horizontalArrangement = Arrangement.SpaceAround,
+                horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Button(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.small_border)),
+                        .weight(0.5F),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.large_border)),
                     onClick = {
                         uiActions.invoke(SearchUiAction.FilterAndSortActions.FilterAndSortResetAction)
                     },
@@ -168,8 +171,8 @@ fun FilterAndSortBottomSheet(
                 }
                 Button(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.small_border)),
+                        .weight(0.5F),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.large_border)),
                     onClick = {
                         uiActions.invoke(
                             SearchUiAction.FilterAndSortActions.FilterAndSortApplyAction(
@@ -206,7 +209,6 @@ fun FilterSection(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
     ) {
         Text(
             text = title,

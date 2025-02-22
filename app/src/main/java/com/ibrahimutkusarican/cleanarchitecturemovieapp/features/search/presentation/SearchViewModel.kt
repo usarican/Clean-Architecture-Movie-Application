@@ -2,8 +2,6 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.present
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import androidx.paging.LoadState
-import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
@@ -11,21 +9,25 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchFilterModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchScreenModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.FilterMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchFilterModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchScreenModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.SearchMoviesUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.model.SeeAllMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.SEARCH_DEBOUNCE_TIME
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -37,7 +39,8 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val searchMoviesUseCase: SearchMoviesUseCase,
     private val getSearchScreenModelUseCase: GetSearchScreenModelUseCase,
-    private val getSearchFilterModelUseCase: GetSearchFilterModelUseCase
+    private val getSearchFilterModelUseCase: GetSearchFilterModelUseCase,
+    private val filterMoviesUseCase: FilterMoviesUseCase
 ) : BaseViewModel() {
 
     private val _searchScreenModel = MutableStateFlow(SearchScreenModel())
@@ -68,6 +71,38 @@ class SearchViewModel @Inject constructor(
         ).flatMapLatest { searchQuery ->
             searchMoviesUseCase.searchSeeAllMovies(searchText = searchQuery)
         }.cachedIn(viewModelScope)
+
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+    val filteredMovies: Flow<PagingData<SeeAllMovieModel>> =
+        _searchScreenModel.map { it.searchText }.debounce(
+            SEARCH_DEBOUNCE_TIME
+        ).flatMapLatest { searchQuery ->
+            _searchFilterState.value.second?.let {
+                filterMoviesUseCase.filterMovies(
+                    searchText = searchQuery,
+                    searchFilterModel = it
+                )
+            } ?: flowOf(PagingData.empty())
+        }.cachedIn(viewModelScope)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val finalSearchedOrFilteredMovies : Flow<PagingData<SeeAllMovieModel>> =
+        combine(
+            _searchScreenModel,
+            _searchFilterState
+        ) { searchScreenModel, filterState ->
+            when {
+                // If search text is empty, return filtered movies
+                searchScreenModel.searchText.isEmpty() -> flowOf(PagingData.empty())
+
+                // If filter model is default, use searchedMovies
+                filterState.second == defaultSearchFilterModel -> searchedMovies
+
+                // Otherwise, apply filtering logic
+                else -> filteredMovies
+            }
+        }.flatMapLatest { it }
+            .cachedIn(viewModelScope)
 
     fun handleSearchScreenAction(searchUiAction: SearchUiAction) {
         when (searchUiAction) {
@@ -133,13 +168,13 @@ class SearchViewModel @Inject constructor(
 
     private fun filterApply(searchFilterModel: SearchFilterModel?) {
         viewModelScope.launch {
-            val selectedRefreshModel = searchFilterModel?.copy(
+            val selectedFilterModel = searchFilterModel?.copy(
                 genres = searchFilterModel.genres.filter { it.isSelected },
                 regions = searchFilterModel.regions.filter { it.isSelected },
                 timePeriods = searchFilterModel.timePeriods.filter { it.isSelected },
                 sorts = searchFilterModel.sorts.filter { it.isSelected }
             )
-            Log.d("SearchViewModel", "filterApply: $selectedRefreshModel")
+            Log.d("SearchViewModel", "filterApply: $selectedFilterModel")
             _searchFilterState.update { false to searchFilterModel }
         }
     }

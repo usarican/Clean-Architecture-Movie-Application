@@ -7,6 +7,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.Sea
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.RegionDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.remote.RegionsService
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.remote.SearchService
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.FilterMoviesUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.FilterMoviesUseCaseImpl
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchFilterModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchFilterModelUseCaseImpl
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchScreenModelUseCase
@@ -35,6 +37,9 @@ abstract class SearchModule {
 
     @Binds
     abstract fun bindGetSearchFilterModelUseCase(getSearchFilterModelUseCaseImpl: GetSearchFilterModelUseCaseImpl): GetSearchFilterModelUseCase
+
+    @Binds
+    abstract fun bindFilterMoviesUseCase(filterMoviesUseCaseImpl: FilterMoviesUseCaseImpl) : FilterMoviesUseCase
 
     companion object {
         @Provides

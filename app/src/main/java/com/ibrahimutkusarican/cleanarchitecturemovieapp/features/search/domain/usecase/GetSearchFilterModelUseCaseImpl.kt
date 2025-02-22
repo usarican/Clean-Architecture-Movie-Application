@@ -50,7 +50,7 @@ class GetSearchFilterModelUseCaseImpl @Inject constructor(
                 val timePeriods = mutableListOf<TimePeriodModel>().apply {
                     add(
                         TimePeriodModel(
-                            time = 0,
+                            time = null,
                             nameRes = R.string.all_periods,
                             isSelected = true
                         )

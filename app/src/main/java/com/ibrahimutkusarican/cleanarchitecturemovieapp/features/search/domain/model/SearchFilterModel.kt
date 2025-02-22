@@ -36,7 +36,7 @@ data class SortModel(
 )
 
 data class TimePeriodModel(
-    val time: Int,
+    val time: Int?,
     @StringRes val nameRes: Int? = null,
     val name : String = "",
     val isSelected: Boolean

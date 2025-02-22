@@ -14,4 +14,18 @@ class SearchRemoteDataSource @Inject constructor(
     suspend fun getRecommendedMovieById(movieId: Int) = movieService.getRecommendedMovies(movieId)
 
     suspend fun getRegionsFromRemote() = regionsService.getRegions()
+
+    suspend fun sortOrFilterMovies(
+        page: Int,
+        releaseYear : Int? = null,
+        sortBy: String = "popularity_desc",
+        genre : String? = null,
+        region : String? = null
+    ) = searchService.filterAndSortMovies(
+        page = page,
+        releaseYear = releaseYear,
+        sortBy = sortBy,
+        genres = genre,
+        region = region
+    )
 }

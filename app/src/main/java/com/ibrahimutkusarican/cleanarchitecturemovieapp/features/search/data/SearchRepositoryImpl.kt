@@ -9,9 +9,9 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remot
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.VisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.SearchLocalDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.entities.RegionEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.paging.FilterMoviePagingSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.paging.SearchMoviePagingSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.remote.SearchRemoteDataSource
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.remote.responses.Region
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.MOVIE_PAGE_SIZE
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -19,11 +19,28 @@ import javax.inject.Inject
 class SearchRepositoryImpl @Inject constructor(
     private val searchRemoteDataSource: SearchRemoteDataSource,
     private val searchLocalDataSource: SearchLocalDataSource,
-) : SearchRepository,BaseRepository() {
+) : SearchRepository, BaseRepository() {
     override fun searchMovies(searchText: String): Flow<PagingData<MovieResultResponse>> {
         return Pager(config = PagingConfig(pageSize = MOVIE_PAGE_SIZE), pagingSourceFactory = {
             SearchMoviePagingSource(
                 searchRemoteDataSource = searchRemoteDataSource, searchText = searchText
+            )
+        }).flow
+    }
+
+    override fun filterMovies(
+        releaseYear: Int?,
+        sortBy: String,
+        genre: String?,
+        region: String?
+    ): Flow<PagingData<MovieResultResponse>> {
+        return Pager(config = PagingConfig(pageSize = MOVIE_PAGE_SIZE), pagingSourceFactory = {
+            FilterMoviePagingSource(
+                searchRemoteDataSource = searchRemoteDataSource,
+                releaseYear = releaseYear,
+                sortBy = sortBy,
+                genre = genre,
+                region = region
             )
         }).flow
     }

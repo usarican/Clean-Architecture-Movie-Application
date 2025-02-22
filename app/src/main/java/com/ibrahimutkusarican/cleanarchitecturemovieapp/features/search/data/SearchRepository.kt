@@ -9,8 +9,15 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
     fun searchMovies(searchText: String): Flow<PagingData<MovieResultResponse>>
+    fun filterMovies(
+        releaseYear: Int?,
+        sortBy: String,
+        genre: String?,
+        region: String?
+    ): Flow<PagingData<MovieResultResponse>>
+
     fun getRecommendedMovieById(movieId: Int): Flow<ApiState<List<MovieResultResponse>>>
     fun getRecentlyViewedMovies(): Flow<ApiState<List<VisitedMovieEntity>>>
-    fun getRegions() : Flow<ApiState<List<RegionEntity>>>
-    fun deleteAllRegions() : Flow<ApiState<Boolean>>
+    fun getRegions(): Flow<ApiState<List<RegionEntity>>>
+    fun deleteAllRegions(): Flow<ApiState<Boolean>>
 }

@@ -18,5 +18,6 @@ sealed class SearchUiAction {
         data class FilterAndSortApplyAction(val newSearchFilterModel : SearchFilterModel) : FilterAndSortActions()
         data object FilterAndSortResetAction : FilterAndSortActions()
         data object FilterAndSortCloseAction : FilterAndSortActions()
+        data class UpdateFilterModel(val newFilterModel : SearchFilterModel) : FilterAndSortActions()
     }
 }

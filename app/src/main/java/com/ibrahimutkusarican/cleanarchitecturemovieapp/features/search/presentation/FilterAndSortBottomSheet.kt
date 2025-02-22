@@ -30,7 +30,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
@@ -42,13 +41,11 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.m
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview(showBackground = true)
 fun FilterAndSortBottomSheet(
     modifier: Modifier = Modifier,
     searchFilterModel: SearchFilterModel = getMockSearchFilterModel(),
     uiActions: (action: SearchUiAction) -> Unit = {}
 ) {
-    var filterModel by remember { mutableStateOf(searchFilterModel) }
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -77,57 +74,61 @@ fun FilterAndSortBottomSheet(
             ) {
                 item {
                     FilterSection(
-                        title = stringResource(filterModel.genresTitleRes),
-                        items = filterModel.genres.map { it.genreName },
-                        selectedItems = filterModel.genres.map { it.isSelected }
+                        title = stringResource(searchFilterModel.genresTitleRes),
+                        items = searchFilterModel.genres.map { it.genreName },
+                        selectedItems = searchFilterModel.genres.map { it.isSelected }
                     ) { index ->
-                        filterModel = filterModel.copy(
-                            genres = filterModel.genres.mapIndexed { i, genre ->
+                        val updateSearchFilterModel = searchFilterModel.copy(
+                            genres = searchFilterModel.genres.mapIndexed { i, genre ->
                                 if (i == index) genre.copy(isSelected = !genre.isSelected) else genre
                             }
                         )
+                        uiActions.invoke(SearchUiAction.FilterAndSortActions.UpdateFilterModel(updateSearchFilterModel))
                     }
                 }
 
                 item {
                     FilterSection(
-                        title = stringResource(filterModel.regionsTitleRes),
-                        items = filterModel.regions.map { it.regionName },
-                        selectedItems = filterModel.regions.map { it.isSelected }
+                        title = stringResource(searchFilterModel.regionsTitleRes),
+                        items = searchFilterModel.regions.map { it.regionName },
+                        selectedItems = searchFilterModel.regions.map { it.isSelected }
                     ) { index ->
-                        filterModel = filterModel.copy(
-                            regions = filterModel.regions.mapIndexed { i, region ->
+                        val updateSearchFilterModel = searchFilterModel.copy(
+                            regions = searchFilterModel.regions.mapIndexed { i, region ->
                                 if (i == index) region.copy(isSelected = !region.isSelected) else region
                             }
                         )
+                        uiActions.invoke(SearchUiAction.FilterAndSortActions.UpdateFilterModel(updateSearchFilterModel))
                     }
                 }
 
                 item {
                     FilterSection(
-                        title = stringResource(filterModel.timePeriodsTitleRes),
-                        items = filterModel.timePeriods.map { it.name.ifEmpty { stringResource(it.nameRes!!) } },
-                        selectedItems = filterModel.timePeriods.map { it.isSelected }
+                        title = stringResource(searchFilterModel.timePeriodsTitleRes),
+                        items = searchFilterModel.timePeriods.map { it.name.ifEmpty { stringResource(it.nameRes!!) } },
+                        selectedItems = searchFilterModel.timePeriods.map { it.isSelected }
                     ) { index ->
-                        filterModel = filterModel.copy(
-                            timePeriods = filterModel.timePeriods.mapIndexed { i, period ->
+                        val updateSearchFilterModel = searchFilterModel.copy(
+                            timePeriods = searchFilterModel.timePeriods.mapIndexed { i, period ->
                                 if (i == index) period.copy(isSelected = !period.isSelected) else period
                             }
                         )
+                        uiActions.invoke(SearchUiAction.FilterAndSortActions.UpdateFilterModel(updateSearchFilterModel))
                     }
                 }
 
                 item {
                     FilterSection(
-                        title = stringResource(filterModel.sortsTitleRes),
-                        items = filterModel.sorts.map { stringResource(it.sortNameRes) },
-                        selectedItems = filterModel.sorts.map { it.isSelected }
+                        title = stringResource(searchFilterModel.sortsTitleRes),
+                        items = searchFilterModel.sorts.map { stringResource(it.sortNameRes) },
+                        selectedItems = searchFilterModel.sorts.map { it.isSelected }
                     ) { index ->
-                        filterModel = filterModel.copy(
-                            sorts = filterModel.sorts.mapIndexed { i, sort ->
+                        val updateSearchFilterModel = searchFilterModel.copy(
+                            sorts = searchFilterModel.sorts.mapIndexed { i, sort ->
                                 if (i == index) sort.copy(isSelected = !sort.isSelected) else sort
                             }
                         )
+                        uiActions.invoke(SearchUiAction.FilterAndSortActions.UpdateFilterModel(updateSearchFilterModel))
                     }
                 }
             }
@@ -176,7 +177,7 @@ fun FilterAndSortBottomSheet(
                     onClick = {
                         uiActions.invoke(
                             SearchUiAction.FilterAndSortActions.FilterAndSortApplyAction(
-                                filterModel
+                                searchFilterModel
                             )
                         )
                     },

@@ -93,6 +93,15 @@ class SearchViewModel @Inject constructor(
 
             SearchUiAction.FilterAndSortActions.FilterAndSortCloseAction -> filterScreenCloseAction()
             SearchUiAction.FilterAndSortActions.FilterAndSortResetAction -> filterScreenResetAction()
+            is SearchUiAction.FilterAndSortActions.UpdateFilterModel -> updateSearchFilterModel(
+                searchUiAction.newFilterModel
+            )
+        }
+    }
+
+    private fun updateSearchFilterModel(searchFilterModel: SearchFilterModel) {
+        viewModelScope.launch {
+            _searchFilterState.update { true to searchFilterModel }
         }
     }
 
@@ -112,23 +121,23 @@ class SearchViewModel @Inject constructor(
 
     private fun filterScreenCloseAction() {
         viewModelScope.launch {
-            _searchFilterState.value = false to searchFilterState.value.second
+            _searchFilterState.update { false to searchFilterState.value.second }
         }
     }
 
     private fun filterScreenResetAction() {
         viewModelScope.launch {
-            _searchFilterState.value = true to defaultSearchFilterModel
+            _searchFilterState.update { true to defaultSearchFilterModel }
         }
     }
 
     private fun filterApply(searchFilterModel: SearchFilterModel?) {
         viewModelScope.launch {
             val selectedRefreshModel = searchFilterModel?.copy(
-            genres = searchFilterModel.genres.filter { it.isSelected },
-            regions = searchFilterModel.regions.filter { it.isSelected },
-            timePeriods = searchFilterModel.timePeriods.filter { it.isSelected },
-            sorts = searchFilterModel.sorts.filter { it.isSelected }
+                genres = searchFilterModel.genres.filter { it.isSelected },
+                regions = searchFilterModel.regions.filter { it.isSelected },
+                timePeriods = searchFilterModel.timePeriods.filter { it.isSelected },
+                sorts = searchFilterModel.sorts.filter { it.isSelected }
             )
             Log.d("SearchViewModel", "filterApply: $selectedRefreshModel")
             _searchFilterState.update { false to searchFilterModel }

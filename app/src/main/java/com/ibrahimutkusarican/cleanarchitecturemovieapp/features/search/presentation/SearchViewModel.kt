@@ -51,7 +51,8 @@ class SearchViewModel @Inject constructor(
 
     private var recommendedMovieId: Int? = null
 
-    private lateinit var defaultSearchFilterModel: SearchFilterModel
+    private var defaultSearchFilterModel: SearchFilterModel? = null
+
     private val _searchFilterState =
         MutableStateFlow<Pair<Boolean, SearchFilterModel?>>(false to null)
     val searchFilterState: StateFlow<Pair<Boolean, SearchFilterModel?>> = _searchFilterState

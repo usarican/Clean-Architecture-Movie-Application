@@ -23,6 +23,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -39,9 +42,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchFilterModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchScreenModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposable
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
@@ -57,6 +63,7 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
     val searchedMovies = viewModel.searchedMovies.collectAsLazyPagingItems()
     val uiState by viewModel.searchScreenUiState.collectAsStateWithLifecycle()
     val searchFilterState by viewModel.searchFilterState.collectAsStateWithLifecycle()
+    val filterList by viewModel.filterList.collectAsStateWithLifecycle()
 
     Box(
         modifier = Modifier
@@ -77,58 +84,12 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                     }
                 }
             )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(dimensionResource(R.dimen.large_padding)),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                MySearchBar(
-                    modifier = Modifier
-                        .animateContentSize()
-                        .weight(1F),
-                    searchText = searchScreenModel.searchText,
-                    onSearch = { searchText ->
-                        viewModel.handleSearchScreenAction(
-                            SearchUiAction.SearchAction(
-                                searchText
-                            )
-                        )
-                    },
-                )
-                Card(
-                    modifier = Modifier
-                        .padding(start = dimensionResource(R.dimen.small_padding))
-                        .size(dimensionResource(R.dimen.circle_icon_size)),
-                    shape = CircleShape,
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                    elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.small_card_elevation))
-                ) {
-                    Box(Modifier
-                        .fillMaxSize()
-                        .clickable {
-                            viewModel.handleSearchScreenAction(
-                                SearchUiAction.FilterAndSortActions.FilterAndSortButtonClickAction(
-                                    searchFilterState.second
-                                )
-                            )
-                        }) {
-                        Icon(
-                            modifier = Modifier
-                                .size(dimensionResource(R.dimen.icon_size))
-                                .padding(dimensionResource(R.dimen.small_padding))
-                                .align(Alignment.Center),
-                            painter = painterResource(R.drawable.ic_filter),
-                            contentDescription = "Filter Icon",
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    }
-
-                }
-
-            }
+            SearchScreenSearchBar(
+                searchScreenModel = searchScreenModel,
+                handleUiAction = viewModel::handleSearchScreenAction,
+                searchFilterState = searchFilterState,
+                filterList = filterList
+            )
 
             if (searchScreenModel.searchText.isEmpty()) {
                 BaseUiStateComposable(
@@ -193,6 +154,83 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
         }
     }
 
+}
+
+@Composable
+private fun SearchScreenSearchBar(
+    searchScreenModel: SearchScreenModel,
+    handleUiAction: (action: SearchUiAction) -> Unit,
+    searchFilterState: Pair<Boolean, SearchFilterModel?>,
+    filterList: List<String>,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(dimensionResource(R.dimen.large_padding)),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        MySearchBar(
+            modifier = Modifier
+                .animateContentSize()
+                .weight(1F),
+            searchText = searchScreenModel.searchText,
+            onSearch = { searchText ->
+                handleUiAction(
+                    SearchUiAction.SearchAction(
+                        searchText
+                    )
+                )
+            },
+        )
+        Card(
+            modifier = Modifier
+                .padding(start = dimensionResource(R.dimen.small_padding))
+                .size(dimensionResource(R.dimen.circle_icon_size)),
+            shape = CircleShape,
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+            elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.small_card_elevation))
+        ) {
+            Box(Modifier
+                .fillMaxSize()
+                .clickable {
+                    handleUiAction(
+                        SearchUiAction.FilterAndSortActions.FilterAndSortButtonClickAction(
+                            searchFilterState.second
+                        )
+                    )
+                }) {
+                Icon(
+                    modifier = Modifier
+                        .size(dimensionResource(R.dimen.icon_size))
+                        .padding(dimensionResource(R.dimen.small_padding))
+                        .align(Alignment.Center),
+                    painter = painterResource(R.drawable.ic_filter),
+                    contentDescription = "Filter Icon",
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
+        }
+    }
+    if (filterList.isNotEmpty()){
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    vertical = dimensionResource(R.dimen.small_padding),
+                    horizontal = dimensionResource(R.dimen.large_padding)
+                ),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(filterList) { item ->
+                FilterChip(
+                    text = item,
+                    isSelected = true,
+                    onSelectedChange = { }
+                )
+            }
+        }
+    }
 }
 
 

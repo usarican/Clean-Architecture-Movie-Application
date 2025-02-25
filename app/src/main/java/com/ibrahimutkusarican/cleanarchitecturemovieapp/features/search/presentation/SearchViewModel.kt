@@ -14,6 +14,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.u
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchScreenModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.SearchMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.model.SeeAllMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.SEARCH_DEBOUNCE_TIME
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.SearchFilterHelper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
@@ -92,15 +93,18 @@ class SearchViewModel @Inject constructor(
     ) { searchScreenModel, filterModel ->
         when {
             searchScreenModel.searchText.isEmpty() -> if (defaultSearchFilterModel != null && filterModel != defaultSearchFilterModel) {
+                setSearchText(Constants.EMPTY_STRING)
                 filteredMovies
             } else {
                 flowOf(PagingData.empty())
             }
 
-            (filterModel == defaultSearchFilterModel) -> searchedMovies
+            searchScreenModel.searchText.isNotEmpty() -> {
+                removeFilter()
+                searchedMovies
+            }
 
-            // Otherwise, apply filtering logic
-            else -> filteredMovies
+            else -> flowOf(PagingData.empty())
         }
     }.flatMapLatest { it }.cachedIn(viewModelScope)
 
@@ -167,6 +171,15 @@ class SearchViewModel @Inject constructor(
             _searchFilterState.update { true to defaultSearchFilterModel }
         }
     }
+
+    private fun removeFilter(){
+        viewModelScope.launch {
+            _searchFilterState.update { false to defaultSearchFilterModel }
+            _filterList.value = emptyList()
+            _searchFilterModel.value = null
+        }
+    }
+
 
     private fun filterApply(searchFilterModel: SearchFilterModel?) {
         viewModelScope.launch {

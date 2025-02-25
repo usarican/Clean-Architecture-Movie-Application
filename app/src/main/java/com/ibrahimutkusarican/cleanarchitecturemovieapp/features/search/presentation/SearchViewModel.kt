@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
@@ -76,12 +77,13 @@ class SearchViewModel @Inject constructor(
         }
 
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val filteredMovies: Flow<PagingData<SeeAllMovieModel>> =
-        _searchFilterModel.value?.let {
+        _searchFilterModel.filterNotNull().flatMapLatest { model ->
             filterMoviesUseCase.filterMovies(
-                searchFilterModel = it
+                searchFilterModel = model
             )
-        } ?: flowOf(PagingData.empty())
+        }
 
 
     @OptIn(ExperimentalCoroutinesApi::class)

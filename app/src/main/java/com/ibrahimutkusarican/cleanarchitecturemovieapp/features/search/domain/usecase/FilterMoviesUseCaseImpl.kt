@@ -27,7 +27,7 @@ class FilterMoviesUseCaseImpl @Inject constructor(
             val genreList = genreState.getSuccessOrThrow()
             val releaseYear = searchFilterModel.timePeriods.firstOrNull { it.isSelected }?.time
             val region = searchFilterModel.regions.firstOrNull { it.isSelected }?.regionCode
-            val genre = searchFilterModel.genres.filter { it.isSelected }
+            val genre = searchFilterModel.genres.filter { it.isSelected }.map { it.genreId }
                 .joinToString(separator = ",")
                 .takeIf { it.isNotEmpty() }
             val sortBy = searchFilterModel.sorts.first { it.isSelected }.sortCode

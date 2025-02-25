@@ -93,7 +93,6 @@ class SearchViewModel @Inject constructor(
     ) { searchScreenModel, filterModel ->
         when {
             searchScreenModel.searchText.isEmpty() -> if (defaultSearchFilterModel != null && filterModel != defaultSearchFilterModel) {
-                setSearchText(Constants.EMPTY_STRING)
                 filteredMovies
             } else {
                 flowOf(PagingData.empty())
@@ -191,6 +190,7 @@ class SearchViewModel @Inject constructor(
             Log.d("SearchViewModel", "filterApply: $selectedFilterModel")
             _searchFilterState.update { false to searchFilterModel }
             if (searchFilterState.value.second != defaultSearchFilterModel) {
+                setSearchText(Constants.EMPTY_STRING)
                 _filterList.update { searchFilterHelper.getFilterItemList(selectedFilterModel) }
                 _searchFilterModel.value = selectedFilterModel
             }

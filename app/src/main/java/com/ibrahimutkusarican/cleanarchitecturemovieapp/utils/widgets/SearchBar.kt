@@ -34,16 +34,15 @@ fun MySearchBar(
     showFilterIcon: Boolean = false,
     isEnable: Boolean = true,
     readOnly: Boolean = false,
-    onClickAction: (() -> Unit)? = null
+    onClickAction: (() -> Unit)? = null,
+    interactionSource: MutableInteractionSource? = null,
 ) {
 
     val isFocused by rememberUpdatedState(searchText.isNotEmpty())
-    val interactionSource = remember { MutableInteractionSource() }
 
     OutlinedTextField(
         modifier = modifier
             .fillMaxWidth()
-            .padding(dimensionResource(R.dimen.large_padding))
             .clickable(
                 indication = null,
                 interactionSource = interactionSource,
@@ -82,7 +81,8 @@ fun MySearchBar(
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedPrefixColor = MaterialTheme.colorScheme.onSurfaceVariant,
             unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        ),
+        interactionSource = interactionSource
     )
 
 }

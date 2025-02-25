@@ -3,6 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.di
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.MOVIE_API_URL
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.TIME_OUT_VALUE
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.RequestInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -29,8 +30,8 @@ object NetworkModule {
         return OkHttpClient().newBuilder()
             .addNetworkInterceptor(RequestInterceptor(dataStore))
             .addInterceptor(HttpLoggingInterceptor())
-            .readTimeout(15, TimeUnit.SECONDS)
-            .connectTimeout(15,TimeUnit.SECONDS)
+            .readTimeout(TIME_OUT_VALUE, TimeUnit.SECONDS)
+            .connectTimeout(TIME_OUT_VALUE,TimeUnit.SECONDS)
             .build()
     }
 

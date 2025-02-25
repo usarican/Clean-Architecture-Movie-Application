@@ -64,6 +64,19 @@
     <string name="my_list_are_you_sure_snack_bar_content">%1$s öğesini %2$s listesinden kaldırmak istediğinizden emin misiniz?</string>
     <string name="my_list_delete_snack_bar_content">%1$s filmi %2$s listesinden kaldırıldı</string>
 
+    <string name="sort_popularity">Popularity</string>
+    <string name="sort_release_date">Latest Releases</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="all_periods">All Periods</string>
+    <string name="sort_and_filter">Sırala &amp; Filtrele</string>
+    <string name="genres_title">Türler</string>
+    <string name="regions_title">Bölgeler</string>
+    <string name="time_periods_title">Zaman Aralıkları</string>
+    <string name="sorts_title">Sıralama Seçenekleri</string>
+    <string name="apply">Uygula</string>
+    <string name="reset">Yenile</string>
+
+
     <!-- Hata Metinleri -->
     <string name="error_title_coil">Görsel Yükleme Hatası</string>
     <string name="error_content_coil">Görsel yüklenemedi. Lütfen tekrar deneyin.</string>

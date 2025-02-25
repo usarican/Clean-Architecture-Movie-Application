@@ -1,5 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation
 
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchFilterModel
+
 sealed class SearchUiAction {
     data object OnBackPress : SearchUiAction()
     data class MovieClick(val movieId: Int) : SearchUiAction()
@@ -10,4 +12,12 @@ sealed class SearchUiAction {
     data class LastSearchItemDeleteClickAction(val lastSearchItemText: String) : SearchUiAction()
     data object RecommendedMovieSeeAllClickAction : SearchUiAction()
     data object ErrorTryAgainAction : SearchUiAction()
+
+    sealed class FilterAndSortActions : SearchUiAction() {
+        data class FilterAndSortButtonClickAction(val searchFilterModel: SearchFilterModel?) : FilterAndSortActions()
+        data class FilterAndSortApplyAction(val newSearchFilterModel : SearchFilterModel) : FilterAndSortActions()
+        data object FilterAndSortResetAction : FilterAndSortActions()
+        data object FilterAndSortCloseAction : FilterAndSortActions()
+        data class UpdateFilterModel(val newFilterModel : SearchFilterModel) : FilterAndSortActions()
+    }
 }

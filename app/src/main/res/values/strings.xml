@@ -63,6 +63,18 @@
     <string name="my_list_are_you_sure_snack_bar_content">Are you sure to remove %1$s from %2$s</string>
     <string name="my_list_delete_snack_bar_content">You removed %1$s movie from %2$s</string>
 
+    <string name="sort_popularity">Popularity</string>
+    <string name="sort_release_date">Latest Releases</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="all_periods">All Periods</string>
+    <string name="sort_and_filter">Sort &amp; Filter</string>
+    <string name="genres_title">Genres</string>
+    <string name="regions_title">Regions</string>
+    <string name="time_periods_title">Time/Periods</string>
+    <string name="sorts_title">Sort</string>
+    <string name="apply">Apply</string>
+    <string name="reset">Reset</string>
+
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface FilterMoviesUseCase {
     fun filterMovies(
-        searchText : String? = null,
         searchFilterModel: SearchFilterModel
     ): Flow<PagingData<SeeAllMovieModel>>
 }

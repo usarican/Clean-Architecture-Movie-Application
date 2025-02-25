@@ -1,16 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,7 +17,6 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -36,7 +27,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -60,7 +50,7 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
         viewModel.getSearchScreenModel(recommendedMovieId)
     }
     val searchScreenModel by viewModel.searchScreenModel.collectAsStateWithLifecycle()
-    val searchedMovies = viewModel.searchedMovies.collectAsLazyPagingItems()
+    val filteredMovies = viewModel.finalSearchedOrFilteredMovies.collectAsLazyPagingItems()
     val uiState by viewModel.searchScreenUiState.collectAsStateWithLifecycle()
     val searchFilterState by viewModel.searchFilterState.collectAsStateWithLifecycle()
     val filterList by viewModel.filterList.collectAsStateWithLifecycle()
@@ -91,7 +81,7 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                 filterList = filterList
             )
 
-            if (searchScreenModel.searchText.isEmpty()) {
+            if (searchScreenModel.searchText.isEmpty() && filterList.isEmpty()) {
                 BaseUiStateComposable(
                     uiState = uiState,
                     tryAgainOnClickAction = {
@@ -139,7 +129,7 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                 }
             } else {
                 SearchedMoviesList(
-                    pagingMovies = searchedMovies,
+                    pagingMovies = filteredMovies,
                     handleUiAction = viewModel::handleSearchScreenAction
                 )
             }
@@ -217,7 +207,6 @@ private fun SearchScreenSearchBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    vertical = dimensionResource(R.dimen.small_padding),
                     horizontal = dimensionResource(R.dimen.large_padding)
                 ),
             horizontalArrangement = Arrangement.spacedBy(8.dp)

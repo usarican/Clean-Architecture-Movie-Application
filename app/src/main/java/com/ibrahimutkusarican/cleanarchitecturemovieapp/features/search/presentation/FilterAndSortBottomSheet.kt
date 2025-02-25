@@ -257,7 +257,7 @@ fun FilterChip(
         selected = isSelected,
         onClick = { onSelectedChange(!isSelected) },
         label = { Text(text) },
-        shape = RoundedCornerShape(25),
+        shape = RoundedCornerShape(50),
         colors = FilterChipDefaults.filterChipColors(
             containerColor = MaterialTheme.colorScheme.surface,
             selectedContainerColor = MaterialTheme.colorScheme.primary,

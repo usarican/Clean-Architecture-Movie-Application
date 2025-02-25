@@ -30,9 +30,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -60,6 +58,8 @@ class SearchViewModel @Inject constructor(
         MutableStateFlow<Pair<Boolean, SearchFilterModel?>>(false to null)
     val searchFilterState: StateFlow<Pair<Boolean, SearchFilterModel?>> = _searchFilterState
 
+    private val _searchFilterModel = MutableStateFlow<SearchFilterModel?>(null)
+
     fun getSearchScreenModel(recommendedMovieId: Int?) {
         this.recommendedMovieId = recommendedMovieId
         getSearchScreenModelUseCase.getScreenModelUseCase(movieId = recommendedMovieId)
@@ -68,35 +68,34 @@ class SearchViewModel @Inject constructor(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
-    val searchedMovies =
+    private val searchedMovies =
         _searchScreenModel.map { it.searchText }.filter { it.isNotEmpty() }.debounce(
             SEARCH_DEBOUNCE_TIME
         ).flatMapLatest { searchQuery ->
             searchMoviesUseCase.searchSeeAllMovies(searchText = searchQuery)
-        }.cachedIn(viewModelScope)
+        }
 
-    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-    val filteredMovies: Flow<PagingData<SeeAllMovieModel>> =
-        _searchScreenModel.map { it.searchText }.debounce(
-            SEARCH_DEBOUNCE_TIME
-        ).flatMapLatest { searchQuery ->
-            _searchFilterState.value.second?.let {
-                filterMoviesUseCase.filterMovies(
-                    searchText = searchQuery, searchFilterModel = it
-                )
-            } ?: flowOf(PagingData.empty())
-        }.cachedIn(viewModelScope)
+
+    private val filteredMovies: Flow<PagingData<SeeAllMovieModel>> =
+        _searchFilterModel.value?.let {
+            filterMoviesUseCase.filterMovies(
+                searchFilterModel = it
+            )
+        } ?: flowOf(PagingData.empty())
+
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val finalSearchedOrFilteredMovies: Flow<PagingData<SeeAllMovieModel>> = combine(
-        _searchScreenModel, _searchFilterState
-    ) { searchScreenModel, filterState ->
+        _searchScreenModel, _searchFilterModel
+    ) { searchScreenModel, filterModel ->
         when {
-            // If search text is empty, return filtered movies
-            searchScreenModel.searchText.isEmpty() -> flowOf(PagingData.empty())
+            searchScreenModel.searchText.isEmpty() -> if (defaultSearchFilterModel != null && filterModel != defaultSearchFilterModel) {
+                filteredMovies
+            } else {
+                flowOf(PagingData.empty())
+            }
 
-            // If filter model is default, use searchedMovies
-            filterState.second == defaultSearchFilterModel -> searchedMovies
+            (filterModel == defaultSearchFilterModel) -> searchedMovies
 
             // Otherwise, apply filtering logic
             else -> filteredMovies
@@ -146,9 +145,9 @@ class SearchViewModel @Inject constructor(
     private fun getSearchFilterModel(searchFilterModel: SearchFilterModel?) {
         if (searchFilterModel == null) {
             getSearchFilterModelUseCase.getSearchFilterModel().doOnSuccess { model ->
-                    _searchFilterState.value = true to model
-                    defaultSearchFilterModel = model
-                }.launchIn(viewModelScope)
+                _searchFilterState.value = true to model
+                defaultSearchFilterModel = model
+            }.launchIn(viewModelScope)
 
         } else {
             _searchFilterState.update { true to searchFilterModel }
@@ -176,8 +175,9 @@ class SearchViewModel @Inject constructor(
                     sorts = searchFilterModel.sorts.filter { it.isSelected })
             Log.d("SearchViewModel", "filterApply: $selectedFilterModel")
             _searchFilterState.update { false to searchFilterModel }
-            if (searchFilterState.value.second != selectedFilterModel) {
+            if (searchFilterState.value.second != defaultSearchFilterModel) {
                 _filterList.update { searchFilterHelper.getFilterItemList(selectedFilterModel) }
+                _searchFilterModel.value = selectedFilterModel
             }
         }
     }

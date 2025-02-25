@@ -1,7 +1,13 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -135,44 +141,76 @@ private fun BannerMovieInfo(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding))
     ) {
-        Text(
-            text = bannerMovie.movieTitle, style = MaterialTheme.typography.titleLarge.copy(
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
-            ),
-            textAlign = TextAlign.Center
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
+        // Animated Title Transition
+        AnimatedContent(
+            targetState = bannerMovie.movieTitle,
+            transitionSpec = {
+                fadeIn(animationSpec = tween(500)) togetherWith fadeOut(animationSpec = tween(500))
+            },
+            label = "MovieTitleAnimation"
+        ) { title ->
             Text(
-                text = bannerMovie.releaseDate, style = MaterialTheme.typography.bodyMedium.copy(
+                text = title,
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
-                )
-            )
-            Text(
-                modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.six_padding)),
-                text = "•",
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            )
-            Icon(
-                Icons.Default.Star,
-                contentDescription = "Star",
-                tint = MaterialTheme.colorScheme.primary
-            )
-            Text(
-                modifier = Modifier.padding(start = dimensionResource(R.dimen.three_dp)),
-                text = "${bannerMovie.movieVotePoint} / 10",
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                ),
+                textAlign = TextAlign.Center
             )
         }
-        MovieGenreView(modifier = Modifier.weight(1f), genreList = bannerMovie.movieGenres)
+
+        // Animated Row for Release Date and Rating
+        AnimatedContent(
+            targetState = bannerMovie.releaseDate to bannerMovie.movieVotePoint,
+            transitionSpec = {
+                slideInVertically(initialOffsetY = { it }) togetherWith slideOutVertically(targetOffsetY = { -it })
+            },
+            label = "MovieDetailsAnimation"
+        ) { (releaseDate, rating) ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = releaseDate,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                )
+                Text(
+                    modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.six_padding)),
+                    text = "•",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                )
+                Icon(
+                    Icons.Default.Star,
+                    contentDescription = "Star",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+                Text(
+                    modifier = Modifier.padding(start = dimensionResource(R.dimen.three_dp)),
+                    text = "$rating / 10",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                )
+            }
+        }
+
+        // Animate Genre List
+        AnimatedContent(
+            targetState = bannerMovie.movieGenres,
+            transitionSpec = {
+                fadeIn(animationSpec = tween(500)) togetherWith fadeOut(animationSpec = tween(500))
+            },
+            label = "MovieGenresAnimation"
+        ) { genres ->
+            MovieGenreView(modifier = Modifier.weight(1f), genreList = genres)
+        }
+
         Button(
             modifier = Modifier
                 .fillMaxWidth()
@@ -229,7 +267,7 @@ private fun MovieGenreView(modifier: Modifier = Modifier, genreList: List<String
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding)),
         maxItemsInEachRow = 3
     ) {
-        for (index in 0 until genreList.size) {
+        for (index in genreList.indices) {
             MovieGenreItem(genreText = genreList[index], index)
         }
     }

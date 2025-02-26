@@ -20,4 +20,5 @@ interface SearchRepository {
     fun getRecentlyViewedMovies(): Flow<ApiState<List<VisitedMovieEntity>>>
     fun getRegions(): Flow<ApiState<List<RegionEntity>>>
     fun deleteAllRegions(): Flow<ApiState<Boolean>>
+
 }

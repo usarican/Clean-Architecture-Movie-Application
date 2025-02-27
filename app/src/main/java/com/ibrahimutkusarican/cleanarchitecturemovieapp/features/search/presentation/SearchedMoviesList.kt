@@ -35,16 +35,13 @@ fun SearchedMoviesList(
     modifier: Modifier = Modifier,
     pagingMovies: LazyPagingItems<SeeAllMovieModel>,
     handleUiAction: (uiAction: SearchUiAction) -> Unit,
-    searchedText: String
 ) {
     BasePagingComposable(
         pagingItems = pagingMovies,
     ) {
-        LaunchedEffect(searchedText) {
+        LaunchedEffect(Unit) {
             handleUiAction(
-                SearchUiAction.AddLastSearchedText(
-                    searchedText
-                )
+                SearchUiAction.AddLastSearchedText
             )
         }
         LazyVerticalGrid(

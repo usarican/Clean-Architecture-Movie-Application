@@ -13,7 +13,7 @@ sealed class SearchUiAction {
     data class LastSearchItemDeleteClickAction(val lastSearchItem: SearchItemModel) : SearchUiAction()
     data object RecommendedMovieSeeAllClickAction : SearchUiAction()
     data object ErrorTryAgainAction : SearchUiAction()
-    data class AddLastSearchedText(val searchText: String) : SearchUiAction()
+    data object AddLastSearchedText : SearchUiAction()
 
     sealed class FilterAndSortActions : SearchUiAction() {
         data class FilterAndSortButtonClickAction(val searchFilterModel: SearchFilterModel?) : FilterAndSortActions()

@@ -43,7 +43,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MyTopBar
 
-@SuppressLint("RememberReturnType")
 @Composable
 fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
     LaunchedEffect(recommendedMovieId) {
@@ -133,7 +132,6 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                 SearchedMoviesList(
                     pagingMovies = filteredMovies,
                     handleUiAction = viewModel::handleSearchScreenAction,
-                    searchedText = searchScreenModel.searchText
                 )
             }
         }

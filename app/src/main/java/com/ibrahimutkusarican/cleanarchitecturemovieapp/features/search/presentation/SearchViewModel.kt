@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -28,6 +29,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
@@ -75,9 +77,10 @@ class SearchViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     private val searchedMovies =
-        _searchScreenModel.map { it.searchText }.filter { it.isNotEmpty() }.debounce(
-            SEARCH_DEBOUNCE_TIME
-        ).flatMapLatest { searchQuery ->
+        _searchScreenModel.map { it.searchText }.distinctUntilChanged().filter { it.isNotEmpty() }
+            .debounce(
+                SEARCH_DEBOUNCE_TIME
+            ).flatMapLatest { searchQuery ->
             searchMoviesUseCase.searchSeeAllMovies(searchText = searchQuery)
         }
 
@@ -93,16 +96,16 @@ class SearchViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val finalSearchedOrFilteredMovies: Flow<PagingData<SeeAllMovieModel>> = combine(
-        _searchScreenModel, _searchFilterModel
-    ) { searchScreenModel, filterModel ->
+        _searchScreenModel.map { it.searchText }.distinctUntilChanged(), _searchFilterModel
+    ) { searchText, filterModel ->
         when {
-            searchScreenModel.searchText.isEmpty() -> if (defaultSearchFilterModel != null && filterModel != defaultSearchFilterModel) {
+            searchText.isEmpty() -> if (defaultSearchFilterModel != null && filterModel != defaultSearchFilterModel) {
                 filteredMovies
             } else {
                 flowOf(PagingData.empty())
             }
 
-            searchScreenModel.searchText.isNotEmpty() -> {
+            searchText.isNotEmpty() -> {
                 removeFilter()
                 searchedMovies
             }
@@ -140,7 +143,7 @@ class SearchViewModel @Inject constructor(
                 searchUiAction.newFilterModel
             )
 
-            is SearchUiAction.AddLastSearchedText -> addLastSearch(searchUiAction.searchText)
+            is SearchUiAction.AddLastSearchedText -> addLastSearch()
         }
     }
 
@@ -211,8 +214,8 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private fun addLastSearch(searchText: String) {
-        addLastSearchUseCase.addLastSearch(searchText).doOnSuccess { newList ->
+    private fun addLastSearch() {
+        addLastSearchUseCase.addLastSearch(_searchScreenModel.value.searchText).doOnSuccess { newList ->
             _searchScreenModel.update { it.copy(lastSearchQueries = newList) }
         }.launchIn(viewModelScope)
     }

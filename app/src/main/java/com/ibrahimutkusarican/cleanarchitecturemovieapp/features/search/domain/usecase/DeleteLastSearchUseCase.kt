@@ -5,6 +5,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.m
 import kotlinx.coroutines.flow.Flow
 
 interface DeleteLastSearchUseCase {
-    fun deleteAllLastSearch() : Flow<UiState<Boolean>>
-    fun deleteLastSearch(searchItemModel: SearchItemModel) : Flow<UiState<Boolean>>
+    fun deleteAllLastSearch() : Flow<UiState<List<SearchItemModel>>>
+    fun deleteLastSearch(searchItemModel: SearchItemModel) : Flow<UiState<List<SearchItemModel>>>
 }

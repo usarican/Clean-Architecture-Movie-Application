@@ -14,16 +14,20 @@ class DeleteLastSearchUseCaseImpl @Inject constructor(
     private val searchRepository: SearchRepository,
     private val searchItemModelMapper: SearchItemModelMapper
 ) : BaseUseCase(), DeleteLastSearchUseCase {
-    override fun deleteAllLastSearch(): Flow<UiState<Boolean>> {
+    override fun deleteAllLastSearch(): Flow<UiState<List<SearchItemModel>>> {
         return execute {
             searchRepository.deleteAllSearchQueries().first().getSuccessOrThrow()
+            emptyList()
         }
     }
 
-    override fun deleteLastSearch(searchItemModel: SearchItemModel): Flow<UiState<Boolean>> {
+    override fun deleteLastSearch(searchItemModel: SearchItemModel): Flow<UiState<List<SearchItemModel>>> {
         return execute {
             searchRepository.deleteSearchQuery(searchItemModelMapper.modelToEntity(searchItemModel))
                 .first().getSuccessOrThrow()
+            searchRepository.getLastSearchQueries().first().getSuccessOrThrow().map {
+                searchItemModelMapper.entityToModel(it)
+            }
         }
     }
 }

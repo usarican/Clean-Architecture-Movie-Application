@@ -145,16 +145,14 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun deleteLastSearch(searchItemModel: SearchItemModel) {
-        deleteLastSearchUseCase.deleteLastSearch(searchItemModel).doOnSuccess {
-            getSearchScreenModelUseCase.getScreenModelUseCase(movieId = recommendedMovieId)
-                .doOnSuccess { model -> _searchScreenModel.value = model }.launchIn(viewModelScope)
+        deleteLastSearchUseCase.deleteLastSearch(searchItemModel).doOnSuccess { newList ->
+            _searchScreenModel.update { it.copy(lastSearchQueries = newList) }
         }.launchIn(viewModelScope)
     }
 
     private fun deleteAllLastSearch() {
-        deleteLastSearchUseCase.deleteAllLastSearch().doOnSuccess {
-            getSearchScreenModelUseCase.getScreenModelUseCase(movieId = recommendedMovieId)
-                .doOnSuccess { model -> _searchScreenModel.value = model }.launchIn(viewModelScope)
+        deleteLastSearchUseCase.deleteAllLastSearch().doOnSuccess { newList ->
+            _searchScreenModel.update { it.copy(lastSearchQueries = newList) }
         }.launchIn(viewModelScope)
     }
 
@@ -214,9 +212,8 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun addLastSearch(searchText: String) {
-        addLastSearchUseCase.addLastSearch(searchText).doOnSuccess {
-            getSearchScreenModelUseCase.getScreenModelUseCase(movieId = recommendedMovieId)
-                .doOnSuccess { model -> _searchScreenModel.value = model }.launchIn(viewModelScope)
+        addLastSearchUseCase.addLastSearch(searchText).doOnSuccess { newList ->
+            _searchScreenModel.update { it.copy(lastSearchQueries = newList) }
         }.launchIn(viewModelScope)
     }
 

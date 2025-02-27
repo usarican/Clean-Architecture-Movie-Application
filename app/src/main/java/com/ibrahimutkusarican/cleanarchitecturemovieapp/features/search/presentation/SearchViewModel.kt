@@ -1,6 +1,5 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -8,7 +7,10 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchFilterModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchItemModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchScreenModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.AddLastSearchUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.DeleteLastSearchUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.FilterMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchFilterModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchScreenModelUseCase
@@ -43,7 +45,9 @@ class SearchViewModel @Inject constructor(
     private val getSearchScreenModelUseCase: GetSearchScreenModelUseCase,
     private val getSearchFilterModelUseCase: GetSearchFilterModelUseCase,
     private val filterMoviesUseCase: FilterMoviesUseCase,
-    private val searchFilterHelper: SearchFilterHelper
+    private val searchFilterHelper: SearchFilterHelper,
+    private val deleteLastSearchUseCase: DeleteLastSearchUseCase,
+    private val addLastSearchUseCase: AddLastSearchUseCase
 ) : BaseViewModel() {
 
     private val _searchScreenModel = MutableStateFlow(SearchScreenModel())
@@ -115,19 +119,16 @@ class SearchViewModel @Inject constructor(
         when (searchUiAction) {
             is SearchUiAction.MovieClick -> sendEvent(MyEvent.MovieClickEvent(searchUiAction.movieId))
             SearchUiAction.OnBackPress -> sendEvent(MyEvent.OnBackPressed)
-            is SearchUiAction.SearchAction -> {
-                setSearchText(searchUiAction.searchText)
-            }
-
-            SearchUiAction.LastSearchAllClearAction -> TODO()
+            is SearchUiAction.SearchAction -> setSearchText(searchUiAction.searchText)
+            SearchUiAction.LastSearchAllClearAction -> deleteAllLastSearch()
             is SearchUiAction.LastSearchItemClickAction -> setSearchText(searchUiAction.lastSearchItemText)
-            is SearchUiAction.LastSearchItemDeleteClickAction -> TODO()
+            is SearchUiAction.LastSearchItemDeleteClickAction -> deleteLastSearch(searchUiAction.lastSearchItem)
             is SearchUiAction.RecommendedMovieSeeAllClickAction -> TODO()
             is SearchUiAction.TopSearchItemClickAction -> setSearchText(searchUiAction.topSearchItemText)
-            SearchUiAction.ErrorTryAgainAction -> TODO()
-            is SearchUiAction.FilterAndSortActions.FilterAndSortApplyAction -> {
-                filterApply(searchUiAction.newSearchFilterModel)
-            }
+            SearchUiAction.ErrorTryAgainAction -> getSearchScreenModel(recommendedMovieId)
+            is SearchUiAction.FilterAndSortActions.FilterAndSortApplyAction -> filterApply(
+                searchUiAction.newSearchFilterModel
+            )
 
             is SearchUiAction.FilterAndSortActions.FilterAndSortButtonClickAction -> getSearchFilterModel(
                 searchUiAction.searchFilterModel
@@ -138,7 +139,23 @@ class SearchViewModel @Inject constructor(
             is SearchUiAction.FilterAndSortActions.UpdateFilterModel -> updateSearchFilterModel(
                 searchUiAction.newFilterModel
             )
+
+            is SearchUiAction.AddLastSearchedText -> addLastSearch(searchUiAction.searchText)
         }
+    }
+
+    private fun deleteLastSearch(searchItemModel: SearchItemModel) {
+        deleteLastSearchUseCase.deleteLastSearch(searchItemModel).doOnSuccess {
+            getSearchScreenModelUseCase.getScreenModelUseCase(movieId = recommendedMovieId)
+                .doOnSuccess { model -> _searchScreenModel.value = model }.launchIn(viewModelScope)
+        }.launchIn(viewModelScope)
+    }
+
+    private fun deleteAllLastSearch() {
+        deleteLastSearchUseCase.deleteAllLastSearch().doOnSuccess {
+            getSearchScreenModelUseCase.getScreenModelUseCase(movieId = recommendedMovieId)
+                .doOnSuccess { model -> _searchScreenModel.value = model }.launchIn(viewModelScope)
+        }.launchIn(viewModelScope)
     }
 
     private fun updateSearchFilterModel(searchFilterModel: SearchFilterModel) {
@@ -171,7 +188,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private fun removeFilter(){
+    private fun removeFilter() {
         viewModelScope.launch {
             _searchFilterState.update { false to defaultSearchFilterModel }
             _filterList.value = emptyList()
@@ -187,7 +204,6 @@ class SearchViewModel @Inject constructor(
                     regions = searchFilterModel.regions.filter { it.isSelected },
                     timePeriods = searchFilterModel.timePeriods.filter { it.isSelected },
                     sorts = searchFilterModel.sorts.filter { it.isSelected })
-            Log.d("SearchViewModel", "filterApply: $selectedFilterModel")
             _searchFilterState.update { false to searchFilterModel }
             if (searchFilterState.value.second != defaultSearchFilterModel) {
                 setSearchText(Constants.EMPTY_STRING)
@@ -195,6 +211,13 @@ class SearchViewModel @Inject constructor(
                 _searchFilterModel.value = selectedFilterModel
             }
         }
+    }
+
+    private fun addLastSearch(searchText: String) {
+        addLastSearchUseCase.addLastSearch(searchText).doOnSuccess {
+            getSearchScreenModelUseCase.getScreenModelUseCase(movieId = recommendedMovieId)
+                .doOnSuccess { model -> _searchScreenModel.value = model }.launchIn(viewModelScope)
+        }.launchIn(viewModelScope)
     }
 
     private fun setSearchText(searchText: String) {

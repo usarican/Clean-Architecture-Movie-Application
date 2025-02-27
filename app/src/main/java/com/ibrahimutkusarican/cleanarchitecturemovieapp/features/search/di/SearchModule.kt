@@ -47,10 +47,10 @@ abstract class SearchModule {
     abstract fun bindFilterMoviesUseCase(filterMoviesUseCaseImpl: FilterMoviesUseCaseImpl): FilterMoviesUseCase
 
     @Binds
-    abstract suspend fun bindAddLastSearchUseCase(addLastSearchUseCaseImpl: AddLastSearchUseCaseImpl): AddLastSearchUseCase
+    abstract fun bindAddLastSearchUseCase(addLastSearchUseCaseImpl: AddLastSearchUseCaseImpl): AddLastSearchUseCase
 
     @Binds
-    abstract suspend fun bindDeleteLastSearchUseCase(deleteLastSearchUseCaseImpl: DeleteLastSearchUseCaseImpl): DeleteLastSearchUseCase
+    abstract fun bindDeleteLastSearchUseCase(deleteLastSearchUseCaseImpl: DeleteLastSearchUseCaseImpl): DeleteLastSearchUseCase
 
     companion object {
         @Provides

@@ -27,7 +27,7 @@ fun SearchItem(
     modifier: Modifier = Modifier,
     searchItemType: SearchItemType = SearchItemType.LAST_SEARCH,
     item: SearchItemModel = SearchItemModel(0, "Movie1"),
-    searchItemRemoveClickAction: (itemId: Int) -> Unit = {},
+    searchItemRemoveClickAction: (item: SearchItemModel) -> Unit = {},
     searchItemClickAction: (itemText: String) -> Unit = {}
 ) {
     val borderAndContentColor = when (searchItemType) {
@@ -62,7 +62,7 @@ fun SearchItem(
                 Icon(
                     modifier = Modifier
                         .clickable {
-                            searchItemRemoveClickAction(item.itemId)
+                            searchItemRemoveClickAction(item)
                         }
                         .size(dimensionResource(R.dimen.last_search_close_icon_size))
                         .padding(start = dimensionResource(R.dimen.six_padding)),

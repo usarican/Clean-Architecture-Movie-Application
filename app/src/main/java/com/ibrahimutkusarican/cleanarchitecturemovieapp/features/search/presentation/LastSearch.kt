@@ -62,8 +62,8 @@ fun LastSearch(
                 SearchItem(
                     item = item,
                     searchItemType = SearchItemType.LAST_SEARCH,
-                    searchItemRemoveClickAction = { id ->
-                        handleSearchUiAction.invoke(SearchUiAction.LastSearchItemDeleteClickAction(id))
+                    searchItemRemoveClickAction = { deleteItem ->
+                        handleSearchUiAction.invoke(SearchUiAction.LastSearchItemDeleteClickAction(deleteItem))
                     },
                     searchItemClickAction = { text ->
                         handleSearchUiAction.invoke(SearchUiAction.LastSearchItemClickAction(text))

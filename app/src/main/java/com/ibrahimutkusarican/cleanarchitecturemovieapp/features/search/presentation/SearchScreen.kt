@@ -99,10 +99,12 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                             topSearchMovieNames = searchScreenModel.topSearchedMovies,
                             handleSearchUiAction = viewModel::handleSearchScreenAction
                         )
-                        LastSearch(
-                            lastSearch = searchScreenModel.lastSearchQueries,
-                            handleSearchUiAction = viewModel::handleSearchScreenAction
-                        )
+                        if (searchScreenModel.lastSearchQueries.isNotEmpty()) {
+                            LastSearch(
+                                lastSearch = searchScreenModel.lastSearchQueries,
+                                handleSearchUiAction = viewModel::handleSearchScreenAction
+                            )
+                        }
                         RecommendedMoviesForYou(
                             movies = searchScreenModel.recommendedMoviesForYou,
                             movieClickAction = { movieId ->
@@ -130,7 +132,8 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
             } else {
                 SearchedMoviesList(
                     pagingMovies = filteredMovies,
-                    handleUiAction = viewModel::handleSearchScreenAction
+                    handleUiAction = viewModel::handleSearchScreenAction,
+                    searchedText = searchScreenModel.searchText
                 )
             }
         }
@@ -202,7 +205,7 @@ private fun SearchScreenSearchBar(
             }
         }
     }
-    if (filterList.isNotEmpty()){
+    if (filterList.isNotEmpty()) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()

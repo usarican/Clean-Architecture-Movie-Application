@@ -100,7 +100,7 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                             handleSearchUiAction = viewModel::handleSearchScreenAction
                         )
                         LastSearch(
-                            lastSearch = searchScreenModel.lastSearchKeys,
+                            lastSearch = searchScreenModel.lastSearchQueries,
                             handleSearchUiAction = viewModel::handleSearchScreenAction
                         )
                         RecommendedMoviesForYou(

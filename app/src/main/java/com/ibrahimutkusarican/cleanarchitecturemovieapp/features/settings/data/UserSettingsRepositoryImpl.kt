@@ -47,7 +47,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getLanguage(): Flow<String> {
+    override fun getLanguageCode(): Flow<String> {
         return dataStore.data.map { prefs ->
             prefs[LANGUAGE_KEY] ?: DEFAULT_LANGUAGE
         }

@@ -19,14 +19,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchItemModel
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 @Preview(showBackground = true)
 fun TopSearch(
     modifier: Modifier = Modifier,
-    topSearchMovieNames: List<String> = listOf("Movie1", "Movie2", "Movie3"),
-    handleSearchUiAction: (uiAction : SearchUiAction) -> Unit = {}
+    topSearchMovieNames: List<SearchItemModel> = listOf(SearchItemModel(0, "Movie1")),
+    handleSearchUiAction: (uiAction: SearchUiAction) -> Unit = {}
 ) {
     Column(
         modifier = modifier.fillMaxWidth()
@@ -51,17 +52,18 @@ fun TopSearch(
             )
         }
         FlowRow(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(top = dimensionResource(R.dimen.small_padding)),
             horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding))
         ) {
             topSearchMovieNames.forEach { item ->
                 SearchItem(
-                    itemName = item,
+                    item = item,
                     searchItemType = SearchItemType.TOP_SEARCH,
                     searchItemClickAction = {
-                        handleSearchUiAction.invoke(SearchUiAction.TopSearchItemClickAction(item))
+                        handleSearchUiAction.invoke(SearchUiAction.TopSearchItemClickAction(item.searchText))
                     }
                 )
             }

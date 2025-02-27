@@ -8,5 +8,5 @@ interface UserSettingsRepository {
     suspend fun setLanguage(languageCode: String)
     fun getDarkMode(): Flow<Boolean>
     fun getNotificationsEnabled(): Flow<Boolean>
-    fun getLanguage(): Flow<String>
+    fun getLanguageCode(): Flow<String>
 }

@@ -9,7 +9,7 @@ sealed class SearchUiAction {
     data class TopSearchItemClickAction(val topSearchItemText : String) : SearchUiAction()
     data object LastSearchAllClearAction : SearchUiAction()
     data class LastSearchItemClickAction(val lastSearchItemText : String) : SearchUiAction()
-    data class LastSearchItemDeleteClickAction(val lastSearchItemText: String) : SearchUiAction()
+    data class LastSearchItemDeleteClickAction(val lastSearchItemIndex: Int) : SearchUiAction()
     data object RecommendedMovieSeeAllClickAction : SearchUiAction()
     data object ErrorTryAgainAction : SearchUiAction()
 

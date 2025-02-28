@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface GetSeeAllMoviesUseCase {
     fun getSeeAllMoviesByType(movieType: MovieType) : Flow<PagingData<SeeAllMovieModel>>
+    fun getSeeAllRecommendedMovies(movieId : Int) : Flow<PagingData<SeeAllMovieModel>>
 }

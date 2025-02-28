@@ -32,7 +32,7 @@ class SeeAllViewModel @Inject constructor(
     val searchText: StateFlow<String> = _searchText
 
 
-    fun setMovieType(movieType: MovieType) {
+    fun setMovieType(movieType: MovieType?) {
         _movieType.value = movieType
     }
 

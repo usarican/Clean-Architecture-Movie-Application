@@ -33,4 +33,18 @@ class GetSeeAllMoviesUseCaseImpl @Inject constructor(
             }
         }
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun getSeeAllRecommendedMovies(movieId: Int): Flow<PagingData<SeeAllMovieModel>> {
+        return getMovieGenreUseCase.getMovieGenresUseCase().flatMapLatest { genreState ->
+            val genreList = genreState.getSuccessOrThrow()
+            seeAllRepository.getRecommendedSeeAllMovies(movieId).map { pagingData ->
+                pagingData.map { response ->
+                    seeAllMovieModelMapper.responseToModel(
+                        movieResultResponse = response, genreList = genreList
+                    )
+                }
+            }
+        }
+    }
 }

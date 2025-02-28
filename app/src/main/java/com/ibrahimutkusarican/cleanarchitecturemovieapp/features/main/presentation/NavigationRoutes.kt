@@ -20,7 +20,7 @@ sealed class NavigationRoutes(
     data object Explore : NavigationRoutes()
 
     @Serializable
-    data class SeeAll(val movieType: MovieType) : NavigationRoutes()
+    data class SeeAll(val movieType: MovieType?) : NavigationRoutes()
 
     @Serializable
     data class Search(val recommendedMovieId : Int?) : NavigationRoutes()

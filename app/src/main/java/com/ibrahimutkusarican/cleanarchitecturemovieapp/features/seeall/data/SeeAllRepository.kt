@@ -8,4 +8,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface SeeAllRepository {
     fun getSeeAllMoviesByType(movieType: MovieType) : Flow<PagingData<MovieResultResponse>>
+    fun getRecommendedSeeAllMovies(movieId : Int) : Flow<PagingData<MovieResultResponse>>
 }

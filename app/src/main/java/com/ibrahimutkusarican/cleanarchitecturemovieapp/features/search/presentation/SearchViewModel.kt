@@ -209,12 +209,13 @@ class SearchViewModel @Inject constructor(
             if (searchFilterState.value.second != defaultSearchFilterModel) {
                 setSearchText(Constants.EMPTY_STRING)
                 _filterList.update { searchFilterHelper.getFilterItemList(selectedFilterModel) }
-                _searchFilterModel.value = selectedFilterModel
+                _searchFilterModel.update { selectedFilterModel }
             }
         }
     }
 
     private fun addLastSearch() {
+        if (_searchScreenModel.value.searchText.isEmpty()) return
         addLastSearchUseCase.addLastSearch(_searchScreenModel.value.searchText).doOnSuccess { newList ->
             _searchScreenModel.update { it.copy(lastSearchQueries = newList) }
         }.launchIn(viewModelScope)

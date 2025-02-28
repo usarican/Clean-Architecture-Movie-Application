@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,13 +18,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchItemModel
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 @Preview(showBackground = true)
 fun LastSearch(
     modifier: Modifier = Modifier,
-    lastSearch: List<String> = listOf("ASDSAD", "Movie5", "Movie8"),
+    lastSearch: List<SearchItemModel> = listOf(SearchItemModel(10,"asdsad")),
     handleSearchUiAction: (uiAction : SearchUiAction) -> Unit = {}
 ){
     Column(
@@ -60,13 +60,13 @@ fun LastSearch(
         ) {
             lastSearch.forEach { item ->
                 SearchItem(
-                    itemName = item,
+                    item = item,
                     searchItemType = SearchItemType.LAST_SEARCH,
-                    searchItemRemoveClickAction = {
-                        handleSearchUiAction.invoke(SearchUiAction.LastSearchItemDeleteClickAction(item))
+                    searchItemRemoveClickAction = { deleteItem ->
+                        handleSearchUiAction.invoke(SearchUiAction.LastSearchItemDeleteClickAction(deleteItem))
                     },
-                    searchItemClickAction = {
-                        handleSearchUiAction.invoke(SearchUiAction.LastSearchItemClickAction(item))
+                    searchItemClickAction = { text ->
+                        handleSearchUiAction.invoke(SearchUiAction.LastSearchItemClickAction(text))
                     }
                 )
             }

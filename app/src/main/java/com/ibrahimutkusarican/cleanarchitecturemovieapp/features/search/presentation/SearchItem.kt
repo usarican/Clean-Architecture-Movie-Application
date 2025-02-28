@@ -19,15 +19,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchItemModel
 
 @Composable
 @Preview(showBackground = true)
 fun SearchItem(
     modifier: Modifier = Modifier,
     searchItemType: SearchItemType = SearchItemType.LAST_SEARCH,
-    itemName: String = "Movie1",
-    searchItemRemoveClickAction: (itemId: Int) -> Unit = {},
-    searchItemClickAction : (itemText : String) -> Unit = {}
+    item: SearchItemModel = SearchItemModel(0, "Movie1"),
+    searchItemRemoveClickAction: (item: SearchItemModel) -> Unit = {},
+    searchItemClickAction: (itemText: String) -> Unit = {}
 ) {
     val borderAndContentColor = when (searchItemType) {
         SearchItemType.TOP_SEARCH -> MaterialTheme.colorScheme.onBackground
@@ -36,7 +37,7 @@ fun SearchItem(
     Card(
         modifier = modifier
             .clickable {
-                searchItemClickAction(itemName)
+                searchItemClickAction(item.searchText)
             },
         shape = RoundedCornerShape(dimensionResource(R.dimen.search_chip_corner_radius)),
         border = BorderStroke(
@@ -55,13 +56,13 @@ fun SearchItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = itemName, style = MaterialTheme.typography.labelSmall
+                text = item.searchText, style = MaterialTheme.typography.labelSmall
             )
             if (searchItemType == SearchItemType.LAST_SEARCH) {
                 Icon(
                     modifier = Modifier
                         .clickable {
-                            searchItemRemoveClickAction(0)
+                            searchItemRemoveClickAction(item)
                         }
                         .size(dimensionResource(R.dimen.last_search_close_icon_size))
                         .padding(start = dimensionResource(R.dimen.six_padding)),

@@ -14,7 +14,7 @@ class GetSettingsModelUseCaseImpl @Inject constructor(
         return combine(
             userSettingsRepository.getDarkMode(),
             userSettingsRepository.getNotificationsEnabled(),
-            userSettingsRepository.getLanguage()
+            userSettingsRepository.getLanguageCode()
         ) { darkMode, notificationEnabled, language ->
             SettingsModel(
                 isDarkModeEnabled = darkMode,

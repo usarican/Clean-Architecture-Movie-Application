@@ -8,6 +8,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.VisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.SearchLocalDataSource
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.entities.LastSearchEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.entities.RegionEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.paging.FilterMoviePagingSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.paging.SearchMoviePagingSource
@@ -77,5 +78,30 @@ class SearchRepositoryImpl @Inject constructor(
             searchLocalDataSource.deleteAllRegions()
             true
         }
+    }
+
+    override fun insertNewSearchQuery(lastSearchEntity: LastSearchEntity): Flow<ApiState<Boolean>> {
+        return apiCall {
+            searchLocalDataSource.insertSearchQuery(lastSearchEntity)
+            true
+        }
+    }
+
+    override fun deleteAllSearchQueries(): Flow<ApiState<Boolean>> {
+        return apiCall {
+            searchLocalDataSource.deleteAllSearchQueries()
+            true
+        }
+    }
+
+    override fun deleteSearchQuery(lastSearchEntity: LastSearchEntity): Flow<ApiState<Boolean>> {
+        return apiCall {
+            searchLocalDataSource.deleteSearchQuery(lastSearchEntity)
+            true
+        }
+    }
+
+    override fun getLastSearchQueries(): Flow<ApiState<List<LastSearchEntity>>> {
+        return apiCall { searchLocalDataSource.getLastSearchQueries() }
     }
 }

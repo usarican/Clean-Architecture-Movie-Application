@@ -16,6 +16,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,12 +34,17 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 fun SearchedMoviesList(
     modifier: Modifier = Modifier,
     pagingMovies: LazyPagingItems<SeeAllMovieModel>,
-    handleUiAction: (uiAction : SearchUiAction) -> Unit
+    handleUiAction: (uiAction: SearchUiAction) -> Unit,
 ) {
     BasePagingComposable(
         pagingItems = pagingMovies,
     ) {
-        LazyVerticalGrid (
+        LaunchedEffect(Unit) {
+            handleUiAction(
+                SearchUiAction.AddLastSearchedText
+            )
+        }
+        LazyVerticalGrid(
             columns = GridCells.Fixed(3),
             modifier = modifier
                 .fillMaxSize()

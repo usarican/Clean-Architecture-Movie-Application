@@ -1,6 +1,5 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,7 +42,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MyTopBar
 
-@SuppressLint("RememberReturnType")
 @Composable
 fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
     LaunchedEffect(recommendedMovieId) {
@@ -99,10 +97,12 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                             topSearchMovieNames = searchScreenModel.topSearchedMovies,
                             handleSearchUiAction = viewModel::handleSearchScreenAction
                         )
-                        LastSearch(
-                            lastSearch = searchScreenModel.lastSearchKeys,
-                            handleSearchUiAction = viewModel::handleSearchScreenAction
-                        )
+                        if (searchScreenModel.lastSearchQueries.isNotEmpty()) {
+                            LastSearch(
+                                lastSearch = searchScreenModel.lastSearchQueries,
+                                handleSearchUiAction = viewModel::handleSearchScreenAction
+                            )
+                        }
                         RecommendedMoviesForYou(
                             movies = searchScreenModel.recommendedMoviesForYou,
                             movieClickAction = { movieId ->
@@ -130,7 +130,7 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
             } else {
                 SearchedMoviesList(
                     pagingMovies = filteredMovies,
-                    handleUiAction = viewModel::handleSearchScreenAction
+                    handleUiAction = viewModel::handleSearchScreenAction,
                 )
             }
         }
@@ -202,7 +202,7 @@ private fun SearchScreenSearchBar(
             }
         }
     }
-    if (filterList.isNotEmpty()){
+    if (filterList.isNotEmpty()) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()

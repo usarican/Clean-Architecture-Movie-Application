@@ -4,9 +4,14 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieDatabase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.GenreDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.SearchRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.SearchRepositoryImpl
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.LastSearchDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.RegionDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.remote.RegionsService
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.remote.SearchService
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.AddLastSearchUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.AddLastSearchUseCaseImpl
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.DeleteLastSearchUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.DeleteLastSearchUseCaseImpl
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.FilterMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.FilterMoviesUseCaseImpl
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchFilterModelUseCase
@@ -39,7 +44,13 @@ abstract class SearchModule {
     abstract fun bindGetSearchFilterModelUseCase(getSearchFilterModelUseCaseImpl: GetSearchFilterModelUseCaseImpl): GetSearchFilterModelUseCase
 
     @Binds
-    abstract fun bindFilterMoviesUseCase(filterMoviesUseCaseImpl: FilterMoviesUseCaseImpl) : FilterMoviesUseCase
+    abstract fun bindFilterMoviesUseCase(filterMoviesUseCaseImpl: FilterMoviesUseCaseImpl): FilterMoviesUseCase
+
+    @Binds
+    abstract fun bindAddLastSearchUseCase(addLastSearchUseCaseImpl: AddLastSearchUseCaseImpl): AddLastSearchUseCase
+
+    @Binds
+    abstract fun bindDeleteLastSearchUseCase(deleteLastSearchUseCaseImpl: DeleteLastSearchUseCaseImpl): DeleteLastSearchUseCase
 
     companion object {
         @Provides
@@ -51,7 +62,11 @@ abstract class SearchModule {
             retrofit.create(RegionsService::class.java)
 
         @Provides
-        fun provideRegionDao(movieDatabase: MovieDatabase) : RegionDao =
+        fun provideRegionDao(movieDatabase: MovieDatabase): RegionDao =
             movieDatabase.regionDao()
+
+        @Provides
+        fun provideLastSearchDao(movieDatabase: MovieDatabase): LastSearchDao =
+            movieDatabase.lastSearchDao()
     }
 }

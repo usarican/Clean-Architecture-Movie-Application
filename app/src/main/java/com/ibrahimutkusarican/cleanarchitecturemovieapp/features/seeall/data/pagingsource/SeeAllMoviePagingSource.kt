@@ -1,10 +1,11 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.pagingsource
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BasePagingSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.MovieLocalDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.MovieRemoteDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.MovieEntityToResponseMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.STARTING_PAGE_INDEX
 
 class SeeAllMoviePagingSource(
@@ -12,7 +13,7 @@ class SeeAllMoviePagingSource(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val movieType: MovieType,
     private val entityToResponseMapper: MovieEntityToResponseMapper
-) : BasePagingSource() {
+) : BasePagingSource<MovieResultResponse>() {
 
     override suspend fun executeLoad(params: LoadParams<Int>): LoadResult<Int, MovieResultResponse> {
         val nextPageNumber = params.key ?: STARTING_PAGE_INDEX

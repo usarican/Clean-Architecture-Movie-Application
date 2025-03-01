@@ -27,18 +27,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailRecommendedMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.RecommendedMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.mockMovieDetailModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 
 @Composable
 fun RecommendedPageScreen(
     modifier: Modifier = Modifier,
-    movieDetailRecommendedMovieModel: MovieDetailRecommendedMovieModel = mockMovieDetailModel.movieDetailRecommendedMovies,
-    movieClickAction: (movieId: Int) -> Unit = {},
-    seeAllClickAction: () -> Unit = {}
+    movieDetailModel: MovieDetailModel = mockMovieDetailModel,
+    handleUiAction: (action: DetailUiAction) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -59,6 +60,15 @@ fun RecommendedPageScreen(
                 )
             )
             Text(
+                modifier = Modifier.clickable {
+                    handleUiAction(
+                        DetailUiAction.SeeAllClickAction(
+                            SeeAllType.RecommendationMovies(
+                                movieDetailModel.movieDetailInfoModel.movieId
+                            )
+                        )
+                    )
+                },
                 text = stringResource(R.string.see_all),
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontWeight = FontWeight.W500,
@@ -74,10 +84,12 @@ fun RecommendedPageScreen(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
             horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
         ) {
-            items(movieDetailRecommendedMovieModel.recommendedMovies) { model ->
+            items(movieDetailModel.movieDetailRecommendedMovies.recommendedMovies) { model ->
                 RecommendedMovieItem(
                     recommendedMovieModel = model,
-                    movieClickAction = movieClickAction
+                    movieClickAction = {
+                        handleUiAction(DetailUiAction.RecommendedMovieClickAction(model.movieId))
+                    }
                 )
             }
         }

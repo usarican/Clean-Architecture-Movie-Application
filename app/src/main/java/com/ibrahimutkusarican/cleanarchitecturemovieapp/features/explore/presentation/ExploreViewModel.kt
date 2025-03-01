@@ -34,7 +34,7 @@ class ExploreViewModel @Inject constructor(
         when(action){
             is ExploreUiAction.BannerMovieClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
             is ExploreUiAction.MovieClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
-            is ExploreUiAction.SeeAllClickAction -> sendEvent(MyEvent.SeeAllClickEvent(action.movieType))
+            is ExploreUiAction.SeeAllClickAction -> sendEvent(MyEvent.SeeAllClickEvent(action.seeAllType))
             ExploreUiAction.ErrorRetryAction -> getExploreInitialData()
             is ExploreUiAction.SearchBarClickAction -> {
                 sendEvent(MyEvent.SearchBarClickEvent(action.recommendedMovieId))

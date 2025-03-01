@@ -21,6 +21,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentati
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.presentation.MyListScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation.SearchScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation.SearchViewModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllScreenType
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.presentation.SeeAllScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.presentation.SeeAllViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.presentation.SettingsScreen
@@ -64,8 +66,9 @@ fun MainScreen(viewModel: MainViewModel) {
             }
             composable<NavigationRoutes.SeeAll> { backStackEntry ->
                 val seeAllViewModel = hiltViewModel<SeeAllViewModel>()
-                val movieType = backStackEntry.toRoute<NavigationRoutes.SeeAll>().movieType
-                seeAllViewModel.setMovieType(movieType)
+                val args = backStackEntry.toRoute<NavigationRoutes.SeeAll>()
+                val seeAllType = args.screenType.seeAllScreenTypeToSeeAllType(args.movieId)
+                seeAllViewModel.setSeeAllType(seeAllType)
                 SeeAllScreen(viewModel = seeAllViewModel)
             }
             composable<NavigationRoutes.Search> { backStackEntry ->
@@ -83,7 +86,8 @@ fun MainScreen(viewModel: MainViewModel) {
                 MovieDetailScreen(viewModel = detailViewModel)
             }
             composable<NavigationRoutes.BannerMovies> { backStackEntry ->
-                val clickedItemIndex = backStackEntry.toRoute<NavigationRoutes.BannerMovies>().clickedItemIndex
+                val clickedItemIndex =
+                    backStackEntry.toRoute<NavigationRoutes.BannerMovies>().clickedItemIndex
                 BannerMoviesScreen(clickItemIndex = clickedItemIndex)
             }
         }

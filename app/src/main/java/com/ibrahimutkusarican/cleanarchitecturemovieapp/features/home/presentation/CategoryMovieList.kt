@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getStringRes
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
@@ -34,26 +35,26 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResou
 fun MovieCategoryList(
     modifier: Modifier,
     movies: Map<MovieType, List<BasicMovieModel>>,
-    seeAllClickAction: (movieType: MovieType) -> Unit,
+    seeAllClickAction: (seeAllType: SeeAllType) -> Unit,
     movieClickAction: (movieId: Int) -> Unit
 ) {
     MovieCategory(
         modifier = modifier.wrapContentHeight(),
-        movieType = MovieType.POPULAR,
+        seeAllMovieType = SeeAllType.SeeAllMovieType.Popular,
         movies = movies[MovieType.POPULAR],
         seeAllClickAction = seeAllClickAction,
         movieClickAction = movieClickAction
     )
     MovieCategory(
         modifier = modifier.wrapContentHeight(),
-        movieType = MovieType.TOP_RATED,
+        seeAllMovieType = SeeAllType.SeeAllMovieType.TopRated,
         movies = movies[MovieType.TOP_RATED],
         seeAllClickAction = seeAllClickAction,
         movieClickAction = movieClickAction
     )
     MovieCategory(
         modifier = modifier.wrapContentHeight(),
-        movieType = MovieType.UPCOMING,
+        seeAllMovieType = SeeAllType.SeeAllMovieType.UpComing,
         movies = movies[MovieType.UPCOMING],
         seeAllClickAction = seeAllClickAction,
         movieClickAction = movieClickAction
@@ -64,10 +65,10 @@ fun MovieCategoryList(
 @Composable
 fun MovieCategory(
     modifier: Modifier,
-    movieType: MovieType,
+    seeAllMovieType: SeeAllType.SeeAllMovieType,
     movies: List<BasicMovieModel>?,
     title: String? = null,
-    seeAllClickAction: (movieType: MovieType) -> Unit,
+    seeAllClickAction: (SeeAllType.SeeAllMovieType) -> Unit,
     movieClickAction: (movieId: Int) -> Unit = {}
 ) {
     if (movies != null) {
@@ -80,14 +81,14 @@ fun MovieCategory(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = title ?: stringResource(movieType.getStringRes()),
+                    text = title ?: stringResource(seeAllMovieType.movieType.getStringRes()),
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.Bold
                     ),
                 )
                 Text(
                     modifier = Modifier.clickable(enabled = true, onClick = {
-                        seeAllClickAction.invoke(movieType)
+                        seeAllClickAction.invoke(seeAllMovieType)
                     }),
                     text = stringResource(R.string.see_all),
                     style = MaterialTheme.typography.titleSmall.copy(

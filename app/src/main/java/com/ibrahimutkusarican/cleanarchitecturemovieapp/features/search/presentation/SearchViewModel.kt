@@ -15,6 +15,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.u
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchFilterModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.GetSearchScreenModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.usecase.SearchMoviesUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.model.SeeAllMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.SEARCH_DEBOUNCE_TIME
@@ -125,7 +126,11 @@ class SearchViewModel @Inject constructor(
             SearchUiAction.LastSearchAllClearAction -> deleteAllLastSearch()
             is SearchUiAction.LastSearchItemClickAction -> setSearchText(searchUiAction.lastSearchItemText)
             is SearchUiAction.LastSearchItemDeleteClickAction -> deleteLastSearch(searchUiAction.lastSearchItem)
-            is SearchUiAction.RecommendedMovieSeeAllClickAction -> TODO()
+            is SearchUiAction.RecommendedMovieSeeAllClickAction -> {
+                recommendedMovieId?.let { movieId ->
+                    sendEvent(MyEvent.SeeAllClickEvent(SeeAllType.RecommendationMovies(movieId)))
+                }
+            }
             is SearchUiAction.TopSearchItemClickAction -> setSearchText(searchUiAction.topSearchItemText)
             SearchUiAction.ErrorTryAgainAction -> getSearchScreenModel(recommendedMovieId)
             is SearchUiAction.FilterAndSortActions.FilterAndSortApplyAction -> filterApply(

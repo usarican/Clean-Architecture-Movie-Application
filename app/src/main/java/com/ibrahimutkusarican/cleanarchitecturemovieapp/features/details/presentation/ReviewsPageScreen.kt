@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,14 +30,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.AuthorModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailReviewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.mockMovieDetailModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 
 @Composable
 @Preview(showBackground = true)
 fun ReviewsPageScreen(
     modifier: Modifier = Modifier,
-    movieDetailReviewModel: MovieDetailReviewModel = mockMovieDetailModel.movieDetailReviewModel
+    movieDetailModel: MovieDetailModel = mockMovieDetailModel,
+    handleUiAction: (action: DetailUiAction) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -44,6 +48,7 @@ fun ReviewsPageScreen(
             .padding(horizontal = dimensionResource(R.dimen.medium_padding))
             .padding(bottom = dimensionResource(R.dimen.medium_padding)),
     ) {
+        /// TODO: Empty Screen Koy
         Row(
             Modifier
                 .fillMaxWidth(),
@@ -57,6 +62,15 @@ fun ReviewsPageScreen(
                 )
             )
             Text(
+                modifier = Modifier.clickable {
+                    handleUiAction(
+                        DetailUiAction.SeeAllClickAction(
+                            SeeAllType.MovieReviews(
+                                movieDetailModel.movieDetailInfoModel.movieId
+                            )
+                        )
+                    )
+                },
                 text = stringResource(R.string.see_all),
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontWeight = FontWeight.W500,
@@ -65,11 +79,12 @@ fun ReviewsPageScreen(
             )
         }
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(top = dimensionResource(R.dimen.medium_padding)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
         ) {
-            items(movieDetailReviewModel.reviews) { model ->
+            items(movieDetailModel.movieDetailReviewModel.reviews) { model ->
                 ReviewItem(model = model)
             }
         }
@@ -78,7 +93,7 @@ fun ReviewsPageScreen(
 }
 
 @Composable
-private fun ReviewItem(model: AuthorModel) {
+fun ReviewItem(model: AuthorModel) {
     model.review?.let {
         Row {
             AuthorImage(imageUrl = model.authorProfilePhoto)

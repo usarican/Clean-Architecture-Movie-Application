@@ -1,10 +1,10 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 
 
 sealed class MyEvent {
-    data class SeeAllClickEvent(val movieType: MovieType) : MyEvent()
+    data class SeeAllClickEvent(val seeAllType: SeeAllType) : MyEvent()
     data object OnBackPressed : MyEvent()
     data class SearchBarClickEvent(val recommendedMovieId : Int?) : MyEvent()
     data class MovieClickEvent(val movieId : Int) : MyEvent()

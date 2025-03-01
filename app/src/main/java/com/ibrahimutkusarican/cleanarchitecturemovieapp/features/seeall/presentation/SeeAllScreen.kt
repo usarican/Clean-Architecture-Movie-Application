@@ -14,7 +14,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieException
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MyTopBar
 
@@ -22,32 +24,46 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MyTopBar
 fun SeeAllScreen(
     modifier: Modifier = Modifier, viewModel: SeeAllViewModel
 ) {
-    val movieType by viewModel.movieType.collectAsStateWithLifecycle()
+    val seeAllType by viewModel.seeAllType.collectAsStateWithLifecycle()
     val searchText by viewModel.searchText.collectAsStateWithLifecycle()
     val pagingMovies = viewModel.pagingMovies.collectAsLazyPagingItems()
+    val pagingReviews = viewModel.pagingReviews.collectAsLazyPagingItems()
     Column(
         modifier = modifier
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.statusBars)
     ) {
         MyTopBar(title = stringResource(
-            when (movieType) {
-                MovieType.NOW_PLAYING, null -> R.string.see_all
-                MovieType.POPULAR -> R.string.popular_movies
-                MovieType.TOP_RATED -> R.string.top_rated_movies
-                MovieType.UPCOMING -> R.string.up_coming_movies
+            when (seeAllType) {
+                is SeeAllType.MovieReviews -> R.string.reviews
+                is SeeAllType.RecommendationMovies -> R.string.recommended_for_you
+                SeeAllType.SeeAllMovieType.NowPlaying -> R.string.see_all
+                SeeAllType.SeeAllMovieType.Popular -> R.string.popular_movies
+                SeeAllType.SeeAllMovieType.TopRated -> R.string.top_rated_movies
+                SeeAllType.SeeAllMovieType.UpComing -> R.string.up_coming_movies
+                null -> R.string.see_all
             }
         ), onBackClick = {
             viewModel.handleUiActions(SeeAllUiAction.OnBackPress)
         })
-        MySearchBar(
-            modifier = Modifier.padding(dimensionResource(R.dimen.large_padding)),
-            searchText = searchText, onSearch = { searchText ->
-                viewModel.handleUiActions(SeeAllUiAction.SearchAction(searchText))
-            })
-        SeeAllMovies(
-            modifier = Modifier.weight(1F),
-            pagingMovies = pagingMovies,
-        )
+        when (seeAllType) {
+            is SeeAllType.MovieReviews -> {
+                SeeAllReviews(modifier = Modifier.weight(1F), pagingReviews = pagingReviews)
+            }
+
+            null -> ErrorScreen(exception = MovieException.NotFoundException(stringResource(R.string.error_content_not_found)))
+            else -> {
+                MySearchBar(
+                    modifier = Modifier.padding(dimensionResource(R.dimen.large_padding)),
+                    searchText = searchText, onSearch = { searchText ->
+                        viewModel.handleUiActions(SeeAllUiAction.SearchAction(searchText))
+                    })
+                SeeAllMovies(
+                    modifier = Modifier.weight(1F),
+                    pagingMovies = pagingMovies,
+                )
+            }
+        }
+
     }
 }

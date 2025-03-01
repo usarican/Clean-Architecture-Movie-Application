@@ -11,7 +11,7 @@ class FilterMoviePagingSource(
     private val sortBy : String,
     private val genre : String?,
     private val region : String?
-) : BasePagingSource() {
+) : BasePagingSource<MovieResultResponse>() {
     override suspend fun executeLoad(params: LoadParams<Int>): LoadResult<Int, MovieResultResponse> {
         val nextPageNumber = params.key ?: STARTING_PAGE_INDEX
         val movieResponse = searchRemoteDataSource.sortOrFilterMovies(

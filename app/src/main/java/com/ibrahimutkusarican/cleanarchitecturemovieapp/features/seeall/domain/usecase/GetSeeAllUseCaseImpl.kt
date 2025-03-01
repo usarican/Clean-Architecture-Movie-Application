@@ -3,6 +3,8 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.usecase.GetMovieGenresUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.mapper.MovieDetailModelMapper
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.AuthorModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.mapper.SeeAllMovieModelMapper
@@ -14,11 +16,12 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetSeeAllMoviesUseCaseImpl @Inject constructor(
+class GetSeeAllUseCaseImpl @Inject constructor(
     private val seeAllRepository: SeeAllRepository,
     private val seeAllMovieModelMapper: SeeAllMovieModelMapper,
-    private val getMovieGenreUseCase: GetMovieGenresUseCase
-) : GetSeeAllMoviesUseCase {
+    private val getMovieGenreUseCase: GetMovieGenresUseCase,
+    private val detailModelMapper: MovieDetailModelMapper
+) : GetSeeAllUseCase {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun getSeeAllMoviesByType(movieType: MovieType): Flow<PagingData<SeeAllMovieModel>> {
@@ -30,6 +33,28 @@ class GetSeeAllMoviesUseCaseImpl @Inject constructor(
                         movieResultResponse = response, genreList = genreList
                     )
                 }
+            }
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun getSeeAllRecommendedMovies(movieId: Int): Flow<PagingData<SeeAllMovieModel>> {
+        return getMovieGenreUseCase.getMovieGenresUseCase().flatMapLatest { genreState ->
+            val genreList = genreState.getSuccessOrThrow()
+            seeAllRepository.getRecommendedSeeAllMovies(movieId).map { pagingData ->
+                pagingData.map { response ->
+                    seeAllMovieModelMapper.responseToModel(
+                        movieResultResponse = response, genreList = genreList
+                    )
+                }
+            }
+        }
+    }
+
+    override fun getMovieReviewsSeeAll(movieId: Int): Flow<PagingData<AuthorModel>> {
+        return seeAllRepository.getMovieReviewsSeeAll(movieId).map { pagingData ->
+            pagingData.map { response ->
+                detailModelMapper.authorResponseToAuthorModel(response)
             }
         }
     }

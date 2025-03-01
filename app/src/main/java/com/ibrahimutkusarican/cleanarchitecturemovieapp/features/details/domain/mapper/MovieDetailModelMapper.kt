@@ -140,7 +140,7 @@ class MovieDetailModelMapper @Inject constructor(
     }
 
 
-    private fun authorResponseToAuthorModel(authorResponse: AuthorResponse): AuthorModel =
+    fun authorResponseToAuthorModel(authorResponse: AuthorResponse): AuthorModel =
         with(authorResponse) {
             AuthorModel(
                 authorName = authorDetailResponse.name,

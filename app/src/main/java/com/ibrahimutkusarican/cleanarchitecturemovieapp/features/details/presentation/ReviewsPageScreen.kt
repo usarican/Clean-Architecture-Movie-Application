@@ -78,7 +78,7 @@ fun ReviewsPageScreen(
 }
 
 @Composable
-private fun ReviewItem(model: AuthorModel) {
+fun ReviewItem(model: AuthorModel) {
     model.review?.let {
         Row {
             AuthorImage(imageUrl = model.authorProfilePhoto)

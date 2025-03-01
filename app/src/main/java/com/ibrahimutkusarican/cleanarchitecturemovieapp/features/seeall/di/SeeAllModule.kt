@@ -2,8 +2,8 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.di
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllRepositoryImpl
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.usecase.GetSeeAllMoviesUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.usecase.GetSeeAllMoviesUseCaseImpl
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.usecase.GetSeeAllUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.usecase.GetSeeAllUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,6 +16,6 @@ abstract class SeeAllModule {
     abstract fun bindSeeAllRepository(seeAllRepositoryImpl: SeeAllRepositoryImpl): SeeAllRepository
 
    @Binds
-   abstract fun bingGetPagingSeeAllMoviesUseCase(getPagingSeeAllMoviesUseCaseImpl: GetSeeAllMoviesUseCaseImpl): GetSeeAllMoviesUseCase
+   abstract fun bingGetPagingSeeAllMoviesUseCase(getPagingSeeAllMoviesUseCaseImpl: GetSeeAllUseCaseImpl): GetSeeAllUseCase
 
 }

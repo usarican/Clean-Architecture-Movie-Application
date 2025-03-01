@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentation
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllScreenType
 import kotlinx.serialization.Serializable
 
 
@@ -20,15 +20,18 @@ sealed class NavigationRoutes(
     data object Explore : NavigationRoutes()
 
     @Serializable
-    data class SeeAll(val movieType: MovieType?) : NavigationRoutes()
+    data class SeeAll(
+        val screenType: SeeAllScreenType,
+        val movieId: Int = 0
+    ) : NavigationRoutes()
 
     @Serializable
-    data class Search(val recommendedMovieId : Int?) : NavigationRoutes()
+    data class Search(val recommendedMovieId: Int?) : NavigationRoutes()
 
     @Serializable
-    data class MovieDetail(val movieId : Int) : NavigationRoutes()
+    data class MovieDetail(val movieId: Int) : NavigationRoutes()
 
     @Serializable
-    data class BannerMovies(val clickedItemIndex : Int) : NavigationRoutes()
+    data class BannerMovies(val clickedItemIndex: Int) : NavigationRoutes()
 
 }

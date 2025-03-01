@@ -1,9 +1,9 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.presentation
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 
 sealed class ExploreUiAction {
-    data class SeeAllClickAction(val movieType: MovieType) : ExploreUiAction()
+    data class SeeAllClickAction(val seeAllType: SeeAllType) : ExploreUiAction()
     data class MovieClickAction(val movieId: Int) : ExploreUiAction()
     data class BannerMovieClickAction(val movieId: Int) : ExploreUiAction()
     data object ErrorRetryAction : ExploreUiAction()

@@ -93,8 +93,8 @@ fun HomeSuccessScreen(
                     .fillMaxWidth()
                     .padding(horizontal = dimensionResource(R.dimen.twenty_dp)),
                     movies = movies,
-                    seeAllClickAction = { movieType ->
-                        action.invoke(HomeUiAction.SeeAllClickAction(movieType))
+                    seeAllClickAction = { seeAllType ->
+                        action.invoke(HomeUiAction.SeeAllClickAction(seeAllType))
                     },
                     movieClickAction = { movieId ->
                         action.invoke(HomeUiAction.MovieClickAction(movieId))

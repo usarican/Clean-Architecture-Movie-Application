@@ -30,6 +30,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.model.SeeAllMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BasePagingComposable
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.convertMovieException
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
@@ -39,29 +40,22 @@ fun SeeAllMovies(
     modifier: Modifier = Modifier,
     pagingMovies: LazyPagingItems<SeeAllMovieModel>,
 ) {
-    when (pagingMovies.loadState.refresh) {
-        is LoadState.Error -> {
-            ErrorScreen(exception = (pagingMovies.loadState.refresh as LoadState.Error).error.convertMovieException())
-        }
-
-        LoadState.Loading -> LoadingScreen()
-        is LoadState.NotLoading -> {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = dimensionResource(R.dimen.large_padding)),
-                verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
-            ) {
-                items(count = pagingMovies.itemCount,
-                    key = { index -> index }) { index ->
-                    pagingMovies[index]?.let { movie ->
-                        SeeAllMovieItem(
-                            seeAllMovie = movie
-                        )
-                    }
+    BasePagingComposable(pagingMovies) {
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(horizontal = dimensionResource(R.dimen.large_padding)),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
+        ) {
+            items(count = pagingMovies.itemCount,
+                key = { index -> index }) { index ->
+                pagingMovies[index]?.let { movie ->
+                    SeeAllMovieItem(
+                        seeAllMovie = movie
+                    )
                 }
-
             }
+
         }
     }
 }

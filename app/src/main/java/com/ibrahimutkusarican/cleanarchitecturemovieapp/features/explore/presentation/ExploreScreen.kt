@@ -28,6 +28,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.domain.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.MovieCategory
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
 
 @Composable
@@ -117,12 +118,12 @@ private fun ExploreSuccessScreen(
 fun MostPopularMovies(
     modifier: Modifier = Modifier,
     movies: List<BasicMovieModel>,
-    seeAllClickAction: (movieType: MovieType) -> Unit = {},
+    seeAllClickAction: (seeAllType: SeeAllType) -> Unit = {},
     movieClickAction: (movieId: Int) -> Unit = {}
 ) {
     MovieCategory(
         modifier = modifier,
-        movieType = MovieType.POPULAR,
+        seeAllMovieType = SeeAllType.SeeAllMovieType.Popular,
         title = stringResource(R.string.most_popular),
         movies = movies,
         seeAllClickAction = seeAllClickAction,

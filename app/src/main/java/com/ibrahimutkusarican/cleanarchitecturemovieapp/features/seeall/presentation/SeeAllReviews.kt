@@ -22,7 +22,8 @@ fun SeeAllReviews(
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()
-                .padding(horizontal = dimensionResource(R.dimen.large_padding)),
+                .padding(horizontal = dimensionResource(R.dimen.large_padding))
+                .padding(top = dimensionResource(R.dimen.large_padding)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
         ) {
             items(count = pagingReviews.itemCount,

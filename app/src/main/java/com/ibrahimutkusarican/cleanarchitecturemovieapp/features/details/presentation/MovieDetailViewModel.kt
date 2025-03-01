@@ -31,10 +31,6 @@ class MovieDetailViewModel @Inject constructor(
     private val stringProvider: StringProvider
 ) : BaseViewModel() {
 
-    init {
-        Log.d("MovieDetailViewModel", "Movie DetailViewModel init")
-    }
-
     private val _movieDetailModel = MutableStateFlow<MovieDetailModel?>(null)
     val movieDetailModel: StateFlow<MovieDetailModel?> = _movieDetailModel
 
@@ -44,8 +40,10 @@ class MovieDetailViewModel @Inject constructor(
     private val _showSnackBar = MutableSharedFlow<MySnackBarModel>()
     val showSnackBar: SharedFlow<MySnackBarModel> = _showSnackBar
 
+    private var movieId : Int? = null
+
     fun getMovieDetail(movieId: Int) {
-        Log.d("MovieDetailViewModel", "Get Movie Detail Triggered")
+       this.movieId = movieId
         getMovieDetailUseCase.getMovieDetail(movieId)
             .doOnSuccess { model ->
                 _movieDetailModel.value = model
@@ -56,10 +54,10 @@ class MovieDetailViewModel @Inject constructor(
 
     fun handleUiAction(action: DetailUiAction) {
         when (action) {
-            DetailUiAction.ErrorRetryAction -> TODO()
-            is DetailUiAction.RecommendedMovieClickAction -> TODO()
+            DetailUiAction.ErrorRetryAction -> movieId?.let { getMovieDetail(it) }
+            is DetailUiAction.RecommendedMovieClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
             DetailUiAction.OnBackPressClickAction -> sendEvent(MyEvent.OnBackPressed)
-            is DetailUiAction.SeeAllClickAction -> TODO()
+            is DetailUiAction.SeeAllClickAction -> sendEvent(MyEvent.SeeAllClickEvent(action.seeAllType))
             is DetailUiAction.DetailButtonClickAction -> {
                 when (action.data.type) {
                     MovieDetailActionButtonType.PLAY -> TODO()
@@ -118,11 +116,6 @@ class MovieDetailViewModel @Inject constructor(
                 )
             }.launchIn(viewModelScope)
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        Log.d("MovieDetailViewModel", "OnCleared Triggered.")
     }
 }
 

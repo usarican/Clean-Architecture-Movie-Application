@@ -1,9 +1,10 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation
 
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 
 
 sealed class DetailUiAction {
-    data object SeeAllClickAction : DetailUiAction()
+    data class SeeAllClickAction(val seeAllType: SeeAllType) : DetailUiAction()
     data class RecommendedMovieClickAction(val movieId: Int) : DetailUiAction()
     data object ErrorRetryAction : DetailUiAction()
     data object OnBackPressClickAction : DetailUiAction()

@@ -136,7 +136,7 @@ private fun MovieDetailSuccessScreen(
             action = action,
             movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
         )
-        MovieDetailPager(movieDetailModel = movieDetailModel)
+        MovieDetailPager(movieDetailModel = movieDetailModel, handleUiAction = action)
     }
 }
 
@@ -256,7 +256,7 @@ private fun MovieDetailActionButton(
 
 @Composable
 private fun MovieDetailPager(
-    modifier: Modifier = Modifier, movieDetailModel: MovieDetailModel
+    modifier: Modifier = Modifier, movieDetailModel: MovieDetailModel,handleUiAction: (action : DetailUiAction) -> Unit
 ) {
     val pages = listOf(
         MovieDetailPage(R.string.about, 0),
@@ -278,8 +278,8 @@ private fun MovieDetailPager(
             when (page) {
                 0 -> AboutPageScreen(movieDetailAboutModel = movieDetailModel.movieDetailAboutModel)
                 1 -> TrailersPageScreen(movieDetailTrailerModel = movieDetailModel.movieDetailTrailerModel)
-                2 -> ReviewsPageScreen(movieDetailReviewModel = movieDetailModel.movieDetailReviewModel)
-                3 -> RecommendedPageScreen(movieDetailRecommendedMovieModel = movieDetailModel.movieDetailRecommendedMovies)
+                2 -> ReviewsPageScreen(movieDetailModel = movieDetailModel, handleUiAction = handleUiAction)
+                3 -> RecommendedPageScreen(movieDetailModel = movieDetailModel, handleUiAction = handleUiAction)
             }
         }
     }

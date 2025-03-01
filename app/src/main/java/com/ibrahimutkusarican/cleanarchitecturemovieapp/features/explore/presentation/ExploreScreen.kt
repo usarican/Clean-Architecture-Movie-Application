@@ -106,8 +106,8 @@ private fun ExploreSuccessScreen(
             .padding(
                 horizontal = dimensionResource(R.dimen.large_padding),
                 vertical = dimensionResource(R.dimen.medium_padding)
-            ), movies = data.popularMovies, seeAllClickAction = { movieType ->
-            handleUiAction(ExploreUiAction.SeeAllClickAction(movieType))
+            ), movies = data.popularMovies, seeAllClickAction = { seeAllType ->
+            handleUiAction(ExploreUiAction.SeeAllClickAction(seeAllType))
         }, movieClickAction = { movieId ->
             handleUiAction(ExploreUiAction.MovieClickAction(movieId))
         })

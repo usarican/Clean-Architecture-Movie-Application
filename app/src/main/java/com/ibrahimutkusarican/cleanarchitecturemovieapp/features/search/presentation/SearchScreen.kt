@@ -111,7 +111,6 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                             seeAllClickAction = {
                                 viewModel.handleSearchScreenAction(SearchUiAction.RecommendedMovieSeeAllClickAction)
                             }
-                            // TODO: Handle see All action
                         )
                         if (searchScreenModel.recentlyViewedMovies.isNotEmpty()) {
                             RecentlyViewedMovies(

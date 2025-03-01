@@ -67,14 +67,7 @@ fun MainScreen(viewModel: MainViewModel) {
             composable<NavigationRoutes.SeeAll> { backStackEntry ->
                 val seeAllViewModel = hiltViewModel<SeeAllViewModel>()
                 val args = backStackEntry.toRoute<NavigationRoutes.SeeAll>()
-                val seeAllType = when (args.screenType) {
-                    SeeAllScreenType.NOW_PLAYING -> SeeAllType.SeeAllMovieType.NowPlaying
-                    SeeAllScreenType.POPULAR -> SeeAllType.SeeAllMovieType.NowPlaying
-                    SeeAllScreenType.TOP_RATED -> SeeAllType.SeeAllMovieType.NowPlaying
-                    SeeAllScreenType.UPCOMING -> SeeAllType.SeeAllMovieType.NowPlaying
-                    SeeAllScreenType.RECOMMENDATION -> SeeAllType.RecommendationMovies(args.movieId)
-                    SeeAllScreenType.REVIEWS -> SeeAllType.MovieReviews(args.movieId)
-                }
+                val seeAllType = args.screenType.seeAllScreenTypeToSeeAllType(args.movieId)
                 seeAllViewModel.setSeeAllType(seeAllType)
                 SeeAllScreen(viewModel = seeAllViewModel)
             }

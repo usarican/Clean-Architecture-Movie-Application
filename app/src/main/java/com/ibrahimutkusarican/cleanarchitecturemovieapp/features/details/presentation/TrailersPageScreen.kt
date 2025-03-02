@@ -21,6 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailTrailerModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.TrailerModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.mockMovieDetailModel
@@ -34,6 +36,9 @@ fun TrailersPageScreen(
     modifier: Modifier = Modifier,
     movieDetailTrailerModel: MovieDetailTrailerModel = mockMovieDetailModel.movieDetailTrailerModel
 ) {
+    if (movieDetailTrailerModel.trailers.isEmpty()){
+        EmptyScreen(emptyScreenType = EmptyScreenType.TRAILERS)
+    }
     LazyColumn(
         modifier = modifier
             .fillMaxSize()

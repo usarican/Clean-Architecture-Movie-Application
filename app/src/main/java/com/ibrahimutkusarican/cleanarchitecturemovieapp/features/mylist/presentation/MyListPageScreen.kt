@@ -1,12 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.presentation
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -47,13 +42,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import androidx.paging.compose.LazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListUpdatePage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BasePagingComposable
@@ -66,9 +60,10 @@ import kotlin.math.roundToInt
 fun MyListPageScreen(
     movies: LazyPagingItems<MyListMovieModel>,
     handleUiAction: (action: MyListUiAction) -> Unit,
-    pageIndex : Int
+    pageIndex : Int,
+    emptyScreenType: EmptyScreenType
 ) {
-    BasePagingComposable(movies) {
+    BasePagingComposable(pagingItems = movies, emptyScreenType = emptyScreenType) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

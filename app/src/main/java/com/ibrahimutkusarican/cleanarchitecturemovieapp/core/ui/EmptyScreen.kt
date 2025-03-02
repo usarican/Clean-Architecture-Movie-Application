@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -74,6 +73,7 @@ private fun EmptyImage(
         EmptyScreenType.SEARCH -> R.drawable.ic_empty_search
         EmptyScreenType.REVIEWS -> R.drawable.ic_empty_reviews
         EmptyScreenType.TRAILERS -> R.drawable.ic_empty_trailers
+        EmptyScreenType.FILTER -> R.drawable.ic_empty_filter
     }
     Image(
         painter = painterResource(vectorImage),
@@ -96,6 +96,7 @@ private fun EmptyTitleText(
         EmptyScreenType.SEARCH -> stringResource(R.string.empty_screen_title_search)
         EmptyScreenType.REVIEWS -> stringResource(R.string.empty_screen_title_reviews)
         EmptyScreenType.TRAILERS -> stringResource(R.string.empty_screen_title_trailers)
+        EmptyScreenType.FILTER -> stringResource(R.string.empty_screen_title_filter)
     }
     Text(
         modifier = modifier,
@@ -118,6 +119,7 @@ private fun EmptyContextText(
         EmptyScreenType.SEARCH -> stringResource(R.string.empty_screen_description_search)
         EmptyScreenType.REVIEWS -> stringResource(R.string.empty_screen_description_reviews)
         EmptyScreenType.TRAILERS -> stringResource(R.string.empty_screen_description_trailers)
+        EmptyScreenType.FILTER -> stringResource(R.string.empty_screen_description_filter)
     }
     Text(
         modifier = modifier
@@ -156,7 +158,7 @@ private fun GoToExploreButton(
 }
 
 enum class EmptyScreenType {
-    FAVORITE, WATCH_LIST, SEARCH, REVIEWS, TRAILERS;
+    FAVORITE, WATCH_LIST, SEARCH, REVIEWS, TRAILERS,FILTER;
 
     fun showExploreButton(): Boolean = this == FAVORITE || this == WATCH_LIST
 }

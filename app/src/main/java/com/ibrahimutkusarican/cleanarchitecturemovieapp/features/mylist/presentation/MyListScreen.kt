@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
@@ -86,13 +87,15 @@ fun MyListScreen() {
                     0 -> MyListPageScreen(
                         movies = favoriteMovies,
                         handleUiAction = viewModel::handleUiAction,
-                        pageIndex = page
+                        pageIndex = page,
+                        emptyScreenType = EmptyScreenType.FAVORITE
                     )
 
                     1 -> MyListPageScreen(
                         movies = watchListMovies,
                         handleUiAction = viewModel::handleUiAction,
-                        pageIndex = page
+                        pageIndex = page,
+                        emptyScreenType = EmptyScreenType.WATCH_LIST
                     )
                 }
             }

@@ -92,4 +92,20 @@
     <string name="error_content_not_found">İstenen kaynak bulunamadı.</string>
     <string name="error_title_unauthorized">Yetkisiz İşlem</string>
     <string name="error_content_unauthorized">Bu işlemi gerçekleştirmek için yetkiniz yok. Lütfen tekrar giriş yapın.</string>
+
+    <!-- Empty Screen Titles -->
+    <string name="empty_screen_title_favorite">Henüz Favorileriniz Yok</string>
+    <string name="empty_screen_title_watch_list">İzleme Listeniz Boş</string>
+    <string name="empty_screen_title_search">Sonuç Bulunamadı</string>
+    <string name="empty_screen_title_reviews">Henüz Yorum Yok</string>
+    <string name="empty_screen_title_trailers">Fragman Bulunamadı</string>
+
+    <!-- Empty Screen Descriptions -->
+    <string name="empty_screen_description_favorite">Henüz favorilerinize film eklemediniz. Keşfetmeye başlayın ve bazılarını ekleyin!</string>
+    <string name="empty_screen_description_watch_list">İzleme listeniz şu an boş. Daha sonra izlemek için filmleri kaydedin!</string>
+    <string name="empty_screen_description_search">Aramanızla eşleşen bir sonuç bulamadık. Farklı bir kelime deneyin.</string>
+    <string name="empty_screen_description_reviews">Bu film için henüz yorum yok. İlk yorumu siz yazın!</string>
+    <string name="empty_screen_description_trailers">Bu film için henüz fragman eklenmedi. Güncellemeler için tekrar kontrol edin.</string>
+    <string name="explore_button">Keşfet</string>
+
 </resources>

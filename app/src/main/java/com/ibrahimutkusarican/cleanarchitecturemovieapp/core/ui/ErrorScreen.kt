@@ -20,11 +20,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.dimensionResource
@@ -44,7 +46,8 @@ fun ErrorScreen(
     modifier: Modifier = Modifier,
     exception: MovieException = MovieException.NoInternetException("Error"),
     tryAgainOnClickAction: () -> Unit = {},
-    visibility: Boolean = true
+    visibility: Boolean = true,
+    backButtonIsEnable : Boolean = false
 ) {
     AnimatedVisibility(modifier = modifier.fillMaxSize(), visible = visibility) {
         Column(
@@ -66,6 +69,10 @@ fun ErrorScreen(
             )
             TryAgainButton(
                 modifier = Modifier.padding(top = dimensionResource(R.dimen.medium_padding)),
+                onClick = tryAgainOnClickAction
+            )
+            BackButton(
+                modifier = Modifier,
                 onClick = tryAgainOnClickAction
             )
         }
@@ -114,7 +121,7 @@ fun ErrorContentText(modifier: Modifier = Modifier, exception: MovieException) {
             .padding(horizontal = dimensionResource(R.dimen.large_padding)),
         text = text,
         style = MaterialTheme.typography.bodyMedium.copy(
-            color = MaterialTheme.colorScheme.scrim
+            color = MaterialTheme.colorScheme.onBackground
         ),
         textAlign = TextAlign.Center
     )
@@ -164,7 +171,32 @@ fun TryAgainButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
             textAlign = TextAlign.Center
         )
     }
+}
 
+@Composable
+fun BackButton(
+    modifier: Modifier = Modifier, onClick: () -> Unit
+){
+    TextButton(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = dimensionResource(R.dimen.dp_64)),
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.primary
+        ),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.small_border))
+    ) {
+        Text(
+            modifier = Modifier,
+            text = stringResource(R.string.go_back_home),
+            style = MaterialTheme.typography.labelLarge.copy(
+                color = MaterialTheme.colorScheme.onErrorContainer
+            ),
+            textAlign = TextAlign.Center
+        )
+    }
 }
 
 @Composable

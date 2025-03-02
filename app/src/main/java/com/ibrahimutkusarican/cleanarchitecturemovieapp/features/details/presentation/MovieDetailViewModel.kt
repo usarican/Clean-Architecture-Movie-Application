@@ -10,6 +10,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieDetailUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListUpdatePage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.UpdateMyListMovieUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
@@ -37,8 +38,8 @@ class MovieDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState<MovieDetailModel>>(UiState.Loading)
     val uiState: StateFlow<UiState<MovieDetailModel>> = _uiState
 
-    private val _showSnackBar = MutableSharedFlow<MySnackBarModel>()
-    val showSnackBar: SharedFlow<MySnackBarModel> = _showSnackBar
+    private val _showSnackBar = MutableSharedFlow<Pair<MySnackBarModel,MyListPage>>()
+    val showSnackBar: SharedFlow<Pair<MySnackBarModel,MyListPage>> = _showSnackBar
 
     private var movieId : Int? = null
 
@@ -69,6 +70,8 @@ class MovieDetailViewModel @Inject constructor(
                     MovieDetailActionButtonType.ADD_WATCH_LIST -> addMovieWatchList(movieDetailModel.value)
                 }
             }
+
+            is DetailUiAction.GoToMyListPage -> sendEvent(MyEvent.GoToMyListEvent(action.pageIndex))
         }
     }
 
@@ -88,8 +91,8 @@ class MovieDetailViewModel @Inject constructor(
                         ) else stringProvider.getStringFromResource(
                             R.string.movie_added_to_favorite, model.movieDetailInfoModel.title
                         ),
-                        type = SnackBarType.SUCCESS
-                    )
+                        type = if (model.movieDetailInfoModel.isFavorite) SnackBarType.INFO else SnackBarType.SUCCESS
+                    ) to MyListPage.FAVORITE
                 )
             }.launchIn(viewModelScope)
         }
@@ -111,8 +114,8 @@ class MovieDetailViewModel @Inject constructor(
                         ) else stringProvider.getStringFromResource(
                             R.string.movie_added_to_watch_list, model.movieDetailInfoModel.title
                         ),
-                        type = SnackBarType.SUCCESS
-                    )
+                        type = if (model.movieDetailInfoModel.isAddedToWatchList) SnackBarType.INFO else SnackBarType.SUCCESS
+                    ) to MyListPage.WATCH_LIST
                 )
             }.launchIn(viewModelScope)
         }

@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.present
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.BannerMoviesScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.HomeScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.HomeViewModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.presentation.MyListScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation.SearchScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation.SearchViewModel
@@ -35,10 +37,13 @@ import kotlinx.coroutines.flow.consumeAsFlow
 fun MainScreen(viewModel: MainViewModel) {
     val navController = rememberNavController()
     var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
+    var myListSelectedPageIndex by remember { mutableIntStateOf(MyListPage.FAVORITE.index) }
     LaunchedEffect(true) {
         viewModel.navigationChannel.consumeAsFlow().collectLatest { route ->
             when (route) {
                 is NavigationRoutes.BottomNavRoutes -> {
+                    if (route is NavigationRoutes.BottomNavRoutes.MyList) myListSelectedPageIndex =
+                        route.pageIndex
                     selectedItemIndex = route.index
                     navController.navigate(route) {
                         popUpTo(navController.graph.findStartDestination().id) {
@@ -80,7 +85,7 @@ fun MainScreen(viewModel: MainViewModel) {
                 ExploreScreen()
             }
             composable<NavigationRoutes.BottomNavRoutes.MyList> {
-                MyListScreen()
+                MyListScreen(myListSelectedPageIndex)
             }
             composable<NavigationRoutes.BottomNavRoutes.Settings> {
                 SettingsScreen()

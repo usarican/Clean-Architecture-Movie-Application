@@ -1,15 +1,27 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils
 
 import android.content.Context
+import android.content.res.Configuration
 import androidx.annotation.StringRes
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class StringProvider @Inject constructor(
     private val context: Context
 ) {
     fun getStringFromResource(@StringRes id: Int): String =
-        context.getString(id)
+        getLocalizedContext().getString(id)
 
-    fun getStringFromResource(@StringRes id: Int, vararg formatArgs : Any) =
-        context.getString(id,*formatArgs)
+    fun getStringFromResource(@StringRes id: Int, vararg formatArgs: Any): String =
+        getLocalizedContext().getString(id, *formatArgs)
+
+    private fun getLocalizedContext(): Context {
+        val storedLanguage = runBlocking {
+            LocaleManager(context).getStoredLanguage().first()
+        }
+        return LocaleManager(context).applyLocale(storedLanguage)
+    }
+
+
 }

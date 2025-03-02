@@ -11,4 +11,5 @@ sealed class MyEvent {
     data class BannerMovieClickEvent(val clickedMovieIndex : Int) : MyEvent()
     data object RestartApp : MyEvent()
     data object GoToExploreEvent : MyEvent()
+    data class GoToMyListEvent(val page : Int) : MyEvent()
 }

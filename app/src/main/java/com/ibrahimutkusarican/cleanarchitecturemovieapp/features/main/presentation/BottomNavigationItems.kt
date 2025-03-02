@@ -3,9 +3,10 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentat
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
 
 data class BottomNavigationItems(
-    val itemName : String,
+    val itemName: String,
     @StringRes val itemLabel: Int,
     val navigationRoute: NavigationRoutes,
     @DrawableRes val iconResourceId: Int
@@ -27,7 +28,7 @@ data class BottomNavigationItems(
             BottomNavigationItems(
                 itemName = "myList",
                 itemLabel = R.string.my_list,
-                navigationRoute = NavigationRoutes.BottomNavRoutes.MyList,
+                navigationRoute = NavigationRoutes.BottomNavRoutes.MyList(MyListPage.FAVORITE.index),
                 iconResourceId = R.drawable.ic_my_list
             ),
             BottomNavigationItems(

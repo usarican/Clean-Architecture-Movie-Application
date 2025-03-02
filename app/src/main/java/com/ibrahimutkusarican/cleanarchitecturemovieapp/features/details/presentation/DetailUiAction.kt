@@ -9,4 +9,6 @@ sealed class DetailUiAction {
     data object ErrorRetryAction : DetailUiAction()
     data object OnBackPressClickAction : DetailUiAction()
     data class DetailButtonClickAction(val data : MovieDetailActionButtonData) : DetailUiAction()
+    data class GoToMyListPage(val pageIndex : Int) : DetailUiAction()
+
 }

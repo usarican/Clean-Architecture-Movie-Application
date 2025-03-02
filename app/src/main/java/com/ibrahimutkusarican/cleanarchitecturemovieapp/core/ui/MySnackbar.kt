@@ -46,10 +46,10 @@ fun MySnackBar(
     snackBarModel: MySnackBarModel = MySnackBarModel(
         title = "Information",
         message = "This is Information SnackBar",
-        type = SnackBarType.INFO
+        type = SnackBarType.SUCCESS
     ),
     actionLabel: String? = null,
-    action: () -> Unit = {},
+    action: (() -> Unit)? = null,
     visible: Boolean = true
 ) {
     var visibility by remember { mutableStateOf(visible) }
@@ -122,15 +122,17 @@ fun MySnackBar(
                     )
                 }
 
-                Text(
-                    modifier = Modifier
-                        .padding(end = dimensionResource(R.dimen.x_small_padding))
-                        .clickable { action() },
-                    text = actionLabel ?: stringResource(R.string.retry),
-                    style = MaterialTheme.typography.labelLarge.copy(
-                        color = MaterialTheme.colorScheme.scrim, fontWeight = FontWeight.Bold
-                    ),
-                )
+                if (action != null){
+                    Text(
+                        modifier = Modifier
+                            .padding(end = dimensionResource(R.dimen.x_small_padding))
+                            .clickable { action.invoke() },
+                        text = actionLabel ?: stringResource(R.string.retry),
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            color = MaterialTheme.colorScheme.scrim, fontWeight = FontWeight.Bold
+                        ),
+                    )
+                }
             }
         }
     }
@@ -141,6 +143,7 @@ data class MySnackBarModel(
     val message : String?,
     val type : SnackBarType
 )
+
 
 enum class SnackBarType(
     val lightColor: Color,

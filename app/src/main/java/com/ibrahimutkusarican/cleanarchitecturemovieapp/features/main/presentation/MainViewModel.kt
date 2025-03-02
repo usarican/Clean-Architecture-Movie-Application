@@ -95,6 +95,8 @@ class MainViewModel @Inject constructor(
 
             is MyEvent.GoToExploreEvent -> navigationRouteAction(NavigationRoutes.BottomNavRoutes.Explore)
 
+            is MyEvent.GoToMyListEvent -> navigationRouteAction(NavigationRoutes.BottomNavRoutes.MyList(event.page))
+
             else -> {
                 Log.d("MainViewModel", "observeMyEvents: $event")
             }

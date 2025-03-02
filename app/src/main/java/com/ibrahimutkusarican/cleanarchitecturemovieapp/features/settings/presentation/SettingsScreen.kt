@@ -143,7 +143,7 @@ fun SettingsItem(modifier: Modifier = Modifier,settingsModel: SettingsModel = Se
         shape = RoundedCornerShape(dimensionResource(R.dimen.small_border)),
         elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.small_card_elevation)),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
         onClick = clickAction
     ) {
@@ -159,8 +159,8 @@ fun SettingsItem(modifier: Modifier = Modifier,settingsModel: SettingsModel = Se
             Card(
                 shape = CircleShape,
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                 ),
             ) {
                 Icon(
@@ -175,7 +175,7 @@ fun SettingsItem(modifier: Modifier = Modifier,settingsModel: SettingsModel = Se
                     .padding(start = dimensionResource(R.dimen.twelve_padding)),
                 text = stringResource(item.text),
                 style = MaterialTheme.typography.titleMedium.copy(
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
             )
@@ -198,7 +198,7 @@ fun SettingsItem(modifier: Modifier = Modifier,settingsModel: SettingsModel = Se
                     },
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = MaterialTheme.colorScheme.primary,
-                        checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                        checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
 
                         uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -212,13 +212,14 @@ fun SettingsItem(modifier: Modifier = Modifier,settingsModel: SettingsModel = Se
                         Text(
                             modifier = Modifier.padding(end = dimensionResource(R.dimen.small_padding)),
                             text = stringResource(settingsModel.selectedLanguage.languageText), style = MaterialTheme.typography.bodyMedium.copy(
-                            color = MaterialTheme.colorScheme.secondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontWeight = FontWeight.W600
                         ))
                         Icon(
                             modifier = Modifier.size(dimensionResource(R.dimen.icon_size)),
                             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                             contentDescription = "Right Arrow",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -227,7 +228,8 @@ fun SettingsItem(modifier: Modifier = Modifier,settingsModel: SettingsModel = Se
                     Icon(
                         modifier = Modifier.size(dimensionResource(R.dimen.icon_size)),
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                        contentDescription = "Right Arrow"
+                        contentDescription = "Right Arrow",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

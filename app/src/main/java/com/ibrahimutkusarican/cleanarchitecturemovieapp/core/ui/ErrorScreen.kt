@@ -46,6 +46,7 @@ fun ErrorScreen(
     modifier: Modifier = Modifier,
     exception: MovieException = MovieException.NoInternetException("Error"),
     tryAgainOnClickAction: () -> Unit = {},
+    backButtonOnClickAction : () -> Unit = {},
     visibility: Boolean = true,
     backButtonIsEnable : Boolean = false
 ) {
@@ -71,10 +72,12 @@ fun ErrorScreen(
                 modifier = Modifier.padding(top = dimensionResource(R.dimen.medium_padding)),
                 onClick = tryAgainOnClickAction
             )
-            BackButton(
-                modifier = Modifier,
-                onClick = tryAgainOnClickAction
-            )
+            if (backButtonIsEnable){
+                BackButton(
+                    modifier = Modifier,
+                    onClick = backButtonOnClickAction
+                )
+            }
         }
     }
 

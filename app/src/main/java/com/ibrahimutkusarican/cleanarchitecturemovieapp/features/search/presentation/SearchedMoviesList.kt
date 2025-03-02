@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.paging.compose.LazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.model.SeeAllMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BasePagingComposable
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
@@ -35,9 +36,11 @@ fun SearchedMoviesList(
     modifier: Modifier = Modifier,
     pagingMovies: LazyPagingItems<SeeAllMovieModel>,
     handleUiAction: (uiAction: SearchUiAction) -> Unit,
+    emptyScreenType: EmptyScreenType
 ) {
     BasePagingComposable(
         pagingItems = pagingMovies,
+        emptyScreenType = emptyScreenType
     ) {
         LaunchedEffect(Unit) {
             handleUiAction(

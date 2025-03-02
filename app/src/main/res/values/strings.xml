@@ -91,4 +91,22 @@
     <string name="error_content_not_found">The requested resource could not be found.</string>
     <string name="error_title_unauthorized">Unauthorized</string>
     <string name="error_content_unauthorized">You are not authorized to perform this action. Please log in again.</string>
+
+    <!-- Empty Screen Titles -->
+    <string name="empty_screen_title_favorite">No Favorites Yet</string>
+    <string name="empty_screen_title_watch_list">Your Watchlist is Empty</string>
+    <string name="empty_screen_title_search">No Results Found</string>
+    <string name="empty_screen_title_reviews">No Reviews Available</string>
+    <string name="empty_screen_title_trailers">No Trailers Found</string>
+    <string name="empty_screen_title_filter">No Results for This Filter</string>
+
+
+    <!-- Empty Screen Descriptions -->
+    <string name="empty_screen_description_favorite">You haven’t added any movies to your favorites yet. Start exploring and add some!</string>
+    <string name="empty_screen_description_watch_list">Your watchlist is currently empty. Save movies to watch them later!</string>
+    <string name="empty_screen_description_search">We couldn’t find any results matching your search. Try a different keyword.</string>
+    <string name="empty_screen_description_reviews">There are no reviews available for this movie yet. Be the first to write one!</string>
+    <string name="empty_screen_description_trailers">No trailers have been added for this movie. Check back later for updates.</string>
+    <string name="empty_screen_description_filter">No results match your selected filters. Try adjusting them and searching again.</string>
+    <string name="explore_button">Explore Now</string>
 </resources>

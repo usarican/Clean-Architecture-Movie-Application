@@ -14,10 +14,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +29,10 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 
 @Composable
 fun BottomNavigationBar(
-    modifier: Modifier = Modifier, navController: NavController
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    selectedItemIndex: Int,
+    onItemSelected: (index: Int) -> Unit
 ) {
     Card(
         modifier = modifier,
@@ -42,7 +41,6 @@ fun BottomNavigationBar(
         ),
         shape = RoundedCornerShape(dimensionResource(R.dimen.zero_dp))
     ) {
-        var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -54,18 +52,12 @@ fun BottomNavigationBar(
                     selected = selectedItemIndex == index,
                     bottomNavigationItems = item,
                     onClick = {
-                        selectedItemIndex = index
+                        onItemSelected(index)
                         navController.navigate(item.navigationRoute) {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            // on the back stack as users select items
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
-                            // Avoid multiple copies of the same destination when
-                            // reselecting the same item
                             launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
                             restoreState = true
                         }
                     })
@@ -77,14 +69,14 @@ fun BottomNavigationBar(
 @Composable
 @Preview(showBackground = true)
 fun BottomNavigationItem(
-    modifier: Modifier = Modifier.width(100.dp),
+    modifier: Modifier = Modifier,
     selected: Boolean = true,
     onClick: () -> Unit = {},
     bottomNavigationItems: BottomNavigationItems = BottomNavigationItems(
         itemName = "movies",
         itemLabel = R.string.movies,
         iconResourceId = R.drawable.ic_movie,
-        navigationRoute = NavigationRoutes.Home
+        navigationRoute = NavigationRoutes.BottomNavRoutes.Home
     ),
 ) {
 

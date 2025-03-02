@@ -22,10 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -46,13 +43,9 @@ import kotlinx.coroutines.launch
 fun ErrorScreen(
     modifier: Modifier = Modifier,
     exception: MovieException = MovieException.NoInternetException("Error"),
-    tryAgainOnClickAction: () -> Unit = {}
+    tryAgainOnClickAction: () -> Unit = {},
+    visibility: Boolean = true
 ) {
-    var visibility by remember { mutableStateOf(false) }
-    LaunchedEffect(true) {
-        delay(300)
-        visibility = true
-    }
     AnimatedVisibility(modifier = modifier.fillMaxSize(), visible = visibility) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -116,7 +109,9 @@ fun ErrorContentText(modifier: Modifier = Modifier, exception: MovieException) {
         is MovieException.UnauthorizedException -> stringResource(R.string.error_content_unauthorized)
     }
     Text(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = dimensionResource(R.dimen.large_padding)),
         text = text,
         style = MaterialTheme.typography.bodyMedium.copy(
             color = MaterialTheme.colorScheme.scrim

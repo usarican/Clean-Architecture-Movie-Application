@@ -29,6 +29,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.AuthorModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailReviewModel
@@ -42,13 +44,15 @@ fun ReviewsPageScreen(
     movieDetailModel: MovieDetailModel = mockMovieDetailModel,
     handleUiAction: (action: DetailUiAction) -> Unit = {}
 ) {
+    if (movieDetailModel.movieDetailReviewModel.reviews.isEmpty()){
+        EmptyScreen(emptyScreenType = EmptyScreenType.REVIEWS)
+    }
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = dimensionResource(R.dimen.medium_padding))
             .padding(bottom = dimensionResource(R.dimen.medium_padding)),
     ) {
-        /// TODO: Empty Screen Koy
         Row(
             Modifier
                 .fillMaxWidth(),

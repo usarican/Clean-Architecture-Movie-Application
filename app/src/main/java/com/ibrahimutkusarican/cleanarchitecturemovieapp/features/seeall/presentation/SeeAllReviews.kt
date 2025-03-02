@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.paging.compose.LazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.AuthorModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.ReviewItem
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BasePagingComposable
@@ -18,7 +19,7 @@ fun SeeAllReviews(
     modifier: Modifier = Modifier,
     pagingReviews: LazyPagingItems<AuthorModel>,
 ) {
-    BasePagingComposable(pagingReviews) {
+    BasePagingComposable(pagingItems = pagingReviews, emptyScreenType = EmptyScreenType.REVIEWS) {
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()

@@ -3,6 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.present
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
@@ -45,7 +46,7 @@ class MyListViewModel @Inject constructor(
 
     fun handleUiAction(myListUiAction: MyListUiAction) {
         when (myListUiAction) {
-            is MyListUiAction.MovieClickAction -> TODO()
+            is MyListUiAction.MovieClickAction -> sendEvent(MyEvent.MovieClickEvent(myListUiAction.movieId))
             is MyListUiAction.MovieDeleteAction ->  {
                 deleteMovieData = myListUiAction.data
                 showAreYouSureSnackBar(deleteMovieData)
@@ -55,6 +56,8 @@ class MyListViewModel @Inject constructor(
             is MyListUiAction.SnackBarDeleteAction -> {
                 deleteMovie()
             }
+
+            MyListUiAction.GoToExploreAction -> sendEvent(MyEvent.GoToExploreEvent)
         }
     }
 

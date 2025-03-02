@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.model.SeeAllMovieModel
@@ -40,7 +41,7 @@ fun SeeAllMovies(
     modifier: Modifier = Modifier,
     pagingMovies: LazyPagingItems<SeeAllMovieModel>,
 ) {
-    BasePagingComposable(pagingMovies) {
+    BasePagingComposable(pagingItems = pagingMovies, emptyScreenType = EmptyScreenType.SEARCH) {
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()

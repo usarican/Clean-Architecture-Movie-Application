@@ -5,4 +5,5 @@ sealed class MyListUiAction {
     data class MovieDeleteAction(val data: MyListViewModel.DeleteMovieData) : MyListUiAction()
     data object UndoAction : MyListUiAction()
     data object SnackBarDeleteAction : MyListUiAction()
+    data object GoToExploreAction : MyListUiAction()
 }

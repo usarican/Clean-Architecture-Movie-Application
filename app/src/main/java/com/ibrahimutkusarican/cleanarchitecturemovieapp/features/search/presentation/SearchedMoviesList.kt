@@ -36,10 +36,11 @@ fun SearchedMoviesList(
     modifier: Modifier = Modifier,
     pagingMovies: LazyPagingItems<SeeAllMovieModel>,
     handleUiAction: (uiAction: SearchUiAction) -> Unit,
+    emptyScreenType: EmptyScreenType
 ) {
     BasePagingComposable(
         pagingItems = pagingMovies,
-        emptyScreenType = EmptyScreenType.SEARCH
+        emptyScreenType = emptyScreenType
     ) {
         LaunchedEffect(Unit) {
             handleUiAction(

@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchFilterModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchScreenModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposable
@@ -130,6 +131,8 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                 SearchedMoviesList(
                     pagingMovies = filteredMovies,
                     handleUiAction = viewModel::handleSearchScreenAction,
+                    emptyScreenType = if (searchScreenModel.searchText.isEmpty()) EmptyScreenType.FILTER else EmptyScreenType.SEARCH
+
                 )
             }
         }
@@ -180,15 +183,16 @@ private fun SearchScreenSearchBar(
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.small_card_elevation))
         ) {
-            Box(Modifier
-                .fillMaxSize()
-                .clickable {
-                    handleUiAction(
-                        SearchUiAction.FilterAndSortActions.FilterAndSortButtonClickAction(
-                            searchFilterState.second
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .clickable {
+                        handleUiAction(
+                            SearchUiAction.FilterAndSortActions.FilterAndSortButtonClickAction(
+                                searchFilterState.second
+                            )
                         )
-                    )
-                }) {
+                    }) {
                 Icon(
                     modifier = Modifier
                         .size(dimensionResource(R.dimen.icon_size))

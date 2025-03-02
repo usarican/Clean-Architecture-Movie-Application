@@ -1,13 +1,19 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.animation.with
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,16 +22,20 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
@@ -33,6 +43,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,6 +54,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
@@ -50,6 +63,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
@@ -57,6 +71,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.carouselTransition
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
+import kotlin.math.absoluteValue
 
 @Composable
 @Preview(showBackground = true)
@@ -85,13 +100,27 @@ fun BannerMoviesScreen(
                 .fillMaxWidth()
                 .height((screenHeight / 2) + topMargin)
         ) {
-            MovieImage(
+            IconButton(onClick = {
+                viewModel.handleUiAction(HomeUiAction.BannerMovieOnBackPress)
+            },
                 modifier = Modifier
-                    .fillMaxSize()
-                    .blur(3.dp)
-                    .padding(bottom = dimensionResource(R.dimen.dp_64)),
-                imageUrl = movies[MovieType.NOW_PLAYING]?.get(pagerState.currentPage)?.movieBackdropImageUrl,
-                contentScale = ContentScale.Crop
+                    .windowInsetsPadding(WindowInsets.statusBars)
+                    .align(Alignment.TopStart)
+                    .padding(start = dimensionResource(R.dimen.small_padding))
+                    .zIndex(2F)
+                    .clip(CircleShape),
+                colors = IconButtonDefaults.iconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    contentColor = MaterialTheme.colorScheme.onBackground
+                )) {
+                Icon(
+                    Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back",
+                )
+            }
+
+            AnimatedMovieBackdrop(
+                modifier = Modifier, pagerState = pagerState, movies = movies
             )
             HorizontalPager(
                 modifier = Modifier
@@ -103,8 +132,10 @@ fun BannerMoviesScreen(
             ) { page ->
                 movies[MovieType.NOW_PLAYING]?.get(page)?.let { movie ->
                     BannerMovie(
-                        modifier = Modifier
-                            .carouselTransition(page = page, pagerState = pagerState),
+                        modifier = Modifier.carouselTransition(
+                                page = page,
+                                pagerState = pagerState
+                            ),
                         bannerMovie = movie,
                         isSelected = pagerState.currentPage == page,
                     )
@@ -112,20 +143,15 @@ fun BannerMoviesScreen(
                 }
             }
         }
-        movies[MovieType.NOW_PLAYING]?.get(pagerState.currentPage)
-            ?.let {
-                BannerMovieInfo(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(
-                            horizontal = dimensionResource(R.dimen.dp_64),
-                            vertical = dimensionResource(R.dimen.x_large_padding)
-                        ),
-                    bannerMovie = it,
-                    seeMoreClickAction = { movieId ->
-                        viewModel.handleUiAction(HomeUiAction.MovieClickAction(movieId))
-                    }
-                )
+        movies[MovieType.NOW_PLAYING]?.get(pagerState.currentPage)?.let {
+                BannerMovieInfo(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        horizontal = dimensionResource(R.dimen.dp_64),
+                        vertical = dimensionResource(R.dimen.x_large_padding)
+                    ), bannerMovie = it, seeMoreClickAction = { movieId ->
+                    viewModel.handleUiAction(HomeUiAction.MovieClickAction(movieId))
+                })
             }
     }
 }
@@ -143,29 +169,23 @@ private fun BannerMovieInfo(
     ) {
         // Animated Title Transition
         AnimatedContent(
-            targetState = bannerMovie.movieTitle,
-            transitionSpec = {
+            targetState = bannerMovie.movieTitle, transitionSpec = {
                 fadeIn(animationSpec = tween(500)) togetherWith fadeOut(animationSpec = tween(500))
-            },
-            label = "MovieTitleAnimation"
+            }, label = "MovieTitleAnimation"
         ) { title ->
             Text(
-                text = title,
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
-                ),
-                textAlign = TextAlign.Center
+                text = title, style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground
+                ), textAlign = TextAlign.Center
             )
         }
 
         // Animated Row for Release Date and Rating
         AnimatedContent(
-            targetState = bannerMovie.releaseDate to bannerMovie.movieVotePoint,
-            transitionSpec = {
-                slideInVertically(initialOffsetY = { it }) togetherWith slideOutVertically(targetOffsetY = { -it })
-            },
-            label = "MovieDetailsAnimation"
+            targetState = bannerMovie.releaseDate to bannerMovie.movieVotePoint, transitionSpec = {
+                slideInVertically(initialOffsetY = { it }) togetherWith slideOutVertically(
+                    targetOffsetY = { -it })
+            }, label = "MovieDetailsAnimation"
         ) { (releaseDate, rating) ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -173,8 +193,7 @@ private fun BannerMovieInfo(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = releaseDate,
-                    style = MaterialTheme.typography.bodyMedium.copy(
+                    text = releaseDate, style = MaterialTheme.typography.bodyMedium.copy(
                         color = MaterialTheme.colorScheme.onBackground
                     )
                 )
@@ -202,11 +221,9 @@ private fun BannerMovieInfo(
 
         // Animate Genre List
         AnimatedContent(
-            targetState = bannerMovie.movieGenres,
-            transitionSpec = {
+            targetState = bannerMovie.movieGenres, transitionSpec = {
                 fadeIn(animationSpec = tween(500)) togetherWith fadeOut(animationSpec = tween(500))
-            },
-            label = "MovieGenresAnimation"
+            }, label = "MovieGenresAnimation"
         ) { genres ->
             MovieGenreView(modifier = Modifier.weight(1f), genreList = genres)
         }
@@ -230,8 +247,7 @@ private fun BannerMovieInfo(
                     .padding(
                         vertical = dimensionResource(R.dimen.x_small_padding),
                         horizontal = dimensionResource(R.dimen.small_padding)
-                    ),
-                verticalAlignment = Alignment.CenterVertically
+                    ), verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = stringResource(R.string.see_more),
@@ -300,10 +316,37 @@ private fun MovieGenreItem(genreText: String, index: Int) {
 }
 
 @Composable
-fun BannerMovie(
+fun AnimatedMovieBackdrop(
     modifier: Modifier = Modifier,
-    bannerMovie: BasicMovieModel,
-    isSelected: Boolean
+    pagerState: PagerState,
+    movies: Map<MovieType, List<BasicMovieModel>>
+) {
+    val currentMovieImage =
+        movies[MovieType.NOW_PLAYING]?.get(pagerState.currentPage)?.movieBackdropImageUrl
+
+    AnimatedContent(
+        targetState = currentMovieImage, transitionSpec = {
+            (slideInHorizontally(initialOffsetX = { fullWidth -> if (pagerState.currentPageOffsetFraction > 0) -fullWidth else fullWidth }) + fadeIn()).togetherWith(
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> if (pagerState.currentPageOffsetFraction > 0) fullWidth else -fullWidth }) + fadeOut()
+            )
+        }, label = "movieImageTransition"
+    ) { imageUrl ->
+        MovieImage(
+            modifier = modifier
+                .fillMaxSize()
+                .blur(3.dp)
+                .padding(bottom = dimensionResource(R.dimen.dp_64)),
+            imageUrl = imageUrl,
+            contentScale = ContentScale.Crop
+        )
+    }
+}
+
+
+@Composable
+fun BannerMovie(
+    modifier: Modifier = Modifier, bannerMovie: BasicMovieModel, isSelected: Boolean
 ) {
     val animatedElevation by animateDpAsState(
         targetValue = if (isSelected) 4.dp else 0.dp,

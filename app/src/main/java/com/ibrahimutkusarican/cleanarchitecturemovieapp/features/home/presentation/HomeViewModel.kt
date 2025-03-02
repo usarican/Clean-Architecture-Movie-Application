@@ -61,6 +61,7 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.MovieClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
             is HomeUiAction.BannerMovieClickAction -> sendEvent(MyEvent.BannerMovieClickEvent(action.clickIndex))
             is HomeUiAction.BannerMovieSeeMoreClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
+            HomeUiAction.BannerMovieOnBackPress -> sendEvent(MyEvent.OnBackPressed)
         }
     }
 }

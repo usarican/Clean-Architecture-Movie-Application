@@ -20,11 +20,6 @@ open class BaseActivity : ComponentActivity() {
             }
             LocaleManager(context).applyLocale(storedLanguage)
         }
-        super.attachBaseContext(localizedContext ?: newBase)
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        Log.d("BaseActivity", "onConfigurationChanged: $newConfig")
+        super.attachBaseContext(localizedContext)
     }
 }

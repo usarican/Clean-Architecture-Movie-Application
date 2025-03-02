@@ -45,7 +45,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-fun MyListScreen() {
+fun MyListScreen(
+    pageIndex : Int
+) {
     Box(
         modifier = Modifier
             .windowInsetsPadding(WindowInsets.statusBars)
@@ -67,6 +69,10 @@ fun MyListScreen() {
                     snackBarModel = null
                 }
             }
+        }
+
+        LaunchedEffect(pageIndex) {
+            state.animateScrollToPage(pageIndex)
         }
 
         Column(Modifier.fillMaxSize()) {

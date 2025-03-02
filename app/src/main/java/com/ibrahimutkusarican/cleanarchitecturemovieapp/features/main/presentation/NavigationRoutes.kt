@@ -15,7 +15,7 @@ sealed class NavigationRoutes {
         data object Explore : BottomNavRoutes(index = 1)
 
         @Serializable
-        data object MyList : BottomNavRoutes(index = 2)
+        data class MyList(val pageIndex : Int) : BottomNavRoutes(index = 2)
 
         @Serializable
         data object Settings : BottomNavRoutes(index = 3)

@@ -42,6 +42,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -65,10 +66,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailInfoModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.mockMovieDetailModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposable
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 import kotlinx.coroutines.delay
@@ -83,11 +87,13 @@ fun MovieDetailScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val movieDetailModel by viewModel.movieDetailModel.collectAsStateWithLifecycle()
     var snackBarModel by remember { mutableStateOf<MySnackBarModel?>(null) }
+    var snackBarMyListPageIndex by remember { mutableIntStateOf(MyListPage.FAVORITE.index) }
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         viewModel.showSnackBar.collectLatest { model ->
-            snackBarModel = model
+            snackBarModel = model.first
+            snackBarMyListPageIndex = model.second.index
             coroutineScope.launch {
                 delay(3000)
                 snackBarModel = null
@@ -107,7 +113,12 @@ fun MovieDetailScreen(
                         snackBarModel = it,
                         visible = true,
                         modifier = Modifier.align(Alignment.BottomCenter),
-                        actionLabel = ""
+                        actionLabel = if (it.type == SnackBarType.SUCCESS) stringResource(R.string.see_all) else Constants.EMPTY_STRING,
+                        action = {
+                            if (it.type == SnackBarType.SUCCESS) {
+                                viewModel.handleUiAction(DetailUiAction.GoToMyListPage(snackBarMyListPageIndex))
+                            }
+                        }
                     )
                 }
             }

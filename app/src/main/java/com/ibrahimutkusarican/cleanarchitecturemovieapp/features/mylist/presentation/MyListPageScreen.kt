@@ -63,7 +63,9 @@ fun MyListPageScreen(
     pageIndex : Int,
     emptyScreenType: EmptyScreenType
 ) {
-    BasePagingComposable(pagingItems = movies, emptyScreenType = emptyScreenType) {
+    BasePagingComposable(pagingItems = movies, emptyScreenType = emptyScreenType, emptyScreenGoToExploreAction = {
+        handleUiAction(MyListUiAction.GoToExploreAction)
+    }) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

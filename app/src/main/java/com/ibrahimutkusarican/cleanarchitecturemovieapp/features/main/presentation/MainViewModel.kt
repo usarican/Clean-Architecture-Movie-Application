@@ -35,39 +35,39 @@ class MainViewModel @Inject constructor(
             is MyEvent.SeeAllClickEvent -> {
                 when (event.seeAllType) {
                     is SeeAllType.MovieReviews -> navigationRouteAction(
-                        NavigationRoutes.SeeAll(
+                        NavigationRoutes.ClickActionRoutes.SeeAll(
                             screenType = SeeAllScreenType.REVIEWS,
                             movieId = event.seeAllType.movieId
                         )
                     )
 
                     is SeeAllType.RecommendationMovies -> navigationRouteAction(
-                        NavigationRoutes.SeeAll(
+                        NavigationRoutes.ClickActionRoutes.SeeAll(
                             screenType = SeeAllScreenType.RECOMMENDATION,
                             movieId = event.seeAllType.movieId
                         )
                     )
 
                     is SeeAllType.SeeAllMovieType.NowPlaying -> navigationRouteAction(
-                        NavigationRoutes.SeeAll(
+                        NavigationRoutes.ClickActionRoutes.SeeAll(
                             screenType = SeeAllScreenType.NOW_PLAYING
                         )
                     )
 
                     is SeeAllType.SeeAllMovieType.Popular -> navigationRouteAction(
-                        NavigationRoutes.SeeAll(
+                        NavigationRoutes.ClickActionRoutes.SeeAll(
                             screenType = SeeAllScreenType.POPULAR
                         )
                     )
 
                     is SeeAllType.SeeAllMovieType.TopRated -> navigationRouteAction(
-                        NavigationRoutes.SeeAll(
+                        NavigationRoutes.ClickActionRoutes.SeeAll(
                             screenType = SeeAllScreenType.TOP_RATED
                         )
                     )
 
                     is SeeAllType.SeeAllMovieType.UpComing -> navigationRouteAction(
-                        NavigationRoutes.SeeAll(
+                        NavigationRoutes.ClickActionRoutes.SeeAll(
                             screenType = SeeAllScreenType.UPCOMING
                         )
                     )
@@ -75,13 +75,25 @@ class MainViewModel @Inject constructor(
             }
 
             is MyEvent.OnBackPressed -> navigationRouteAction(null)
-            is MyEvent.SearchBarClickEvent -> navigationRouteAction(NavigationRoutes.Search(event.recommendedMovieId))
-            is MyEvent.MovieClickEvent -> navigationRouteAction(NavigationRoutes.MovieDetail(event.movieId))
+            is MyEvent.SearchBarClickEvent -> navigationRouteAction(
+                NavigationRoutes.ClickActionRoutes.Search(
+                    event.recommendedMovieId
+                )
+            )
+
+            is MyEvent.MovieClickEvent -> navigationRouteAction(
+                NavigationRoutes.ClickActionRoutes.MovieDetail(
+                    event.movieId
+                )
+            )
+
             is MyEvent.BannerMovieClickEvent -> navigationRouteAction(
-                NavigationRoutes.BannerMovies(
+                NavigationRoutes.ClickActionRoutes.BannerMovies(
                     event.clickedMovieIndex
                 )
             )
+
+            is MyEvent.GoToExploreEvent -> navigationRouteAction(NavigationRoutes.BottomNavRoutes.Explore)
 
             else -> {
                 Log.d("MainViewModel", "observeMyEvents: $event")

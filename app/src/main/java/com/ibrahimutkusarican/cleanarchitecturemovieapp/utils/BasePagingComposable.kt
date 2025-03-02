@@ -13,6 +13,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.convert
 fun <T : Any> BasePagingComposable(
     pagingItems: LazyPagingItems<T>,
     emptyScreenType: EmptyScreenType,
+    emptyScreenGoToExploreAction : () -> Unit = {},
     notLoadingScreen: @Composable (LazyPagingItems<T>) -> Unit,
 ) {
     when (pagingItems.loadState.refresh) {
@@ -23,7 +24,7 @@ fun <T : Any> BasePagingComposable(
         LoadState.Loading -> LoadingScreen()
         is LoadState.NotLoading -> {
             if (pagingItems.itemCount == 0){
-                EmptyScreen(emptyScreenType = emptyScreenType)
+                EmptyScreen(emptyScreenType = emptyScreenType, seeExploreAction = emptyScreenGoToExploreAction)
             }
             notLoadingScreen(pagingItems)
         }

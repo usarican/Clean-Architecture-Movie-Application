@@ -56,6 +56,7 @@ class MovieDetailViewModel @Inject constructor(
     fun handleUiAction(action: DetailUiAction) {
         when (action) {
             DetailUiAction.ErrorRetryAction -> movieId?.let { getMovieDetail(it) }
+
             is DetailUiAction.RecommendedMovieClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
             DetailUiAction.OnBackPressClickAction -> sendEvent(MyEvent.OnBackPressed)
             is DetailUiAction.SeeAllClickAction -> sendEvent(MyEvent.SeeAllClickEvent(action.seeAllType))

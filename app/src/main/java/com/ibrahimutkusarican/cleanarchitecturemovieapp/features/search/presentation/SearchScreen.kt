@@ -85,6 +85,9 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                     uiState = uiState,
                     tryAgainOnClickAction = {
                         viewModel.handleSearchScreenAction(SearchUiAction.ErrorTryAgainAction)
+                    },
+                    backButtonClickAction = {
+                        viewModel.handleSearchScreenAction(SearchUiAction.OnBackPress)
                     }
                 ) {
                     Column(

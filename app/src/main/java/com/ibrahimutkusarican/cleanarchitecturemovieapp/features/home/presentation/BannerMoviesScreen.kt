@@ -71,7 +71,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.carouselTransition
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
-import kotlin.math.absoluteValue
 
 @Composable
 @Preview(showBackground = true)

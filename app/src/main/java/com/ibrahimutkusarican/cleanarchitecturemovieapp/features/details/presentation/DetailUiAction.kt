@@ -10,5 +10,4 @@ sealed class DetailUiAction {
     data object OnBackPressClickAction : DetailUiAction()
     data class DetailButtonClickAction(val data : MovieDetailActionButtonData) : DetailUiAction()
     data class GoToMyListPage(val pageIndex : Int) : DetailUiAction()
-
 }

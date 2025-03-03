@@ -100,26 +100,33 @@ fun MovieDetailScreen(
             }
         }
     }
-    BaseUiStateComposable(uiState = uiState, tryAgainOnClickAction = {}) {
+    BaseUiStateComposable(uiState = uiState, tryAgainOnClickAction = {
+        viewModel.handleUiAction(DetailUiAction.ErrorRetryAction)
+    }, backButtonClickAction = {
+        viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction)
+    }) {
         movieDetailModel?.let { model ->
             Box(modifier = modifier.fillMaxSize()) {
                 MovieDetailSuccessScreen(
-                    modifier = modifier, movieDetailModel = model,
+                    modifier = modifier,
+                    movieDetailModel = model,
                     backClickAction = { viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction) },
                     action = viewModel::handleUiAction
                 )
                 snackBarModel?.let {
-                    MySnackBar(
-                        snackBarModel = it,
+                    MySnackBar(snackBarModel = it,
                         visible = true,
                         modifier = Modifier.align(Alignment.BottomCenter),
                         actionLabel = if (it.type == SnackBarType.SUCCESS) stringResource(R.string.see_all) else Constants.EMPTY_STRING,
                         action = {
                             if (it.type == SnackBarType.SUCCESS) {
-                                viewModel.handleUiAction(DetailUiAction.GoToMyListPage(snackBarMyListPageIndex))
+                                viewModel.handleUiAction(
+                                    DetailUiAction.GoToMyListPage(
+                                        snackBarMyListPageIndex
+                                    )
+                                )
                             }
-                        }
-                    )
+                        })
                 }
             }
         }
@@ -129,7 +136,8 @@ fun MovieDetailScreen(
 @Composable
 @Preview(showBackground = true)
 private fun MovieDetailSuccessScreen(
-    modifier: Modifier = Modifier, movieDetailModel: MovieDetailModel = mockMovieDetailModel,
+    modifier: Modifier = Modifier,
+    movieDetailModel: MovieDetailModel = mockMovieDetailModel,
     backClickAction: () -> Unit = {},
     action: (action: DetailUiAction) -> Unit = {}
 ) {
@@ -144,8 +152,7 @@ private fun MovieDetailSuccessScreen(
             movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
         )
         MovieDetailActionButtons(
-            action = action,
-            movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
+            action = action, movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
         )
         MovieDetailPager(movieDetailModel = movieDetailModel, handleUiAction = action)
     }
@@ -194,10 +201,8 @@ private fun MovieDetailActionButtons(
         verticalAlignment = Alignment.CenterVertically
     ) {
         actionButtons.forEach { button ->
-            MovieDetailActionButton(
-                movieDetailActionButtonData = button,
-                clickAction = { action(DetailUiAction.DetailButtonClickAction(it)) }
-            )
+            MovieDetailActionButton(movieDetailActionButtonData = button,
+                clickAction = { action(DetailUiAction.DetailButtonClickAction(it)) })
         }
     }
 }
@@ -222,8 +227,7 @@ private fun MovieDetailActionButton(
                 Row(
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(R.dimen.twenty_dp),
-                    ),
-                    verticalAlignment = Alignment.CenterVertically
+                    ), verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         modifier = Modifier.size(dimensionResource(R.dimen.small_icon_size)),
@@ -267,7 +271,9 @@ private fun MovieDetailActionButton(
 
 @Composable
 private fun MovieDetailPager(
-    modifier: Modifier = Modifier, movieDetailModel: MovieDetailModel,handleUiAction: (action : DetailUiAction) -> Unit
+    modifier: Modifier = Modifier,
+    movieDetailModel: MovieDetailModel,
+    handleUiAction: (action: DetailUiAction) -> Unit
 ) {
     val pages = listOf(
         MovieDetailPage(R.string.about, 0),
@@ -289,8 +295,13 @@ private fun MovieDetailPager(
             when (page) {
                 0 -> AboutPageScreen(movieDetailAboutModel = movieDetailModel.movieDetailAboutModel)
                 1 -> TrailersPageScreen(movieDetailTrailerModel = movieDetailModel.movieDetailTrailerModel)
-                2 -> ReviewsPageScreen(movieDetailModel = movieDetailModel, handleUiAction = handleUiAction)
-                3 -> RecommendedPageScreen(movieDetailModel = movieDetailModel, handleUiAction = handleUiAction)
+                2 -> ReviewsPageScreen(
+                    movieDetailModel = movieDetailModel, handleUiAction = handleUiAction
+                )
+
+                3 -> RecommendedPageScreen(
+                    movieDetailModel = movieDetailModel, handleUiAction = handleUiAction
+                )
             }
         }
     }

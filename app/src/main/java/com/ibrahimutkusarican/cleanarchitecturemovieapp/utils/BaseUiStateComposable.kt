@@ -10,12 +10,15 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 fun <T>BaseUiStateComposable(
     uiState: UiState<T>,
     tryAgainOnClickAction: () -> Unit,
+    backButtonClickAction : () -> Unit,
     successScreen : @Composable (data : T) -> Unit
 ) {
     when (uiState) {
         is UiState.Error -> ErrorScreen(
             exception = (uiState).exception,
-            tryAgainOnClickAction = tryAgainOnClickAction
+            tryAgainOnClickAction = tryAgainOnClickAction,
+            backButtonOnClickAction = backButtonClickAction,
+            backButtonIsEnable = true
         )
 
         UiState.Loading -> LoadingScreen()

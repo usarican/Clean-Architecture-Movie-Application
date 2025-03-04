@@ -35,11 +35,20 @@ class MyListViewModel @Inject constructor(
     val watchListMovies = getMyListMovieUseCase.getMyListMovieUseCase(page = MyListPage.WATCH_LIST)
         .cachedIn(viewModelScope)
 
-    private val _deleteStatusFlow = MutableStateFlow<Map<Int, Boolean?>>(emptyMap())
-    val deleteStatusFlow: StateFlow<Map<Int, Boolean?>> = _deleteStatusFlow
+    private val _deleteStatusFavoriteMovies = MutableStateFlow<Map<Int, Boolean?>>(emptyMap())
+    val deleteStatusFavoriteMovies: StateFlow<Map<Int, Boolean?>> = _deleteStatusFavoriteMovies
 
-    fun updateDeleteStatus(movieId: Int, status: Boolean?) {
-        _deleteStatusFlow.value = _deleteStatusFlow.value.toMutableMap().apply {
+    fun updateFavoriteDeleteStatus(movieId: Int, status: Boolean?) {
+        _deleteStatusFavoriteMovies.value = _deleteStatusFavoriteMovies.value.toMutableMap().apply {
+            put(movieId, status)
+        }
+    }
+
+    private val _deleteStatusWatchListMovies = MutableStateFlow<Map<Int, Boolean?>>(emptyMap())
+    val deleteStatusWatchListMovies: StateFlow<Map<Int, Boolean?>> = _deleteStatusWatchListMovies
+
+    fun updateWatchListMovieDeleteStatus(movieId: Int, status: Boolean?) {
+        _deleteStatusWatchListMovies.value = _deleteStatusWatchListMovies.value.toMutableMap().apply {
             put(movieId, status)
         }
     }

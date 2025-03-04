@@ -1,14 +1,16 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.presentation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,14 +36,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
@@ -68,10 +68,10 @@ fun MyListPageScreen(
     movies: LazyPagingItems<MyListMovieModel>,
     handleUiAction: (action: MyListUiAction) -> Unit,
     pageIndex: Int,
-    emptyScreenType: EmptyScreenType
+    emptyScreenType: EmptyScreenType,
+    deleteStatusMap : Map<Int,Boolean?>
 ) {
-    BasePagingComposable(
-        pagingItems = movies,
+    BasePagingComposable(pagingItems = movies,
         emptyScreenType = emptyScreenType,
         emptyScreenGoToExploreAction = {
             handleUiAction(MyListUiAction.GoToExploreAction)
@@ -82,24 +82,21 @@ fun MyListPageScreen(
                 .padding(horizontal = dimensionResource(R.dimen.medium_padding)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
         ) {
-            items(count = movies.itemCount,
-                key = { index -> index }) { index ->
+            items(count = movies.itemCount, key = { index -> index }) { index ->
                 movies[index]?.let { movie ->
-                    MyListMovieItem(
-                        myListMovie = movie,
-                        movieClickAction = {
-                            handleUiAction.invoke(MyListUiAction.MovieClickAction(movie.movieId))
-                        },
-                        onDelete = {
-                            handleUiAction.invoke(
-                                MyListUiAction.MovieDeleteAction(
-                                    MyListViewModel.DeleteMovieData(
-                                        movie = movie,
-                                        page = MyListUpdatePage.findPageByIndex(pageIndex)
-                                    )
+                    MyListMovieItem(myListMovie = movie, movieClickAction = {
+                        handleUiAction.invoke(MyListUiAction.MovieClickAction(movie.movieId))
+                    }, onDelete = {
+                        handleUiAction.invoke(
+                            MyListUiAction.MovieDeleteAction(
+                                MyListViewModel.DeleteMovieData(
+                                    movie = movie,
+                                    page = MyListUpdatePage.findPageByIndex(pageIndex)
                                 )
                             )
-                        }
+                        )
+                    },
+                        deleteStatus = deleteStatusMap[movie.movieId]
                     )
                 }
             }
@@ -113,7 +110,8 @@ fun MyListMovieItem(
     modifier: Modifier = Modifier,
     myListMovie: MyListMovieModel,
     movieClickAction: (movieId: Int) -> Unit = {},
-    onDelete: (movieId: Int) -> Unit = {}
+    onDelete: (movieId: Int) -> Unit = {},
+    deleteStatus: Boolean? = null
 ) {
 
     // 2) Horizontal offset for swipe gestures
@@ -138,19 +136,17 @@ fun MyListMovieItem(
 
     val scope = rememberCoroutineScope()
 
-    Box(
-        modifier = modifier
+    AnimatedVisibility(deleteStatus?.not() ?: true, exit = fadeOut() + slideOutHorizontally()) {
+        Box(modifier = modifier
             .fillMaxWidth()
-            .onGloballyPositioned { coords -> itemWidth = coords.size.width }
-    ) {
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .clip(cardShape)
-                .background(MaterialTheme.colorScheme.error)
-        ) {
+            .onGloballyPositioned { coords -> itemWidth = coords.size.width }) {
             Box(
                 modifier = Modifier
+                    .matchParentSize()
+                    .clip(cardShape)
+                    .background(MaterialTheme.colorScheme.error)
+            ) {
+                Box(modifier = Modifier
                     .align(Alignment.CenterEnd)
                     .width(with(density) { revealWidthPx.toDp() })
                     .fillMaxHeight()
@@ -160,157 +156,148 @@ fun MyListMovieItem(
                         scope.launch {
                             onDelete(myListMovie.movieId)
                         }
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = textHorizontalDp)
-                        .align(Alignment.Center),
-                    textAlign = TextAlign.Center,
-                    text = stringResource(R.string.delete),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.W700,
-                        color = MaterialTheme.colorScheme.onError
+                    }, contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = textHorizontalDp)
+                            .align(Alignment.Center),
+                        textAlign = TextAlign.Center,
+                        text = stringResource(R.string.delete),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.W700, color = MaterialTheme.colorScheme.onError
+                        )
                     )
-                )
+                }
             }
-        }
 
-        Card(
-            shape = cardShape,
-            border = BorderStroke(
-                dimensionResource(R.dimen.one_dp),
-                MaterialTheme.colorScheme.outlineVariant
+            Card(shape = cardShape, border = BorderStroke(
+                dimensionResource(R.dimen.one_dp), MaterialTheme.colorScheme.outlineVariant
             ), // or whatever color you want
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
-            ),
-            modifier = Modifier
-                // Horizontal offset for swipe
-                .offset { IntOffset(offsetX.value.roundToInt(), 0) }
-                .fillMaxWidth()
-                // Draggable logic
-                .draggable(
-                    orientation = Orientation.Horizontal,
-                    state = rememberDraggableState { delta ->
-                        val newOffset = offsetX.value + delta
-                        scope.launch {
-                            offsetX.snapTo(newOffset.coerceIn(-itemWidth.toFloat(), 0f))
-                        }
-                    },
-                    onDragStopped = { velocity ->
-                        scope.launch {
-                            // If fling is fast enough, delete
-                            if (velocity < -2000) {
-                                offsetX.animateTo(
-                                    targetValue = -itemWidth.toFloat(),
-                                    animationSpec = spring()
-                                )
-                                onDelete(myListMovie.movieId)
-                            } else {
-                                val offsetVal = offsetX.value
-                                val halfWidth = -itemWidth / 2f
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ), modifier = Modifier
+                    // Horizontal offset for swipe
+                    .offset { IntOffset(offsetX.value.roundToInt(), 0) }
+                    .fillMaxWidth()
+                    // Draggable logic
+                    .draggable(orientation = Orientation.Horizontal,
+                        state = rememberDraggableState { delta ->
+                            val newOffset = offsetX.value + delta
+                            scope.launch {
+                                offsetX.snapTo(newOffset.coerceIn(-itemWidth.toFloat(), 0f))
+                            }
+                        },
+                        onDragStopped = { velocity ->
+                            scope.launch {
+                                // If fling is fast enough, delete
+                                if (velocity < -2000) {
+                                    offsetX.animateTo(
+                                        targetValue = -itemWidth.toFloat(), animationSpec = spring()
+                                    )
+                                    onDelete(myListMovie.movieId)
+                                } else {
+                                    val offsetVal = offsetX.value
+                                    val halfWidth = -itemWidth / 2f
 
-                                when {
-                                    // Pass half the total width => full delete
-                                    offsetVal <= halfWidth -> {
-                                        offsetX.animateTo(
-                                            targetValue = -itemWidth.toFloat(),
-                                            animationSpec = spring()
-                                        )
-                                        onDelete(myListMovie.movieId)
-                                    }
-                                    // Pass half of partial reveal => snap to partial reveal
-                                    offsetVal <= -(revealWidthPx / 2) -> {
-                                        offsetX.animateTo(
-                                            targetValue = -revealWidthPx,
-                                            animationSpec = spring()
-                                        )
-                                    }
+                                    when {
+                                        // Pass half the total width => full delete
+                                        offsetVal <= halfWidth -> {
+                                            offsetX.animateTo(
+                                                targetValue = -itemWidth.toFloat(),
+                                                animationSpec = spring()
+                                            )
+                                            onDelete(myListMovie.movieId)
+                                        }
+                                        // Pass half of partial reveal => snap to partial reveal
+                                        offsetVal <= -(revealWidthPx / 2) -> {
+                                            offsetX.animateTo(
+                                                targetValue = -revealWidthPx,
+                                                animationSpec = spring()
+                                            )
+                                        }
 
-                                    else -> {
-                                        // Otherwise, snap back to original
-                                        offsetX.animateTo(0f, animationSpec = spring())
+                                        else -> {
+                                            // Otherwise, snap back to original
+                                            offsetX.animateTo(0f, animationSpec = spring())
+                                        }
                                     }
                                 }
                             }
-                        }
-                    }
-                )
-                .clickable {
-                    // Normal tap
-                    movieClickAction(myListMovie.movieId)
-                }
-        ) {
-            // Your existing layout for the movie item:
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(itemHeightDp)
-            ) {
-                // Poster
-                Card(
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border))
-                ) {
-                    MovieImage(
-                        imageUrl = myListMovie.posterPath,
-                        modifier = Modifier
-                            .width(itemHeightDp)
-                            .height(itemHeightDp)
-                    )
-                }
-                // Text details
-                Column(
+                        })
+                    .clickable {
+                        // Normal tap
+                        movieClickAction(myListMovie.movieId)
+                    }) {
+                // Your existing layout for the movie item:
+                Row(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(start = dimensionResource(R.dimen.medium_padding)),
-                    verticalArrangement = Arrangement.Center,
+                        .fillMaxWidth()
+                        .height(itemHeightDp)
                 ) {
-                    Text(
-                        text = myListMovie.title,
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontSize = fontDimensionResource(R.dimen.movie_category_item_title_size),
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
+                    // Poster
+                    Card(
+                        shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border))
+                    ) {
+                        MovieImage(
+                            imageUrl = myListMovie.posterPath,
+                            modifier = Modifier
+                                .width(itemHeightDp)
+                                .height(itemHeightDp)
                         )
-                    )
-                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_padding)))
-                    Text(
-                        text = myListMovie.overview,
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontSize = fontDimensionResource(R.dimen.see_all_movie_item_content_text_size),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        ),
-                        maxLines = 3,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_padding)))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        if (myListMovie.genres.isNotEmpty()) {
-                            Text(
-                                text = myListMovie.genres.first(),
-                                style = MaterialTheme.typography.labelSmall.copy(
-                                    color = MaterialTheme.colorScheme.secondary
-                                )
-                            )
-                            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.medium_padding)))
-                        }
-                        Icon(
-                            imageVector = Icons.Filled.Star,
-                            contentDescription = "Star Rating",
-                            modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.secondary
-                        )
-                        Spacer(modifier = Modifier.width(4.dp)) // Space between star and text
+                    }
+                    // Text details
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(start = dimensionResource(R.dimen.medium_padding)),
+                        verticalArrangement = Arrangement.Center,
+                    ) {
                         Text(
-                            text = myListMovie.movieRating,
-                            style = MaterialTheme.typography.labelSmall.copy(
+                            text = myListMovie.title,
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                fontSize = fontDimensionResource(R.dimen.movie_category_item_title_size),
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                         )
+                        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_padding)))
+                        Text(
+                            text = myListMovie.overview,
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontSize = fontDimensionResource(R.dimen.see_all_movie_item_content_text_size),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            ),
+                            maxLines = 3,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_padding)))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            if (myListMovie.genres.isNotEmpty()) {
+                                Text(
+                                    text = myListMovie.genres.first(),
+                                    style = MaterialTheme.typography.labelSmall.copy(
+                                        color = MaterialTheme.colorScheme.secondary
+                                    )
+                                )
+                                Spacer(modifier = Modifier.width(dimensionResource(R.dimen.medium_padding)))
+                            }
+                            Icon(
+                                imageVector = Icons.Filled.Star,
+                                contentDescription = "Star Rating",
+                                modifier = Modifier.size(16.dp),
+                                tint = MaterialTheme.colorScheme.secondary
+                            )
+                            Spacer(modifier = Modifier.width(4.dp)) // Space between star and text
+                            Text(
+                                text = myListMovie.movieRating,
+                                style = MaterialTheme.typography.labelSmall.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            )
+                        }
                     }
                 }
             }

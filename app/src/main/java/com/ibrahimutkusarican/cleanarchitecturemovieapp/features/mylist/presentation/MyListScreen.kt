@@ -33,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
@@ -60,6 +61,8 @@ fun MyListScreen(
         val favoriteMovies = viewModel.favoriteMovies.collectAsLazyPagingItems()
         val watchListMovies = viewModel.watchListMovies.collectAsLazyPagingItems()
         var snackBarModel by remember { mutableStateOf<MySnackBarModel?>(null) }
+        val favoriteMoviesDeleteStatus by viewModel.deleteStatusFavoriteMovies.collectAsStateWithLifecycle()
+        val watchListMoviesDeleteStatus by viewModel.deleteStatusWatchListMovies.collectAsStateWithLifecycle()
 
         LaunchedEffect(Unit) {
             viewModel.showSnackBar.collectLatest { model ->
@@ -94,14 +97,16 @@ fun MyListScreen(
                         movies = favoriteMovies,
                         handleUiAction = viewModel::handleUiAction,
                         pageIndex = page,
-                        emptyScreenType = EmptyScreenType.FAVORITE
+                        emptyScreenType = EmptyScreenType.FAVORITE,
+                        deleteStatusMap = favoriteMoviesDeleteStatus
                     )
 
                     1 -> MyListPageScreen(
                         movies = watchListMovies,
                         handleUiAction = viewModel::handleUiAction,
                         pageIndex = page,
-                        emptyScreenType = EmptyScreenType.WATCH_LIST
+                        emptyScreenType = EmptyScreenType.WATCH_LIST,
+                        deleteStatusMap = watchListMoviesDeleteStatus
                     )
                 }
             }

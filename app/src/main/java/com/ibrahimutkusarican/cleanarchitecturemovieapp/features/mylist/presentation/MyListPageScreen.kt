@@ -8,21 +8,27 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -60,12 +66,15 @@ import kotlin.math.roundToInt
 fun MyListPageScreen(
     movies: LazyPagingItems<MyListMovieModel>,
     handleUiAction: (action: MyListUiAction) -> Unit,
-    pageIndex : Int,
+    pageIndex: Int,
     emptyScreenType: EmptyScreenType
 ) {
-    BasePagingComposable(pagingItems = movies, emptyScreenType = emptyScreenType, emptyScreenGoToExploreAction = {
-        handleUiAction(MyListUiAction.GoToExploreAction)
-    }) {
+    BasePagingComposable(
+        pagingItems = movies,
+        emptyScreenType = emptyScreenType,
+        emptyScreenGoToExploreAction = {
+            handleUiAction(MyListUiAction.GoToExploreAction)
+        }) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -170,9 +179,12 @@ fun MyListMovieItem(
 
         Card(
             shape = cardShape,
-            border = BorderStroke(1.dp, Color.LightGray), // or whatever color you want
+            border = BorderStroke(
+                dimensionResource(R.dimen.one_dp),
+                MaterialTheme.colorScheme.outlineVariant
+            ), // or whatever color you want
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.background
+                containerColor = MaterialTheme.colorScheme.surface
             ),
             modifier = Modifier
                 // Horizontal offset for swipe
@@ -253,23 +265,52 @@ fun MyListMovieItem(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(start = dimensionResource(R.dimen.medium_padding)),
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.Center,
                 ) {
                     Text(
                         text = myListMovie.title,
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontSize = fontDimensionResource(R.dimen.movie_category_item_title_size),
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     )
+                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_padding)))
                     Text(
                         text = myListMovie.overview,
                         style = MaterialTheme.typography.bodySmall.copy(
-                            fontSize = fontDimensionResource(R.dimen.see_all_movie_item_content_text_size)
+                            fontSize = fontDimensionResource(R.dimen.see_all_movie_item_content_text_size),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         ),
                         maxLines = 3,
                         overflow = TextOverflow.Ellipsis
                     )
+                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_padding)))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        if (myListMovie.genres.isNotEmpty()) {
+                            Text(
+                                text = myListMovie.genres.first(),
+                                style = MaterialTheme.typography.labelSmall.copy(
+                                    color = MaterialTheme.colorScheme.secondary
+                                )
+                            )
+                            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.medium_padding)))
+                        }
+                        Icon(
+                            imageVector = Icons.Filled.Star,
+                            contentDescription = "Star Rating",
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.secondary
+                        )
+                        Spacer(modifier = Modifier.width(4.dp)) // Space between star and text
+                        Text(
+                            text = myListMovie.movieRating,
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        )
+                    }
                 }
             }
         }

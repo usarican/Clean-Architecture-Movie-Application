@@ -16,7 +16,9 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,6 +34,16 @@ class MyListViewModel @Inject constructor(
         .cachedIn(viewModelScope)
     val watchListMovies = getMyListMovieUseCase.getMyListMovieUseCase(page = MyListPage.WATCH_LIST)
         .cachedIn(viewModelScope)
+
+    private val _deleteStatusFlow = MutableStateFlow<Map<Int, Boolean?>>(emptyMap())
+    val deleteStatusFlow: StateFlow<Map<Int, Boolean?>> = _deleteStatusFlow
+
+    fun updateDeleteStatus(movieId: Int, status: Boolean?) {
+        _deleteStatusFlow.value = _deleteStatusFlow.value.toMutableMap().apply {
+            put(movieId, status)
+        }
+    }
+
 
     private val _showSnackBar = MutableSharedFlow<MySnackBarModel>()
     val showSnackBar: SharedFlow<MySnackBarModel> = _showSnackBar

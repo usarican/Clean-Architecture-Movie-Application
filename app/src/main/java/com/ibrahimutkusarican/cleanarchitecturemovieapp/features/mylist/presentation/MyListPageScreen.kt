@@ -33,6 +33,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -119,7 +120,7 @@ fun MyListMovieItem(
     val offsetX = remember { Animatable(0f) }
 
     // 3) We'll measure total width (for half-width = full-delete threshold).
-    var itemWidth by remember { mutableStateOf(1) }
+    var itemWidth by remember { mutableIntStateOf(1) }
 
     // 4) For partial reveal, let’s define a smaller reveal width (e.g. 80.dp).
     //    This is how wide we’ll snap the item to if partially swiped.

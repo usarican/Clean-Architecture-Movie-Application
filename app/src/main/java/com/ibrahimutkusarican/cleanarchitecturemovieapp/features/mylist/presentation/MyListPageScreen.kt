@@ -34,8 +34,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -87,7 +89,7 @@ fun MyListPageScreen(
                     MyListMovieItem(myListMovie = movie, movieClickAction = {
                         handleUiAction.invoke(MyListUiAction.MovieClickAction(movie.movieId))
                     }, onDelete = {
-                        handleUiAction.invoke(
+                        handleUiAction(
                             MyListUiAction.MovieDeleteAction(
                                 MyListViewModel.DeleteMovieData(
                                     movie = movie,
@@ -96,6 +98,14 @@ fun MyListPageScreen(
                             )
                         )
                     },
+                        onInstantDelete = {
+                            handleUiAction(MyListUiAction.InstantMovieDeleteAction(
+                                MyListViewModel.DeleteMovieData(
+                                    movie = movie,
+                                    page = MyListUpdatePage.findPageByIndex(pageIndex)
+                                )
+                            ))
+                        },
                         deleteStatus = deleteStatusMap[movie.movieId]
                     )
                 }
@@ -110,7 +120,8 @@ fun MyListMovieItem(
     modifier: Modifier = Modifier,
     myListMovie: MyListMovieModel,
     movieClickAction: (movieId: Int) -> Unit = {},
-    onDelete: (movieId: Int) -> Unit = {},
+    onDelete: () -> Unit = {},
+    onInstantDelete : () -> Unit = {},
     deleteStatus: Boolean? = null
 ) {
 
@@ -136,6 +147,14 @@ fun MyListMovieItem(
 
     val scope = rememberCoroutineScope()
 
+    var textAlignment by remember { mutableStateOf(Alignment.CenterEnd) }
+
+    LaunchedEffect(deleteStatus) {
+        if (deleteStatus == null){
+            offsetX.animateTo(0f, animationSpec = spring())
+        }
+    }
+
     AnimatedVisibility(deleteStatus?.not() ?: true, exit = fadeOut() + slideOutHorizontally()) {
         Box(modifier = modifier
             .fillMaxWidth()
@@ -147,14 +166,14 @@ fun MyListMovieItem(
                     .background(MaterialTheme.colorScheme.error)
             ) {
                 Box(modifier = Modifier
-                    .align(Alignment.CenterEnd)
+                    .align(textAlignment)
                     .width(with(density) { revealWidthPx.toDp() })
                     .fillMaxHeight()
                     .clip(cardShape)
                     .background(MaterialTheme.colorScheme.error)
                     .clickable {
                         scope.launch {
-                            onDelete(myListMovie.movieId)
+                            onDelete()
                         }
                     }, contentAlignment = Alignment.Center
                 ) {
@@ -196,19 +215,20 @@ fun MyListMovieItem(
                                     offsetX.animateTo(
                                         targetValue = -itemWidth.toFloat(), animationSpec = spring()
                                     )
-                                    onDelete(myListMovie.movieId)
+                                    onInstantDelete()
                                 } else {
                                     val offsetVal = offsetX.value
-                                    val halfWidth = -itemWidth / 2f
+                                    val seventyFivePercentWidth = 3f * (-itemWidth / 4f)
 
                                     when {
                                         // Pass half the total width => full delete
-                                        offsetVal <= halfWidth -> {
+                                        offsetVal <= seventyFivePercentWidth -> {
                                             offsetX.animateTo(
                                                 targetValue = -itemWidth.toFloat(),
                                                 animationSpec = spring()
                                             )
-                                            onDelete(myListMovie.movieId)
+                                            textAlignment = Alignment.CenterStart
+                                            onInstantDelete()
                                         }
                                         // Pass half of partial reveal => snap to partial reveal
                                         offsetVal <= -(revealWidthPx / 2) -> {

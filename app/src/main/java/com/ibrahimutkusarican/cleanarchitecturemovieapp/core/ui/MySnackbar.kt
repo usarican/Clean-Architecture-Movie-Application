@@ -50,17 +50,22 @@ fun MySnackBar(
     ),
     actionLabel: String? = null,
     action: (() -> Unit)? = null,
-    visible: Boolean = true
+    visible: Boolean = true,
+    isDarkMode: Boolean = false,
+    onDismiss : (() -> Unit)? = null,
+    clickActionDismiss : (() -> Unit)? = null,
 ) {
     var visibility by remember { mutableStateOf(visible) }
+    val snackBarColors = snackBarModel.type.getColors(isDarkMode)
 
-    LaunchedEffect(true) {
+    LaunchedEffect(visibility) {
         if (actionLabel.isNullOrEmpty()) {
-            delay(5000)
+            delay(2000)
         } else {
-            delay(10000)
+            delay(3000)
         }
         visibility = false
+        onDismiss?.invoke()
     }
     AnimatedVisibility(
         visible = visibility, modifier = modifier,
@@ -80,22 +85,25 @@ fun MySnackBar(
             shape = RoundedCornerShape(dimensionResource(R.dimen.small_border)),
             elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.small_padding)),
             colors = CardDefaults.cardColors(
-                containerColor = snackBarModel.type.containerColor,
-                contentColor = snackBarModel.type.onContainerColor
+                containerColor = snackBarColors.containerColor,
+                contentColor = snackBarColors.onContainerColor
             )
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { visibility = false }
+                    .clickable {
+                        visibility = false
+                        clickActionDismiss?.invoke()
+                    }
                     .padding(dimensionResource(R.dimen.small_padding)),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painterResource(snackBarModel.type.iconId),
+                    painterResource(snackBarColors.iconId),
                     contentDescription = snackBarModel.message,
                     modifier = Modifier.size(dimensionResource(R.dimen.error_icon_size)),
-                    colorFilter = ColorFilter.tint(snackBarModel.type.lightColor)
+                    colorFilter = ColorFilter.tint(snackBarColors.lightColor)
                 )
                 Column(
                     modifier = Modifier
@@ -106,7 +114,7 @@ fun MySnackBar(
                         Text(
                             text = snackBarModel.title,
                             style = MaterialTheme.typography.bodyMedium.copy(
-                                color = snackBarModel.type.onContainerColor,
+                                color = snackBarColors.onContainerColor,
                                 fontWeight = FontWeight.Bold
                             ),
                             maxLines = 1,
@@ -115,7 +123,7 @@ fun MySnackBar(
                     Text(
                         text = snackBarModel.message ?: stringResource(R.string.error_message),
                         style = MaterialTheme.typography.bodySmall.copy(
-                            color = snackBarModel.type.onContainerColor
+                            color = snackBarColors.onContainerColor
                         ),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
@@ -141,40 +149,83 @@ fun MySnackBar(
 data class MySnackBarModel(
     val title : String?,
     val message : String?,
-    val type : SnackBarType
+    val type : SnackBarType,
+    val movieId : Int? = null
 )
 
 
 enum class SnackBarType(
+    private val lightModeColors: SnackBarColors,
+    private val darkModeColors: SnackBarColors
+) {
+    SUCCESS(
+        lightModeColors = SnackBarColors(
+            lightColor = Color(0xFF1E7D3A),
+            containerColor = Color(0xFFD3F6E6),
+            onContainerColor = Color(0xFF003214),
+            iconId = R.drawable.ic_success_snack_bar
+        ),
+        darkModeColors = SnackBarColors(
+            lightColor = Color(0xFF52C474),
+            containerColor = Color(0xFF004D20),
+            onContainerColor = Color(0xFFA8EABF),
+            iconId = R.drawable.ic_success_snack_bar
+        )
+    ),
+    INFO(
+        lightModeColors = SnackBarColors(
+            lightColor = Color(0xFF005FCC),
+            containerColor = Color(0xFFD5E3FF),
+            onContainerColor = Color(0xFF001A3C),
+            iconId = R.drawable.ic_info_snack_bar
+        ),
+        darkModeColors = SnackBarColors(
+            lightColor = Color(0xFF7ABFFF),
+            containerColor = Color(0xFF002C6D),
+            onContainerColor = Color(0xFFB3D4FF),
+            iconId = R.drawable.ic_info_snack_bar
+        )
+    ),
+    WARNING(
+        lightModeColors = SnackBarColors(
+            lightColor = Color(0xFFDC7800),
+            containerColor = Color(0xFFFFE7C2),
+            onContainerColor = Color(0xFF3B2100),
+            iconId = R.drawable.ic_warning_snack_bar
+        ),
+        darkModeColors = SnackBarColors(
+            lightColor = Color(0xFFFFAB40),
+            containerColor = Color(0xFF4E2600),
+            onContainerColor = Color(0xFFFFD8A8),
+            iconId = R.drawable.ic_warning_snack_bar
+        )
+    ),
+    ERROR(
+        lightModeColors = SnackBarColors(
+            lightColor = Color(0xFFBA1A1A),
+            containerColor = Color(0xFFFFDAD6),
+            onContainerColor = Color(0xFF410002),
+            iconId = R.drawable.ic_error_outline
+        ),
+        darkModeColors = SnackBarColors(
+            lightColor = Color(0xFFFF7676),
+            containerColor = Color(0xFF690005),
+            onContainerColor = Color(0xFFFFB4A9),
+            iconId = R.drawable.ic_error_outline
+        )
+    );
+
+    /** Returns colors based on the current dark mode setting */
+    fun getColors(isDarkMode: Boolean): SnackBarColors {
+        return if (isDarkMode) darkModeColors else lightModeColors
+    }
+}
+
+/** Data class to hold Snackbar colors */
+data class SnackBarColors(
     val lightColor: Color,
     val containerColor: Color,
     val onContainerColor: Color,
-    @DrawableRes val iconId : Int
-) {
-    SUCCESS(
-        lightColor = Color(0xFF1E7D3A),
-        containerColor = Color(0xFFD3F6E6),
-        onContainerColor = Color(0xFF003214),
-        iconId = R.drawable.ic_success_snack_bar
-    ),
-    INFO(
-        lightColor = Color(0xFF005FCC),
-        containerColor = Color(0xFFD5E3FF),
-        onContainerColor = Color(0xFF001A3C),
-        iconId = R.drawable.ic_info_snack_bar
-    ),
-    WARNING(
-        lightColor = Color(0xFFDC7800),
-        containerColor = Color(0xFFFFE7C2),
-        onContainerColor = Color(0xFF3B2100),
-        iconId = R.drawable.ic_warning_snack_bar
-    ),
-    ERROR(
-        lightColor = Color(0xFFBA1A1A),
-        containerColor = Color(0xFFFFDAD6),
-        onContainerColor = Color(0xFF410002),
-        iconId = R.drawable.ic_error_outline
-    )
-}
-
+    @DrawableRes val iconId: Int
+)
 

@@ -60,19 +60,10 @@ fun MyListScreen(
         val coroutineScope = rememberCoroutineScope()
         val favoriteMovies = viewModel.favoriteMovies.collectAsLazyPagingItems()
         val watchListMovies = viewModel.watchListMovies.collectAsLazyPagingItems()
-        var snackBarModel by remember { mutableStateOf<MySnackBarModel?>(null) }
+        val snackBarModel by viewModel.showSnackBar.collectAsStateWithLifecycle()
         val favoriteMoviesDeleteStatus by viewModel.deleteStatusFavoriteMovies.collectAsStateWithLifecycle()
         val watchListMoviesDeleteStatus by viewModel.deleteStatusWatchListMovies.collectAsStateWithLifecycle()
 
-        LaunchedEffect(Unit) {
-            viewModel.showSnackBar.collectLatest { model ->
-                snackBarModel = model
-                coroutineScope.launch {
-                    delay(3000)
-                    snackBarModel = null
-                }
-            }
-        }
 
         LaunchedEffect(pageIndex) {
             state.animateScrollToPage(pageIndex)
@@ -134,6 +125,11 @@ fun MyListScreen(
                         actionLabel = stringResource(R.string.delete),
                         action = {
                             viewModel.handleUiAction(MyListUiAction.SnackBarDeleteAction)
+                            viewModel.updateSnackBar(null)
+                        },
+                        onDismiss = {
+                            viewModel.updateFavoriteDeleteStatus(it.movieId,null)
+                            viewModel.updateSnackBar(null)
                         }
                     )
                 }

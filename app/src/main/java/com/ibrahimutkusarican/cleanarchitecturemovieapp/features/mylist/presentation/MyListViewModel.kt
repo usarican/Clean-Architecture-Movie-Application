@@ -35,28 +35,6 @@ class MyListViewModel @Inject constructor(
     val watchListMovies = getMyListMovieUseCase.getMyListMovieUseCase(page = MyListPage.WATCH_LIST)
         .cachedIn(viewModelScope)
 
-    private val _deleteStatusFavoriteMovies = MutableStateFlow<Map<Int, Boolean?>>(emptyMap())
-    val deleteStatusFavoriteMovies: StateFlow<Map<Int, Boolean?>> = _deleteStatusFavoriteMovies
-
-    fun updateFavoriteDeleteStatus(movieId: Int?, status: Boolean?) {
-        _deleteStatusFavoriteMovies.value = _deleteStatusFavoriteMovies.value.toMutableMap().apply {
-            if (movieId != null) {
-                put(movieId, status)
-            }
-        }
-    }
-
-    private val _deleteStatusWatchListMovies = MutableStateFlow<Map<Int, Boolean?>>(emptyMap())
-    val deleteStatusWatchListMovies: StateFlow<Map<Int, Boolean?>> = _deleteStatusWatchListMovies
-
-    fun updateWatchListMovieDeleteStatus(movieId: Int?, status: Boolean?) {
-        _deleteStatusWatchListMovies.value = _deleteStatusWatchListMovies.value.toMutableMap().apply {
-            if (movieId != null) {
-                put(movieId, status)
-            }
-        }
-    }
-
 
     private val _showSnackBar = MutableStateFlow<MySnackBarModel?>(null)
     val showSnackBar: StateFlow<MySnackBarModel?> = _showSnackBar
@@ -78,8 +56,6 @@ class MyListViewModel @Inject constructor(
             is MyListUiAction.MovieClickAction -> sendEvent(MyEvent.MovieClickEvent(myListUiAction.movieId))
             is MyListUiAction.MovieDeleteAction ->  {
                 deleteMovieData = myListUiAction.data
-                /// TODO:  Kafa karıştırıcı buraya status koy onDelete,Cancelled, Deleted 
-                updateFavoriteDeleteStatus(myListUiAction.data.movie.movieId, false)
                 showAreYouSureSnackBar(deleteMovieData)
             }
 

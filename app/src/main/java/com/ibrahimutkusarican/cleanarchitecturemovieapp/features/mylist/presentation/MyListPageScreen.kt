@@ -70,8 +70,7 @@ fun MyListPageScreen(
     movies: LazyPagingItems<MyListMovieModel>,
     handleUiAction: (action: MyListUiAction) -> Unit,
     pageIndex: Int,
-    emptyScreenType: EmptyScreenType,
-    deleteStatusMap : Map<Int,Boolean?>
+    emptyScreenType: EmptyScreenType
 ) {
     BasePagingComposable(pagingItems = movies,
         emptyScreenType = emptyScreenType,
@@ -105,8 +104,7 @@ fun MyListPageScreen(
                                     page = MyListUpdatePage.findPageByIndex(pageIndex)
                                 )
                             ))
-                        },
-                        deleteStatus = deleteStatusMap[movie.movieId]
+                        }
                     )
                 }
             }
@@ -121,8 +119,7 @@ fun MyListMovieItem(
     myListMovie: MyListMovieModel,
     movieClickAction: (movieId: Int) -> Unit = {},
     onDelete: () -> Unit = {},
-    onInstantDelete : () -> Unit = {},
-    deleteStatus: Boolean? = null
+    onInstantDelete : () -> Unit = {}
 ) {
 
     // 2) Horizontal offset for swipe gestures
@@ -148,14 +145,8 @@ fun MyListMovieItem(
     val scope = rememberCoroutineScope()
 
     var textAlignment by remember { mutableStateOf(Alignment.CenterEnd) }
-
-    LaunchedEffect(deleteStatus) {
-        if (deleteStatus == null){
-            offsetX.animateTo(0f, animationSpec = spring())
-        }
-    }
-
-    AnimatedVisibility(deleteStatus?.not() ?: true, exit = fadeOut() + slideOutHorizontally()) {
+    /// TODO: delete with animation
+    AnimatedVisibility(true , exit = fadeOut() + slideOutHorizontally()) {
         Box(modifier = modifier
             .fillMaxWidth()
             .onGloballyPositioned { coords -> itemWidth = coords.size.width }) {

@@ -61,8 +61,6 @@ fun MyListScreen(
         val favoriteMovies = viewModel.favoriteMovies.collectAsLazyPagingItems()
         val watchListMovies = viewModel.watchListMovies.collectAsLazyPagingItems()
         val snackBarModel by viewModel.showSnackBar.collectAsStateWithLifecycle()
-        val favoriteMoviesDeleteStatus by viewModel.deleteStatusFavoriteMovies.collectAsStateWithLifecycle()
-        val watchListMoviesDeleteStatus by viewModel.deleteStatusWatchListMovies.collectAsStateWithLifecycle()
 
 
         LaunchedEffect(pageIndex) {
@@ -88,16 +86,14 @@ fun MyListScreen(
                         movies = favoriteMovies,
                         handleUiAction = viewModel::handleUiAction,
                         pageIndex = page,
-                        emptyScreenType = EmptyScreenType.FAVORITE,
-                        deleteStatusMap = favoriteMoviesDeleteStatus
+                        emptyScreenType = EmptyScreenType.FAVORITE
                     )
 
                     1 -> MyListPageScreen(
                         movies = watchListMovies,
                         handleUiAction = viewModel::handleUiAction,
                         pageIndex = page,
-                        emptyScreenType = EmptyScreenType.WATCH_LIST,
-                        deleteStatusMap = watchListMoviesDeleteStatus
+                        emptyScreenType = EmptyScreenType.WATCH_LIST
                     )
                 }
             }
@@ -128,7 +124,6 @@ fun MyListScreen(
                             viewModel.updateSnackBar(null)
                         },
                         onDismiss = {
-                            viewModel.updateFavoriteDeleteStatus(it.movieId,null)
                             viewModel.updateSnackBar(null)
                         }
                     )

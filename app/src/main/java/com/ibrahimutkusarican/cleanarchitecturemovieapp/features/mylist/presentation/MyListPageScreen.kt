@@ -221,14 +221,12 @@ fun MyListMovieItem(
 
         Card(shape = cardShape, border = BorderStroke(
             dimensionResource(R.dimen.one_dp), MaterialTheme.colorScheme.outlineVariant
-        ), // or whatever color you want
+        ),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surface
             ), modifier = Modifier
-                // Horizontal offset for swipe
                 .offset { IntOffset(offsetX.value.roundToInt(), 0) }
                 .fillMaxWidth()
-                // Draggable logic
                 .draggable(orientation = Orientation.Horizontal,
                     state = rememberDraggableState { delta ->
                         val newOffset = offsetX.value + delta
@@ -236,10 +234,7 @@ fun MyListMovieItem(
                             launch {
                                 offsetX.snapTo(newOffset.coerceIn(-itemWidth.toFloat(), 0f))
                             }
-                            //Log.d("MyListMovieItem","Offset ${offsetX.value} $itemWidth ")
                             val percentSwiped = -offsetX.value / itemWidth
-
-
 
                             if (percentSwiped <= 0.7f) {
                                 deleteTextPosition.animateTo(itemWidth - textViewWidth)
@@ -262,7 +257,6 @@ fun MyListMovieItem(
                                 val seventyFivePercentWidth = 3f * (-itemWidth / 4f)
 
                                 when {
-                                    // Pass half the total width => full delete
                                     offsetVal <= seventyFivePercentWidth -> {
                                         offsetX.animateTo(
                                             targetValue = -itemWidth.toFloat(),
@@ -286,16 +280,13 @@ fun MyListMovieItem(
                         }
                     })
                 .clickable {
-                    // Normal tap
                     movieClickAction(myListMovie.movieId)
                 }) {
-            // Your existing layout for the movie item:
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(itemHeightDp)
             ) {
-                // Poster
                 Card(
                     shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border))
                 ) {
@@ -306,7 +297,6 @@ fun MyListMovieItem(
                             .height(itemHeightDp)
                     )
                 }
-                // Text details
                 Column(
                     modifier = Modifier
                         .fillMaxSize()

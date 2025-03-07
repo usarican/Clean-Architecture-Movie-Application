@@ -101,6 +101,7 @@ fun HomeSuccessScreen(
                     })
             }
             if (refreshUiState is UiState.Error) {
+                /// TODO: Dark mode değişikliğini implement et. 
                 MySnackBar(
                     modifier = Modifier.align(Alignment.BottomCenter),
                     snackBarModel = MySnackBarModel(

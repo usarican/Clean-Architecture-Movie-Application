@@ -33,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
@@ -59,17 +60,8 @@ fun MyListScreen(
         val coroutineScope = rememberCoroutineScope()
         val favoriteMovies = viewModel.favoriteMovies.collectAsLazyPagingItems()
         val watchListMovies = viewModel.watchListMovies.collectAsLazyPagingItems()
-        var snackBarModel by remember { mutableStateOf<MySnackBarModel?>(null) }
+        val snackBarModel by viewModel.showSnackBar.collectAsStateWithLifecycle()
 
-        LaunchedEffect(Unit) {
-            viewModel.showSnackBar.collectLatest { model ->
-                snackBarModel = model
-                coroutineScope.launch {
-                    delay(3000)
-                    snackBarModel = null
-                }
-            }
-        }
 
         LaunchedEffect(pageIndex) {
             state.animateScrollToPage(pageIndex)
@@ -129,6 +121,10 @@ fun MyListScreen(
                         actionLabel = stringResource(R.string.delete),
                         action = {
                             viewModel.handleUiAction(MyListUiAction.SnackBarDeleteAction)
+                            viewModel.updateSnackBar(null)
+                        },
+                        onDismiss = {
+                            viewModel.updateSnackBar(null)
                         }
                     )
                 }

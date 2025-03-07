@@ -1,14 +1,19 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.presentation
 
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +27,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -33,14 +41,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
@@ -62,6 +71,29 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
+// Add this function to enable animated removal
+@OptIn(ExperimentalFoundationApi::class)
+fun LazyListScope.animatedItems(
+    count: Int,
+    key: ((index: Int) -> Any)? = null,
+    itemContent: @Composable LazyItemScope.(index: Int) -> Unit
+) {
+    items(
+        count = count,
+        key = key,
+    ) { index ->
+        val animatedItemScope = this
+
+        AnimatedVisibility(
+            visible = true,
+            exit = fadeOut(animationSpec = tween(300)) +
+                    slideOutHorizontally(animationSpec = tween(300)) { it },
+        ) {
+            animatedItemScope.itemContent(index)
+        }
+    }
+}
+
 @Composable
 fun MyListPageScreen(
     movies: LazyPagingItems<MyListMovieModel>,
@@ -81,25 +113,29 @@ fun MyListPageScreen(
                 .padding(horizontal = dimensionResource(R.dimen.medium_padding)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium_padding)),
         ) {
-            items(count = movies.itemCount,
-                key = { index -> index }) { index ->
+            items(count = movies.itemCount, key = { index -> index }) { index ->
                 movies[index]?.let { movie ->
-                    MyListMovieItem(
-                        myListMovie = movie,
-                        movieClickAction = {
-                            handleUiAction.invoke(MyListUiAction.MovieClickAction(movie.movieId))
-                        },
-                        onDelete = {
-                            handleUiAction.invoke(
-                                MyListUiAction.MovieDeleteAction(
-                                    MyListViewModel.DeleteMovieData(
-                                        movie = movie,
-                                        page = MyListUpdatePage.findPageByIndex(pageIndex)
-                                    )
+                    MyListMovieItem(myListMovie = movie, movieClickAction = {
+                        handleUiAction.invoke(MyListUiAction.MovieClickAction(movie.movieId))
+                    }, onDelete = {
+                        handleUiAction(
+                            MyListUiAction.MovieDeleteAction(
+                                MyListViewModel.DeleteMovieData(
+                                    movie = movie,
+                                    page = MyListUpdatePage.findPageByIndex(pageIndex)
                                 )
                             )
-                        }
-                    )
+                        )
+                    }, onInstantDelete = {
+                        handleUiAction(
+                            MyListUiAction.InstantMovieDeleteAction(
+                                MyListViewModel.DeleteMovieData(
+                                    movie = movie,
+                                    page = MyListUpdatePage.findPageByIndex(pageIndex)
+                                )
+                            )
+                        )
+                    })
                 }
             }
 
@@ -112,14 +148,15 @@ fun MyListMovieItem(
     modifier: Modifier = Modifier,
     myListMovie: MyListMovieModel,
     movieClickAction: (movieId: Int) -> Unit = {},
-    onDelete: (movieId: Int) -> Unit = {}
+    onDelete: () -> Unit = {},
+    onInstantDelete: () -> Unit = {}
 ) {
 
     // 2) Horizontal offset for swipe gestures
     val offsetX = remember { Animatable(0f) }
 
     // 3) We'll measure total width (for half-width = full-delete threshold).
-    var itemWidth by remember { mutableStateOf(1) }
+    var itemWidth by remember { mutableIntStateOf(1) }
 
     // 4) For partial reveal, let’s define a smaller reveal width (e.g. 80.dp).
     //    This is how wide we’ll snap the item to if partially swiped.
@@ -127,7 +164,7 @@ fun MyListMovieItem(
     val textHorizontalDp = dimensionResource(R.dimen.small_padding)
     val density = LocalDensity.current
     val revealWidthPx = with(density) { (revealWidthDp + (2 * textHorizontalDp)).toPx() }
-
+    var textViewWidth by remember { mutableFloatStateOf(1F) }
     // 5) If your item’s height is dimensionResource(R.dimen.see_all_category_movie_width),
     //    you can still keep the Row height, but we don’t *use* it for reveal width anymore.
     val itemHeightDp = dimensionResource(R.dimen.see_all_category_movie_width)
@@ -137,11 +174,17 @@ fun MyListMovieItem(
 
     val scope = rememberCoroutineScope()
 
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .onGloballyPositioned { coords -> itemWidth = coords.size.width }
-    ) {
+    val deleteTextPosition = remember {
+        Animatable(
+            0F
+        )
+    }
+
+    Box(modifier = modifier
+        .fillMaxWidth()
+        .onGloballyPositioned { coords ->
+            itemWidth = coords.size.width
+        }) {
         Box(
             modifier = Modifier
                 .matchParentSize()
@@ -150,53 +193,55 @@ fun MyListMovieItem(
         ) {
             Box(
                 modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .width(with(density) { revealWidthPx.toDp() })
+                    .graphicsLayer(translationX = deleteTextPosition.value)
+                    .onGloballyPositioned { coords ->
+                        textViewWidth = coords.size.width.toFloat()
+                    }
                     .fillMaxHeight()
                     .clip(cardShape)
                     .background(MaterialTheme.colorScheme.error)
                     .clickable {
                         scope.launch {
-                            onDelete(myListMovie.movieId)
+                            onDelete()
                         }
-                    },
-                contentAlignment = Alignment.Center
+                    }, contentAlignment = Alignment.Center
             ) {
                 Text(
                     modifier = Modifier
-                        .fillMaxWidth()
                         .padding(horizontal = textHorizontalDp)
                         .align(Alignment.Center),
                     textAlign = TextAlign.Center,
                     text = stringResource(R.string.delete),
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.W700,
-                        color = MaterialTheme.colorScheme.onError
+                        fontWeight = FontWeight.W700, color = MaterialTheme.colorScheme.onError
                     )
                 )
             }
         }
 
-        Card(
-            shape = cardShape,
-            border = BorderStroke(
-                dimensionResource(R.dimen.one_dp),
-                MaterialTheme.colorScheme.outlineVariant
-            ), // or whatever color you want
+        Card(shape = cardShape, border = BorderStroke(
+            dimensionResource(R.dimen.one_dp), MaterialTheme.colorScheme.outlineVariant
+        ),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surface
-            ),
-            modifier = Modifier
-                // Horizontal offset for swipe
+            ), modifier = Modifier
                 .offset { IntOffset(offsetX.value.roundToInt(), 0) }
                 .fillMaxWidth()
-                // Draggable logic
-                .draggable(
-                    orientation = Orientation.Horizontal,
+                .draggable(orientation = Orientation.Horizontal,
                     state = rememberDraggableState { delta ->
                         val newOffset = offsetX.value + delta
                         scope.launch {
-                            offsetX.snapTo(newOffset.coerceIn(-itemWidth.toFloat(), 0f))
+                            launch {
+                                offsetX.snapTo(newOffset.coerceIn(-itemWidth.toFloat(), 0f))
+                            }
+                            val percentSwiped = -offsetX.value / itemWidth
+
+                            if (percentSwiped <= 0.7f) {
+                                deleteTextPosition.animateTo(itemWidth - textViewWidth)
+
+                            } else {
+                                deleteTextPosition.animateTo((itemWidth + offsetX.value) )
+                            }
                         }
                     },
                     onDragStopped = { velocity ->
@@ -204,28 +249,25 @@ fun MyListMovieItem(
                             // If fling is fast enough, delete
                             if (velocity < -2000) {
                                 offsetX.animateTo(
-                                    targetValue = -itemWidth.toFloat(),
-                                    animationSpec = spring()
+                                    targetValue = -itemWidth.toFloat(), animationSpec = spring()
                                 )
-                                onDelete(myListMovie.movieId)
+                                onInstantDelete()
                             } else {
                                 val offsetVal = offsetX.value
-                                val halfWidth = -itemWidth / 2f
+                                val seventyFivePercentWidth = 3f * (-itemWidth / 4f)
 
                                 when {
-                                    // Pass half the total width => full delete
-                                    offsetVal <= halfWidth -> {
+                                    offsetVal <= seventyFivePercentWidth -> {
                                         offsetX.animateTo(
                                             targetValue = -itemWidth.toFloat(),
                                             animationSpec = spring()
                                         )
-                                        onDelete(myListMovie.movieId)
+                                        onInstantDelete()
                                     }
                                     // Pass half of partial reveal => snap to partial reveal
-                                    offsetVal <= -(revealWidthPx / 2) -> {
+                                    offsetVal <= -(textViewWidth / 2) -> {
                                         offsetX.animateTo(
-                                            targetValue = -revealWidthPx,
-                                            animationSpec = spring()
+                                            targetValue = -textViewWidth, animationSpec = spring()
                                         )
                                     }
 
@@ -236,20 +278,15 @@ fun MyListMovieItem(
                                 }
                             }
                         }
-                    }
-                )
+                    })
                 .clickable {
-                    // Normal tap
                     movieClickAction(myListMovie.movieId)
-                }
-        ) {
-            // Your existing layout for the movie item:
+                }) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(itemHeightDp)
             ) {
-                // Poster
                 Card(
                     shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border))
                 ) {
@@ -260,7 +297,6 @@ fun MyListMovieItem(
                             .height(itemHeightDp)
                     )
                 }
-                // Text details
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -268,8 +304,7 @@ fun MyListMovieItem(
                     verticalArrangement = Arrangement.Center,
                 ) {
                     Text(
-                        text = myListMovie.title,
-                        style = MaterialTheme.typography.titleMedium.copy(
+                        text = myListMovie.title, style = MaterialTheme.typography.titleMedium.copy(
                             fontSize = fontDimensionResource(R.dimen.movie_category_item_title_size),
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -316,5 +351,6 @@ fun MyListMovieItem(
         }
     }
 }
+
 
 

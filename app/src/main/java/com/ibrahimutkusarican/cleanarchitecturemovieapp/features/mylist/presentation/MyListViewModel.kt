@@ -16,7 +16,9 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,8 +35,13 @@ class MyListViewModel @Inject constructor(
     val watchListMovies = getMyListMovieUseCase.getMyListMovieUseCase(page = MyListPage.WATCH_LIST)
         .cachedIn(viewModelScope)
 
-    private val _showSnackBar = MutableSharedFlow<MySnackBarModel>()
-    val showSnackBar: SharedFlow<MySnackBarModel> = _showSnackBar
+
+    private val _showSnackBar = MutableStateFlow<MySnackBarModel?>(null)
+    val showSnackBar: StateFlow<MySnackBarModel?> = _showSnackBar
+
+    fun updateSnackBar(snackBarModel: MySnackBarModel?) {
+        _showSnackBar.value = snackBarModel
+    }
 
     private var deleteMovieData: DeleteMovieData? = null
 
@@ -54,36 +61,38 @@ class MyListViewModel @Inject constructor(
 
             is MyListUiAction.UndoAction -> TODO()
             is MyListUiAction.SnackBarDeleteAction -> {
-                deleteMovie()
+                deleteMovie(deleteMovieData)
             }
 
             MyListUiAction.GoToExploreAction -> sendEvent(MyEvent.GoToExploreEvent)
+            is MyListUiAction.InstantMovieDeleteAction -> deleteMovie(myListUiAction.data)
         }
     }
 
     private fun showAreYouSureSnackBar(deleteMovieData: DeleteMovieData?) {
         viewModelScope.launch {
-            deleteMovieData?.let {
-                _showSnackBar.emit(
+            deleteMovieData?.let { data ->
+                updateSnackBar(
                     MySnackBarModel(
                         title = stringProvider.getStringFromResource(R.string.are_you_sure),
                         message = stringProvider.getStringFromResource(
                             R.string.my_list_are_you_sure_snack_bar_content,
-                            deleteMovieData.movie.title,
-                            stringProvider.getStringFromResource(deleteMovieData.page.title)
+                            data.movie.title,
+                            stringProvider.getStringFromResource(data.page.title)
                         ),
                         type = SnackBarType.WARNING,
+                        movieId = data.movie.movieId
                     )
                 )
             }
         }
     }
 
-    private fun deleteMovie() {
+    private fun deleteMovie(deleteMovieData: DeleteMovieData?) {
         deleteMovieData?.let { data ->
             updateMyListMovieUseCase.updateFavoriteMovieFromMyList(data.movie,data.page)
                 .doOnSuccess {
-                    _showSnackBar.emit(
+                    updateSnackBar(
                         MySnackBarModel(
                             title = stringProvider.getStringFromResource(R.string.delete),
                             message = stringProvider.getStringFromResource(
@@ -92,6 +101,7 @@ class MyListViewModel @Inject constructor(
                                 stringProvider.getStringFromResource(data.page.title)
                             ),
                             type = SnackBarType.SUCCESS,
+                            movieId = data.movie.movieId
                         )
                     )
                 }

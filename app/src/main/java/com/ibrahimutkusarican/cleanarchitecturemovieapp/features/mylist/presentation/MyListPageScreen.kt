@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.presentation
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
@@ -26,6 +27,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
@@ -38,11 +40,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -164,7 +164,7 @@ fun MyListMovieItem(
     val textHorizontalDp = dimensionResource(R.dimen.small_padding)
     val density = LocalDensity.current
     val revealWidthPx = with(density) { (revealWidthDp + (2 * textHorizontalDp)).toPx() }
-
+    var textViewWidth by remember { mutableFloatStateOf(1F) }
     // 5) If your item’s height is dimensionResource(R.dimen.see_all_category_movie_width),
     //    you can still keep the Row height, but we don’t *use* it for reveal width anymore.
     val itemHeightDp = dimensionResource(R.dimen.see_all_category_movie_width)
@@ -174,13 +174,16 @@ fun MyListMovieItem(
 
     val scope = rememberCoroutineScope()
 
-    var offSetXOfTheDeleteText by remember { mutableFloatStateOf(0F) }
+    val deleteTextPosition = remember {
+        Animatable(
+            0F
+        )
+    }
 
     Box(modifier = modifier
         .fillMaxWidth()
         .onGloballyPositioned { coords ->
             itemWidth = coords.size.width
-            offSetXOfTheDeleteText = itemWidth - revealWidthPx
         }) {
         Box(
             modifier = Modifier
@@ -190,8 +193,10 @@ fun MyListMovieItem(
         ) {
             Box(
                 modifier = Modifier
-                    .graphicsLayer(translationX = offSetXOfTheDeleteText)
-                    .width(with(density) { revealWidthPx.toDp() })
+                    .graphicsLayer(translationX = deleteTextPosition.value)
+                    .onGloballyPositioned { coords ->
+                        textViewWidth = coords.size.width.toFloat()
+                    }
                     .fillMaxHeight()
                     .clip(cardShape)
                     .background(MaterialTheme.colorScheme.error)
@@ -203,7 +208,6 @@ fun MyListMovieItem(
             ) {
                 Text(
                     modifier = Modifier
-                        .fillMaxWidth()
                         .padding(horizontal = textHorizontalDp)
                         .align(Alignment.Center),
                     textAlign = TextAlign.Center,
@@ -229,14 +233,20 @@ fun MyListMovieItem(
                     state = rememberDraggableState { delta ->
                         val newOffset = offsetX.value + delta
                         scope.launch {
-                            offsetX.snapTo(newOffset.coerceIn(-itemWidth.toFloat(), 0f))
-                        }
-                        val offsetVal = offsetX.value
-                        val seventyFivePercentWidth = 3f * (-itemWidth / 4f)
+                            launch {
+                                offsetX.snapTo(newOffset.coerceIn(-itemWidth.toFloat(), 0f))
+                            }
+                            //Log.d("MyListMovieItem","Offset ${offsetX.value} $itemWidth ")
+                            val percentSwiped = -offsetX.value / itemWidth
 
-                        if (offsetVal <= seventyFivePercentWidth) {
-                            /// TODO: Animasyon koy buraya da ve aslında offset ile beraber gitse de olur. Yapışık gitsin. Eğer bu aralıkta değilse tekrar eski yerine dönsün. 
-                            offSetXOfTheDeleteText = itemWidth + seventyFivePercentWidth
+
+
+                            if (percentSwiped <= 0.7f) {
+                                deleteTextPosition.animateTo(itemWidth - textViewWidth)
+
+                            } else {
+                                deleteTextPosition.animateTo((itemWidth + offsetX.value) )
+                            }
                         }
                     },
                     onDragStopped = { velocity ->
@@ -258,13 +268,12 @@ fun MyListMovieItem(
                                             targetValue = -itemWidth.toFloat(),
                                             animationSpec = spring()
                                         )
-                                        offSetXOfTheDeleteText = itemWidth - seventyFivePercentWidth
                                         onInstantDelete()
                                     }
                                     // Pass half of partial reveal => snap to partial reveal
-                                    offsetVal <= -(revealWidthPx / 2) -> {
+                                    offsetVal <= -(textViewWidth / 2) -> {
                                         offsetX.animateTo(
-                                            targetValue = -revealWidthPx, animationSpec = spring()
+                                            targetValue = -textViewWidth, animationSpec = spring()
                                         )
                                     }
 

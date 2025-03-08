@@ -246,7 +246,6 @@ fun MyListMovieItem(
                     },
                     onDragStopped = { velocity ->
                         scope.launch {
-                            // If fling is fast enough, delete
                             if (velocity < -2000) {
                                 offsetX.animateTo(
                                     targetValue = -itemWidth.toFloat(), animationSpec = spring()

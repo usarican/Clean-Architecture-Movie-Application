@@ -7,6 +7,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UIAction
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListUpdatePage
@@ -51,10 +52,10 @@ class MyListViewModel @Inject constructor(
     )
 
 
-    fun handleUiAction(myListUiAction: MyListUiAction) {
+    /*fun handleUiAction(myListUiAction: MyListUiAction) {
         when (myListUiAction) {
             is MyListUiAction.MovieClickAction -> sendEvent(MyEvent.MovieClickEvent(myListUiAction.movieId))
-            is MyListUiAction.MovieDeleteAction ->  {
+            is MyListUiAction.MovieDeleteAction -> {
                 deleteMovieData = myListUiAction.data
                 showAreYouSureSnackBar(deleteMovieData)
             }
@@ -67,8 +68,49 @@ class MyListViewModel @Inject constructor(
             MyListUiAction.GoToExploreAction -> sendEvent(MyEvent.GoToExploreEvent)
             is MyListUiAction.InstantMovieDeleteAction -> deleteMovie(myListUiAction.data)
         }
+    }*/
+
+    fun handleUiAction(uiAction: UIAction<*>){
+        uiAction.action()
     }
 
+    inner class MovieClickAction(val movieId: Int) : UIAction<Unit> {
+        override fun action() {
+            sendEvent(MyEvent.MovieClickEvent(movieId))
+        }
+    }
+
+    inner class MovieDeleteAction(val data: DeleteMovieData?) : UIAction<Unit> {
+        override fun action() {
+            deleteMovieData = data
+            showAreYouSureSnackBar(deleteMovieData)
+        }
+    }
+
+    inner class UndoAction : UIAction<Unit> {
+        override fun action() {
+            // TODO: Implement undo behavior
+            TODO("Undo action not implemented")
+        }
+    }
+
+    inner class SnackBarDeleteAction : UIAction<Unit> {
+        override fun action() {
+            deleteMovie(deleteMovieData)
+        }
+    }
+
+    inner class GoToExploreAction() : UIAction<Unit> {
+        override fun action() {
+            sendEvent(MyEvent.GoToExploreEvent)
+        }
+    }
+
+    inner class InstantMovieDeleteAction(val data: DeleteMovieData) : UIAction<Unit> {
+        override fun action() {
+            deleteMovie(data)
+        }
+    }
 
 
     private fun showAreYouSureSnackBar(deleteMovieData: DeleteMovieData?) {
@@ -92,7 +134,7 @@ class MyListViewModel @Inject constructor(
 
     private fun deleteMovie(deleteMovieData: DeleteMovieData?) {
         deleteMovieData?.let { data ->
-            updateMyListMovieUseCase.updateFavoriteMovieFromMyList(data.movie,data.page)
+            updateMyListMovieUseCase.updateFavoriteMovieFromMyList(data.movie, data.page)
                 .doOnSuccess {
                     updateSnackBar(
                         MySnackBarModel(
@@ -109,5 +151,9 @@ class MyListViewModel @Inject constructor(
                 }
                 .launchIn(viewModelScope)
         }
+    }
+
+    companion object {
+
     }
 }

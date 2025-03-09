@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UIAction
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListUpdatePage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BasePagingComposable
@@ -64,7 +65,7 @@ import kotlin.math.roundToInt
 @Composable
 fun MyListPageScreen(
     movies: LazyPagingItems<MyListMovieModel>,
-    handleUiAction: (action: MyListUiAction) -> Unit,
+    handleUiAction: Pair<MyListViewModel,(action: UIAction<*>) -> Unit>,
     pageIndex: Int,
     emptyScreenType: EmptyScreenType
 ) {
@@ -72,7 +73,7 @@ fun MyListPageScreen(
         pagingItems = movies,
         emptyScreenType = emptyScreenType,
         emptyScreenGoToExploreAction = {
-            handleUiAction(MyListUiAction.GoToExploreAction)
+            handleUiAction.second(handleUiAction.first.GoToExploreAction())
         }) {
         LazyColumn(
             modifier = Modifier
@@ -83,10 +84,9 @@ fun MyListPageScreen(
             items(count = movies.itemCount, key = { index -> index }) { index ->
                 movies[index]?.let { movie ->
                     MyListMovieItem(myListMovie = movie, movieClickAction = {
-                        handleUiAction.invoke(MyListUiAction.MovieClickAction(movie.movieId))
+                        handleUiAction.second(handleUiAction.first.MovieClickAction(movie.movieId))
                     }, onDelete = {
-                        handleUiAction(
-                            MyListUiAction.MovieDeleteAction(
+                        handleUiAction.second(handleUiAction.first.MovieDeleteAction(
                                 MyListViewModel.DeleteMovieData(
                                     movie = movie,
                                     page = MyListUpdatePage.findPageByIndex(pageIndex)
@@ -94,8 +94,7 @@ fun MyListPageScreen(
                             )
                         )
                     }, onInstantDelete = {
-                        handleUiAction(
-                            MyListUiAction.InstantMovieDeleteAction(
+                        handleUiAction.second(handleUiAction.first.InstantMovieDeleteAction(
                                 MyListViewModel.DeleteMovieData(
                                     movie = movie,
                                     page = MyListUpdatePage.findPageByIndex(pageIndex)

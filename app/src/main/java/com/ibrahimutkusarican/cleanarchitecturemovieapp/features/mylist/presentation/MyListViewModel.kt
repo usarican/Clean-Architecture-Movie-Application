@@ -69,6 +69,8 @@ class MyListViewModel @Inject constructor(
         }
     }
 
+
+
     private fun showAreYouSureSnackBar(deleteMovieData: DeleteMovieData?) {
         viewModelScope.launch {
             deleteMovieData?.let { data ->

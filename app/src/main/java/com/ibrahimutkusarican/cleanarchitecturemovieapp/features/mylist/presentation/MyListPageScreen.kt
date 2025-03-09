@@ -1,6 +1,5 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.presentation
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
@@ -27,7 +26,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
@@ -71,28 +69,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-// Add this function to enable animated removal
-@OptIn(ExperimentalFoundationApi::class)
-fun LazyListScope.animatedItems(
-    count: Int,
-    key: ((index: Int) -> Any)? = null,
-    itemContent: @Composable LazyItemScope.(index: Int) -> Unit
-) {
-    items(
-        count = count,
-        key = key,
-    ) { index ->
-        val animatedItemScope = this
-
-        AnimatedVisibility(
-            visible = true,
-            exit = fadeOut(animationSpec = tween(300)) +
-                    slideOutHorizontally(animationSpec = tween(300)) { it },
-        ) {
-            animatedItemScope.itemContent(index)
-        }
-    }
-}
 
 @Composable
 fun MyListPageScreen(
@@ -152,26 +128,10 @@ fun MyListMovieItem(
     onInstantDelete: () -> Unit = {}
 ) {
 
-    // 2) Horizontal offset for swipe gestures
     val offsetX = remember { Animatable(0f) }
-
-    // 3) We'll measure total width (for half-width = full-delete threshold).
     var itemWidth by remember { mutableIntStateOf(1) }
-
-    // 4) For partial reveal, let’s define a smaller reveal width (e.g. 80.dp).
-    //    This is how wide we’ll snap the item to if partially swiped.
-    val revealWidthDp = 80.dp
-    val textHorizontalDp = dimensionResource(R.dimen.small_padding)
-    val density = LocalDensity.current
-    val revealWidthPx = with(density) { (revealWidthDp + (2 * textHorizontalDp)).toPx() }
     var textViewWidth by remember { mutableFloatStateOf(1F) }
-    // 5) If your item’s height is dimensionResource(R.dimen.see_all_category_movie_width),
-    //    you can still keep the Row height, but we don’t *use* it for reveal width anymore.
-    val itemHeightDp = dimensionResource(R.dimen.see_all_category_movie_width)
-
-    // 6) Define a rounded shape to match your Card’s corner radius/border.
     val cardShape = RoundedCornerShape(dimensionResource(R.dimen.medium_border))
-
     val scope = rememberCoroutineScope()
 
     val deleteTextPosition = remember {
@@ -208,7 +168,7 @@ fun MyListMovieItem(
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(horizontal = textHorizontalDp)
+                        .padding(horizontal = dimensionResource(R.dimen.small_padding))
                         .align(Alignment.Center),
                     textAlign = TextAlign.Center,
                     text = stringResource(R.string.delete),
@@ -240,7 +200,7 @@ fun MyListMovieItem(
                                 deleteTextPosition.animateTo(itemWidth - textViewWidth)
 
                             } else {
-                                deleteTextPosition.animateTo((itemWidth + offsetX.value) )
+                                deleteTextPosition.animateTo((itemWidth + offsetX.value))
                             }
                         }
                     },
@@ -263,7 +223,7 @@ fun MyListMovieItem(
                                         )
                                         onInstantDelete()
                                     }
-                                    // Pass half of partial reveal => snap to partial reveal
+
                                     offsetVal <= -(textViewWidth / 2) -> {
                                         offsetX.animateTo(
                                             targetValue = -textViewWidth, animationSpec = spring()
@@ -271,7 +231,6 @@ fun MyListMovieItem(
                                     }
 
                                     else -> {
-                                        // Otherwise, snap back to original
                                         offsetX.animateTo(0f, animationSpec = spring())
                                     }
                                 }
@@ -284,7 +243,7 @@ fun MyListMovieItem(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(itemHeightDp)
+                    .height(dimensionResource(R.dimen.see_all_category_movie_width))
             ) {
                 Card(
                     shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border))
@@ -292,8 +251,8 @@ fun MyListMovieItem(
                     MovieImage(
                         imageUrl = myListMovie.posterPath,
                         modifier = Modifier
-                            .width(itemHeightDp)
-                            .height(itemHeightDp)
+                            .width(dimensionResource(R.dimen.see_all_category_movie_width))
+                            .height(dimensionResource(R.dimen.see_all_category_movie_width))
                     )
                 }
                 Column(

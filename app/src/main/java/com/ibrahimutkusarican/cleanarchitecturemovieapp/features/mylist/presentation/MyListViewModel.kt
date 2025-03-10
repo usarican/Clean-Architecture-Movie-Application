@@ -52,26 +52,8 @@ class MyListViewModel @Inject constructor(
     )
 
 
-    /*fun handleUiAction(myListUiAction: MyListUiAction) {
-        when (myListUiAction) {
-            is MyListUiAction.MovieClickAction -> sendEvent(MyEvent.MovieClickEvent(myListUiAction.movieId))
-            is MyListUiAction.MovieDeleteAction -> {
-                deleteMovieData = myListUiAction.data
-                showAreYouSureSnackBar(deleteMovieData)
-            }
-
-            is MyListUiAction.UndoAction -> TODO()
-            is MyListUiAction.SnackBarDeleteAction -> {
-                deleteMovie(deleteMovieData)
-            }
-
-            MyListUiAction.GoToExploreAction -> sendEvent(MyEvent.GoToExploreEvent)
-            is MyListUiAction.InstantMovieDeleteAction -> deleteMovie(myListUiAction.data)
-        }
-    }*/
-
-    fun handleUiAction(uiAction: UIAction<*>){
-        uiAction.action()
+    fun handleUiAction(uiAction: UIAction<Any>) : Any{
+        return uiAction.action()
     }
 
     inner class MovieClickAction(val movieId: Int) : UIAction<Unit> {
@@ -151,9 +133,5 @@ class MyListViewModel @Inject constructor(
                 }
                 .launchIn(viewModelScope)
         }
-    }
-
-    companion object {
-
     }
 }

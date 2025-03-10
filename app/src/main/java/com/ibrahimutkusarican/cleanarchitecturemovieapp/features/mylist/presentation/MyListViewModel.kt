@@ -16,9 +16,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.u
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch

@@ -14,4 +14,5 @@ internal object Constants {
     const val ALL_GENRE_ID = -1
     const val BANNER_EXPLORE_PAGER_DOT_INDICATOR_COUNT = 3
     const val TIME_OUT_VALUE = 15L
+    const val SNACK_BAR_WITH_ACTION_DELAY = 3000L
 }

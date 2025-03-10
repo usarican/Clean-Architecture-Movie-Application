@@ -56,8 +56,10 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UIAction
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListUpdatePage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BasePagingComposable
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.SNACK_BAR_WITH_ACTION_DELAY
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -153,6 +155,8 @@ fun MyListMovieItem(
                     .clickable {
                         scope.launch {
                             onDelete()
+                            delay(SNACK_BAR_WITH_ACTION_DELAY)
+                            offsetX.animateTo(0f, animationSpec = spring())
                         }
                     }, contentAlignment = Alignment.Center
             ) {

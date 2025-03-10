@@ -4,8 +4,6 @@ import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
@@ -37,13 +35,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.SNACK_BAR_WITH_ACTION_DELAY
 import kotlinx.coroutines.delay
 
 @Composable
 @Preview(showBackground = true)
 fun MySnackBar(
     modifier: Modifier = Modifier,
-    snackBarModel: MySnackBarModel = MySnackBarModel(
+    snackBarModel: MySnackBarModel? = MySnackBarModel(
         title = "Information",
         message = "This is Information SnackBar",
         type = SnackBarType.SUCCESS
@@ -56,14 +55,10 @@ fun MySnackBar(
     clickActionDismiss : (() -> Unit)? = null,
 ) {
     var visibility by remember { mutableStateOf(visible) }
-    val snackBarColors = snackBarModel.type.getColors(isDarkMode)
+    val snackBarColors = snackBarModel?.type?.getColors(isDarkMode) ?: SnackBarType.ERROR.getColors(isDarkMode)
 
-    LaunchedEffect(visibility) {
-        if (actionLabel.isNullOrEmpty()) {
-            delay(2000)
-        } else {
-            delay(3000)
-        }
+    LaunchedEffect(key1 = snackBarModel, key2 = snackBarModel?.type, key3 = visibility) {
+        delay(SNACK_BAR_WITH_ACTION_DELAY)
         visibility = false
         onDismiss?.invoke()
     }
@@ -101,7 +96,7 @@ fun MySnackBar(
             ) {
                 Image(
                     painterResource(snackBarColors.iconId),
-                    contentDescription = snackBarModel.message,
+                    contentDescription = snackBarModel?.message,
                     modifier = Modifier.size(dimensionResource(R.dimen.error_icon_size)),
                     colorFilter = ColorFilter.tint(snackBarColors.lightColor)
                 )
@@ -110,7 +105,7 @@ fun MySnackBar(
                         .weight(1F)
                         .padding(horizontal = dimensionResource(R.dimen.small_padding))
                 ) {
-                    if (snackBarModel.title != null) {
+                    if (snackBarModel?.title != null) {
                         Text(
                             text = snackBarModel.title,
                             style = MaterialTheme.typography.bodyMedium.copy(
@@ -121,7 +116,7 @@ fun MySnackBar(
                         )
                     }
                     Text(
-                        text = snackBarModel.message ?: stringResource(R.string.error_message),
+                        text = snackBarModel?.message ?: stringResource(R.string.error_message),
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = snackBarColors.onContainerColor
                         ),
@@ -215,13 +210,11 @@ enum class SnackBarType(
         )
     );
 
-    /** Returns colors based on the current dark mode setting */
     fun getColors(isDarkMode: Boolean): SnackBarColors {
         return if (isDarkMode) darkModeColors else lightModeColors
     }
 }
 
-/** Data class to hold Snackbar colors */
 data class SnackBarColors(
     val lightColor: Color,
     val containerColor: Color,

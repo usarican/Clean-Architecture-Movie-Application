@@ -52,8 +52,8 @@ class MyListViewModel @Inject constructor(
     )
 
 
-    fun handleUiAction(uiAction: UIAction<Any>) : Any{
-        return uiAction.action()
+    fun handleUiAction(uiAction: UIAction<*>) {
+        uiAction.action()
     }
 
     inner class MovieClickAction(val movieId: Int) : UIAction<Unit> {

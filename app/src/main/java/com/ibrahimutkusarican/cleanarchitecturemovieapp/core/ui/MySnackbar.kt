@@ -67,7 +67,9 @@ fun MySnackBar(
         enter = slideInVertically(
             animationSpec = spring(Spring.DampingRatioHighBouncy)
         ),
-        exit = slideOutVertically()
+        exit = slideOutVertically(
+            targetOffsetY = {it}
+        )
     ) {
 
         Card(

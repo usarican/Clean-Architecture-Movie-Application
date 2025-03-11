@@ -1,6 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation
 
+import android.net.Uri
 import android.util.Log
+import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
@@ -23,6 +25,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,6 +45,8 @@ class MovieDetailViewModel @Inject constructor(
     val showSnackBar: SharedFlow<Pair<MySnackBarModel,MyListPage>> = _showSnackBar
 
     private var movieId : Int? = null
+
+    val shareImageData = MutableSharedFlow<Uri>()
 
     fun getMovieDetail(movieId: Int) {
        this.movieId = movieId
@@ -63,7 +68,10 @@ class MovieDetailViewModel @Inject constructor(
             is DetailUiAction.DetailButtonClickAction -> {
                 when (action.data.type) {
                     MovieDetailActionButtonType.PLAY -> TODO()
-                    MovieDetailActionButtonType.SHARE -> TODO()
+                    MovieDetailActionButtonType.SHARE -> {
+                        viewModelScope.launch { movieDetailModel.value?.movieDetailInfoModel?.posterImageUrl?.toUri()
+                            ?.let { shareImageData.emit(it) } }
+                    }
                     MovieDetailActionButtonType.ADD_FAVORITE -> addMovieFavoriteList(
                         movieDetailModel.value
                     )

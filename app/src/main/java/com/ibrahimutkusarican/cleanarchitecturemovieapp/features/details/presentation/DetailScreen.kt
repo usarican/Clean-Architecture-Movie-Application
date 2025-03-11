@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation
 
+import android.content.Intent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
@@ -53,6 +54,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -62,6 +64,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
@@ -89,6 +92,7 @@ fun MovieDetailScreen(
     var snackBarModel by remember { mutableStateOf<MySnackBarModel?>(null) }
     var snackBarMyListPageIndex by remember { mutableIntStateOf(MyListPage.FAVORITE.index) }
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.showSnackBar.collectLatest { model ->
@@ -100,6 +104,19 @@ fun MovieDetailScreen(
             }
         }
     }
+
+    LaunchedEffect(Unit) {
+        viewModel.shareImageData.collectLatest { uri ->
+            val shareIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_STREAM, uri)
+                type = "image/jpeg"
+            }
+            startActivity(context,Intent.createChooser(shareIntent, null),null)
+        }
+    }
+    
+
     BaseUiStateComposable(uiState = uiState, tryAgainOnClickAction = {
         viewModel.handleUiAction(DetailUiAction.ErrorRetryAction)
     }, backButtonClickAction = {

@@ -41,7 +41,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -84,16 +83,16 @@ fun MyListScreen(
                 when (page) {
                     0 -> MyListPageScreen(
                         movies = favoriteMovies,
-                        handleUiAction = viewModel::handleUiAction,
                         pageIndex = page,
-                        emptyScreenType = EmptyScreenType.FAVORITE
+                        emptyScreenType = EmptyScreenType.FAVORITE,
+                        handleUiAction = viewModel to viewModel::handleUiAction
                     )
 
                     1 -> MyListPageScreen(
                         movies = watchListMovies,
-                        handleUiAction = viewModel::handleUiAction,
                         pageIndex = page,
-                        emptyScreenType = EmptyScreenType.WATCH_LIST
+                        emptyScreenType = EmptyScreenType.WATCH_LIST,
+                        handleUiAction = viewModel to viewModel::handleUiAction
                     )
                 }
             }
@@ -107,7 +106,7 @@ fun MyListScreen(
                         modifier = Modifier.align(Alignment.BottomCenter),
                         actionLabel = stringResource(R.string.undo),
                         action = {
-                            viewModel.handleUiAction(MyListUiAction.UndoAction)
+                            viewModel.handleUiAction(viewModel.UndoAction())
                         }
                     )
                 }
@@ -120,7 +119,7 @@ fun MyListScreen(
                         modifier = Modifier.align(Alignment.BottomCenter),
                         actionLabel = stringResource(R.string.delete),
                         action = {
-                            viewModel.handleUiAction(MyListUiAction.SnackBarDeleteAction)
+                            viewModel.handleUiAction(viewModel.SnackBarDeleteAction())
                             viewModel.updateSnackBar(null)
                         },
                         onDismiss = {

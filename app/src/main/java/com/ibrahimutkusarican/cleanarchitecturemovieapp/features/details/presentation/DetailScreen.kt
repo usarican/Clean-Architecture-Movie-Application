@@ -110,7 +110,15 @@ fun MovieDetailScreen(
             val shareIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_STREAM, uri)
+
+                // Add these extras for better preview in share sheet
+                putExtra(Intent.EXTRA_TITLE,  "Movie Poster")
+                putExtra(Intent.EXTRA_SUBJECT, "Movie Poster")
+                putExtra(Intent.EXTRA_TEXT, "Check out this movie:")
+
+                // Important for sharing images
                 type = "image/jpeg"
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
             startActivity(context,Intent.createChooser(shareIntent, null),null)
         }

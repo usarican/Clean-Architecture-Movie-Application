@@ -12,10 +12,12 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieDetailUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieUriUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListUpdatePage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.UpdateMyListMovieUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnError
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -32,7 +34,8 @@ import javax.inject.Inject
 class MovieDetailViewModel @Inject constructor(
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
     private val updateMyListMovieUseCase: UpdateMyListMovieUseCase,
-    private val stringProvider: StringProvider
+    private val stringProvider: StringProvider,
+    private val getMovieUriUseCase: GetMovieUriUseCase
 ) : BaseViewModel() {
 
     private val _movieDetailModel = MutableStateFlow<MovieDetailModel?>(null)
@@ -68,10 +71,7 @@ class MovieDetailViewModel @Inject constructor(
             is DetailUiAction.DetailButtonClickAction -> {
                 when (action.data.type) {
                     MovieDetailActionButtonType.PLAY -> TODO()
-                    MovieDetailActionButtonType.SHARE -> {
-                        viewModelScope.launch { movieDetailModel.value?.movieDetailInfoModel?.posterImageUrl?.toUri()
-                            ?.let { shareImageData.emit(it) } }
-                    }
+                    MovieDetailActionButtonType.SHARE -> getMovieUri()
                     MovieDetailActionButtonType.ADD_FAVORITE -> addMovieFavoriteList(
                         movieDetailModel.value
                     )
@@ -82,6 +82,17 @@ class MovieDetailViewModel @Inject constructor(
 
             is DetailUiAction.GoToMyListPage -> sendEvent(MyEvent.GoToMyListEvent(action.pageIndex))
         }
+    }
+
+    private fun getMovieUri(){
+        getMovieUriUseCase.getMovieUri(movieDetailModel.value?.movieDetailInfoModel?.posterImageUrl)
+            .doOnSuccess { uri ->
+                shareImageData.emit(uri)
+            }
+            .doOnError {
+                /// TODO: Error Snack Bar Add
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun addMovieFavoriteList(model: MovieDetailModel?) {

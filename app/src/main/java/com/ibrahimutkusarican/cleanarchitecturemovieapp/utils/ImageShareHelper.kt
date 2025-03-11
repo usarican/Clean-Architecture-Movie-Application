@@ -5,10 +5,10 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.core.content.FileProvider
+import coil3.BitmapImage
 import coil3.ImageLoader
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
-import coil3.request.allowHardware
 import coil3.request.crossfade
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +25,6 @@ class ImageShareHelper(
             // Use Coil to fetch the bitmap
             val request = ImageRequest.Builder(context)
                 .data(imageUrl)
-                .allowHardware(false) // Required for bitmap access
                 .build()
 
             val imageLoader = ImageLoader.Builder(context)
@@ -33,7 +32,7 @@ class ImageShareHelper(
                 .build()
 
             val result = (imageLoader.execute(request) as SuccessResult).image
-            val bitmap = (result as BitmapDrawable).bitmap
+            val bitmap = (result as BitmapImage).bitmap
 
             // Save bitmap to cache directory
             val cachePath = File(context.cacheDir, "images")
@@ -51,7 +50,7 @@ class ImageShareHelper(
                 imagePath
             )
         } catch (e: Exception) {
-            null
+            throw e
         }
     }
 }

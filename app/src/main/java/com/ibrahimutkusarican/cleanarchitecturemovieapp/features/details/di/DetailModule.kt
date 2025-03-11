@@ -7,6 +7,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.lo
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.MovieDetailService
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieDetailUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieDetailUseCaseImpl
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieUriUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieUriUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -23,6 +25,8 @@ abstract class DetailModule {
     @Binds
     abstract fun bindMovieDetailUseCase(getMovieDetailUseCaseImpl: GetMovieDetailUseCaseImpl): GetMovieDetailUseCase
 
+    @Binds
+    abstract fun bindGetMovieUriUseCase(getMovieUriUseCaseImpl: GetMovieUriUseCaseImpl): GetMovieUriUseCase
     companion object {
         @Provides
         fun provideMovieDetailService(retrofit: Retrofit): MovieDetailService {

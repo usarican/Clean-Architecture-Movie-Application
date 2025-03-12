@@ -1,6 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation
 
 import android.content.Intent
+import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
@@ -64,6 +65,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
@@ -106,21 +108,47 @@ fun MovieDetailScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.shareImageData.collectLatest { uri ->
-            val shareIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_STREAM, uri)
+        viewModel.movieShareModel.collectLatest { data ->
+            val uri = data.movieImageUri
+            val movieTitle = data.movieTitle
 
-                // Add these extras for better preview in share sheet
-                putExtra(Intent.EXTRA_TITLE,  "Movie Poster")
-                putExtra(Intent.EXTRA_SUBJECT, "Movie Poster")
-                putExtra(Intent.EXTRA_TEXT, "Check out this movie:")
+            try {
+                // For Android 10+ (API 29+), use the newer ShareSheetActivity API
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                        putExtra(Intent.EXTRA_STREAM, uri)
+                        type = "image/jpeg"
 
-                // Important for sharing images
-                type = "image/jpeg"
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        // Add rich metadata for better previews
+                        putExtra(Intent.EXTRA_TITLE, movieTitle)
+                        putExtra(Intent.EXTRA_TEXT, "Check out this movie: $movieTitle")
+                        putExtra(Intent.EXTRA_SUBJECT, movieTitle)
+
+                        // These flags help with preview visibility
+                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                                Intent.FLAG_ACTIVITY_NEW_DOCUMENT
+                    }
+
+                    val chooserIntent = Intent.createChooser(shareIntent, "Share Movie Poster").apply {
+                        // This flag improves preview rendering on some devices
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+
+                    startActivity(context, chooserIntent, null)
+                } else {
+                    // For older Android versions, use ShareCompat
+                    ShareCompat.IntentBuilder(context)
+                        .setType("image/jpeg")
+                        .setStream(uri)
+                        .setText("Check out this movie: $movieTitle")
+                        .setSubject(movieTitle)
+                        .setChooserTitle("Share Movie Poster")
+                        .startChooser()
+                }
+            } catch (e: Exception) {
+                // Handle failure
+                e.printStackTrace()
             }
-            startActivity(context,Intent.createChooser(shareIntent, null),null)
         }
     }
     

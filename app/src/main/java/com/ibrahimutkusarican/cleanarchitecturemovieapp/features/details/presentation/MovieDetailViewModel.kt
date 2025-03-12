@@ -1,8 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation
 
 import android.net.Uri
-import android.util.Log
-import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
@@ -11,8 +9,9 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieShareModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieDetailUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieUriUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieShareModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListUpdatePage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.UpdateMyListMovieUseCase
@@ -27,7 +26,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,7 +33,7 @@ class MovieDetailViewModel @Inject constructor(
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
     private val updateMyListMovieUseCase: UpdateMyListMovieUseCase,
     private val stringProvider: StringProvider,
-    private val getMovieUriUseCase: GetMovieUriUseCase
+    private val getMovieShareModelUseCase: GetMovieShareModelUseCase
 ) : BaseViewModel() {
 
     private val _movieDetailModel = MutableStateFlow<MovieDetailModel?>(null)
@@ -49,7 +47,7 @@ class MovieDetailViewModel @Inject constructor(
 
     private var movieId : Int? = null
 
-    val shareImageData = MutableSharedFlow<Uri>()
+    val movieShareModel = MutableSharedFlow<MovieShareModel>()
 
     fun getMovieDetail(movieId: Int) {
        this.movieId = movieId
@@ -85,9 +83,9 @@ class MovieDetailViewModel @Inject constructor(
     }
 
     private fun getMovieUri(){
-        getMovieUriUseCase.getMovieUri(movieDetailModel.value?.movieDetailInfoModel?.posterImageUrl)
+        getMovieShareModelUseCase.getMovieUri(movieDetailModel.value?.movieDetailInfoModel)
             .doOnSuccess { uri ->
-                shareImageData.emit(uri)
+                movieShareModel.emit(uri)
             }
             .doOnError {
                 /// TODO: Error Snack Bar Add

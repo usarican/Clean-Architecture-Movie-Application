@@ -16,6 +16,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailViewModel
@@ -103,7 +104,13 @@ fun MainScreen(viewModel: MainViewModel) {
                     backStackEntry.toRoute<NavigationRoutes.ClickActionRoutes.Search>().recommendedMovieId
                 SearchScreen(viewModel = searchViewModel, recommendedMovieId = recommendedMovieId)
             }
-            composable<NavigationRoutes.ClickActionRoutes.MovieDetail> { backStackEntry ->
+            composable<NavigationRoutes.ClickActionRoutes.MovieDetail>(
+                deepLinks = listOf(
+                    navDeepLink {
+                        uriPattern = "movieapp://moviedetail/{movieId}"
+                    }
+                )
+            ) { backStackEntry ->
                 val detailViewModel = hiltViewModel<MovieDetailViewModel>()
                 val movieId =
                     backStackEntry.toRoute<NavigationRoutes.ClickActionRoutes.MovieDetail>().movieId

@@ -101,7 +101,7 @@ fun MovieDetailScreen(
             snackBarModel = model.first
             snackBarMyListPageIndex = model.second.index
             coroutineScope.launch {
-                delay(3000)
+                delay(Constants.SNACK_BAR_WITH_ACTION_DELAY)
                 snackBarModel = null
             }
         }
@@ -111,6 +111,9 @@ fun MovieDetailScreen(
         viewModel.movieShareModel.collectLatest { data ->
             val uri = data.movieImageUri
             val movieTitle = data.movieTitle
+            val movieId = data.movieId
+
+            val deepLinkUri = "https://movieapp.com/movie/$movieId"
 
             try {
                 // For Android 10+ (API 29+), use the newer ShareSheetActivity API
@@ -121,7 +124,9 @@ fun MovieDetailScreen(
 
                         // Add rich metadata for better previews
                         putExtra(Intent.EXTRA_TITLE, movieTitle)
-                        putExtra(Intent.EXTRA_TEXT, "Check out this movie: $movieTitle")
+                        putExtra(Intent.EXTRA_TEXT, "Check out this movie: $movieTitle\n\n$deepLinkUri")
+                        val htmlText = "Check out this movie: $movieTitle<br><a href=\"$deepLinkUri\">Open in MovieApp</a>"
+                        putExtra(Intent.EXTRA_HTML_TEXT, htmlText)
                         putExtra(Intent.EXTRA_SUBJECT, movieTitle)
 
                         // These flags help with preview visibility

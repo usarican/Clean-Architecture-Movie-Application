@@ -20,7 +20,8 @@ class GetMovieShareModelUseCaseImpl @Inject constructor(
             )
             MovieShareModel(
                 movieImageUri = uri ?: throw NullPointerException(),
-                movieTitle = movieDetail.title
+                movieTitle = movieDetail.title,
+                movieId = movieDetail.movieId
             )
         }
     }

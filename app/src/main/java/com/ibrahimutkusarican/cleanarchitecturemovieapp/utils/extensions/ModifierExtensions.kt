@@ -1,6 +1,12 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.graphicsLayer
@@ -33,3 +39,7 @@ fun Modifier.blurTransition(page: Int, pagerState: PagerState): Modifier {
         this
     }
 }
+
+@Composable
+fun Modifier.statusBarAndNavigationBarPadding() : Modifier =
+    this.windowInsetsPadding(WindowInsets.statusBars.union(WindowInsets.navigationBars))

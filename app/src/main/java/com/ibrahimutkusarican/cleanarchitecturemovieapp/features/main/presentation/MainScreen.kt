@@ -82,8 +82,7 @@ fun MainScreen(viewModel: MainViewModel) {
             navController = navController,
             startDestination = NavigationRoutes.BottomNavRoutes.Home,
             modifier = Modifier
-                .windowInsetsPadding(WindowInsets.navigationBars)
-                .padding(vertical = innerPadding.calculateRightPadding(LayoutDirection.Ltr)),
+                .padding(bottom = innerPadding.calculateBottomPadding()),
         ) {
             composable<NavigationRoutes.BottomNavRoutes.Home> {
                 val homeViewModel = hiltViewModel<HomeViewModel>()

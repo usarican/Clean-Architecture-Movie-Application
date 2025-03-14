@@ -1,5 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation
 
+import android.content.Intent
+import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
@@ -53,6 +55,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -62,6 +65,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
@@ -89,17 +94,70 @@ fun MovieDetailScreen(
     var snackBarModel by remember { mutableStateOf<MySnackBarModel?>(null) }
     var snackBarMyListPageIndex by remember { mutableIntStateOf(MyListPage.FAVORITE.index) }
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.showSnackBar.collectLatest { model ->
             snackBarModel = model.first
             snackBarMyListPageIndex = model.second.index
             coroutineScope.launch {
-                delay(3000)
+                delay(Constants.SNACK_BAR_WITH_ACTION_DELAY)
                 snackBarModel = null
             }
         }
     }
+
+    LaunchedEffect(Unit) {
+        viewModel.movieShareModel.collectLatest { data ->
+            val uri = data.movieImageUri
+            val movieTitle = data.movieTitle
+            val movieId = data.movieId
+
+            val deepLinkUri = "https://movieapp.com/movie/$movieId"
+
+            try {
+                // For Android 10+ (API 29+), use the newer ShareSheetActivity API
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                        putExtra(Intent.EXTRA_STREAM, uri)
+                        type = "image/jpeg"
+
+                        // Add rich metadata for better previews
+                        putExtra(Intent.EXTRA_TITLE, movieTitle)
+                        putExtra(Intent.EXTRA_TEXT, "Check out this movie: $movieTitle\n\n$deepLinkUri")
+                        val htmlText = "Check out this movie: $movieTitle<br><a href=\"$deepLinkUri\">Open in MovieApp</a>"
+                        putExtra(Intent.EXTRA_HTML_TEXT, htmlText)
+                        putExtra(Intent.EXTRA_SUBJECT, movieTitle)
+
+                        // These flags help with preview visibility
+                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                                Intent.FLAG_ACTIVITY_NEW_DOCUMENT
+                    }
+
+                    val chooserIntent = Intent.createChooser(shareIntent, "Share Movie Poster").apply {
+                        // This flag improves preview rendering on some devices
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+
+                    startActivity(context, chooserIntent, null)
+                } else {
+                    // For older Android versions, use ShareCompat
+                    ShareCompat.IntentBuilder(context)
+                        .setType("image/jpeg")
+                        .setStream(uri)
+                        .setText("Check out this movie: $movieTitle")
+                        .setSubject(movieTitle)
+                        .setChooserTitle("Share Movie Poster")
+                        .startChooser()
+                }
+            } catch (e: Exception) {
+                // Handle failure
+                e.printStackTrace()
+            }
+        }
+    }
+    
+
     BaseUiStateComposable(uiState = uiState, tryAgainOnClickAction = {
         viewModel.handleUiAction(DetailUiAction.ErrorRetryAction)
     }, backButtonClickAction = {

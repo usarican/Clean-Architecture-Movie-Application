@@ -1,7 +1,11 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentation
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,11 +15,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailViewModel
@@ -64,7 +70,7 @@ fun MainScreen(viewModel: MainViewModel) {
     }
     Scaffold(modifier = Modifier.fillMaxSize(), bottomBar = {
         BottomNavigationBar(
-            modifier = Modifier,
+            modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
             navController = navController,
             selectedItemIndex = selectedItemIndex,
             onItemSelected = { index ->
@@ -75,7 +81,8 @@ fun MainScreen(viewModel: MainViewModel) {
         NavHost(
             navController = navController,
             startDestination = NavigationRoutes.BottomNavRoutes.Home,
-            modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())
+            modifier = Modifier
+                .padding(bottom = innerPadding.calculateBottomPadding()),
         ) {
             composable<NavigationRoutes.BottomNavRoutes.Home> {
                 val homeViewModel = hiltViewModel<HomeViewModel>()
@@ -103,7 +110,13 @@ fun MainScreen(viewModel: MainViewModel) {
                     backStackEntry.toRoute<NavigationRoutes.ClickActionRoutes.Search>().recommendedMovieId
                 SearchScreen(viewModel = searchViewModel, recommendedMovieId = recommendedMovieId)
             }
-            composable<NavigationRoutes.ClickActionRoutes.MovieDetail> { backStackEntry ->
+            composable<NavigationRoutes.ClickActionRoutes.MovieDetail>(
+                deepLinks = listOf(
+                    navDeepLink {
+                        uriPattern = "movieapp://moviedetail/{movieId}"
+                    }
+                )
+            ) { backStackEntry ->
                 val detailViewModel = hiltViewModel<MovieDetailViewModel>()
                 val movieId =
                     backStackEntry.toRoute<NavigationRoutes.ClickActionRoutes.MovieDetail>().movieId

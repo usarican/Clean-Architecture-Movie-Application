@@ -107,6 +107,7 @@ fun MovieDetailScreen(
     var snackBarMyListPageIndex by remember { mutableIntStateOf(MyListPage.FAVORITE.index) }
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+    val showPlayerView by viewModel.showPlayerView.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.showSnackBar.collectLatest { model ->
@@ -188,6 +189,9 @@ fun MovieDetailScreen(
                     backClickAction = { viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction) },
                     action = viewModel::handleUiAction
                 )
+                if (showPlayerView.first){
+                    showPlayerView.second?.let { videoKey -> PlayView(videoKey) }
+                }
                 snackBarModel?.let {
                     MySnackBar(snackBarModel = it,
                         visible = true,

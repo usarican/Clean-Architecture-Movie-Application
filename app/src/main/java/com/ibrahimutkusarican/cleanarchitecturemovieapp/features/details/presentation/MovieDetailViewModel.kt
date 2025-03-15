@@ -45,6 +45,9 @@ class MovieDetailViewModel @Inject constructor(
     private val _showSnackBar = MutableSharedFlow<Pair<MySnackBarModel,MyListPage>>()
     val showSnackBar: SharedFlow<Pair<MySnackBarModel,MyListPage>> = _showSnackBar
 
+    private val _showPlayerView = MutableStateFlow<Pair<Boolean,String?>>(false to null)
+    val showPlayerView : StateFlow<Pair<Boolean,String?>> = _showPlayerView
+
     private var movieId : Int? = null
 
     val movieShareModel = MutableSharedFlow<MovieShareModel>()
@@ -68,7 +71,9 @@ class MovieDetailViewModel @Inject constructor(
             is DetailUiAction.SeeAllClickAction -> sendEvent(MyEvent.SeeAllClickEvent(action.seeAllType))
             is DetailUiAction.DetailButtonClickAction -> {
                 when (action.data.type) {
-                    MovieDetailActionButtonType.PLAY -> TODO()
+                    MovieDetailActionButtonType.PLAY -> {
+                        _showPlayerView.value = true to movieDetailModel.value?.movieDetailTrailerModel?.trailers?.firstOrNull()?.key
+                    }
                     MovieDetailActionButtonType.SHARE -> getMovieUri()
                     MovieDetailActionButtonType.ADD_FAVORITE -> addMovieFavoriteList(
                         movieDetailModel.value
@@ -79,6 +84,9 @@ class MovieDetailViewModel @Inject constructor(
             }
 
             is DetailUiAction.GoToMyListPage -> sendEvent(MyEvent.GoToMyListEvent(action.pageIndex))
+            DetailUiAction.PlayerViewOnBackPressed -> {
+                _showPlayerView.value = false to null
+            }
         }
     }
 

@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -44,6 +45,7 @@ fun MainScreen(viewModel: MainViewModel) {
     val navController = rememberNavController()
     var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
     var myListSelectedPageIndex by remember { mutableIntStateOf(MyListPage.FAVORITE.index) }
+    val bottomNavigationVisibility by viewModel.bottomNavigationVisibility.collectAsStateWithLifecycle()
     LaunchedEffect(true) {
         viewModel.navigationChannel.consumeAsFlow().collectLatest { route ->
             when (route) {
@@ -68,16 +70,21 @@ fun MainScreen(viewModel: MainViewModel) {
             }
         }
     }
-    Scaffold(modifier = Modifier.fillMaxSize(), bottomBar = {
-        BottomNavigationBar(
-            modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
-            navController = navController,
-            selectedItemIndex = selectedItemIndex,
-            onItemSelected = { index ->
-                selectedItemIndex = index
-            }
-        )
-    }) { innerPadding ->
+    Scaffold(modifier = Modifier.fillMaxSize(), bottomBar = if (bottomNavigationVisibility) {
+        {
+            BottomNavigationBar(
+                modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
+                navController = navController,
+                selectedItemIndex = selectedItemIndex,
+                onItemSelected = { index ->
+                    selectedItemIndex = index
+                }
+            )
+        }
+    } else {
+        {}
+    }
+    ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = NavigationRoutes.BottomNavRoutes.Home,

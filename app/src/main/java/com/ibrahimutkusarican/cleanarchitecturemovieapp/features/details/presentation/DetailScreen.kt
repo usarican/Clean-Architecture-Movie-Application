@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation
 
-import android.app.Activity
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -88,7 +88,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposa
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -108,6 +107,7 @@ fun MovieDetailScreen(
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
     val showPlayerView by viewModel.showPlayerView.collectAsStateWithLifecycle()
+    val isLandscape = rememberOriantationIsLandscape()
 
     LaunchedEffect(Unit) {
         viewModel.showSnackBar.collectLatest { model ->
@@ -172,6 +172,12 @@ fun MovieDetailScreen(
                 // Handle failure
                 e.printStackTrace()
             }
+        }
+    }
+
+    LaunchedEffect(isLandscape) {
+        if (isLandscape){
+            viewModel.handleUiAction(DetailUiAction.OpenPlayerView)
         }
     }
 
@@ -617,12 +623,20 @@ private fun PlayView(videoKey: String, handleUiAction: (action: DetailUiAction) 
 
     Card(
         modifier = Modifier
-            .fillMaxSize(),
-        shape = RoundedCornerShape(dimensionResource(R.dimen.s_medium_border))
+            .fillMaxWidth(0.65F)
+            .fillMaxHeight(0.8F),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.l_medium_border)),
+        colors = CardDefaults.cardColors(contentColor = MaterialTheme.colorScheme.background)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             AndroidView(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        vertical = dimensionResource(R.dimen.small_padding),
+                        horizontal = dimensionResource(R.dimen.medium_padding)
+                    )
+                    .clip(RoundedCornerShape(dimensionResource(R.dimen.small_border))),
                 factory = {
                     YouTubePlayerView(context).apply {
                         lifeCycleOwner.lifecycle.addObserver(this)
@@ -630,7 +644,6 @@ private fun PlayView(videoKey: String, handleUiAction: (action: DetailUiAction) 
                             override fun onReady(youTubePlayer: YouTubePlayer) {
                                 super.onReady(youTubePlayer)
                                 youTubePlayer.loadVideo(videoKey, VIDEO_START_TIME)
-                                EventListener.sendEvent(MyEvent.RotateScreenEvent(true))
                             }
                         }
                         addYouTubePlayerListener(youTubePlayerListener)
@@ -645,7 +658,7 @@ private fun PlayView(videoKey: String, handleUiAction: (action: DetailUiAction) 
                 },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(8.dp)
+                    .padding(dimensionResource(R.dimen.small_padding))
                     .background(MaterialTheme.colorScheme.background, CircleShape)
             ) {
                 Icon(
@@ -656,6 +669,12 @@ private fun PlayView(videoKey: String, handleUiAction: (action: DetailUiAction) 
             }
         }
     }
+}
+
+@Composable
+fun rememberOriantationIsLandscape(): Boolean {
+    val configuration = LocalConfiguration.current
+    return configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 }
 
 data class MovieDetailPage(

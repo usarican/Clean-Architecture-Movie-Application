@@ -72,7 +72,7 @@ class MovieDetailViewModel @Inject constructor(
             is DetailUiAction.DetailButtonClickAction -> {
                 when (action.data.type) {
                     MovieDetailActionButtonType.PLAY -> {
-                        _showPlayerView.value = true
+                        sendEvent(MyEvent.RotateScreenEvent(true))
                     }
                     MovieDetailActionButtonType.SHARE -> getMovieUri()
                     MovieDetailActionButtonType.ADD_FAVORITE -> addMovieFavoriteList(
@@ -86,6 +86,10 @@ class MovieDetailViewModel @Inject constructor(
             is DetailUiAction.GoToMyListPage -> sendEvent(MyEvent.GoToMyListEvent(action.pageIndex))
             DetailUiAction.PlayerViewOnBackPressed -> {
                 _showPlayerView.value = false
+            }
+
+            DetailUiAction.OpenPlayerView -> {
+                _showPlayerView.value = true
             }
         }
     }

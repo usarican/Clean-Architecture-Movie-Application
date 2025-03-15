@@ -11,4 +11,5 @@ sealed class DetailUiAction {
     data class DetailButtonClickAction(val data : MovieDetailActionButtonData) : DetailUiAction()
     data class GoToMyListPage(val pageIndex : Int) : DetailUiAction()
     data object PlayerViewOnBackPressed : DetailUiAction()
+    data object OpenPlayerView : DetailUiAction()
 }

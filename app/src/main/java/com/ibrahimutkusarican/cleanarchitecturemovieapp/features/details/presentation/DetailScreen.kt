@@ -189,8 +189,13 @@ fun MovieDetailScreen(
                     backClickAction = { viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction) },
                     action = viewModel::handleUiAction
                 )
-                if (showPlayerView.first){
-                    showPlayerView.second?.let { videoKey -> PlayView(videoKey) }
+                if (showPlayerView) {
+                    model.movieDetailTrailerModel.trailers.firstOrNull()?.key?.let { videoKey ->
+                        PlayView(
+                            videoKey = videoKey,
+                            handleUiAction = viewModel::handleUiAction
+                        )
+                    }
                 }
                 snackBarModel?.let {
                     MySnackBar(snackBarModel = it,
@@ -606,17 +611,16 @@ private fun MovieDetailImage(
 }
 
 @Composable
-private fun PlayView(videoKey: String) {
+private fun PlayView(videoKey: String, handleUiAction: (action: DetailUiAction) -> Unit) {
     val context = LocalContext.current
     val lifeCycleOwner = LocalLifecycleOwner.current
 
     Card(
         modifier = Modifier
-            .fillMaxWidth(0.8F)
-            .fillMaxHeight(0.9F),
+            .fillMaxSize(),
         shape = RoundedCornerShape(dimensionResource(R.dimen.s_medium_border))
     ) {
-        Box {
+        Box(modifier = Modifier.fillMaxSize()) {
             AndroidView(
                 modifier = Modifier.fillMaxSize(),
                 factory = {
@@ -625,8 +629,8 @@ private fun PlayView(videoKey: String) {
                         val youTubePlayerListener = object : AbstractYouTubePlayerListener() {
                             override fun onReady(youTubePlayer: YouTubePlayer) {
                                 super.onReady(youTubePlayer)
-                                EventListener.sendEvent(MyEvent.RotateScreenEvent(true))
                                 youTubePlayer.loadVideo(videoKey, VIDEO_START_TIME)
+                                EventListener.sendEvent(MyEvent.RotateScreenEvent(true))
                             }
                         }
                         addYouTubePlayerListener(youTubePlayerListener)
@@ -636,6 +640,7 @@ private fun PlayView(videoKey: String) {
 
             IconButton(
                 onClick = {
+                    handleUiAction(DetailUiAction.PlayerViewOnBackPressed)
                     EventListener.sendEvent(MyEvent.RotateScreenEvent(false))
                 },
                 modifier = Modifier

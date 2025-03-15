@@ -12,4 +12,5 @@ sealed class MyEvent {
     data object RestartApp : MyEvent()
     data object GoToExploreEvent : MyEvent()
     data class GoToMyListEvent(val page : Int) : MyEvent()
+    data class RotateScreenEvent(val isLandScape : Boolean) : MyEvent()
 }

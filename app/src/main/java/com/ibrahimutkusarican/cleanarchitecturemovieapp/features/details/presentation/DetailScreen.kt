@@ -1,10 +1,12 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,6 +34,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -72,6 +75,8 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.EventListener
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
@@ -83,6 +88,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposa
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -130,8 +136,12 @@ fun MovieDetailScreen(
 
                         // Add rich metadata for better previews
                         putExtra(Intent.EXTRA_TITLE, movieTitle)
-                        putExtra(Intent.EXTRA_TEXT, "Check out this movie: $movieTitle\n\n$deepLinkUri")
-                        val htmlText = "Check out this movie: $movieTitle<br><a href=\"$deepLinkUri\">Open in MovieApp</a>"
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            "Check out this movie: $movieTitle\n\n$deepLinkUri"
+                        )
+                        val htmlText =
+                            "Check out this movie: $movieTitle<br><a href=\"$deepLinkUri\">Open in MovieApp</a>"
                         putExtra(Intent.EXTRA_HTML_TEXT, htmlText)
                         putExtra(Intent.EXTRA_SUBJECT, movieTitle)
 
@@ -140,10 +150,11 @@ fun MovieDetailScreen(
                                 Intent.FLAG_ACTIVITY_NEW_DOCUMENT
                     }
 
-                    val chooserIntent = Intent.createChooser(shareIntent, "Share Movie Poster").apply {
-                        // This flag improves preview rendering on some devices
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }
+                    val chooserIntent =
+                        Intent.createChooser(shareIntent, "Share Movie Poster").apply {
+                            // This flag improves preview rendering on some devices
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
 
                     startActivity(context, chooserIntent, null)
                 } else {
@@ -162,7 +173,7 @@ fun MovieDetailScreen(
             }
         }
     }
-    
+
 
     BaseUiStateComposable(uiState = uiState, tryAgainOnClickAction = {
         viewModel.handleUiAction(DetailUiAction.ErrorRetryAction)
@@ -594,29 +605,48 @@ private fun MovieDetailImage(
 private fun PlayView(videoKey: String) {
     val context = LocalContext.current
     val lifeCycleOwner = LocalLifecycleOwner.current
+
     Card(
-        modifier = Modifier.fillMaxWidth(0.8F)
+        modifier = Modifier
+            .fillMaxWidth(0.8F)
             .fillMaxHeight(0.9F),
         shape = RoundedCornerShape(dimensionResource(R.dimen.s_medium_border))
     ) {
-        AndroidView(
-            modifier = Modifier
-                .fillMaxSize(),
-            factory = {
-                YouTubePlayerView(context).apply {
-                    lifeCycleOwner.lifecycle.addObserver(this)
-                    val youTubePlayerListener = object : AbstractYouTubePlayerListener() {
-                        override fun onReady(youTubePlayer: YouTubePlayer) {
-                            super.onReady(youTubePlayer)
-                            youTubePlayer.cueVideo(videoKey, VIDEO_START_TIME)
+        Box {
+            AndroidView(
+                modifier = Modifier.fillMaxSize(),
+                factory = {
+                    YouTubePlayerView(context).apply {
+                        lifeCycleOwner.lifecycle.addObserver(this)
+                        val youTubePlayerListener = object : AbstractYouTubePlayerListener() {
+                            override fun onReady(youTubePlayer: YouTubePlayer) {
+                                super.onReady(youTubePlayer)
+                                EventListener.sendEvent(MyEvent.RotateScreenEvent(true))
+                                youTubePlayer.loadVideo(videoKey, VIDEO_START_TIME)
+                            }
                         }
+                        addYouTubePlayerListener(youTubePlayerListener)
                     }
-                    addYouTubePlayerListener(youTubePlayerListener)
                 }
-            }
-        )
-    }
+            )
 
+            IconButton(
+                onClick = {
+                    EventListener.sendEvent(MyEvent.RotateScreenEvent(false))
+                },
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(8.dp)
+                    .background(MaterialTheme.colorScheme.background, CircleShape)
+            ) {
+                Icon(
+                    Icons.Default.Close,
+                    contentDescription = "Close",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
+        }
+    }
 }
 
 data class MovieDetailPage(

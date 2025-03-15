@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -63,10 +64,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
@@ -80,6 +83,9 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposa
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -582,6 +588,35 @@ private fun MovieDetailImage(
             )
         }
     }
+}
+
+@Composable
+private fun PlayView(videoKey: String) {
+    val context = LocalContext.current
+    val lifeCycleOwner = LocalLifecycleOwner.current
+    Card(
+        modifier = Modifier.fillMaxWidth(0.8F)
+            .fillMaxHeight(0.9F),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.s_medium_border))
+    ) {
+        AndroidView(
+            modifier = Modifier
+                .fillMaxSize(),
+            factory = {
+                YouTubePlayerView(context).apply {
+                    lifeCycleOwner.lifecycle.addObserver(this)
+                    val youTubePlayerListener = object : AbstractYouTubePlayerListener() {
+                        override fun onReady(youTubePlayer: YouTubePlayer) {
+                            super.onReady(youTubePlayer)
+                            youTubePlayer.cueVideo(videoKey, VIDEO_START_TIME)
+                        }
+                    }
+                    addYouTubePlayerListener(youTubePlayerListener)
+                }
+            }
+        )
+    }
+
 }
 
 data class MovieDetailPage(

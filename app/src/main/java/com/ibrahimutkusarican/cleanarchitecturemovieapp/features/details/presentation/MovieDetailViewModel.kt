@@ -3,6 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presen
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.EventListener
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
@@ -86,6 +87,8 @@ class MovieDetailViewModel @Inject constructor(
             is DetailUiAction.GoToMyListPage -> sendEvent(MyEvent.GoToMyListEvent(action.pageIndex))
             DetailUiAction.PlayerViewOnBackPressed -> {
                 _showPlayerView.value = false
+                sendEvent(MyEvent.RotateScreenEvent(false))
+                sendEvent(MyEvent.ChangeBottomNavigationVisibility(true))
             }
 
             DetailUiAction.OpenPlayerView -> {

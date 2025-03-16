@@ -57,6 +57,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -175,9 +176,11 @@ fun MovieDetailScreen(
         }
     }
 
+    /// TODO: İyi bir çözüm değil herhangi bir oriantation change'de de tetiklenir.
     LaunchedEffect(isLandscape) {
-        if (isLandscape){
+        if (isLandscape) {
             viewModel.handleUiAction(DetailUiAction.OpenPlayerView)
+            EventListener.sendEvent(MyEvent.ChangeBottomNavigationVisibility(false))
         }
     }
 
@@ -196,6 +199,7 @@ fun MovieDetailScreen(
                     action = viewModel::handleUiAction
                 )
                 if (showPlayerView) {
+                    /// TODO: Trailer yoksa error snackbar göstermek gerekiyor.
                     model.movieDetailTrailerModel.trailers.firstOrNull()?.key?.let { videoKey ->
                         PlayView(
                             videoKey = videoKey,
@@ -621,22 +625,22 @@ private fun PlayView(videoKey: String, handleUiAction: (action: DetailUiAction) 
     val context = LocalContext.current
     val lifeCycleOwner = LocalLifecycleOwner.current
 
-    Card(
+    Box(
         modifier = Modifier
-            .fillMaxWidth(0.65F)
-            .fillMaxHeight(0.8F),
-        shape = RoundedCornerShape(dimensionResource(R.dimen.l_medium_border)),
-        colors = CardDefaults.cardColors(contentColor = MaterialTheme.colorScheme.background)
+            .fillMaxSize()
+            .background(Color.Black),
+        contentAlignment = Alignment.Center
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth(0.65F)
+                .fillMaxHeight(0.8F),
+            shape = RoundedCornerShape(dimensionResource(R.dimen.l_medium_border)),
+            colors = CardDefaults.cardColors(contentColor = MaterialTheme.colorScheme.background)
+        ) {
             AndroidView(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(
-                        vertical = dimensionResource(R.dimen.small_padding),
-                        horizontal = dimensionResource(R.dimen.medium_padding)
-                    )
-                    .clip(RoundedCornerShape(dimensionResource(R.dimen.small_border))),
+                    .fillMaxSize(),
                 factory = {
                     YouTubePlayerView(context).apply {
                         lifeCycleOwner.lifecycle.addObserver(this)
@@ -651,22 +655,21 @@ private fun PlayView(videoKey: String, handleUiAction: (action: DetailUiAction) 
                 }
             )
 
-            IconButton(
-                onClick = {
-                    handleUiAction(DetailUiAction.PlayerViewOnBackPressed)
-                    EventListener.sendEvent(MyEvent.RotateScreenEvent(false))
-                },
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(dimensionResource(R.dimen.small_padding))
-                    .background(MaterialTheme.colorScheme.background, CircleShape)
-            ) {
-                Icon(
-                    Icons.Default.Close,
-                    contentDescription = "Close",
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
-            }
+        }
+        IconButton(
+            onClick = {
+                handleUiAction(DetailUiAction.PlayerViewOnBackPressed)
+            },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(dimensionResource(R.dimen.medium_padding))
+                .background(MaterialTheme.colorScheme.background, CircleShape)
+        ) {
+            Icon(
+                Icons.Default.Close,
+                contentDescription = "Close",
+                tint = MaterialTheme.colorScheme.onBackground
+            )
         }
     }
 }

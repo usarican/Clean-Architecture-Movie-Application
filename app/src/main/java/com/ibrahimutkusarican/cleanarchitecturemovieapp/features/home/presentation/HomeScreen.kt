@@ -37,6 +37,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.HOME_SCREEN_BANNER_MOVIES_HEIGHT_RATIO
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.statusBarAndNavigationBarPadding
 
 
@@ -83,7 +84,7 @@ fun HomeSuccessScreen(
             ) {
                 HomeBannerMoviesList(
                     modifier = Modifier
-                        .height(screenHeightDp * 0.4F)
+                        .height(screenHeightDp * HOME_SCREEN_BANNER_MOVIES_HEIGHT_RATIO)
                         .fillMaxWidth()
                         .padding(vertical = dimensionResource(R.dimen.small_padding)),
                     basicMovieModels = movies[MovieType.NOW_PLAYING] ?: emptyList(),
@@ -103,7 +104,6 @@ fun HomeSuccessScreen(
                     })
             }
             if (refreshUiState is UiState.Error) {
-                /// TODO: Dark mode değişikliğini implement et. 
                 MySnackBar(
                     modifier = Modifier.align(Alignment.BottomCenter),
                     snackBarModel = MySnackBarModel(

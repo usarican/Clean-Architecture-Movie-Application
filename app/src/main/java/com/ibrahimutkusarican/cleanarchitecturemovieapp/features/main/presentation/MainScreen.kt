@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentation
 
+import android.util.Log
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
@@ -46,8 +47,10 @@ fun MainScreen(viewModel: MainViewModel) {
     var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
     var myListSelectedPageIndex by remember { mutableIntStateOf(MyListPage.FAVORITE.index) }
     val bottomNavigationVisibility by viewModel.bottomNavigationVisibility.collectAsStateWithLifecycle()
-    LaunchedEffect(true) {
-        viewModel.navigationChannel.consumeAsFlow().collectLatest { route ->
+    LaunchedEffect(Unit) {
+        Log.d("MainScreen","Navigation Channel Re-Triggered")
+        viewModel.navigationFlow.collectLatest { route ->
+            Log.d("MainScreen","Navigation Channel Collecting.. ${route.toString()} ")
             when (route) {
                 is NavigationRoutes.BottomNavRoutes -> {
                     if (route is NavigationRoutes.BottomNavRoutes.MyList) myListSelectedPageIndex =

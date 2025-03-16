@@ -12,9 +12,12 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.LocaleManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.stateIn
@@ -28,7 +31,9 @@ class MainViewModel @Inject constructor(
     private val localeManager: LocaleManager
 ) : BaseViewModel() {
 
-    val navigationChannel = Channel<NavigationRoutes?>(Channel.UNLIMITED)
+    private val _navigationFlow = MutableSharedFlow<NavigationRoutes?>()
+    val navigationFlow: SharedFlow<NavigationRoutes?> = _navigationFlow.asSharedFlow()
+
     val userSetting = getSettingsModelUseCase.getSettingsModel()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), SettingsModel())
 
@@ -118,7 +123,7 @@ class MainViewModel @Inject constructor(
 
     private fun navigationRouteAction(navigationRoutes: NavigationRoutes?) {
         viewModelScope.launch {
-            navigationChannel.send(navigationRoutes)
+            _navigationFlow.emit(navigationRoutes)
         }
     }
 

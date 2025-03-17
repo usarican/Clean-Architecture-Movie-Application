@@ -1,10 +1,12 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,6 +34,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -53,6 +57,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -63,12 +68,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.EventListener
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
@@ -80,6 +89,9 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposa
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -95,6 +107,8 @@ fun MovieDetailScreen(
     var snackBarMyListPageIndex by remember { mutableIntStateOf(MyListPage.FAVORITE.index) }
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+    val showPlayerView by viewModel.showPlayerView.collectAsStateWithLifecycle()
+    val isLandscape = rememberOriantationIsLandscape()
 
     LaunchedEffect(Unit) {
         viewModel.showSnackBar.collectLatest { model ->
@@ -124,8 +138,12 @@ fun MovieDetailScreen(
 
                         // Add rich metadata for better previews
                         putExtra(Intent.EXTRA_TITLE, movieTitle)
-                        putExtra(Intent.EXTRA_TEXT, "Check out this movie: $movieTitle\n\n$deepLinkUri")
-                        val htmlText = "Check out this movie: $movieTitle<br><a href=\"$deepLinkUri\">Open in MovieApp</a>"
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            "Check out this movie: $movieTitle\n\n$deepLinkUri"
+                        )
+                        val htmlText =
+                            "Check out this movie: $movieTitle<br><a href=\"$deepLinkUri\">Open in MovieApp</a>"
                         putExtra(Intent.EXTRA_HTML_TEXT, htmlText)
                         putExtra(Intent.EXTRA_SUBJECT, movieTitle)
 
@@ -134,10 +152,11 @@ fun MovieDetailScreen(
                                 Intent.FLAG_ACTIVITY_NEW_DOCUMENT
                     }
 
-                    val chooserIntent = Intent.createChooser(shareIntent, "Share Movie Poster").apply {
-                        // This flag improves preview rendering on some devices
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }
+                    val chooserIntent =
+                        Intent.createChooser(shareIntent, "Share Movie Poster").apply {
+                            // This flag improves preview rendering on some devices
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
 
                     startActivity(context, chooserIntent, null)
                 } else {
@@ -156,7 +175,15 @@ fun MovieDetailScreen(
             }
         }
     }
-    
+
+    /// TODO: İyi bir çözüm değil herhangi bir oriantation change'de de tetiklenir.
+    LaunchedEffect(isLandscape) {
+        if (isLandscape) {
+            viewModel.handleUiAction(DetailUiAction.OpenPlayerView)
+            EventListener.sendEvent(MyEvent.ChangeBottomNavigationVisibility(false))
+        }
+    }
+
 
     BaseUiStateComposable(uiState = uiState, tryAgainOnClickAction = {
         viewModel.handleUiAction(DetailUiAction.ErrorRetryAction)
@@ -171,6 +198,15 @@ fun MovieDetailScreen(
                     backClickAction = { viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction) },
                     action = viewModel::handleUiAction
                 )
+                if (showPlayerView) {
+                    /// TODO: Trailer yoksa error snackbar göstermek gerekiyor.
+                    model.movieDetailTrailerModel.trailers.firstOrNull()?.key?.let { videoKey ->
+                        PlayView(
+                            videoKey = videoKey,
+                            handleUiAction = viewModel::handleUiAction
+                        )
+                    }
+                }
                 snackBarModel?.let {
                     MySnackBar(snackBarModel = it,
                         visible = true,
@@ -582,6 +618,66 @@ private fun MovieDetailImage(
             )
         }
     }
+}
+
+@Composable
+private fun PlayView(videoKey: String, handleUiAction: (action: DetailUiAction) -> Unit) {
+    val context = LocalContext.current
+    val lifeCycleOwner = LocalLifecycleOwner.current
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black),
+        contentAlignment = Alignment.Center
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth(0.65F)
+                .fillMaxHeight(0.8F),
+            shape = RoundedCornerShape(dimensionResource(R.dimen.l_medium_border)),
+            colors = CardDefaults.cardColors(contentColor = MaterialTheme.colorScheme.background)
+        ) {
+            AndroidView(
+                modifier = Modifier
+                    .fillMaxSize(),
+                factory = {
+                    YouTubePlayerView(context).apply {
+                        lifeCycleOwner.lifecycle.addObserver(this)
+                        val youTubePlayerListener = object : AbstractYouTubePlayerListener() {
+                            override fun onReady(youTubePlayer: YouTubePlayer) {
+                                super.onReady(youTubePlayer)
+                                youTubePlayer.loadVideo(videoKey, VIDEO_START_TIME)
+                            }
+                        }
+                        addYouTubePlayerListener(youTubePlayerListener)
+                    }
+                }
+            )
+
+        }
+        IconButton(
+            onClick = {
+                handleUiAction(DetailUiAction.PlayerViewOnBackPressed)
+            },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(dimensionResource(R.dimen.medium_padding))
+                .background(MaterialTheme.colorScheme.background, CircleShape)
+        ) {
+            Icon(
+                Icons.Default.Close,
+                contentDescription = "Close",
+                tint = MaterialTheme.colorScheme.onBackground
+            )
+        }
+    }
+}
+
+@Composable
+fun rememberOriantationIsLandscape(): Boolean {
+    val configuration = LocalConfiguration.current
+    return configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 }
 
 data class MovieDetailPage(

@@ -3,6 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presen
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.EventListener
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
@@ -45,6 +46,9 @@ class MovieDetailViewModel @Inject constructor(
     private val _showSnackBar = MutableSharedFlow<Pair<MySnackBarModel,MyListPage>>()
     val showSnackBar: SharedFlow<Pair<MySnackBarModel,MyListPage>> = _showSnackBar
 
+    private val _showPlayerView = MutableStateFlow(false)
+    val showPlayerView : StateFlow<Boolean> = _showPlayerView
+
     private var movieId : Int? = null
 
     val movieShareModel = MutableSharedFlow<MovieShareModel>()
@@ -68,7 +72,9 @@ class MovieDetailViewModel @Inject constructor(
             is DetailUiAction.SeeAllClickAction -> sendEvent(MyEvent.SeeAllClickEvent(action.seeAllType))
             is DetailUiAction.DetailButtonClickAction -> {
                 when (action.data.type) {
-                    MovieDetailActionButtonType.PLAY -> TODO()
+                    MovieDetailActionButtonType.PLAY -> {
+                        sendEvent(MyEvent.RotateScreenEvent(true))
+                    }
                     MovieDetailActionButtonType.SHARE -> getMovieUri()
                     MovieDetailActionButtonType.ADD_FAVORITE -> addMovieFavoriteList(
                         movieDetailModel.value
@@ -79,6 +85,15 @@ class MovieDetailViewModel @Inject constructor(
             }
 
             is DetailUiAction.GoToMyListPage -> sendEvent(MyEvent.GoToMyListEvent(action.pageIndex))
+            DetailUiAction.PlayerViewOnBackPressed -> {
+                _showPlayerView.value = false
+                sendEvent(MyEvent.RotateScreenEvent(false))
+                sendEvent(MyEvent.ChangeBottomNavigationVisibility(true))
+            }
+
+            DetailUiAction.OpenPlayerView -> {
+                _showPlayerView.value = true
+            }
         }
     }
 

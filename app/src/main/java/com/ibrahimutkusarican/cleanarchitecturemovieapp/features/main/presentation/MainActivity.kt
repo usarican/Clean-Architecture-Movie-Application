@@ -1,6 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentation
 
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -49,9 +51,20 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun setScreenOrientation(isLandscape: Boolean) {
+        requestedOrientation = if (isLandscape) {
+            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        } else {
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+    }
+
     private fun observeViewModel() {
         EventListener.collectOneEvent<MyEvent.RestartApp>(lifecycleScope) {
             restartApp()
+        }
+        EventListener.collectOneEvent<MyEvent.RotateScreenEvent>(lifecycleScope){ event ->
+            setScreenOrientation(event.isLandScape)
         }
 
     }

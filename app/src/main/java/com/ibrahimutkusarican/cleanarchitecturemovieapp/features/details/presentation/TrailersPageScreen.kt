@@ -95,4 +95,4 @@ private fun YoutubePlayerView(videoKey: String) {
     )
 }
 
-private const val VIDEO_START_TIME = 0F
+const val VIDEO_START_TIME = 0F

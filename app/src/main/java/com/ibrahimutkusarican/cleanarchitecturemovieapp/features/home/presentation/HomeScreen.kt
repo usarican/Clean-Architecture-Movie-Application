@@ -108,7 +108,7 @@ fun HomeSuccessScreen(
                     modifier = Modifier.align(Alignment.BottomCenter),
                     snackBarModel = MySnackBarModel(
                         title = stringResource(R.string.error_snackbar_title),
-                        message = (refreshUiState).exception.message,
+                        message = (refreshUiState).exception.message ?: stringResource(R.string.error_snackbar_title),
                         type = SnackBarType.ERROR
                     ),
                     actionLabel = context.getString(R.string.retry),

@@ -4,6 +4,8 @@ import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
@@ -55,11 +57,15 @@ fun MySnackBar(
         onDismiss = {},
         clickActionDismiss = {}
     ),
-    visible: Boolean = true,
+    visible: Boolean = false,
     isDarkMode: Boolean = false,
 ) {
     var visibility by remember { mutableStateOf(visible) }
     val snackBarColors = snackBarModel.type.getColors(isDarkMode)
+
+    LaunchedEffect(Unit) {
+        visibility = true
+    }
 
     LaunchedEffect(key1 = snackBarModel, key2 = snackBarModel.type, key3 = visibility) {
         delay(SNACK_BAR_WITH_ACTION_DELAY)
@@ -70,10 +76,10 @@ fun MySnackBar(
         visible = visibility, modifier = modifier,
         enter = slideInVertically(
             animationSpec = spring(Spring.DampingRatioHighBouncy)
-        ),
+        ) + fadeIn(),
         exit = slideOutVertically(
-            targetOffsetY = {it}
-        )
+            targetOffsetY = {it /2 }
+        ) + fadeOut()
     ) {
 
         Card(
@@ -138,7 +144,7 @@ fun MySnackBar(
                             .clickable { snackBarModel.action.invoke() },
                         text = snackBarModel.actionLabel ?: stringResource(R.string.retry),
                         style = MaterialTheme.typography.labelLarge.copy(
-                            color = MaterialTheme.colorScheme.scrim, fontWeight = FontWeight.Bold
+                            color = snackBarColors.onContainerColor, fontWeight = FontWeight.Bold
                         ),
                     )
                 }
@@ -152,8 +158,7 @@ fun MySnackBarHost(hostState: SnackbarHostState, isDarkMode: Boolean) {
     SnackbarHost(hostState = hostState) { snackBarData ->
         MySnackBar(
             snackBarModel = snackBarData.visuals as MySnackBarModel,
-            isDarkMode = isDarkMode,
-            visible = true
+            isDarkMode = isDarkMode
         )
     }
 }

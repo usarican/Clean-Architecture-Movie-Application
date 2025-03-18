@@ -61,10 +61,14 @@ fun MainScreen(viewModel: MainViewModel) {
         }
     }
 
+    LaunchedEffect(navController) {
+        navController.currentBackStackEntryFlow.collect {
+            snackbarHostState.currentSnackbarData?.dismiss()
+        }
+    }
+
     LaunchedEffect(Unit) {
-        Log.d("MainScreen", "Navigation Channel Re-Triggered")
         viewModel.navigationFlow.collectLatest { route ->
-            Log.d("MainScreen", "Navigation Channel Collecting.. ${route.toString()} ")
             when (route) {
                 is NavigationRoutes.BottomNavRoutes -> {
                     if (route is NavigationRoutes.BottomNavRoutes.MyList) myListSelectedPageIndex =

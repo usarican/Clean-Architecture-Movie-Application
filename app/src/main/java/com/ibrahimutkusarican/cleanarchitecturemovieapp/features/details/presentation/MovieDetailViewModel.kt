@@ -45,9 +45,6 @@ class MovieDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState<MovieDetailModel>>(UiState.Loading)
     val uiState: StateFlow<UiState<MovieDetailModel>> = _uiState
 
-    private val _showSnackBar = MutableSharedFlow<Pair<MySnackBarModel, MyListPage>>()
-    val showSnackBar: SharedFlow<Pair<MySnackBarModel, MyListPage>> = _showSnackBar
-
     private val _showPlayerView = MutableStateFlow(false)
     val showPlayerView: StateFlow<Boolean> = _showPlayerView
 

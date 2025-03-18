@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.domain.usecase.LanguageChangeUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
@@ -11,7 +12,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.usecase.GetSettingsModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.LocaleManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -39,6 +39,9 @@ class MainViewModel @Inject constructor(
 
     private val _bottomNavigationVisibility = MutableStateFlow(true)
     val bottomNavigationVisibility: StateFlow<Boolean> = _bottomNavigationVisibility
+
+    private val _showSnackBar = MutableSharedFlow<MySnackBarModel>()
+    val showSnackBar: SharedFlow<MySnackBarModel> = _showSnackBar
 
     override fun observeMyEvents(event: MyEvent) {
         when (event) {
@@ -113,6 +116,10 @@ class MainViewModel @Inject constructor(
 
             is MyEvent.ChangeBottomNavigationVisibility -> {
                 _bottomNavigationVisibility.value = event.isVisible
+            }
+
+            is MyEvent.ShowSnackBar -> {
+                viewModelScope.launch { _showSnackBar.emit(event.mySnackBarModel) }
             }
 
             else -> {

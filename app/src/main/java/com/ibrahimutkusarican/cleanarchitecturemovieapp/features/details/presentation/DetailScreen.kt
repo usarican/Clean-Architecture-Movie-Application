@@ -211,7 +211,7 @@ fun MovieDetailScreen(
                     MySnackBar(snackBarModel = it,
                         visible = true,
                         modifier = Modifier.align(Alignment.BottomCenter),
-                        actionLabel = if (it.type == SnackBarType.SUCCESS) stringResource(R.string.see_all) else Constants.EMPTY_STRING,
+                        /*actionLabel = if (it.type == SnackBarType.SUCCESS) stringResource(R.string.see_all) else Constants.EMPTY_STRING,
                         action = {
                             if (it.type == SnackBarType.SUCCESS) {
                                 viewModel.handleUiAction(
@@ -220,7 +220,8 @@ fun MovieDetailScreen(
                                     )
                                 )
                             }
-                        })
+                        })*/
+                    )
                 }
             }
         }

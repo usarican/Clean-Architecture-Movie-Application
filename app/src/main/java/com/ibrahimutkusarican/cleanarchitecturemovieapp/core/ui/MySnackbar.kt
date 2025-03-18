@@ -46,25 +46,25 @@ import kotlinx.coroutines.delay
 @Preview(showBackground = true)
 fun MySnackBar(
     modifier: Modifier = Modifier,
-    snackBarModel: MySnackBarModel? = MySnackBarModel(
+    snackBarModel: MySnackBarModel = MySnackBarModel(
         title = "Information",
         message = "This is Information SnackBar",
-        type = SnackBarType.SUCCESS
+        actionLabel = null,
+        type = SnackBarType.SUCCESS,
+        action = {},
+        onDismiss = {},
+        clickActionDismiss = {}
     ),
-    actionLabel: String? = null,
-    action: (() -> Unit)? = null,
     visible: Boolean = true,
     isDarkMode: Boolean = false,
-    onDismiss : (() -> Unit)? = null,
-    clickActionDismiss : (() -> Unit)? = null,
 ) {
     var visibility by remember { mutableStateOf(visible) }
-    val snackBarColors = snackBarModel?.type?.getColors(isDarkMode) ?: SnackBarType.ERROR.getColors(isDarkMode)
+    val snackBarColors = snackBarModel.type.getColors(isDarkMode)
 
-    LaunchedEffect(key1 = snackBarModel, key2 = snackBarModel?.type, key3 = visibility) {
+    LaunchedEffect(key1 = snackBarModel, key2 = snackBarModel.type, key3 = visibility) {
         delay(SNACK_BAR_WITH_ACTION_DELAY)
         visibility = false
-        onDismiss?.invoke()
+        snackBarModel.onDismiss?.invoke()
     }
     AnimatedVisibility(
         visible = visibility, modifier = modifier,
@@ -95,14 +95,14 @@ fun MySnackBar(
                     .fillMaxWidth()
                     .clickable {
                         visibility = false
-                        clickActionDismiss?.invoke()
+                        snackBarModel.clickActionDismiss?.invoke()
                     }
                     .padding(dimensionResource(R.dimen.small_padding)),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
                     painterResource(snackBarColors.iconId),
-                    contentDescription = snackBarModel?.message,
+                    contentDescription = snackBarModel.message,
                     modifier = Modifier.size(dimensionResource(R.dimen.error_icon_size)),
                     colorFilter = ColorFilter.tint(snackBarColors.lightColor)
                 )
@@ -111,7 +111,7 @@ fun MySnackBar(
                         .weight(1F)
                         .padding(horizontal = dimensionResource(R.dimen.small_padding))
                 ) {
-                    if (snackBarModel?.title != null) {
+                    if (snackBarModel.title != null) {
                         Text(
                             text = snackBarModel.title,
                             style = MaterialTheme.typography.bodyMedium.copy(
@@ -122,7 +122,7 @@ fun MySnackBar(
                         )
                     }
                     Text(
-                        text = snackBarModel?.message ?: stringResource(R.string.error_message),
+                        text = snackBarModel.message,
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = snackBarColors.onContainerColor
                         ),
@@ -131,12 +131,12 @@ fun MySnackBar(
                     )
                 }
 
-                if (action != null){
+                if (snackBarModel.action != null){
                     Text(
                         modifier = Modifier
                             .padding(end = dimensionResource(R.dimen.x_small_padding))
-                            .clickable { action.invoke() },
-                        text = actionLabel ?: stringResource(R.string.retry),
+                            .clickable { snackBarModel.action.invoke() },
+                        text = snackBarModel.actionLabel ?: stringResource(R.string.retry),
                         style = MaterialTheme.typography.labelLarge.copy(
                             color = MaterialTheme.colorScheme.scrim, fontWeight = FontWeight.Bold
                         ),
@@ -151,6 +151,7 @@ fun MySnackBar(
 fun MySnackBarHost(hostState: SnackbarHostState, isDarkMode: Boolean) {
     SnackbarHost(hostState = hostState) { snackBarData ->
         val snackBarModel = snackBarData.visuals as MySnackBarModel
+
         val myModel = MySnackBarModel(
             title = snackBarModel.title,
             message = snackBarModel.message,
@@ -162,16 +163,6 @@ fun MySnackBarHost(hostState: SnackbarHostState, isDarkMode: Boolean) {
 
         MySnackBar(
             snackBarModel = myModel,
-            actionLabel = snackBarData.visuals.actionLabel,
-            action = {
-                snackBarData.performAction()
-            },
-            onDismiss = {
-                snackBarData.dismiss()
-            },
-            clickActionDismiss = {
-                snackBarData.dismiss()
-            },
             isDarkMode = isDarkMode,
             visible = true
         )
@@ -184,8 +175,11 @@ data class MySnackBarModel(
     val movieId : Int? = null,
     override val message : String,
     override val actionLabel: String? = null,
-    override val duration: SnackbarDuration = SnackbarDuration.Long,
-    override val withDismissAction: Boolean = false
+    override val duration: SnackbarDuration = if (actionLabel != null) SnackbarDuration.Long else SnackbarDuration.Short,
+    override val withDismissAction: Boolean = false,
+    val action: (() -> Unit)? = null,
+    val onDismiss: (() -> Unit)? = null,
+    val clickActionDismiss: (() -> Unit)? = null,
 ) : SnackbarVisuals
 
 

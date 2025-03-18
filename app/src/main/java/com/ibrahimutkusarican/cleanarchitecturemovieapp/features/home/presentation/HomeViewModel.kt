@@ -1,13 +1,18 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation
 
 import androidx.lifecycle.viewModelScope
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.usecase.GetHomeMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.usecase.RefreshHomeMoviesUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnError
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getHomeMoviesUseCase: GetHomeMoviesUseCase,
-    private val refreshHomeMoviesUseCase: RefreshHomeMoviesUseCase
+    private val refreshHomeMoviesUseCase: RefreshHomeMoviesUseCase,
+    private val stringProvider: StringProvider
 ) : BaseViewModel() {
 
     private val _movies = MutableStateFlow<Map<MovieType, List<BasicMovieModel>>>(mapOf())
@@ -48,9 +54,23 @@ class HomeViewModel @Inject constructor(
     private fun refreshMovies() {
         refreshHomeMoviesUseCase.refreshHomeMovies().doOnSuccess { movies ->
             _movies.value = movies
-        }.onEach { refreshUiState ->
-            _refreshUiState.emit(refreshUiState)
-        }.launchIn(viewModelScope)
+        }
+            .doOnError {
+                sendEvent(
+                    MyEvent.ShowSnackBar(
+                    MySnackBarModel(
+                        title = stringProvider.getStringFromResource(R.string.error_snackbar_title),
+                        message = it.message
+                            ?: stringProvider.getStringFromResource(R.string.error_snackbar_title),
+                        type = SnackBarType.ERROR,
+                        actionLabel = stringProvider.getStringFromResource(R.string.retry),
+                        action = { handleUiAction(HomeUiAction.PullToRefreshAction) }
+                    )
+                ))
+            }
+            .onEach { refreshUiState ->
+                _refreshUiState.emit(refreshUiState)
+            }.launchIn(viewModelScope)
     }
 
     fun handleUiAction(action: HomeUiAction) {
@@ -60,7 +80,12 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.SeeAllClickAction -> sendEvent(MyEvent.SeeAllClickEvent(action.seeAllType))
             is HomeUiAction.MovieClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
             is HomeUiAction.BannerMovieClickAction -> sendEvent(MyEvent.BannerMovieClickEvent(action.clickIndex))
-            is HomeUiAction.BannerMovieSeeMoreClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
+            is HomeUiAction.BannerMovieSeeMoreClickAction -> sendEvent(
+                MyEvent.MovieClickEvent(
+                    action.movieId
+                )
+            )
+
             HomeUiAction.BannerMovieOnBackPress -> sendEvent(MyEvent.OnBackPressed)
         }
     }

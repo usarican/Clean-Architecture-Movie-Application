@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.presentation
 
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
@@ -33,14 +34,6 @@ class MyListViewModel @Inject constructor(
         .cachedIn(viewModelScope)
     val watchListMovies = getMyListMovieUseCase.getMyListMovieUseCase(page = MyListPage.WATCH_LIST)
         .cachedIn(viewModelScope)
-
-
-    private val _showSnackBar = MutableStateFlow<MySnackBarModel?>(null)
-    val showSnackBar: StateFlow<MySnackBarModel?> = _showSnackBar
-
-    fun updateSnackBar(snackBarModel: MySnackBarModel?) {
-        _showSnackBar.value = snackBarModel
-    }
 
     private var deleteMovieData: DeleteMovieData? = null
 
@@ -96,16 +89,22 @@ class MyListViewModel @Inject constructor(
     private fun showAreYouSureSnackBar(deleteMovieData: DeleteMovieData?) {
         viewModelScope.launch {
             deleteMovieData?.let { data ->
-                updateSnackBar(
-                    MySnackBarModel(
-                        title = stringProvider.getStringFromResource(R.string.are_you_sure),
-                        message = stringProvider.getStringFromResource(
-                            R.string.my_list_are_you_sure_snack_bar_content,
-                            data.movie.title,
-                            stringProvider.getStringFromResource(data.page.title)
-                        ),
-                        type = SnackBarType.WARNING,
-                        movieId = data.movie.movieId
+                sendEvent(
+                    MyEvent.ShowSnackBar(
+                        MySnackBarModel(
+                            title = stringProvider.getStringFromResource(R.string.are_you_sure),
+                            message = stringProvider.getStringFromResource(
+                                R.string.my_list_are_you_sure_snack_bar_content,
+                                data.movie.title,
+                                stringProvider.getStringFromResource(data.page.title)
+                            ),
+                            type = SnackBarType.WARNING,
+                            movieId = data.movie.movieId,
+                            actionLabel = stringProvider.getStringFromResource(R.string.delete),
+                            action = {
+                                handleUiAction(SnackBarDeleteAction())
+                            },
+                        )
                     )
                 )
             }
@@ -116,16 +115,20 @@ class MyListViewModel @Inject constructor(
         deleteMovieData?.let { data ->
             updateMyListMovieUseCase.updateFavoriteMovieFromMyList(data.movie, data.page)
                 .doOnSuccess {
-                    updateSnackBar(
-                        MySnackBarModel(
-                            title = stringProvider.getStringFromResource(R.string.delete),
-                            message = stringProvider.getStringFromResource(
-                                R.string.my_list_delete_snack_bar_content,
-                                data.movie.title,
-                                stringProvider.getStringFromResource(data.page.title)
-                            ),
-                            type = SnackBarType.SUCCESS,
-                            movieId = data.movie.movieId
+                    sendEvent(
+                        MyEvent.ShowSnackBar(
+                            MySnackBarModel(
+                                title = stringProvider.getStringFromResource(R.string.delete),
+                                message = stringProvider.getStringFromResource(
+                                    R.string.my_list_delete_snack_bar_content,
+                                    data.movie.title,
+                                    stringProvider.getStringFromResource(data.page.title)
+                                ),
+                                type = SnackBarType.SUCCESS,
+                                movieId = data.movie.movieId,
+                                actionLabel = stringProvider.getStringFromResource(R.string.undo),
+                                action = { handleUiAction(UndoAction()) }
+                            )
                         )
                     )
                 }

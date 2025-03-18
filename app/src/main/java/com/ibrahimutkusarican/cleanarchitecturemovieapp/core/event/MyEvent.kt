@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event
 
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 
 
@@ -14,4 +15,5 @@ sealed class MyEvent {
     data class GoToMyListEvent(val page : Int) : MyEvent()
     data class RotateScreenEvent(val isLandScape : Boolean) : MyEvent()
     data class ChangeBottomNavigationVisibility(val isVisible : Boolean) : MyEvent()
+    data class ShowSnackBar(val mySnackBarModel: MySnackBarModel) : MyEvent()
 }

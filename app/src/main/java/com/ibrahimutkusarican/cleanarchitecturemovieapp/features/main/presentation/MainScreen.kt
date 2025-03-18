@@ -55,14 +55,10 @@ fun MainScreen(viewModel: MainViewModel) {
     val snackbarHostState = remember { SnackbarHostState() }
     val userSettings = viewModel.userSetting.collectAsStateWithLifecycle()
 
-    LaunchedEffect(true) {
-        snackbarHostState.showSnackbar(
-            MySnackBarModel(
-                title = "Information",
-                message = "This is Information SnackBar",
-                type = SnackBarType.SUCCESS
-            )
-        )
+    LaunchedEffect(Unit) {
+        viewModel.showSnackBar.collectLatest { snackBar ->
+            snackbarHostState.showSnackbar(snackBar)
+        }
     }
 
     LaunchedEffect(Unit) {

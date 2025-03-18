@@ -103,21 +103,6 @@ fun HomeSuccessScreen(
                         action.invoke(HomeUiAction.MovieClickAction(movieId))
                     })
             }
-            if (refreshUiState is UiState.Error) {
-                MySnackBar(
-                    modifier = Modifier.align(Alignment.BottomCenter),
-                    snackBarModel = MySnackBarModel(
-                        title = stringResource(R.string.error_snackbar_title),
-                        message = (refreshUiState).exception.message ?: stringResource(R.string.error_snackbar_title),
-                        type = SnackBarType.ERROR
-                    ),
-                    actionLabel = context.getString(R.string.retry),
-                    action = {
-                        action.invoke(HomeUiAction.PullToRefreshAction)
-                    },
-                    visible = true
-                )
-            }
         }
     }
 }

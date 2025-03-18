@@ -150,19 +150,8 @@ fun MySnackBar(
 @Composable
 fun MySnackBarHost(hostState: SnackbarHostState, isDarkMode: Boolean) {
     SnackbarHost(hostState = hostState) { snackBarData ->
-        val snackBarModel = snackBarData.visuals as MySnackBarModel
-
-        val myModel = MySnackBarModel(
-            title = snackBarModel.title,
-            message = snackBarModel.message,
-            type = snackBarModel.type,
-            actionLabel = snackBarModel.actionLabel,
-            duration = snackBarModel.duration,
-            withDismissAction = snackBarModel.withDismissAction
-        )
-
         MySnackBar(
-            snackBarModel = myModel,
+            snackBarModel = snackBarData.visuals as MySnackBarModel,
             isDarkMode = isDarkMode,
             visible = true
         )

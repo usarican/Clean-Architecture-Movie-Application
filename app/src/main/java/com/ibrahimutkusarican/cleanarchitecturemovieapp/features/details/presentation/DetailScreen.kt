@@ -48,11 +48,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -78,21 +74,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.EventListener
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailInfoModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.mockMovieDetailModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposable
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -103,23 +93,9 @@ fun MovieDetailScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val movieDetailModel by viewModel.movieDetailModel.collectAsStateWithLifecycle()
-    var snackBarModel by remember { mutableStateOf<MySnackBarModel?>(null) }
-    var snackBarMyListPageIndex by remember { mutableIntStateOf(MyListPage.FAVORITE.index) }
-    val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
     val showPlayerView by viewModel.showPlayerView.collectAsStateWithLifecycle()
     val isLandscape = rememberOriantationIsLandscape()
-
-    LaunchedEffect(Unit) {
-        viewModel.showSnackBar.collectLatest { model ->
-            snackBarModel = model.first
-            snackBarMyListPageIndex = model.second.index
-            coroutineScope.launch {
-                delay(Constants.SNACK_BAR_WITH_ACTION_DELAY)
-                snackBarModel = null
-            }
-        }
-    }
 
     LaunchedEffect(Unit) {
         viewModel.movieShareModel.collectLatest { data ->
@@ -206,22 +182,6 @@ fun MovieDetailScreen(
                             handleUiAction = viewModel::handleUiAction
                         )
                     }
-                }
-                snackBarModel?.let {
-                    MySnackBar(snackBarModel = it,
-                        visible = true,
-                        modifier = Modifier.align(Alignment.BottomCenter),
-                        /*actionLabel = if (it.type == SnackBarType.SUCCESS) stringResource(R.string.see_all) else Constants.EMPTY_STRING,
-                        action = {
-                            if (it.type == SnackBarType.SUCCESS) {
-                                viewModel.handleUiAction(
-                                    DetailUiAction.GoToMyListPage(
-                                        snackBarMyListPageIndex
-                                    )
-                                )
-                            }
-                        })*/
-                    )
                 }
             }
         }

@@ -93,6 +93,8 @@
     <string name="error_content_not_found">İstenen kaynak bulunamadı.</string>
     <string name="error_title_unauthorized">Yetkisiz İşlem</string>
     <string name="error_content_unauthorized">Bu işlemi gerçekleştirmek için yetkiniz yok. Lütfen tekrar giriş yapın.</string>
+    <string name="error_no_play_video_title">Oops :(</string>
+    <string name="error_no_play_video_content">Oynatılacak bir video bulunmamaktadır.</string>
 
     <!-- Empty Screen Titles -->
     <string name="empty_screen_title_favorite">Henüz Favorileriniz Yok</string>

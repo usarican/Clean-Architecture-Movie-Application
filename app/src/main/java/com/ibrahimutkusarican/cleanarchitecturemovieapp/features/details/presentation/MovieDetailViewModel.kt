@@ -13,9 +13,11 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieShareModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieDetailUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieShareModelUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.HomeUiAction
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListUpdatePage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.UpdateMyListMovieUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnError
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
@@ -43,38 +45,50 @@ class MovieDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState<MovieDetailModel>>(UiState.Loading)
     val uiState: StateFlow<UiState<MovieDetailModel>> = _uiState
 
-    private val _showSnackBar = MutableSharedFlow<Pair<MySnackBarModel,MyListPage>>()
-    val showSnackBar: SharedFlow<Pair<MySnackBarModel,MyListPage>> = _showSnackBar
-
     private val _showPlayerView = MutableStateFlow(false)
-    val showPlayerView : StateFlow<Boolean> = _showPlayerView
+    val showPlayerView: StateFlow<Boolean> = _showPlayerView
 
-    private var movieId : Int? = null
+    private var movieId: Int? = null
 
     val movieShareModel = MutableSharedFlow<MovieShareModel>()
 
     fun getMovieDetail(movieId: Int) {
-       this.movieId = movieId
-        getMovieDetailUseCase.getMovieDetail(movieId)
-            .doOnSuccess { model ->
-                _movieDetailModel.value = model
-            }
-            .onEach { state -> _uiState.value = state }
-            .launchIn(viewModelScope)
+        this.movieId = movieId
+        getMovieDetailUseCase.getMovieDetail(movieId).doOnSuccess { model ->
+            _movieDetailModel.value = model
+        }.onEach { state -> _uiState.value = state }.launchIn(viewModelScope)
     }
 
     fun handleUiAction(action: DetailUiAction) {
         when (action) {
             DetailUiAction.ErrorRetryAction -> movieId?.let { getMovieDetail(it) }
 
-            is DetailUiAction.RecommendedMovieClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
+            is DetailUiAction.RecommendedMovieClickAction -> sendEvent(
+                MyEvent.MovieClickEvent(
+                    action.movieId
+                )
+            )
+
             DetailUiAction.OnBackPressClickAction -> sendEvent(MyEvent.OnBackPressed)
             is DetailUiAction.SeeAllClickAction -> sendEvent(MyEvent.SeeAllClickEvent(action.seeAllType))
             is DetailUiAction.DetailButtonClickAction -> {
                 when (action.data.type) {
                     MovieDetailActionButtonType.PLAY -> {
-                        sendEvent(MyEvent.RotateScreenEvent(true))
+                        if (_movieDetailModel.value?.movieDetailTrailerModel?.trailers?.firstOrNull()?.key != null) {
+                            sendEvent(MyEvent.RotateScreenEvent(true))
+                        } else {
+                            sendEvent(
+                                MyEvent.ShowSnackBar(
+                                    MySnackBarModel(
+                                        title = stringProvider.getStringFromResource(R.string.error_no_play_video_title),
+                                        message = stringProvider.getStringFromResource(R.string.error_no_play_video_content),
+                                        type = SnackBarType.ERROR,
+                                    )
+                                )
+                            )
+                        }
                     }
+
                     MovieDetailActionButtonType.SHARE -> getMovieUri()
                     MovieDetailActionButtonType.ADD_FAVORITE -> addMovieFavoriteList(
                         movieDetailModel.value
@@ -97,15 +111,13 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getMovieUri(){
+    private fun getMovieUri() {
         getMovieShareModelUseCase.getMovieUri(movieDetailModel.value?.movieDetailInfoModel)
             .doOnSuccess { uri ->
                 movieShareModel.emit(uri)
-            }
-            .doOnError {
+            }.doOnError {
                 /// TODO: Error Snack Bar Add
-            }
-            .launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
     }
 
     private fun addMovieFavoriteList(model: MovieDetailModel?) {
@@ -114,18 +126,31 @@ class MovieDetailViewModel @Inject constructor(
                 movieDetailModel = model, myListUpdatePage = MyListUpdatePage.FAVORITE
             ).doOnSuccess { updateModel ->
                 _movieDetailModel.update { updateModel }
-                _showSnackBar.emit(
-                    MySnackBarModel(
-                        title = if (model.movieDetailInfoModel.isFavorite) stringProvider.getStringFromResource(
-                            R.string.remove_favorite
-                        ) else stringProvider.getStringFromResource(R.string.add_favorite),
-                        message = if (model.movieDetailInfoModel.isFavorite) stringProvider.getStringFromResource(
-                            R.string.movie_removed_to_favorite, model.movieDetailInfoModel.title
-                        ) else stringProvider.getStringFromResource(
-                            R.string.movie_added_to_favorite, model.movieDetailInfoModel.title
-                        ),
-                        type = if (model.movieDetailInfoModel.isFavorite) SnackBarType.INFO else SnackBarType.SUCCESS
-                    ) to MyListPage.FAVORITE
+                sendEvent(
+                    MyEvent.ShowSnackBar(
+                        MySnackBarModel(
+                            title = if (model.movieDetailInfoModel.isFavorite) stringProvider.getStringFromResource(
+                                R.string.remove_favorite
+                            ) else stringProvider.getStringFromResource(R.string.add_favorite),
+                            message = if (model.movieDetailInfoModel.isFavorite) stringProvider.getStringFromResource(
+                                R.string.movie_removed_to_favorite, model.movieDetailInfoModel.title
+                            ) else stringProvider.getStringFromResource(
+                                R.string.movie_added_to_favorite, model.movieDetailInfoModel.title
+                            ),
+                            type = if (model.movieDetailInfoModel.isFavorite) SnackBarType.INFO else SnackBarType.SUCCESS,
+                            actionLabel = if (model.movieDetailInfoModel.isFavorite.not()) stringProvider.getStringFromResource(
+                                R.string.see_all
+                            ) else Constants.EMPTY_STRING,
+                            action = {
+                                if (model.movieDetailInfoModel.isFavorite.not()) {
+                                    handleUiAction(
+                                        DetailUiAction.GoToMyListPage(
+                                            MyListUpdatePage.FAVORITE.index
+                                        )
+                                    )
+                                }
+                            })
+                    )
                 )
             }.launchIn(viewModelScope)
         }
@@ -137,18 +162,32 @@ class MovieDetailViewModel @Inject constructor(
                 movieDetailModel = model, myListUpdatePage = MyListUpdatePage.WATCH_LIST
             ).doOnSuccess { updateModel ->
                 _movieDetailModel.update { updateModel }
-                _showSnackBar.emit(
-                    MySnackBarModel(
-                        title = if (model.movieDetailInfoModel.isAddedToWatchList) stringProvider.getStringFromResource(
-                            R.string.remove_watch_list
-                        ) else stringProvider.getStringFromResource(R.string.add_watch_list),
-                        message = if (model.movieDetailInfoModel.isAddedToWatchList) stringProvider.getStringFromResource(
-                            R.string.movie_removed_to_watch_list, model.movieDetailInfoModel.title
-                        ) else stringProvider.getStringFromResource(
-                            R.string.movie_added_to_watch_list, model.movieDetailInfoModel.title
-                        ),
-                        type = if (model.movieDetailInfoModel.isAddedToWatchList) SnackBarType.INFO else SnackBarType.SUCCESS
-                    ) to MyListPage.WATCH_LIST
+                sendEvent(
+                    MyEvent.ShowSnackBar(
+                        MySnackBarModel(
+                            title = if (model.movieDetailInfoModel.isAddedToWatchList) stringProvider.getStringFromResource(
+                                R.string.remove_watch_list
+                            ) else stringProvider.getStringFromResource(R.string.add_watch_list),
+                            message = if (model.movieDetailInfoModel.isAddedToWatchList) stringProvider.getStringFromResource(
+                                R.string.movie_removed_to_watch_list,
+                                model.movieDetailInfoModel.title
+                            ) else stringProvider.getStringFromResource(
+                                R.string.movie_added_to_watch_list, model.movieDetailInfoModel.title
+                            ),
+                            type = if (model.movieDetailInfoModel.isAddedToWatchList) SnackBarType.INFO else SnackBarType.SUCCESS,
+                            actionLabel = if (model.movieDetailInfoModel.isAddedToWatchList.not()) stringProvider.getStringFromResource(
+                                R.string.see_all
+                            ) else Constants.EMPTY_STRING,
+                            action = {
+                                if (model.movieDetailInfoModel.isAddedToWatchList.not()) {
+                                    handleUiAction(
+                                        DetailUiAction.GoToMyListPage(
+                                            MyListUpdatePage.FAVORITE.index
+                                        )
+                                    )
+                                }
+                            })
+                    )
                 )
             }.launchIn(viewModelScope)
         }

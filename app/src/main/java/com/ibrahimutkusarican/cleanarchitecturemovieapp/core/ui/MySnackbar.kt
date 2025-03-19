@@ -4,6 +4,8 @@ import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
@@ -17,6 +19,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -42,34 +48,38 @@ import kotlinx.coroutines.delay
 @Preview(showBackground = true)
 fun MySnackBar(
     modifier: Modifier = Modifier,
-    snackBarModel: MySnackBarModel? = MySnackBarModel(
+    snackBarModel: MySnackBarModel = MySnackBarModel(
         title = "Information",
         message = "This is Information SnackBar",
-        type = SnackBarType.SUCCESS
+        actionLabel = null,
+        type = SnackBarType.SUCCESS,
+        action = {},
+        onDismiss = {},
+        clickActionDismiss = {}
     ),
-    actionLabel: String? = null,
-    action: (() -> Unit)? = null,
-    visible: Boolean = true,
+    visible: Boolean = false,
     isDarkMode: Boolean = false,
-    onDismiss : (() -> Unit)? = null,
-    clickActionDismiss : (() -> Unit)? = null,
 ) {
     var visibility by remember { mutableStateOf(visible) }
-    val snackBarColors = snackBarModel?.type?.getColors(isDarkMode) ?: SnackBarType.ERROR.getColors(isDarkMode)
+    val snackBarColors = snackBarModel.type.getColors(isDarkMode)
 
-    LaunchedEffect(key1 = snackBarModel, key2 = snackBarModel?.type, key3 = visibility) {
+    LaunchedEffect(Unit) {
+        visibility = true
+    }
+
+    LaunchedEffect(key1 = snackBarModel, key2 = snackBarModel.type, key3 = visibility) {
         delay(SNACK_BAR_WITH_ACTION_DELAY)
         visibility = false
-        onDismiss?.invoke()
+        snackBarModel.onDismiss?.invoke()
     }
     AnimatedVisibility(
         visible = visibility, modifier = modifier,
         enter = slideInVertically(
             animationSpec = spring(Spring.DampingRatioHighBouncy)
-        ),
+        ) + fadeIn(),
         exit = slideOutVertically(
-            targetOffsetY = {it}
-        )
+            targetOffsetY = {it /2 }
+        ) + fadeOut()
     ) {
 
         Card(
@@ -91,14 +101,14 @@ fun MySnackBar(
                     .fillMaxWidth()
                     .clickable {
                         visibility = false
-                        clickActionDismiss?.invoke()
+                        snackBarModel.clickActionDismiss?.invoke()
                     }
                     .padding(dimensionResource(R.dimen.small_padding)),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
                     painterResource(snackBarColors.iconId),
-                    contentDescription = snackBarModel?.message,
+                    contentDescription = snackBarModel.message,
                     modifier = Modifier.size(dimensionResource(R.dimen.error_icon_size)),
                     colorFilter = ColorFilter.tint(snackBarColors.lightColor)
                 )
@@ -107,7 +117,7 @@ fun MySnackBar(
                         .weight(1F)
                         .padding(horizontal = dimensionResource(R.dimen.small_padding))
                 ) {
-                    if (snackBarModel?.title != null) {
+                    if (snackBarModel.title != null) {
                         Text(
                             text = snackBarModel.title,
                             style = MaterialTheme.typography.bodyMedium.copy(
@@ -118,7 +128,7 @@ fun MySnackBar(
                         )
                     }
                     Text(
-                        text = snackBarModel?.message ?: stringResource(R.string.error_message),
+                        text = snackBarModel.message,
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = snackBarColors.onContainerColor
                         ),
@@ -127,14 +137,14 @@ fun MySnackBar(
                     )
                 }
 
-                if (action != null){
+                if (snackBarModel.action != null){
                     Text(
                         modifier = Modifier
                             .padding(end = dimensionResource(R.dimen.x_small_padding))
-                            .clickable { action.invoke() },
-                        text = actionLabel ?: stringResource(R.string.retry),
+                            .clickable { snackBarModel.action.invoke() },
+                        text = snackBarModel.actionLabel ?: stringResource(R.string.retry),
                         style = MaterialTheme.typography.labelLarge.copy(
-                            color = MaterialTheme.colorScheme.scrim, fontWeight = FontWeight.Bold
+                            color = snackBarColors.onContainerColor, fontWeight = FontWeight.Bold
                         ),
                     )
                 }
@@ -143,12 +153,28 @@ fun MySnackBar(
     }
 }
 
+@Composable
+fun MySnackBarHost(hostState: SnackbarHostState, isDarkMode: Boolean) {
+    SnackbarHost(hostState = hostState) { snackBarData ->
+        MySnackBar(
+            snackBarModel = snackBarData.visuals as MySnackBarModel,
+            isDarkMode = isDarkMode
+        )
+    }
+}
+
 data class MySnackBarModel(
     val title : String?,
-    val message : String?,
     val type : SnackBarType,
-    val movieId : Int? = null
-)
+    val movieId : Int? = null,
+    override val message : String,
+    override val actionLabel: String? = null,
+    override val duration: SnackbarDuration = if (actionLabel != null) SnackbarDuration.Long else SnackbarDuration.Short,
+    override val withDismissAction: Boolean = false,
+    val action: (() -> Unit)? = null,
+    val onDismiss: (() -> Unit)? = null,
+    val clickActionDismiss: (() -> Unit)? = null,
+) : SnackbarVisuals
 
 
 enum class SnackBarType(

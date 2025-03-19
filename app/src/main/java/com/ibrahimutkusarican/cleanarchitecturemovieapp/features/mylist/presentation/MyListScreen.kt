@@ -58,7 +58,6 @@ fun MyListScreen(
         val coroutineScope = rememberCoroutineScope()
         val favoriteMovies = viewModel.favoriteMovies.collectAsLazyPagingItems()
         val watchListMovies = viewModel.watchListMovies.collectAsLazyPagingItems()
-        val snackBarModel by viewModel.showSnackBar.collectAsStateWithLifecycle()
 
 
         LaunchedEffect(pageIndex) {
@@ -96,41 +95,6 @@ fun MyListScreen(
                 }
             }
         }
-        snackBarModel?.let {
-            when (it.type) {
-                SnackBarType.SUCCESS -> {
-                    MySnackBar(
-                        snackBarModel = it,
-                        visible = true,
-                        modifier = Modifier.align(Alignment.BottomCenter),
-                        actionLabel = stringResource(R.string.undo),
-                        action = {
-                            viewModel.handleUiAction(viewModel.UndoAction())
-                        }
-                    )
-                }
-
-                SnackBarType.INFO -> TODO()
-                SnackBarType.WARNING -> {
-                    MySnackBar(
-                        snackBarModel = it,
-                        visible = true,
-                        modifier = Modifier.align(Alignment.BottomCenter),
-                        actionLabel = stringResource(R.string.delete),
-                        action = {
-                            viewModel.handleUiAction(viewModel.SnackBarDeleteAction())
-                            viewModel.updateSnackBar(null)
-                        },
-                        onDismiss = {
-                            viewModel.updateSnackBar(null)
-                        }
-                    )
-                }
-
-                SnackBarType.ERROR -> TODO()
-            }
-        }
-
     }
 }
 

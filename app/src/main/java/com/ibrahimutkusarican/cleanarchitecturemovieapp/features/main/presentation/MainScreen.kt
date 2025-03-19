@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,6 +27,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarHost
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.presentation.ExploreScreen
@@ -47,10 +52,23 @@ fun MainScreen(viewModel: MainViewModel) {
     var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
     var myListSelectedPageIndex by remember { mutableIntStateOf(MyListPage.FAVORITE.index) }
     val bottomNavigationVisibility by viewModel.bottomNavigationVisibility.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val userSettings = viewModel.userSetting.collectAsStateWithLifecycle()
+
     LaunchedEffect(Unit) {
-        Log.d("MainScreen","Navigation Channel Re-Triggered")
+        viewModel.showSnackBar.collectLatest { snackBar ->
+            snackbarHostState.showSnackbar(snackBar)
+        }
+    }
+
+    LaunchedEffect(navController) {
+        navController.currentBackStackEntryFlow.collect {
+            snackbarHostState.currentSnackbarData?.dismiss()
+        }
+    }
+
+    LaunchedEffect(Unit) {
         viewModel.navigationFlow.collectLatest { route ->
-            Log.d("MainScreen","Navigation Channel Collecting.. ${route.toString()} ")
             when (route) {
                 is NavigationRoutes.BottomNavRoutes -> {
                     if (route is NavigationRoutes.BottomNavRoutes.MyList) myListSelectedPageIndex =
@@ -73,20 +91,28 @@ fun MainScreen(viewModel: MainViewModel) {
             }
         }
     }
-    Scaffold(modifier = Modifier.fillMaxSize(), bottomBar = if (bottomNavigationVisibility) {
-        {
-            BottomNavigationBar(
-                modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
-                navController = navController,
-                selectedItemIndex = selectedItemIndex,
-                onItemSelected = { index ->
-                    selectedItemIndex = index
-                }
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        snackbarHost = {
+            MySnackBarHost(
+                hostState = snackbarHostState,
+                isDarkMode = userSettings.value.isDarkModeEnabled
             )
+        },
+        bottomBar = if (bottomNavigationVisibility) {
+            {
+                BottomNavigationBar(
+                    modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
+                    navController = navController,
+                    selectedItemIndex = selectedItemIndex,
+                    onItemSelected = { index ->
+                        selectedItemIndex = index
+                    }
+                )
+            }
+        } else {
+            {}
         }
-    } else {
-        {}
-    }
     ) { innerPadding ->
         NavHost(
             navController = navController,

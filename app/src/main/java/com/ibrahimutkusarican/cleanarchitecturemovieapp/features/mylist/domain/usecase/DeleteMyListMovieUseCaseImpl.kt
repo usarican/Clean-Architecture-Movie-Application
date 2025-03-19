@@ -3,69 +3,64 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.usecase.GetMovieGenresUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.MyListRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.mapper.MyListMovieModelMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListUpdatePage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getSuccessOrThrow
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
-import javax.inject.Inject
 
-class UpdateMyListMovieUseCaseImpl @Inject constructor(
+class DeleteMyListMovieUseCaseImpl @AssistedInject constructor(
     private val myListRepository: MyListRepository,
     private val myListMovieModelMapper: MyListMovieModelMapper,
-    private val getMovieGenreUseCase: GetMovieGenresUseCase
-) : BaseUseCase(), UpdateMyListMovieUseCase {
+    private val getMovieGenreUseCase: GetMovieGenresUseCase,
+    @Assisted val myListMovieModel: MyListMovieModel,
+    @Assisted val myListUpdatePage: MyListUpdatePage
+) : DeleteMyListMovieUseCase, BaseUseCase() {
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun updateMyListMovieFromHome(
-        basicMovieModel: BasicMovieModel,
-        myListUpdatePage: MyListUpdatePage
-    ): Flow<UiState<BasicMovieModel>> {
+    override fun deleteMyListMovie(): Flow<UiState<Any>> {
         return getMovieGenreUseCase.getMovieGenresUseCase().flatMapLatest { genreListState ->
             execute {
                 val genreList = genreListState.getSuccessOrThrow()
-                val updatedBasicMovieModel = myListUpdatePage.getUpdatedMovieModel(basicMovieModel)
+                val updatedMyListMovieModel =
+                    myListUpdatePage.getUpdatedMovieModel(myListMovieModel)
                 val movieEntity =
-                    myListMovieModelMapper.basicMovieModelToMyListMovieEntity(
-                        updatedBasicMovieModel,
+                    myListMovieModelMapper.modelToEntity(
+                        updatedMyListMovieModel,
                         genreList
                     )
-                if (myListUpdatePage.thisMovieModelShouldDeleteFromMyList(basicMovieModel)) {
+                if (myListUpdatePage.thisMovieModelShouldDeleteFromMyList(myListMovieModel)) {
                     myListRepository.deleteMyListMovie(movieEntity).first().getSuccessOrThrow()
                 } else {
                     myListRepository.insertMyListMovie(movieEntity).first().getSuccessOrThrow()
                 }
-                updatedBasicMovieModel
             }
         }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun updateMyListMovieFromDetail(
-        movieDetailModel: MovieDetailModel,
-        myListUpdatePage: MyListUpdatePage
-    ): Flow<UiState<MovieDetailModel>> {
+    override fun undoDeleteMyListMovie(): Flow<UiState<Any>> {
         return getMovieGenreUseCase.getMovieGenresUseCase().flatMapLatest { genreListState ->
             execute {
                 val genreList = genreListState.getSuccessOrThrow()
-                val updatedMovieDetailModel = myListUpdatePage.getUpdatedMovieModel(movieDetailModel)
                 val movieEntity =
-                    myListMovieModelMapper.movieDetailModelToMyListMovieEntity(
-                        updatedMovieDetailModel,
+                    myListMovieModelMapper.modelToEntity(
+                        myListMovieModel,
                         genreList
                     )
-                if (myListUpdatePage.thisMovieModelShouldDeleteFromMyList(movieDetailModel)) {
-                    myListRepository.deleteMyListMovie(movieEntity).first().getSuccessOrThrow()
-                } else {
-                    myListRepository.insertMyListMovie(movieEntity).first().getSuccessOrThrow()
-                }
-                updatedMovieDetailModel
+                myListRepository.insertMyListMovie(movieEntity).first().getSuccessOrThrow()
             }
         }
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(myListMovieModel : MyListMovieModel, myListUpdatePage: MyListUpdatePage): DeleteMyListMovieUseCaseImpl
     }
 }

@@ -1,9 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation
 
-import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.EventListener
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
@@ -13,8 +11,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieShareModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieDetailUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.usecase.GetMovieShareModelUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.HomeUiAction
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListUpdatePage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.UpdateMyListMovieUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
@@ -24,7 +20,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuc
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -122,7 +117,7 @@ class MovieDetailViewModel @Inject constructor(
 
     private fun addMovieFavoriteList(model: MovieDetailModel?) {
         model?.let {
-            updateMyListMovieUseCase.updateFavoriteMovieFromDetail(
+            updateMyListMovieUseCase.updateMyListMovieFromDetail(
                 movieDetailModel = model, myListUpdatePage = MyListUpdatePage.FAVORITE
             ).doOnSuccess { updateModel ->
                 _movieDetailModel.update { updateModel }
@@ -158,7 +153,7 @@ class MovieDetailViewModel @Inject constructor(
 
     private fun addMovieWatchList(model: MovieDetailModel?) {
         model?.let {
-            updateMyListMovieUseCase.updateFavoriteMovieFromDetail(
+            updateMyListMovieUseCase.updateMyListMovieFromDetail(
                 movieDetailModel = model, myListUpdatePage = MyListUpdatePage.WATCH_LIST
             ).doOnSuccess { updateModel ->
                 _movieDetailModel.update { updateModel }

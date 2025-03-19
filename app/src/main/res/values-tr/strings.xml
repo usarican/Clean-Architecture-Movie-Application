@@ -64,7 +64,8 @@
     <string name="are_you_sure">Emin misiniz?</string>
     <string name="my_list_are_you_sure_snack_bar_content">%1$s öğesini %2$s listesinden kaldırmak istediğinizden emin misiniz?</string>
     <string name="my_list_delete_snack_bar_content">%1$s filmi %2$s listesinden kaldırıldı</string>
-
+    <string name="my_list_undo_snack_bar_title">Geri Alma Başarılı</string>
+    <string name="my_list_undo_snack_bar_content">Önceki değişiklikleriniz geri alındı. %1$s filmi %2$s listenize eklendi.</string>
     <string name="sort_popularity">Popularity</string>
     <string name="sort_release_date">Latest Releases</string>
     <string name="top_rated">Top Rated</string>

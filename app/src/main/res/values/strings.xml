@@ -60,6 +60,8 @@
     <string name="undo">Undo</string>
     <string name="see_more">See More</string>
     <string name="are_you_sure">Are you Sure?</string>
+    <string name="my_list_undo_snack_bar_title">Undo Successful</string>
+    <string name="my_list_undo_snack_bar_content">Your previous changes have been restored. The %1$s movie added to your %2$s list.</string>
     <string name="my_list_are_you_sure_snack_bar_content">Are you sure to remove %1$s from %2$s</string>
     <string name="my_list_delete_snack_bar_content">You removed %1$s movie from %2$s</string>
 

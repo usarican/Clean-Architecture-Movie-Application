@@ -1,6 +1,5 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.presentation
 
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
@@ -12,23 +11,27 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UIAction
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListUpdatePage
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.DeleteCommand
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.DeleteMyListMovieUseCaseImpl
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.GetMyListMovieUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.UpdateMyListMovieUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
+import java.util.Stack
 import javax.inject.Inject
 
 @HiltViewModel
 class MyListViewModel @Inject constructor(
     private val getMyListMovieUseCase: GetMyListMovieUseCase,
     private val updateMyListMovieUseCase: UpdateMyListMovieUseCase,
+    private val deleteMyListMovieUseCaseFactory: DeleteMyListMovieUseCaseImpl.Factory,
     private val stringProvider: StringProvider
 ) : BaseViewModel() {
+
+    val deleteCommandsStack = ArrayDeque<DeleteCommand>()
 
     val favoriteMovies = getMyListMovieUseCase.getMyListMovieUseCase(page = MyListPage.FAVORITE)
         .cachedIn(viewModelScope)
@@ -62,8 +65,22 @@ class MyListViewModel @Inject constructor(
 
     inner class UndoAction : UIAction<Unit> {
         override fun action() {
-            // TODO: Implement undo behavior
-            TODO("Undo action not implemented")
+            val deleteCommand = deleteCommandsStack.removeLastOrNull()
+            deleteCommand?.undo()?.doOnSuccess {
+                sendEvent(
+                    MyEvent.ShowSnackBar(
+                        MySnackBarModel(
+                            title = stringProvider.getStringFromResource(R.string.my_list_undo_snack_bar_title),
+                            message = stringProvider.getStringFromResource(
+                                R.string.my_list_undo_snack_bar_content,
+                                (deleteCommand as DeleteMyListMovieUseCaseImpl).myListMovieModel.title,
+                                stringProvider.getStringFromResource(deleteCommand.myListUpdatePage.title)
+                            ),
+                            type = SnackBarType.SUCCESS,
+                        )
+                    )
+                )
+            }?.launchIn(viewModelScope)
         }
     }
 
@@ -113,8 +130,11 @@ class MyListViewModel @Inject constructor(
 
     private fun deleteMovie(deleteMovieData: DeleteMovieData?) {
         deleteMovieData?.let { data ->
-            updateMyListMovieUseCase.updateFavoriteMovieFromMyList(data.movie, data.page)
+            val deleteCommand = deleteMyListMovieUseCaseFactory.create(data.movie, data.page)
+            deleteCommand
+                .delete()
                 .doOnSuccess {
+                    deleteCommandsStack.add(deleteCommand)
                     sendEvent(
                         MyEvent.ShowSnackBar(
                             MySnackBarModel(

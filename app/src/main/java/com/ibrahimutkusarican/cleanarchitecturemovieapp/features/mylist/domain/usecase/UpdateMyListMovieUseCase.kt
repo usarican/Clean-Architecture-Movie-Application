@@ -8,7 +8,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.m
 import kotlinx.coroutines.flow.Flow
 
 interface UpdateMyListMovieUseCase {
-    fun updateFavoriteMovieFromHome(basicMovieModel: BasicMovieModel,myListUpdatePage: MyListUpdatePage) : Flow<UiState<BasicMovieModel>>
-    fun updateFavoriteMovieFromDetail(movieDetailModel: MovieDetailModel,myListUpdatePage: MyListUpdatePage) : Flow<UiState<MovieDetailModel>>
-    fun updateFavoriteMovieFromMyList(myListMovieModel: MyListMovieModel,myListUpdatePage: MyListUpdatePage) : Flow<UiState<MyListMovieModel>>
+    fun updateMyListMovieFromHome(basicMovieModel: BasicMovieModel, myListUpdatePage: MyListUpdatePage) : Flow<UiState<BasicMovieModel>>
+    fun updateMyListMovieFromDetail(movieDetailModel: MovieDetailModel, myListUpdatePage: MyListUpdatePage) : Flow<UiState<MovieDetailModel>>
 }

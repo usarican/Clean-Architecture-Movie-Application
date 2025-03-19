@@ -131,9 +131,7 @@ fun MySnackBar(
                         text = snackBarModel.message,
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = snackBarColors.onContainerColor
-                        ),
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
+                        )
                     )
                 }
 

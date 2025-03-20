@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -152,14 +153,6 @@ fun MovieDetailScreen(
         }
     }
 
-    /// TODO: İyi bir çözüm değil herhangi bir oriantation change'de de tetiklenir.
-    LaunchedEffect(isLandscape) {
-        if (isLandscape) {
-            viewModel.handleUiAction(DetailUiAction.OpenPlayerView)
-            EventListener.sendEvent(MyEvent.ChangeBottomNavigationVisibility(false))
-        }
-    }
-
 
     BaseUiStateComposable(uiState = uiState, tryAgainOnClickAction = {
         viewModel.handleUiAction(DetailUiAction.ErrorRetryAction)
@@ -174,8 +167,7 @@ fun MovieDetailScreen(
                     backClickAction = { viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction) },
                     action = viewModel::handleUiAction
                 )
-                if (showPlayerView) {
-                    /// TODO: Trailer yoksa error snackbar göstermek gerekiyor.
+                if (showPlayerView && isLandscape) {
                     model.movieDetailTrailerModel.trailers.firstOrNull()?.key?.let { videoKey ->
                         PlayView(
                             videoKey = videoKey,
@@ -589,7 +581,8 @@ private fun PlayView(videoKey: String, handleUiAction: (action: DetailUiAction) 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black),
+            .background(MaterialTheme.colorScheme.background.copy(alpha = .975F))
+            .windowInsetsPadding(WindowInsets.navigationBars),
         contentAlignment = Alignment.Center
     ) {
         Card(
@@ -597,7 +590,7 @@ private fun PlayView(videoKey: String, handleUiAction: (action: DetailUiAction) 
                 .fillMaxWidth(0.65F)
                 .fillMaxHeight(0.8F),
             shape = RoundedCornerShape(dimensionResource(R.dimen.l_medium_border)),
-            colors = CardDefaults.cardColors(contentColor = MaterialTheme.colorScheme.background)
+            elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.card_elevation))
         ) {
             AndroidView(
                 modifier = Modifier

@@ -71,6 +71,7 @@ class MovieDetailViewModel @Inject constructor(
                     MovieDetailActionButtonType.PLAY -> {
                         if (_movieDetailModel.value?.movieDetailTrailerModel?.trailers?.firstOrNull()?.key != null) {
                             sendEvent(MyEvent.RotateScreenEvent(true))
+                            _showPlayerView.value = true
                         } else {
                             sendEvent(
                                 MyEvent.ShowSnackBar(
@@ -101,7 +102,7 @@ class MovieDetailViewModel @Inject constructor(
             }
 
             DetailUiAction.OpenPlayerView -> {
-                _showPlayerView.value = true
+                //_showPlayerView.value = true
             }
         }
     }

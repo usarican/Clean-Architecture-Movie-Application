@@ -54,7 +54,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -73,8 +72,6 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.EventListener
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailInfoModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.mockMovieDetailModel
@@ -95,7 +92,7 @@ fun MovieDetailScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val movieDetailModel by viewModel.movieDetailModel.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val showPlayerView by viewModel.showPlayerView.collectAsStateWithLifecycle()
+    val playerViewVideoKey by viewModel.playerViewKey.collectAsStateWithLifecycle()
     val isLandscape = rememberOriantationIsLandscape()
 
     LaunchedEffect(Unit) {
@@ -167,14 +164,15 @@ fun MovieDetailScreen(
                     backClickAction = { viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction) },
                     action = viewModel::handleUiAction
                 )
-                if (showPlayerView && isLandscape) {
-                    model.movieDetailTrailerModel.trailers.firstOrNull()?.key?.let { videoKey ->
+                playerViewVideoKey?.let { videoKey ->
+                    if (isLandscape) {
                         PlayView(
                             videoKey = videoKey,
                             handleUiAction = viewModel::handleUiAction
                         )
                     }
                 }
+
             }
         }
     }
@@ -248,7 +246,8 @@ private fun MovieDetailActionButtons(
         verticalAlignment = Alignment.CenterVertically
     ) {
         actionButtons.forEach { button ->
-            MovieDetailActionButton(movieDetailActionButtonData = button,
+            MovieDetailActionButton(
+                movieDetailActionButtonData = button,
                 clickAction = { action(DetailUiAction.DetailButtonClickAction(it)) })
         }
     }
@@ -520,7 +519,8 @@ private fun MovieDetailImage(
         val (backdropImage, posterImage, backIcon) = createRefs()
         val topMargin = dimensionResource(R.dimen.x_x_large_padding)
 
-        IconButton(onClick = backClickAction,
+        IconButton(
+            onClick = backClickAction,
             modifier = Modifier
                 .windowInsetsPadding(WindowInsets.statusBars)
                 .constrainAs(backIcon) {
@@ -540,15 +540,16 @@ private fun MovieDetailImage(
             )
         }
 
-        MovieImage(modifier = Modifier
-            .fillMaxWidth()
-            .height((screenHeight / 2.5).dp)
-            .constrainAs(backdropImage) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }
-            .blur(dimensionResource(R.dimen.blur)),
+        MovieImage(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height((screenHeight / 2.5).dp)
+                .constrainAs(backdropImage) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+                .blur(dimensionResource(R.dimen.blur)),
             imageUrl = movieDetailInfoModel.backgroundImageUrl,
             contentScale = ContentScale.Crop)
         Card(

@@ -40,8 +40,8 @@ class MovieDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState<MovieDetailModel>>(UiState.Loading)
     val uiState: StateFlow<UiState<MovieDetailModel>> = _uiState
 
-    private val _showPlayerView = MutableStateFlow(false)
-    val showPlayerView: StateFlow<Boolean> = _showPlayerView
+    private val _playerViewKey = MutableStateFlow<String?>(null)
+    val playerViewKey: StateFlow<String?> = _playerViewKey
 
     private var movieId: Int? = null
 
@@ -69,9 +69,10 @@ class MovieDetailViewModel @Inject constructor(
             is DetailUiAction.DetailButtonClickAction -> {
                 when (action.data.type) {
                     MovieDetailActionButtonType.PLAY -> {
-                        if (_movieDetailModel.value?.movieDetailTrailerModel?.trailers?.firstOrNull()?.key != null) {
+                        val videoKey = _movieDetailModel.value?.movieDetailTrailerModel?.trailers?.firstOrNull()?.key
+                        if (videoKey != null) {
                             sendEvent(MyEvent.RotateScreenEvent(true))
-                            _showPlayerView.value = true
+                            _playerViewKey.value = videoKey
                         } else {
                             sendEvent(
                                 MyEvent.ShowSnackBar(
@@ -96,13 +97,9 @@ class MovieDetailViewModel @Inject constructor(
 
             is DetailUiAction.GoToMyListPage -> sendEvent(MyEvent.GoToMyListEvent(action.pageIndex))
             DetailUiAction.PlayerViewOnBackPressed -> {
-                _showPlayerView.value = false
+                _playerViewKey.value = null
                 sendEvent(MyEvent.RotateScreenEvent(false))
                 sendEvent(MyEvent.ChangeBottomNavigationVisibility(true))
-            }
-
-            DetailUiAction.OpenPlayerView -> {
-                //_showPlayerView.value = true
             }
         }
     }

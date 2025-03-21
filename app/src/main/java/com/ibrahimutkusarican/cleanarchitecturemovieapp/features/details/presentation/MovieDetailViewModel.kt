@@ -72,6 +72,7 @@ class MovieDetailViewModel @Inject constructor(
                         val videoKey = _movieDetailModel.value?.movieDetailTrailerModel?.trailers?.firstOrNull()?.key
                         if (videoKey != null) {
                             sendEvent(MyEvent.RotateScreenEvent(true))
+                            sendEvent(MyEvent.ChangeBottomNavigationVisibility(false))
                             _playerViewKey.value = videoKey
                         } else {
                             sendEvent(

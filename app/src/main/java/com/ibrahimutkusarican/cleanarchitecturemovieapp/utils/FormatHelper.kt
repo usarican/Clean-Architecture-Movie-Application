@@ -63,6 +63,10 @@ class FormatHelper @Inject constructor() {
     }
 
     fun formatMoney(amount: Long, language: String): String {
+        val newAmount = when(language){
+            "tr" -> amount * 40
+            else -> amount
+        }
         if (amount <= 0) {
             return "0 $"
         }
@@ -71,24 +75,24 @@ class FormatHelper @Inject constructor() {
         val value: Double
 
         when {
-            amount >= 1_000_000_000L -> {
+            newAmount >= 1_000_000_000L -> {
                 suffix = "B"  // Billions
                 value = amount / 1_000_000_000.0
             }
 
-            amount >= 1_000_000 -> {
+            newAmount >= 1_000_000 -> {
                 suffix = "M"  // Millions
                 value = amount / 1_000_000.0
             }
 
-            amount >= 1_000 -> {
+            newAmount >= 1_000 -> {
                 suffix = "K"  // Thousands
                 value = amount / 1_000.0
             }
 
             else -> {
                 // Less than 1,000 -> just return "500 $"
-                return "$amount $"
+                return "$newAmount $"
             }
         }
 

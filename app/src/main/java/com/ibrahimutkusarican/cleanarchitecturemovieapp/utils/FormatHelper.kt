@@ -63,12 +63,13 @@ class FormatHelper @Inject constructor() {
     }
 
     fun formatMoney(amount: Long, language: String): String {
-        val newAmount = when(language){
-            "tr" -> amount * 40
+        val newAmount = when (language.lowercase()) {
+            "tr", "turkish" -> amount * 40
             else -> amount
         }
-        if (amount <= 0) {
-            return "0 $"
+
+        if (newAmount <= 0) {
+            return if (language.lowercase() == "tr" || language.lowercase() == "turkish") "0 ₺" else "0 $"
         }
 
         val suffix: String
@@ -77,38 +78,37 @@ class FormatHelper @Inject constructor() {
         when {
             newAmount >= 1_000_000_000L -> {
                 suffix = "B"  // Billions
-                value = amount / 1_000_000_000.0
+                value = newAmount / 1_000_000_000.0
             }
 
             newAmount >= 1_000_000 -> {
                 suffix = "M"  // Millions
-                value = amount / 1_000_000.0
+                value = newAmount / 1_000_000.0
             }
 
             newAmount >= 1_000 -> {
                 suffix = "K"  // Thousands
-                value = amount / 1_000.0
+                value = newAmount / 1_000.0
             }
 
             else -> {
-                // Less than 1,000 -> just return "500 $"
-                return "$newAmount $"
+                val currencySymbol = if (language.lowercase() == "tr" || language.lowercase() == "turkish") "₺" else "$"
+                return "$newAmount $currencySymbol"
             }
         }
 
         val locale = when (language.lowercase()) {
-            "turkish", "tr" -> Locale("tr", "TR") // Turkish
-            "english", "en" -> Locale("en", "US") // English
-            else -> Locale.getDefault() // Fallback to system default
+            "tr", "turkish" -> Locale("tr", "TR")
+            "en", "english" -> Locale("en", "US")
+            else -> Locale.getDefault()
         }
 
-        // Check if we need decimals
+        val currencySymbol = if (language.lowercase() == "tr" || language.lowercase() == "turkish") "₺" else "$"
+
         return if (value % 1.0 == 0.0) {
-            // If value is an integer, e.g. 422.0 -> "422M $"
-            String.format(locale, "%.0f%s $", value, suffix, locale)
+            String.format(locale, "%.0f%s %s", value, suffix, currencySymbol)
         } else {
-            // Otherwise, keep one decimal digit, e.g. 422.4 -> "422.4M $"
-            String.format(locale, "%.1f%s $", value, suffix)
+            String.format(locale, "%.1f%s %s", value, suffix, currencySymbol)
         }
     }
 

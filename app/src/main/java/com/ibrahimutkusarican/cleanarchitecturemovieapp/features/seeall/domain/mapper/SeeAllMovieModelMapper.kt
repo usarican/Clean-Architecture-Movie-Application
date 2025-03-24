@@ -5,6 +5,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.model.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.VisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.model.SeeAllMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.Language
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.FormatHelper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.ImageUrlHelper
 import javax.inject.Inject
@@ -16,7 +17,8 @@ class SeeAllMovieModelMapper @Inject constructor(
 ) {
     fun responseToModel(
         movieResultResponse: MovieResultResponse,
-        genreList: List<GenreModel>
+        genreList: List<GenreModel>,
+        language: Language = Language.EN
     ): SeeAllMovieModel {
         return with(movieResultResponse) {
             SeeAllMovieModel(
@@ -26,12 +28,12 @@ class SeeAllMovieModelMapper @Inject constructor(
                 movieGenres = genreIdsToGenreNameListMapper.getGenreNames(genreIds, genreList),
                 moviePosterImageUrl = imageUrlHelper.getPosterUrl(posterPath),
                 movieTMDBScore = voteAverage,
-                movieReleaseTime = formatHelper.formatReleaseDate(releaseDate, language = "en")
+                movieReleaseTime = formatHelper.formatReleaseDate(releaseDate, language = language)
             )
         }
     }
 
-    fun entityToModel(entity: VisitedMovieEntity): SeeAllMovieModel {
+    fun entityToModel(entity: VisitedMovieEntity,language: Language = Language.EN) : SeeAllMovieModel {
         return with(entity) {
             SeeAllMovieModel(
                 movieId = movieId,
@@ -40,7 +42,7 @@ class SeeAllMovieModelMapper @Inject constructor(
                 movieGenres = genres.map { it.genreName },
                 moviePosterImageUrl = imageUrlHelper.getPosterUrl(posterPath),
                 movieTMDBScore = voteAverage,
-                movieReleaseTime = formatHelper.formatReleaseDate(releaseDate, language = "en")
+                movieReleaseTime = formatHelper.formatReleaseDate(releaseDate, language = language)
             )
         }
     }

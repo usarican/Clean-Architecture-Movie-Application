@@ -6,6 +6,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.model.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.Language
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BackdropSize
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.FormatHelper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.ImageUrlHelper
@@ -17,12 +18,14 @@ class HomeMovieModelMapper @Inject constructor(
     private val genreIdsToGenreNameListMapper: GenreIdsToGenreNameListMapper,
     private val formatHelper: FormatHelper
 ) {
+    /// TODO: Change All Languages from "en" to language fetch from user data store
     @SuppressLint("DefaultLocale")
     fun mapEntityToModel(
         entity: MovieEntity,
         genreList: List<GenreModel>,
         posterSize: MoviePosterSize = MoviePosterSize.W500,
-        backdropSize: BackdropSize = BackdropSize.W780
+        backdropSize: BackdropSize = BackdropSize.W780,
+        language : Language = Language.EN
     ): BasicMovieModel {
         return with(entity) {
             BasicMovieModel(
@@ -38,7 +41,7 @@ class HomeMovieModelMapper @Inject constructor(
                     backdropPath = backdropPath, size = backdropSize
                 ),
                 movieOverview = overview,
-                releaseDate = formatHelper.formatReleaseDate(releaseDate, language = "en"),
+                releaseDate = formatHelper.formatReleaseDate(releaseDate, language = language),
                 movieVotePoint = String.format("%.1f", voteAverage)
             )
         }
@@ -48,7 +51,8 @@ class HomeMovieModelMapper @Inject constructor(
     fun mapResponseToModel(
         movieResultResponse: MovieResultResponse, genreList: List<GenreModel>,
         posterSize: MoviePosterSize = MoviePosterSize.W500,
-        backdropSize: BackdropSize = BackdropSize.W780
+        backdropSize: BackdropSize = BackdropSize.W780,
+        language : Language = Language.EN
     ): BasicMovieModel {
         return with(movieResultResponse) {
             BasicMovieModel(
@@ -64,7 +68,7 @@ class HomeMovieModelMapper @Inject constructor(
                     backdropPath = backdropPath, size = backdropSize
                 ),
                 movieOverview = overview,
-                releaseDate = formatHelper.formatReleaseDate(releaseDate, language = "en"),
+                releaseDate = formatHelper.formatReleaseDate(releaseDate, language = language),
                 movieVotePoint = String.format("%.1f", voteAverage)
             )
         }

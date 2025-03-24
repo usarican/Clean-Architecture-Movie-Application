@@ -1,29 +1,27 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils
 
 import android.annotation.SuppressLint
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.Language
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Currency
 import java.util.Locale
 import javax.inject.Inject
 
 class FormatHelper @Inject constructor() {
 
     @SuppressLint("NewApi")
-    fun formatReleaseDate(dateString: String, language: String): String {
+    fun formatReleaseDate(dateString: String, language: Language): String {
         try {
             val parsedDate = LocalDate.parse(dateString)
 
-            // Determine the Locale based on the language
-            val locale = when (language.lowercase()) {
-                "turkish", "tr" -> Locale("tr", "TR") // Turkish
-                "english", "en" -> Locale("en", "US") // English
-                else -> Locale.getDefault() // Fallback to system default
+            val locale = when (language) {
+                Language.TR -> Locale("tr", "TR")
+                Language.EN -> Locale("en", "US")
             }
 
-            // Create formatter based on the locale
             val formatter = DateTimeFormatter.ofPattern("d MMMM yyyy", locale)
 
-            // Format the date
             return parsedDate.format(formatter)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -32,14 +30,14 @@ class FormatHelper @Inject constructor() {
     }
 
     @SuppressLint("NewApi")
-    fun formatMovieReleaseDateToYear(dateString: String, language: String): String {
+    fun formatMovieReleaseDateToYear(dateString: String, language: Language): String {
         return try {
             val parsedDate = LocalDate.parse(dateString)
-            val locale = when (language.lowercase()) {
-                "turkish", "tr" -> Locale("tr", "TR") // Turkish
-                "english", "en" -> Locale("en", "US") // English
-                else -> Locale.getDefault() // Fallback to system default
+            val locale = when (language) {
+                Language.TR -> Locale("tr", "TR")
+                Language.EN -> Locale("en", "US")
             }
+
             parsedDate.format(DateTimeFormatter.ofPattern("yyyy", locale))
         } catch (e: Exception) {
             e.printStackTrace()
@@ -62,14 +60,18 @@ class FormatHelper @Inject constructor() {
         }
     }
 
-    fun formatMoney(amount: Long, language: String): String {
-        val newAmount = when (language.lowercase()) {
-            "tr", "turkish" -> amount * 40
-            else -> amount
+    fun formatMoney(amount: Long, language: Language): String {
+        val locale = when (language) {
+            Language.TR -> Locale("tr", "TR")
+            Language.EN -> Locale("en", "US")
         }
 
+        val currencySymbol = Currency.getInstance(locale).symbol
+
+        val newAmount = if (language == Language.TR) amount * 40 else amount
+
         if (newAmount <= 0) {
-            return if (language.lowercase() == "tr" || language.lowercase() == "turkish") "0 ₺" else "0 $"
+            return "0 $currencySymbol"
         }
 
         val suffix: String
@@ -77,33 +79,24 @@ class FormatHelper @Inject constructor() {
 
         when {
             newAmount >= 1_000_000_000L -> {
-                suffix = "B"  // Billions
+                suffix = "B"
                 value = newAmount / 1_000_000_000.0
             }
 
-            newAmount >= 1_000_000 -> {
-                suffix = "M"  // Millions
+            newAmount >= 1_000_000L -> {
+                suffix = "M"
                 value = newAmount / 1_000_000.0
             }
 
-            newAmount >= 1_000 -> {
-                suffix = "K"  // Thousands
+            newAmount >= 1_000L -> {
+                suffix = "K"
                 value = newAmount / 1_000.0
             }
 
             else -> {
-                val currencySymbol = if (language.lowercase() == "tr" || language.lowercase() == "turkish") "₺" else "$"
                 return "$newAmount $currencySymbol"
             }
         }
-
-        val locale = when (language.lowercase()) {
-            "tr", "turkish" -> Locale("tr", "TR")
-            "en", "english" -> Locale("en", "US")
-            else -> Locale.getDefault()
-        }
-
-        val currencySymbol = if (language.lowercase() == "tr" || language.lowercase() == "turkish") "₺" else "$"
 
         return if (value % 1.0 == 0.0) {
             String.format(locale, "%.0f%s %s", value, suffix, currencySymbol)
@@ -112,20 +105,10 @@ class FormatHelper @Inject constructor() {
         }
     }
 
-    fun formatVoteAverage(voteAverage: Double,language: String) : String {
-        val locale = when (language.lowercase()) {
-            "turkish", "tr" -> Locale("tr", "TR") // Turkish
-            "english", "en" -> Locale("en", "US") // English
-            else -> Locale.getDefault() // Fallback to system default
-        }
-        return String.format(locale,"%.1f", voteAverage).removeSuffix(".0")
-    }
-
-    fun formatVoteAverageAndVoteCount(voteAverage: Double, voteCount: Int,language: String): String {
-        val locale = when (language.lowercase()) {
-            "turkish", "tr" -> Locale("tr", "TR") // Turkish
-            "english", "en" -> Locale("en", "US") // English
-            else -> Locale.getDefault() // Fallback to system default
+    fun formatVoteAverageAndVoteCount(voteAverage: Double, voteCount: Int,language: Language): String {
+        val locale = when (language) {
+            Language.TR -> Locale("tr", "TR")
+            Language.EN -> Locale("en", "US")
         }
         val avgString = String.format(locale,"%.1f", voteAverage).removeSuffix(".0")
         val baseOutput = "$avgString / 10"

@@ -1,25 +1,21 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.data.UserSettingsDataStore
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
 class RequestInterceptor @Inject constructor(
-    private val dataStore: DataStore<Preferences>
+    private val userSettingsDataStore: UserSettingsDataStore
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
 
         val language = runBlocking {
-            dataStore.data.map { prefs ->
-                prefs[LANGUAGE_KEY] ?: DEFAULT_LANGUAGE
-            }.first()
+            userSettingsDataStore.getLanguageCode().first()
         }
 
         val newUrl = originalRequest.url.newBuilder()

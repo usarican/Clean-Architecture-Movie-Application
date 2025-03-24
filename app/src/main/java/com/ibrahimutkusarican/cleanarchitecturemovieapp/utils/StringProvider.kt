@@ -3,6 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils
 import android.content.Context
 import android.content.res.Configuration
 import androidx.annotation.StringRes
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.data.UserSettingsDataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -18,10 +19,9 @@ class StringProvider @Inject constructor(
 
     private fun getLocalizedContext(): Context {
         val storedLanguage = runBlocking {
-            LocaleManager(context).getStoredLanguage().first()
+            UserSettingsDataStore(context).getLanguageCode().first()
         }
-        return LocaleManager(context).applyLocale(storedLanguage)
+        return UserSettingsDataStore(context).applyLocale(storedLanguage)
     }
-
 
 }

@@ -1,7 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.di
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.data.UserSettingsDataStore
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.MOVIE_API_URL
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.TIME_OUT_VALUE
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.RequestInterceptor
@@ -25,10 +24,10 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideOkHttpClient(
-        @UserSettingsDataStore dataStore: DataStore<Preferences>
+       userSettingsDataStore: UserSettingsDataStore
     ) : OkHttpClient {
         return OkHttpClient().newBuilder()
-            .addNetworkInterceptor(RequestInterceptor(dataStore))
+            .addNetworkInterceptor(RequestInterceptor(userSettingsDataStore))
             .addInterceptor(HttpLoggingInterceptor())
             .readTimeout(TIME_OUT_VALUE, TimeUnit.SECONDS)
             .connectTimeout(TIME_OUT_VALUE,TimeUnit.SECONDS)

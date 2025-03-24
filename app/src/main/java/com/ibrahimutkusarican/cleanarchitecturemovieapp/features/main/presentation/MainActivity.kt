@@ -1,6 +1,5 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentation
 
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -14,22 +13,12 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseActivity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.EventListener
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.theme.AppTheme
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.LocaleManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import java.util.Locale
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
-
-    @Inject
-    lateinit var localeManager: LocaleManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

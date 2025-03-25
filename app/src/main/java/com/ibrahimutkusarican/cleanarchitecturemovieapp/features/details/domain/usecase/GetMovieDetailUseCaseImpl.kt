@@ -8,6 +8,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailRecommendedMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.MyListRepository
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.data.UserSettingsRepository
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.Language
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getSuccessOrThrow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -18,7 +20,8 @@ class GetMovieDetailUseCaseImpl @Inject constructor(
     private val movieDetailRepository: MovieDetailRepository,
     private val movieDetailModelMapper: MovieDetailModelMapper,
     private val myListRepository: MyListRepository,
-    private val genresUseCase: GetMovieGenresUseCase
+    private val genresUseCase: GetMovieGenresUseCase,
+    private val userSettingsRepository: UserSettingsRepository
 ) : BaseUseCase(), GetMovieDetailUseCase {
     override fun getMovieDetail(movieId: Int): Flow<UiState<MovieDetailModel>> {
         return execute {
@@ -41,7 +44,8 @@ class GetMovieDetailUseCaseImpl @Inject constructor(
                 movieDetailRepository.getMovieDetailCredits(movieId),
                 movieDetailRepository.getMovieDetailReviews(movieId),
                 movieDetailRepository.getMovieDetailTrailers(movieId),
-            ) { movieDetailResponseState, movieDetailCreditResponseState, movieDetailReviewsState, movieDetailTrailersState ->
+                userSettingsRepository.getLanguageCode()
+            ) { movieDetailResponseState, movieDetailCreditResponseState, movieDetailReviewsState, movieDetailTrailersState, languageCode ->
                 val movieDetailResponse = movieDetailResponseState.getSuccessOrThrow()
                 val movieDetailCreditResponse = movieDetailCreditResponseState.getSuccessOrThrow()
                 val movieDetailReviewsResponse = movieDetailReviewsState.getSuccessOrThrow()
@@ -49,12 +53,14 @@ class GetMovieDetailUseCaseImpl @Inject constructor(
 
                 val movieDetailInfoModel =
                     movieDetailModelMapper.movieDetailResponseToMovieDetailInfoModel(
-                        movieDetailResponse
+                        movieDetailResponse = movieDetailResponse,
+                        language = Language.fromLanguageCode(languageCode)
                     )
                 val movieDetailAboutModel =
                     movieDetailModelMapper.movieDetailResponseToMovieDetailAboutModel(
-                        movieDetailResponse,
-                        movieDetailCreditResponse
+                        movieDetailResponse =movieDetailResponse,
+                        movieDetailCreditResponse = movieDetailCreditResponse,
+                        language = Language.fromLanguageCode(languageCode)
                     )
                 val movieDetailReviewModel =
                     movieDetailModelMapper.movieReviewResponseToMovieDetailReviewModel(

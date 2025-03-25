@@ -1,10 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -13,7 +10,6 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
-import androidx.compose.animation.with
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -54,7 +50,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
@@ -283,13 +278,13 @@ private fun MovieGenreView(modifier: Modifier = Modifier, genreList: List<String
         maxItemsInEachRow = 3
     ) {
         for (index in genreList.indices) {
-            MovieGenreItem(genreText = genreList[index], index)
+            MovieGenreItem(genreText = genreList[index])
         }
     }
 }
 
 @Composable
-private fun MovieGenreItem(genreText: String, index: Int) {
+private fun MovieGenreItem(genreText: String) {
     Card(
         modifier = Modifier.padding(
             start = dimensionResource(R.dimen.small_padding)

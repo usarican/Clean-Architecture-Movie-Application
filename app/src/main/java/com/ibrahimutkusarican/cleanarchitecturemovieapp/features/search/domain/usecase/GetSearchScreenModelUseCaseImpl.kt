@@ -41,9 +41,14 @@ class GetSearchScreenModelUseCaseImpl @Inject constructor(
                     val recommendedMovieResponse = recommendedMovieState.getSuccessOrThrow()
                     val recentlyViewedMovie = recentlyViewedMovieState.getSuccessOrThrow()
                     val lastSearchEntities = lastSearchQueryState.getSuccessOrThrow()
+                    val language = Language.fromLanguageCode(languageCode)
 
                     val recommendedMovieList = recommendedMovieResponse.map { response ->
-                        homeMovieModelMapper.mapResponseToModel(response, genreList)
+                        homeMovieModelMapper.mapResponseToModel(
+                            movieResultResponse = response,
+                            genreList = genreList,
+                            language = language
+                        )
                     }
 
                     val recentlyViewedMovieList = recentlyViewedMovie.map { entity ->
@@ -52,10 +57,11 @@ class GetSearchScreenModelUseCaseImpl @Inject constructor(
                     val lastSearchItems = lastSearchEntities.map { lastSearchEntity ->
                         searchItemModelMapper.entityToModel(lastSearchEntity)
                     }
-                    val topSearchedMovies = when(Language.fromLanguageCode(languageCode = languageCode)){
-                        Language.TR -> turkishTopSearchedMovies
-                        Language.EN -> englishTopSearchedMovies
-                    }
+                    val topSearchedMovies =
+                        when (Language.fromLanguageCode(languageCode = languageCode)) {
+                            Language.TR -> turkishTopSearchedMovies
+                            Language.EN -> englishTopSearchedMovies
+                        }
                     SearchScreenModel(
                         recommendedMoviesForYou = recommendedMovieList,
                         recentlyViewedMovies = recentlyViewedMovieList,

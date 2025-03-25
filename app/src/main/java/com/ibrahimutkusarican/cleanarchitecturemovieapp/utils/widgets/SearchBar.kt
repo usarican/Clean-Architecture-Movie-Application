@@ -15,7 +15,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -33,7 +32,6 @@ fun MySearchBar(
     searchText: String = "asd",
     showFilterIcon: Boolean = false,
     isEnable: Boolean = true,
-    readOnly: Boolean = false,
     onClickAction: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource? = null,
 ) {

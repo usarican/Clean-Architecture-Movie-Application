@@ -23,9 +23,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.domain.model.ExploreGenreModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.domain.model.ExploreInitialDataModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.MovieCategory
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
@@ -52,12 +50,7 @@ fun ExploreScreen() {
 @Preview(showBackground = true)
 private fun ExploreSuccessScreen(
     data: ExploreInitialDataModel = ExploreInitialDataModel(
-        genreList = listOf(
-            ExploreGenreModel(-1, "All", true),
-            ExploreGenreModel(-1, "Action"),
-            ExploreGenreModel(-1, "Horror"),
-            ExploreGenreModel(-1, "Comedy")
-        ), forYouMovie = BasicMovieModel(
+        forYouMovie = BasicMovieModel(
             movieId = 1,
             movieTitle = "The Batman",
             movieGenres = listOf("Action", "Drama", "Scientfic"),
@@ -82,7 +75,6 @@ private fun ExploreSuccessScreen(
             searchText = "",
             showFilterIcon = true,
             isEnable = false,
-            readOnly = true,
             onClickAction = {
                 handleUiAction(ExploreUiAction.SearchBarClickAction(data.forYouMovie?.movieId))
             })

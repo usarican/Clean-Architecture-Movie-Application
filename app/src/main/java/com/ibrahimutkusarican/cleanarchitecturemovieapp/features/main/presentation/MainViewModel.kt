@@ -8,9 +8,9 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.domain.usecase.LanguageChangeUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.data.UserSettingsDataStore
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.SettingsModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.usecase.GetSettingsModelUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.LocaleManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +28,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val getSettingsModelUseCase: GetSettingsModelUseCase,
     private val languageChangeUseCase: LanguageChangeUseCase,
-    private val localeManager: LocaleManager
+    private val userSettingsDataStore: UserSettingsDataStore
 ) : BaseViewModel() {
 
     private val _navigationFlow = MutableSharedFlow<NavigationRoutes?>()
@@ -136,8 +136,8 @@ class MainViewModel @Inject constructor(
 
     fun languageChanged() {
         viewModelScope.launch {
-            if (localeManager.getLanguageChangeFlag().first()) {
-                localeManager.setLanguageChangeFlag(false)
+            if (userSettingsDataStore.getLanguageChangeFlag().first()) {
+                userSettingsDataStore.setLanguageChangeFlag(false)
                 languageChangeUseCase.languageChangeForMyListMovies()
                     .launchIn(viewModelScope)
             }

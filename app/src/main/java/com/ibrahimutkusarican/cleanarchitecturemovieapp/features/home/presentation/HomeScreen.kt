@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -20,25 +18,18 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorScreen
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.HOME_SCREEN_BANNER_MOVIES_HEIGHT_RATIO
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.statusBarAndNavigationBarPadding
 
 
 @Composable
@@ -69,8 +60,6 @@ fun HomeSuccessScreen(
 ) {
     val screenHeightDp = LocalConfiguration.current.screenHeightDp.dp
     val state = rememberPullToRefreshState()
-    val context = LocalContext.current
-
 
     PullToRefreshBox(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars), state = state, isRefreshing = refreshUiState == UiState.Loading, onRefresh = {
         action.invoke(HomeUiAction.PullToRefreshAction)

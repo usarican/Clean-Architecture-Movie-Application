@@ -111,7 +111,7 @@ fun SettingsScreen() {
             ) {
                 var selectedLanguage by remember { mutableStateOf(userSettings.selectedLanguage) }
                 TopBarWithActions(
-                    title = "Language",
+                    title = stringResource(R.string.language),
                     onCancel = {
                         showBottomSheet = false
                     },
@@ -238,34 +238,34 @@ fun SettingsItem(modifier: Modifier = Modifier,settingsModel: SettingsModel = Se
 }
 
 @Composable
+@Preview(showBackground = true)
 fun TopBarWithActions(
-    title: String,
-    onCancel: () -> Unit,
-    onDone: () -> Unit
+    title: String = stringResource(R.string.language),
+    onCancel: () -> Unit = {},
+    onDone: () -> Unit = {}
 ) {
-    Row(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically
     ) {
-        TextButton(onClick = onCancel) {
+        TextButton(modifier = Modifier.align(Alignment.CenterStart), onClick = onCancel) {
             Text(stringResource(R.string.cancel), style = MaterialTheme.typography.titleSmall.copy(
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.W600
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.W500
             ))
         }
         Text(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.align(Alignment.Center),
             text = title,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onSurface
         )
-        TextButton(onClick = onDone) {
+        TextButton(modifier = Modifier.align(Alignment.CenterEnd),onClick = onDone) {
             Text(stringResource(R.string.done), style = MaterialTheme.typography.titleSmall.copy(
-                color = MaterialTheme.colorScheme.secondary,
-                fontWeight = FontWeight.W600
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.W700
             ))
         }
     }

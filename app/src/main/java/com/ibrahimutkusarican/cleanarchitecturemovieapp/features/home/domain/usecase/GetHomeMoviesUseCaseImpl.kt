@@ -7,6 +7,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.Movie
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.mapper.HomeMovieModelMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.data.UserSettingsDataStore
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.Language
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.MoviePosterSize
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getSuccessOrThrow
 import kotlinx.coroutines.flow.Flow
@@ -18,9 +20,11 @@ class GetHomeMoviesUseCaseImpl @Inject constructor(
     private val movieRepository: MovieRepository,
     private val movieModelMapper: HomeMovieModelMapper,
     private val getMovieGenreUseCase: GetMovieGenresUseCase,
+    private val userSettingsDataStore: UserSettingsDataStore
 ) : GetHomeMoviesUseCase, BaseUseCase() {
     override fun getHomeMoviesUseCase(): Flow<UiState<Map<MovieType, List<BasicMovieModel>>>> {
         return execute {
+            val language = Language.fromLanguageCode(userSettingsDataStore.getLanguageCode().first())
             combine(
                 getMovieGenreUseCase.getMovieGenresUseCase(),
                 movieRepository.getMoviesByType(MovieType.NOW_PLAYING, limit = 10),
@@ -38,22 +42,23 @@ class GetHomeMoviesUseCaseImpl @Inject constructor(
                     movieModelMapper.mapEntityToModel(
                         entity = movieEntity,
                         genreList = genreModelList,
-                        posterSize = MoviePosterSize.W780
+                        posterSize = MoviePosterSize.W780,
+                        language = language
                     )
                 }
                 val popularMovieModelList = popularList.map { movieEntity ->
                     movieModelMapper.mapEntityToModel(
-                        entity = movieEntity, genreList = genreModelList
+                        entity = movieEntity, genreList = genreModelList, language = language
                     )
                 }
                 val topRatedMovieModelList = topRatedList.map { movieEntity ->
                     movieModelMapper.mapEntityToModel(
-                        entity = movieEntity, genreList = genreModelList
+                        entity = movieEntity, genreList = genreModelList, language = language
                     )
                 }
                 val upComingMovieModelList = upcomingList.map { movieEntity ->
                     movieModelMapper.mapEntityToModel(
-                        entity = movieEntity, genreList = genreModelList
+                        entity = movieEntity, genreList = genreModelList, language = language
                     )
                 }
 

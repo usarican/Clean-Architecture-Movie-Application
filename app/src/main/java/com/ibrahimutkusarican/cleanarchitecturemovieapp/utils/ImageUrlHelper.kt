@@ -12,7 +12,7 @@ class ImageUrlHelper @Inject constructor() {
         return if (backdropPath != null) "${Constants.MOVIE_IMAGE_API_URL}${size.size}$backdropPath" else null
     }
 
-    fun getProfileUrl(profilePath: String?, size: MoviePosterSize = MoviePosterSize.W185): String? {
+    fun getProfileUrl(profilePath: String?, size: MoviePosterSize = MoviePosterSize.W92): String? {
         return if (profilePath != null) "${Constants.MOVIE_IMAGE_API_URL}${size.size}$profilePath" else null
     }
 

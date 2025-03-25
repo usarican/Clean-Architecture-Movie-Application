@@ -18,14 +18,13 @@ class HomeMovieModelMapper @Inject constructor(
     private val genreIdsToGenreNameListMapper: GenreIdsToGenreNameListMapper,
     private val formatHelper: FormatHelper
 ) {
-    /// TODO: Change All Languages from "en" to language fetch from user data store
     @SuppressLint("DefaultLocale")
     fun mapEntityToModel(
         entity: MovieEntity,
         genreList: List<GenreModel>,
-        posterSize: MoviePosterSize = MoviePosterSize.W500,
+        posterSize: MoviePosterSize = MoviePosterSize.W342,
         backdropSize: BackdropSize = BackdropSize.W780,
-        language : Language = Language.EN
+        language : Language
     ): BasicMovieModel {
         return with(entity) {
             BasicMovieModel(
@@ -52,7 +51,7 @@ class HomeMovieModelMapper @Inject constructor(
         movieResultResponse: MovieResultResponse, genreList: List<GenreModel>,
         posterSize: MoviePosterSize = MoviePosterSize.W500,
         backdropSize: BackdropSize = BackdropSize.W780,
-        language : Language = Language.EN
+        language : Language
     ): BasicMovieModel {
         return with(movieResultResponse) {
             BasicMovieModel(

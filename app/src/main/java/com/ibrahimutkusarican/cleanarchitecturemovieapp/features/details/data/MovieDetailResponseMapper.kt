@@ -2,6 +2,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.VisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.MovieDetailResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import javax.inject.Inject
 
 class MovieDetailResponseMapper @Inject constructor() {
@@ -15,7 +16,7 @@ class MovieDetailResponseMapper @Inject constructor() {
                 voteAverage = voteAverage,
                 voteCount = voteCount,
                 adult = adult,
-                backdropPath = backdropPath,
+                backdropPath = backdropPath ?: Constants.EMPTY_STRING,
                 budget = budget,
                 releaseDate = releaseDate,
                 revenue = revenue,

@@ -9,5 +9,17 @@ width="100" hspace="10" vspace="10">
 
 ## Light Theme & English Screnshoots
 
+![](https://github.com/usarican/Clean-Architecture-Movie-Application/blob/main/ScreenShoots/1.png)
+![](https://github.com/usarican/Clean-Architecture-Movie-Application/blob/main/ScreenShoots/3.png)
+![](https://github.com/usarican/Clean-Architecture-Movie-Application/blob/main/ScreenShoots/5.png)
+![](https://github.com/usarican/Clean-Architecture-Movie-Application/blob/main/ScreenShoots/7.png)
+![](https://github.com/usarican/Clean-Architecture-Movie-Application/blob/main/ScreenShoots/9.png)
+
 ## Dark Theme & Turkish Screnshoots
+
+![](https://github.com/usarican/Clean-Architecture-Movie-Application/blob/main/ScreenShoots/2.png)
+![](https://github.com/usarican/Clean-Architecture-Movie-Application/blob/main/ScreenShoots/4.png)
+![](https://github.com/usarican/Clean-Architecture-Movie-Application/blob/main/ScreenShoots/6.png)
+![](https://github.com/usarican/Clean-Architecture-Movie-Application/blob/main/ScreenShoots/8.png)
+![](https://github.com/usarican/Clean-Architecture-Movie-Application/blob/main/ScreenShoots/10.png)
 

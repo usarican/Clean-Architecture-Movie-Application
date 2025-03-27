@@ -38,3 +38,42 @@ The CAMA application has a completely compose UI and has been developed in accor
 ![](https://github.com/usarican/Clean-Architecture-Movie-Application/blob/main/ScreenShoots/8.png)
 ![](https://github.com/usarican/Clean-Architecture-Movie-Application/blob/main/ScreenShoots/10.png)</br></br>
 
+## 🤝 How to Contribute
+Contributions are welcome! Whether it's a bug fix, feature suggestion, or code improvement, feel free to get involved.
+
+## 🚀 Getting Started
+1. **Fork the Project**
+Click the Fork button at the top right of this repo to create your own copy.
+
+2. **Clone Your Fork Locally**<br>
+```bash
+git clone https://github.com/usarican/Clean-Architecture-Movie-Application.git
+```
+3. **Add Your TMDb Token** <br>
+To run the project locally, you need a TMDb API token.</br>
+Create a local.properties file in the root directory if it doesn't exist, and add the following:
+
+```ini
+TMDB_AUTH_TOKEN=your_tmdb_token_here
+```
+> ⚠️ **Important:** Keep your token private and **never commit it** to the repository.
+
+4. **Create a New Branch**<br>
+```bash
+git checkout -b feature/your-feature-name
+```
+
+5. **Make Your Changes**<br>
+Make sure your changes follow the existing code style and conventions.
+
+6. **Commit and Push**<br>
+```bash
+git commit -m "Add: your feature/fix description"
+git push origin feature/your-feature-name
+```
+
+7. **Open a Pull Request**
+Go to your forked repo on GitHub and click "Compare & pull request".
+Fill out the details and submit your PR. I'll review it as soon as possible!
+
+

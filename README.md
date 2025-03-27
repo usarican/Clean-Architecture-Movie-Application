@@ -74,6 +74,16 @@ git push origin feature/your-feature-name
 
 7. **Open a Pull Request**
 Go to your forked repo on GitHub and click "Compare & pull request".
-Fill out the details and submit your PR. I'll review it as soon as possible!
+Fill out the details and submit your PR. I'll review it as soon as possible!</br></br>
+
+## Roadmap & Task List
+- [ ] Migrate project to Multi - Module Architecture
+- [ ] Write Unit Test, Instrumented Tests and UI Tests
+- [ ] Convert Retrofit to Ktor and Dagger/Hilt to Coin
+- [ ] Run the project in KMM
+- [ ] Create Native iOS App with SwiftUI using KMM
+
+## Did you find the repository useful?
+### Don't forget to give a star ⭐
 
 

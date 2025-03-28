@@ -193,9 +193,13 @@ private fun MovieDetailSuccessScreen(
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
 ) {
-    with(animatedContentScope) {
+    with(sharedTransitionScope) {
         Column(
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize()
+                .sharedElement(
+                    sharedTransitionScope.rememberSharedContentState(key = "container-${movieDetailModel.movieDetailInfoModel.movieId}"),
+                    animatedVisibilityScope = animatedContentScope
+                ),
         ) {
             MovieDetailImage(
                 movieDetailInfoModel = movieDetailModel.movieDetailInfoModel,
@@ -585,6 +589,10 @@ private fun MovieDetailImage(
                 modifier = Modifier
                     .height(dimensionResource(R.dimen.movie_detail_poster_height))
                     .width(dimensionResource(R.dimen.movie_detail_poster_width))
+                    .sharedElement(
+                        sharedTransitionScope.rememberSharedContentState(key = "image-${movieDetailInfoModel.movieId}"),
+                        animatedVisibilityScope = animatedContentScope
+                    )
                     .constrainAs(posterImage) {
                         top.linkTo(parent.top, margin = topMargin)
                         start.linkTo(parent.start)

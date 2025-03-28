@@ -147,7 +147,11 @@ fun MovieCategoryItemList(
                 .width(dimensionResource(R.dimen.home_category_movie_width))
                 .clickable {
                     movieClickAction(movie.movieId)
-                },
+                }
+                .sharedElement(
+                    sharedTransitionScope.rememberSharedContentState(key = "container-${movie.movieId}"),
+                    animatedVisibilityScope = animatedContentScope
+                ),
         ) {
             Card(
                 modifier = Modifier

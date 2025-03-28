@@ -1,5 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -31,37 +34,47 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getStri
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieCategoryList(
     modifier: Modifier,
     movies: Map<MovieType, List<BasicMovieModel>>,
     seeAllClickAction: (seeAllType: SeeAllType) -> Unit,
-    movieClickAction: (movieId: Int) -> Unit
+    movieClickAction: (movieId: Int) -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
 ) {
     MovieCategory(
         modifier = modifier.wrapContentHeight(),
         seeAllMovieType = SeeAllType.SeeAllMovieType.Popular,
         movies = movies[MovieType.POPULAR],
         seeAllClickAction = seeAllClickAction,
-        movieClickAction = movieClickAction
+        movieClickAction = movieClickAction,
+        sharedTransitionScope = sharedTransitionScope,
+        animatedContentScope = animatedContentScope
     )
     MovieCategory(
         modifier = modifier.wrapContentHeight(),
         seeAllMovieType = SeeAllType.SeeAllMovieType.TopRated,
         movies = movies[MovieType.TOP_RATED],
         seeAllClickAction = seeAllClickAction,
-        movieClickAction = movieClickAction
+        movieClickAction = movieClickAction,
+        sharedTransitionScope = sharedTransitionScope,
+        animatedContentScope = animatedContentScope
     )
     MovieCategory(
         modifier = modifier.wrapContentHeight(),
         seeAllMovieType = SeeAllType.SeeAllMovieType.UpComing,
         movies = movies[MovieType.UPCOMING],
         seeAllClickAction = seeAllClickAction,
-        movieClickAction = movieClickAction
+        movieClickAction = movieClickAction,
+        sharedTransitionScope = sharedTransitionScope,
+        animatedContentScope = animatedContentScope
     )
 }
 
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieCategory(
     modifier: Modifier,
@@ -69,7 +82,9 @@ fun MovieCategory(
     movies: List<BasicMovieModel>?,
     title: String? = null,
     seeAllClickAction: (SeeAllType.SeeAllMovieType) -> Unit,
-    movieClickAction: (movieId: Int) -> Unit = {}
+    movieClickAction: (movieId: Int) -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope
 ) {
     if (movies != null) {
         Column(
@@ -106,7 +121,9 @@ fun MovieCategory(
                 items(movies) { movie ->
                     MovieCategoryItemList(
                         movie = movie,
-                        movieClickAction = movieClickAction
+                        movieClickAction = movieClickAction,
+                        sharedTransitionScope = sharedTransitionScope,
+                        animatedContentScope = animatedContentScope
                     )
                 }
             }
@@ -115,43 +132,58 @@ fun MovieCategory(
 
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieCategoryItemList(
     modifier: Modifier = Modifier,
     movie: BasicMovieModel,
-    movieClickAction: (movieId: Int) -> Unit = {}
+    movieClickAction: (movieId: Int) -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
 ) {
-    Column(
-        modifier = modifier
-            .width(dimensionResource(R.dimen.home_category_movie_width))
-            .clickable {
-                movieClickAction(movie.movieId)
-            },
-    ) {
-        Card(
-            modifier = Modifier
-                .height(dimensionResource(R.dimen.home_category_movie_height))
-                .width(dimensionResource(R.dimen.home_category_movie_width)),
-            shape = RoundedCornerShape(dimensionResource(R.dimen.s_medium_border)),
+    with(sharedTransitionScope) {
+        Column(
+            modifier = modifier
+                .width(dimensionResource(R.dimen.home_category_movie_width))
+                .clickable {
+                    movieClickAction(movie.movieId)
+                },
         ) {
-            MovieImage(
-                imageUrl = movie.moviePosterImageUrl
-            )
-        }
-        Text(
-            modifier = Modifier.padding(top = dimensionResource(R.dimen.x_small_padding)),
-            text = movie.movieTitle,
-            style = MaterialTheme.typography.titleMedium.copy(
-                fontSize = fontDimensionResource(R.dimen.movie_category_item_title_size),
-                fontWeight = FontWeight.Bold
-            ),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-        if (movie.movieGenres.isNotEmpty()) {
+            Card(
+                modifier = Modifier
+                    .height(dimensionResource(R.dimen.home_category_movie_height))
+                    .width(dimensionResource(R.dimen.home_category_movie_width))
+                    .sharedElement(
+                        sharedTransitionScope.rememberSharedContentState(key = "image-${movie.movieId}"),
+                        animatedVisibilityScope = animatedContentScope
+                    ),
+                shape = RoundedCornerShape(dimensionResource(R.dimen.s_medium_border)),
+            ) {
+                MovieImage(
+                    imageUrl = movie.moviePosterImageUrl
+                )
+            }
             Text(
-                text = movie.movieGenres.first(), style = MaterialTheme.typography.bodySmall
+                modifier = Modifier
+                    .padding(top = dimensionResource(R.dimen.x_small_padding))
+                    .sharedElement(
+                        sharedTransitionScope.rememberSharedContentState(key = "text-${movie.movieId}"),
+                        animatedVisibilityScope = animatedContentScope,
+                    ),
+                text = movie.movieTitle,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontSize = fontDimensionResource(R.dimen.movie_category_item_title_size),
+                    fontWeight = FontWeight.Bold
+                ),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
+            if (movie.movieGenres.isNotEmpty()) {
+                Text(
+                    text = movie.movieGenres.first(), style = MaterialTheme.typography.bodySmall
+                )
+            }
         }
     }
+
 }

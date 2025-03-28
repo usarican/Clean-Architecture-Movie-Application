@@ -1,5 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -21,12 +24,15 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.MovieCategoryItemList
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun RecommendedMoviesForYou(
     modifier: Modifier = Modifier,
     movies: List<BasicMovieModel>,
     seeAllClickAction: () -> Unit = {},
-    movieClickAction: (movieId: Int) -> Unit = {}
+    movieClickAction: (movieId: Int) -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
 ) {
     Column(
         modifier = modifier
@@ -62,7 +68,9 @@ fun RecommendedMoviesForYou(
             items(movies) { movie ->
                 MovieCategoryItemList(
                     movieClickAction = movieClickAction,
-                    movie = movie
+                    movie = movie,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedContentScope = animatedContentScope
                 )
             }
         }

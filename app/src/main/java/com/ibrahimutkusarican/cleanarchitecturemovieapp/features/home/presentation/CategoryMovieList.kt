@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
@@ -21,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -143,16 +145,15 @@ fun MovieCategoryItemList(
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
 ) {
-    val randomUUID = remember { UUID.randomUUID().toString() }
     with(sharedTransitionScope) {
         Column(
             modifier = modifier
                 .width(dimensionResource(R.dimen.home_category_movie_width))
                 .clickable {
-                    movieClickAction(movie.movieId,randomUUID)
+                    movieClickAction(movie.movieId,movie.sharedAnimationKey)
                 }
                 .sharedElement(
-                    sharedTransitionScope.rememberSharedContentState(key = "container-${randomUUID}"),
+                    sharedTransitionScope.rememberSharedContentState(key = "container-${movie.sharedAnimationKey}"),
                     animatedVisibilityScope = animatedContentScope
                 ),
         ) {
@@ -161,7 +162,7 @@ fun MovieCategoryItemList(
                     .height(dimensionResource(R.dimen.home_category_movie_height))
                     .width(dimensionResource(R.dimen.home_category_movie_width))
                     .sharedElement(
-                        sharedTransitionScope.rememberSharedContentState(key = "image-${randomUUID}"),
+                        sharedTransitionScope.rememberSharedContentState(key = "image-${movie.sharedAnimationKey}"),
                         animatedVisibilityScope = animatedContentScope
                     ),
                 shape = RoundedCornerShape(dimensionResource(R.dimen.s_medium_border)),
@@ -174,7 +175,7 @@ fun MovieCategoryItemList(
                 modifier = Modifier
                     .padding(top = dimensionResource(R.dimen.x_small_padding))
                     .sharedElement(
-                        sharedTransitionScope.rememberSharedContentState(key = "text-${randomUUID}"),
+                        sharedTransitionScope.rememberSharedContentState(key = "text-${movie.sharedAnimationKey}"),
                         animatedVisibilityScope = animatedContentScope,
                     ),
                 text = movie.movieTitle,

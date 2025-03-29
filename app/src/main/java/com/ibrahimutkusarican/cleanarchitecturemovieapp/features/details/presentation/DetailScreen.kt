@@ -3,6 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presen
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContentScope
@@ -196,6 +197,7 @@ private fun MovieDetailSuccessScreen(
     animatedContentScope: AnimatedContentScope,
     shareAnimationKey: String?
 ) {
+    Log.e("UUID","Detail $shareAnimationKey  + ${movieDetailModel.movieDetailInfoModel.movieId}" )
     with(sharedTransitionScope) {
         Column(
             modifier = if (shareAnimationKey == null) modifier.fillMaxSize() else modifier

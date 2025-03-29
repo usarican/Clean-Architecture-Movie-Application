@@ -1,6 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model
 
 import kotlinx.serialization.Serializable
+import java.util.UUID
 
 @Serializable
 data class BasicMovieModel(
@@ -13,5 +14,6 @@ data class BasicMovieModel(
     val releaseDate : String,
     val movieVotePoint : String,
     val isFavorite : Boolean = false,
-    val isAddedToWatchList : Boolean = false
+    val isAddedToWatchList : Boolean = false,
+    val sharedAnimationKey : String = UUID.randomUUID().toString()
 )

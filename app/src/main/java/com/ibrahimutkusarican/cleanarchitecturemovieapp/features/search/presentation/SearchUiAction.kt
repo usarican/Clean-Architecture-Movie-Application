@@ -5,7 +5,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.m
 
 sealed class SearchUiAction {
     data object OnBackPress : SearchUiAction()
-    data class MovieClick(val movieId: Int) : SearchUiAction()
+    data class MovieClick(val movieId: Int,val sharedAnimationKey : String? = null) : SearchUiAction()
     data class SearchAction(val searchText : String) : SearchUiAction()
     data class TopSearchItemClickAction(val topSearchItemText : String) : SearchUiAction()
     data object LastSearchAllClearAction : SearchUiAction()

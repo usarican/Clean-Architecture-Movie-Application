@@ -32,7 +32,7 @@ sealed class NavigationRoutes {
         data class Search(val recommendedMovieId: Int?) : ClickActionRoutes()
 
         @Serializable
-        data class MovieDetail(val movieId: Int) : ClickActionRoutes()
+        data class MovieDetail(val movieId: Int,val sharedAnimationKey : String? = null) : ClickActionRoutes()
 
         @Serializable
         data class BannerMovies(val clickedItemIndex: Int) : ClickActionRoutes()

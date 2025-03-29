@@ -18,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -65,7 +64,7 @@ fun MostPopularMovies(
     modifier: Modifier = Modifier,
     movies: List<BasicMovieModel>,
     seeAllClickAction: (seeAllType: SeeAllType) -> Unit = {},
-    movieClickAction: (movieId: Int) -> Unit = {},
+    movieClickAction: (movieId: Int, sharedAnimationKey: String) -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
 ) {
@@ -140,8 +139,8 @@ private fun ExploreSuccessScreen(
             seeAllClickAction = { seeAllType ->
                 handleUiAction(ExploreUiAction.SeeAllClickAction(seeAllType))
             },
-            movieClickAction = { movieId ->
-                handleUiAction(ExploreUiAction.MovieClickAction(movieId))
+            movieClickAction = { movieId,sharedAnimationKey ->
+                handleUiAction(ExploreUiAction.MovieClickAction(movieId,sharedAnimationKey))
             },
             sharedTransitionScope = sharedTransitionScope,
             animatedContentScope = animatedContentScope

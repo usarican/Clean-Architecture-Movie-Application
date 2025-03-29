@@ -95,7 +95,8 @@ fun MovieDetailScreen(
     modifier: Modifier = Modifier,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
-    viewModel: MovieDetailViewModel
+    viewModel: MovieDetailViewModel,
+    shareAnimationKey: String?
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -168,7 +169,8 @@ fun MovieDetailScreen(
                     backClickAction = { viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction) },
                     action = viewModel::handleUiAction,
                     sharedTransitionScope = sharedTransitionScope,
-                    animatedContentScope = animatedContentScope
+                    animatedContentScope = animatedContentScope,
+                    shareAnimationKey = shareAnimationKey
                 )
                 playerViewVideoKey?.let { videoKey ->
                     if (isLandscape) {
@@ -192,12 +194,14 @@ private fun MovieDetailSuccessScreen(
     action: (action: DetailUiAction) -> Unit = {},
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
+    shareAnimationKey: String?
 ) {
     with(sharedTransitionScope) {
         Column(
-            modifier = modifier.fillMaxSize()
+            modifier = if (shareAnimationKey == null) modifier.fillMaxSize() else modifier
+                .fillMaxSize()
                 .sharedElement(
-                    sharedTransitionScope.rememberSharedContentState(key = "container-${movieDetailModel.movieDetailInfoModel.movieId}"),
+                    sharedTransitionScope.rememberSharedContentState(key = "container-${shareAnimationKey}"),
                     animatedVisibilityScope = animatedContentScope
                 ),
         ) {
@@ -205,12 +209,14 @@ private fun MovieDetailSuccessScreen(
                 movieDetailInfoModel = movieDetailModel.movieDetailInfoModel,
                 backClickAction = backClickAction,
                 sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope
+                animatedContentScope = animatedContentScope,
+                shareAnimationKey = shareAnimationKey
             )
             MovieDetailInfo(
                 movieDetailInfoModel = movieDetailModel.movieDetailInfoModel,
                 sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope
+                animatedContentScope = animatedContentScope,
+                shareAnimationKey = shareAnimationKey
             )
             MovieDetailActionButtons(
                 action = action, movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
@@ -457,8 +463,9 @@ private fun MovieDetailInfo(
     movieDetailInfoModel: MovieDetailInfoModel,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
+    shareAnimationKey: String?
 ) {
-    with(sharedTransitionScope){
+    with(sharedTransitionScope) {
         Column(
             modifier = modifier
                 .fillMaxWidth()
@@ -468,10 +475,12 @@ private fun MovieDetailInfo(
                 .padding(top = dimensionResource(R.dimen.medium_padding)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding))
         ) {
+
             Text(
-                modifier = Modifier.fillMaxWidth()
+                modifier = if (shareAnimationKey == null) Modifier.fillMaxWidth() else Modifier
+                    .fillMaxWidth()
                     .sharedElement(
-                        sharedTransitionScope.rememberSharedContentState(key = "text-${movieDetailInfoModel.movieId}"),
+                        sharedTransitionScope.rememberSharedContentState(key = "text-${shareAnimationKey}"),
                         animatedVisibilityScope = animatedContentScope
                     ),
                 text = movieDetailInfoModel.title,
@@ -543,9 +552,10 @@ private fun MovieDetailImage(
     backClickAction: () -> Unit = {},
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
+    shareAnimationKey: String?
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp
-    with(sharedTransitionScope){
+    with(sharedTransitionScope) {
         ConstraintLayout(
             modifier = modifier.fillMaxWidth()
         ) {
@@ -586,11 +596,14 @@ private fun MovieDetailImage(
                 imageUrl = movieDetailInfoModel.backgroundImageUrl,
                 contentScale = ContentScale.Crop)
             Card(
-                modifier = Modifier
+                modifier = if (shareAnimationKey == null) Modifier
+                    .height(dimensionResource(R.dimen.movie_detail_poster_height))
+                    .width(dimensionResource(R.dimen.movie_detail_poster_width))
+                else Modifier
                     .height(dimensionResource(R.dimen.movie_detail_poster_height))
                     .width(dimensionResource(R.dimen.movie_detail_poster_width))
                     .sharedElement(
-                        sharedTransitionScope.rememberSharedContentState(key = "image-${movieDetailInfoModel.movieId}"),
+                        sharedTransitionScope.rememberSharedContentState(key = "image-${shareAnimationKey}"),
                         animatedVisibilityScope = animatedContentScope
                     )
                     .constrainAs(posterImage) {
@@ -605,7 +618,8 @@ private fun MovieDetailImage(
                 )
             ) {
                 MovieImage(
-                    modifier = Modifier.fillMaxSize(), imageUrl = movieDetailInfoModel.posterImageUrl
+                    modifier = Modifier.fillMaxSize(),
+                    imageUrl = movieDetailInfoModel.posterImageUrl
                 )
             }
         }

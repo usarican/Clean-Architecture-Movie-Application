@@ -58,15 +58,15 @@ class HomeViewModel @Inject constructor(
             .doOnError {
                 sendEvent(
                     MyEvent.ShowSnackBar(
-                    MySnackBarModel(
-                        title = stringProvider.getStringFromResource(R.string.error_snackbar_title),
-                        message = it.message
-                            ?: stringProvider.getStringFromResource(R.string.error_snackbar_title),
-                        type = SnackBarType.ERROR,
-                        actionLabel = stringProvider.getStringFromResource(R.string.retry),
-                        action = { handleUiAction(HomeUiAction.PullToRefreshAction) }
-                    )
-                ))
+                        MySnackBarModel(
+                            title = stringProvider.getStringFromResource(R.string.error_snackbar_title),
+                            message = it.message
+                                ?: stringProvider.getStringFromResource(R.string.error_snackbar_title),
+                            type = SnackBarType.ERROR,
+                            actionLabel = stringProvider.getStringFromResource(R.string.retry),
+                            action = { handleUiAction(HomeUiAction.PullToRefreshAction) }
+                        )
+                    ))
             }
             .onEach { refreshUiState ->
                 _refreshUiState.emit(refreshUiState)
@@ -78,7 +78,13 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.PullToRefreshAction -> refreshMovies()
             is HomeUiAction.ErrorRetryAction -> getMovies()
             is HomeUiAction.SeeAllClickAction -> sendEvent(MyEvent.SeeAllClickEvent(action.seeAllType))
-            is HomeUiAction.MovieClickAction -> sendEvent(MyEvent.MovieClickEvent(action.movieId))
+            is HomeUiAction.MovieClickAction -> sendEvent(
+                MyEvent.MovieClickEvent(
+                    movieId = action.movieId,
+                    sharedAnimationKey = action.sharedAnimationKey
+                )
+            )
+
             is HomeUiAction.BannerMovieClickAction -> sendEvent(MyEvent.BannerMovieClickEvent(action.clickIndex))
             is HomeUiAction.BannerMovieSeeMoreClickAction -> sendEvent(
                 MyEvent.MovieClickEvent(

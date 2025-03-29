@@ -30,7 +30,7 @@ fun RecommendedMoviesForYou(
     modifier: Modifier = Modifier,
     movies: List<BasicMovieModel>,
     seeAllClickAction: () -> Unit = {},
-    movieClickAction: (movieId: Int) -> Unit = {},
+    movieClickAction: (movieId: Int,sharedAnimationKey : String) -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
 ) {

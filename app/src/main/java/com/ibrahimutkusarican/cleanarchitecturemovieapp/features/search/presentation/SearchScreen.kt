@@ -118,8 +118,8 @@ fun SearchScreen(
                         }
                         RecommendedMoviesForYou(
                             movies = searchScreenModel.recommendedMoviesForYou,
-                            movieClickAction = { movieId ->
-                                viewModel.handleSearchScreenAction(SearchUiAction.MovieClick(movieId))
+                            movieClickAction = { movieId, sharedAnimationKey ->
+                                viewModel.handleSearchScreenAction(SearchUiAction.MovieClick(movieId,sharedAnimationKey))
                             },
                             seeAllClickAction = {
                                 viewModel.handleSearchScreenAction(SearchUiAction.RecommendedMovieSeeAllClickAction)

@@ -163,15 +163,17 @@ fun MainScreen(viewModel: MainViewModel) {
                     )
                 ) { backStackEntry ->
                     val detailViewModel = hiltViewModel<MovieDetailViewModel>()
-                    val movieId =
-                        backStackEntry.toRoute<NavigationRoutes.ClickActionRoutes.MovieDetail>().movieId
-                    LaunchedEffect(movieId) {
-                        detailViewModel.getMovieDetail(movieId)
+                    val movieDetailModel =
+                        backStackEntry.toRoute<NavigationRoutes.ClickActionRoutes.MovieDetail>()
+
+                    LaunchedEffect(movieDetailModel.movieId) {
+                        detailViewModel.getMovieDetail(movieDetailModel.movieId)
                     }
                     MovieDetailScreen(
                         sharedTransitionScope = this@SharedTransitionLayout,
                         animatedContentScope = this@composable,
-                        viewModel = detailViewModel
+                        viewModel = detailViewModel,
+                        shareAnimationKey = movieDetailModel.sharedAnimationKey
                     )
                 }
                 composable<NavigationRoutes.ClickActionRoutes.BannerMovies> { backStackEntry ->

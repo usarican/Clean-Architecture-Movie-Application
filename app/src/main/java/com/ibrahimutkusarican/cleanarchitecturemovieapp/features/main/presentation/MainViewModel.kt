@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getSettingsModelUseCase: GetSettingsModelUseCase,
+    getSettingsModelUseCase: GetSettingsModelUseCase,
     private val languageChangeUseCase: LanguageChangeUseCase,
     private val userSettingsDataStore: UserSettingsDataStore
 ) : BaseViewModel() {
@@ -96,7 +96,8 @@ class MainViewModel @Inject constructor(
 
             is MyEvent.MovieClickEvent -> navigationRouteAction(
                 NavigationRoutes.ClickActionRoutes.MovieDetail(
-                    event.movieId
+                    event.movieId,
+                    sharedAnimationKey = event.sharedAnimationKey
                 )
             )
 

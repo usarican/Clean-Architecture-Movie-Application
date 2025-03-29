@@ -106,8 +106,8 @@ fun HomeSuccessScreen(
                     seeAllClickAction = { seeAllType ->
                         action.invoke(HomeUiAction.SeeAllClickAction(seeAllType))
                     },
-                    movieClickAction = { movieId ->
-                        action.invoke(HomeUiAction.MovieClickAction(movieId))
+                    movieClickAction = { movieId,sharedAnimationKey ->
+                        action.invoke(HomeUiAction.MovieClickAction(movieId,sharedAnimationKey))
                     },
                     sharedTransitionScope = sharedTransitionScope,
                     animatedContentScope = animatedContentScope

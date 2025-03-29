@@ -94,12 +94,15 @@ class MainViewModel @Inject constructor(
                 )
             )
 
-            is MyEvent.MovieClickEvent -> navigationRouteAction(
-                NavigationRoutes.ClickActionRoutes.MovieDetail(
-                    event.movieId,
-                    sharedAnimationKey = event.sharedAnimationKey
+            is MyEvent.MovieClickEvent -> {
+                navigationRouteAction(
+                    NavigationRoutes.ClickActionRoutes.MovieDetail(
+                        event.movieId,
+                        sharedAnimationKey = event.sharedAnimationKey
+                    )
                 )
-            )
+                _bottomNavigationVisibility.value = false
+            }
 
             is MyEvent.BannerMovieClickEvent -> navigationRouteAction(
                 NavigationRoutes.ClickActionRoutes.BannerMovies(

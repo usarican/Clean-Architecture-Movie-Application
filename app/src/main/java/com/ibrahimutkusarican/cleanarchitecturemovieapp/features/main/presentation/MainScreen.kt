@@ -1,7 +1,13 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
@@ -87,35 +93,45 @@ fun MainScreen(viewModel: MainViewModel) {
             }
         }
     }
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        snackbarHost = {
-            MySnackBarHost(
-                hostState = snackbarHostState,
-                isDarkMode = userSettings.value.isDarkModeEnabled
-            )
-        },
-        bottomBar = if (bottomNavigationVisibility) {
-            {
-                BottomNavigationBar(
-                    modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
-                    navController = navController,
-                    selectedItemIndex = selectedItemIndex,
-                    onItemSelected = { index ->
-                        selectedItemIndex = index
-                    }
+    SharedTransitionLayout {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            snackbarHost = {
+                MySnackBarHost(
+                    hostState = snackbarHostState,
+                    isDarkMode = userSettings.value.isDarkModeEnabled
                 )
+            },
+            bottomBar = {
+                AnimatedVisibility(
+                    visible = bottomNavigationVisibility,
+                    enter = fadeIn() + slideInVertically {
+                        it
+                    },
+                    exit = fadeOut() + slideOutVertically {
+                        it
+                    }) {
+                    BottomNavigationBar(
+                        modifier = Modifier
+                            .windowInsetsPadding(WindowInsets.navigationBars)
+                            .renderInSharedTransitionScopeOverlay(
+                                zIndexInOverlay = 1F
+                            ),
+                        navController = navController,
+                        selectedItemIndex = selectedItemIndex,
+                        onItemSelected = { index ->
+                            selectedItemIndex = index
+                        }
+                    )
+                }
             }
-        } else {
-            {}
-        }
-    ) { innerPadding ->
-        SharedTransitionLayout {
+        ) { innerPadding ->
             NavHost(
                 navController = navController,
                 startDestination = NavigationRoutes.BottomNavRoutes.Home,
                 modifier = Modifier
-                    .padding(bottom = innerPadding.calculateBottomPadding()),
+                    .padding(bottom = innerPadding.calculateBottomPadding())
+
             ) {
                 composable<NavigationRoutes.BottomNavRoutes.Home> {
                     val homeViewModel = hiltViewModel<HomeViewModel>()
@@ -183,6 +199,7 @@ fun MainScreen(viewModel: MainViewModel) {
                 }
             }
         }
-
     }
+
+
 }

@@ -64,7 +64,10 @@ class MovieDetailViewModel @Inject constructor(
                 )
             )
 
-            DetailUiAction.OnBackPressClickAction -> sendEvent(MyEvent.OnBackPressed)
+            DetailUiAction.OnBackPressClickAction -> {
+                sendEvent(MyEvent.OnBackPressed)
+                sendEvent(MyEvent.ChangeBottomNavigationVisibility(true))
+            }
             is DetailUiAction.SeeAllClickAction -> sendEvent(MyEvent.SeeAllClickEvent(action.seeAllType))
             is DetailUiAction.DetailButtonClickAction -> {
                 when (action.data.type) {

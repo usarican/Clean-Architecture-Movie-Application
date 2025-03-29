@@ -1,6 +1,5 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation
 
-import android.util.Log
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
@@ -21,8 +20,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -36,7 +33,6 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.See
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getStringRes
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
-import java.util.UUID
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable

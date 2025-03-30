@@ -3,8 +3,12 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presen
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -86,9 +90,14 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieDetailScreen(
-    modifier: Modifier = Modifier, viewModel: MovieDetailViewModel
+    modifier: Modifier = Modifier,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
+    viewModel: MovieDetailViewModel,
+    shareAnimationKey: String?
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -115,8 +124,7 @@ fun MovieDetailScreen(
                         // Add rich metadata for better previews
                         putExtra(Intent.EXTRA_TITLE, movieTitle)
                         putExtra(
-                            Intent.EXTRA_TEXT,
-                            "Check out this movie: $movieTitle\n\n$deepLinkUri"
+                            Intent.EXTRA_TEXT, "Check out this movie: $movieTitle\n\n$deepLinkUri"
                         )
                         val htmlText =
                             "Check out this movie: $movieTitle<br><a href=\"$deepLinkUri\">Open in MovieApp</a>"
@@ -124,8 +132,8 @@ fun MovieDetailScreen(
                         putExtra(Intent.EXTRA_SUBJECT, movieTitle)
 
                         // These flags help with preview visibility
-                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                                Intent.FLAG_ACTIVITY_NEW_DOCUMENT
+                        flags =
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_DOCUMENT
                     }
 
                     val chooserIntent =
@@ -137,13 +145,9 @@ fun MovieDetailScreen(
                     startActivity(context, chooserIntent, null)
                 } else {
                     // For older Android versions, use ShareCompat
-                    ShareCompat.IntentBuilder(context)
-                        .setType("image/jpeg")
-                        .setStream(uri)
-                        .setText("Check out this movie: $movieTitle")
-                        .setSubject(movieTitle)
-                        .setChooserTitle("Share Movie Poster")
-                        .startChooser()
+                    ShareCompat.IntentBuilder(context).setType("image/jpeg").setStream(uri)
+                        .setText("Check out this movie: $movieTitle").setSubject(movieTitle)
+                        .setChooserTitle("Share Movie Poster").startChooser()
                 }
             } catch (e: Exception) {
                 // Handle failure
@@ -164,13 +168,15 @@ fun MovieDetailScreen(
                     modifier = modifier,
                     movieDetailModel = model,
                     backClickAction = { viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction) },
-                    action = viewModel::handleUiAction
+                    action = viewModel::handleUiAction,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedContentScope = animatedContentScope,
+                    shareAnimationKey = shareAnimationKey
                 )
                 playerViewVideoKey?.let { videoKey ->
                     if (isLandscape) {
                         PlayView(
-                            videoKey = videoKey,
-                            handleUiAction = viewModel::handleUiAction
+                            videoKey = videoKey, handleUiAction = viewModel::handleUiAction
                         )
                     }
                 }
@@ -180,29 +186,47 @@ fun MovieDetailScreen(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-@Preview(showBackground = true)
 private fun MovieDetailSuccessScreen(
     modifier: Modifier = Modifier,
     movieDetailModel: MovieDetailModel = mockMovieDetailModel,
     backClickAction: () -> Unit = {},
-    action: (action: DetailUiAction) -> Unit = {}
+    action: (action: DetailUiAction) -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
+    shareAnimationKey: String?
 ) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-    ) {
-        MovieDetailImage(
-            movieDetailInfoModel = movieDetailModel.movieDetailInfoModel,
-            backClickAction = backClickAction
-        )
-        MovieDetailInfo(
-            movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
-        )
-        MovieDetailActionButtons(
-            action = action, movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
-        )
-        MovieDetailPager(movieDetailModel = movieDetailModel, handleUiAction = action)
+    Log.e("UUID","Detail $shareAnimationKey  + ${movieDetailModel.movieDetailInfoModel.movieId}" )
+    with(sharedTransitionScope) {
+        Column(
+            modifier = if (shareAnimationKey == null) modifier.fillMaxSize() else modifier
+                .fillMaxSize()
+                .sharedElement(
+                    sharedTransitionScope.rememberSharedContentState(key = "container-${shareAnimationKey}"),
+                    animatedVisibilityScope = animatedContentScope
+                ),
+        ) {
+            MovieDetailImage(
+                movieDetailInfoModel = movieDetailModel.movieDetailInfoModel,
+                backClickAction = backClickAction,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedContentScope = animatedContentScope,
+                shareAnimationKey = shareAnimationKey
+            )
+            MovieDetailInfo(
+                movieDetailInfoModel = movieDetailModel.movieDetailInfoModel,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedContentScope = animatedContentScope,
+                shareAnimationKey = shareAnimationKey
+            )
+            MovieDetailActionButtons(
+                action = action, movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
+            )
+            MovieDetailPager(movieDetailModel = movieDetailModel, handleUiAction = action)
+        }
     }
+
 }
 
 @Composable
@@ -434,54 +458,68 @@ private fun TabLayoutItem(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun MovieDetailInfo(
-    modifier: Modifier = Modifier, movieDetailInfoModel: MovieDetailInfoModel
+    modifier: Modifier = Modifier,
+    movieDetailInfoModel: MovieDetailInfoModel,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
+    shareAnimationKey: String?
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = dimensionResource(R.dimen.large_padding)
-            )
-            .padding(top = dimensionResource(R.dimen.medium_padding)),
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding))
-    ) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = movieDetailInfoModel.title,
-            style = MaterialTheme.typography.titleLarge.copy(
-                fontWeight = FontWeight.Bold
-            ),
-            textAlign = TextAlign.Center
-        )
-        if (movieDetailInfoModel.tagline.isNotEmpty()) {
+    with(sharedTransitionScope) {
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = dimensionResource(R.dimen.large_padding)
+                )
+                .padding(top = dimensionResource(R.dimen.medium_padding)),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding))
+        ) {
+
             Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = movieDetailInfoModel.tagline,
-                style = MaterialTheme.typography.bodySmall,
+                modifier = if (shareAnimationKey == null) Modifier.fillMaxWidth() else Modifier
+                    .fillMaxWidth()
+                    .sharedElement(
+                        sharedTransitionScope.rememberSharedContentState(key = "text-${shareAnimationKey}"),
+                        animatedVisibilityScope = animatedContentScope
+                    ),
+                text = movieDetailInfoModel.title,
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold
+                ),
                 textAlign = TextAlign.Center
             )
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = dimensionResource(R.dimen.large_padding)),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            IconWithText(
-                iconId = R.drawable.ic_calender_2, text = movieDetailInfoModel.releaseYear
-            )
-            IconWithText(
-                iconId = R.drawable.ic_time, text = movieDetailInfoModel.runtime
-            )
-            IconWithText(
-                iconId = R.drawable.ic_genre_2, text = movieDetailInfoModel.genre
-            )
-        }
+            if (movieDetailInfoModel.tagline.isNotEmpty()) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = movieDetailInfoModel.tagline,
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.Center
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = dimensionResource(R.dimen.large_padding)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                IconWithText(
+                    iconId = R.drawable.ic_calender_2, text = movieDetailInfoModel.releaseYear
+                )
+                IconWithText(
+                    iconId = R.drawable.ic_time, text = movieDetailInfoModel.runtime
+                )
+                IconWithText(
+                    iconId = R.drawable.ic_genre_2, text = movieDetailInfoModel.genre
+                )
+            }
 
+        }
     }
+
 }
 
 @Composable
@@ -508,72 +546,87 @@ private fun IconWithText(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun MovieDetailImage(
     modifier: Modifier = Modifier,
     movieDetailInfoModel: MovieDetailInfoModel,
-    backClickAction: () -> Unit = {}
+    backClickAction: () -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
+    shareAnimationKey: String?
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp
-    ConstraintLayout(
-        modifier = modifier.fillMaxWidth()
-    ) {
-        val (backdropImage, posterImage, backIcon) = createRefs()
-        val topMargin = dimensionResource(R.dimen.x_x_large_padding)
-
-        IconButton(
-            onClick = backClickAction,
-            modifier = Modifier
-                .windowInsetsPadding(WindowInsets.statusBars)
-                .constrainAs(backIcon) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                }
-                .padding(start = dimensionResource(R.dimen.small_padding))
-                .zIndex(2F)
-                .clip(CircleShape),
-            colors = IconButtonDefaults.iconButtonColors(
-                containerColor = MaterialTheme.colorScheme.background,
-                contentColor = MaterialTheme.colorScheme.onBackground
-            )) {
-            Icon(
-                Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Back",
-            )
-        }
-
-        MovieImage(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height((screenHeight / 2.5).dp)
-                .constrainAs(backdropImage) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-                .blur(dimensionResource(R.dimen.blur)),
-            imageUrl = movieDetailInfoModel.backgroundImageUrl,
-            contentScale = ContentScale.Crop)
-        Card(
-            modifier = Modifier
-                .height(dimensionResource(R.dimen.movie_detail_poster_height))
-                .width(dimensionResource(R.dimen.movie_detail_poster_width))
-                .constrainAs(posterImage) {
-                    top.linkTo(parent.top, margin = topMargin)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                },
-            elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.card_elevation)),
-            shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border)),
-            border = BorderStroke(
-                dimensionResource(R.dimen.one_dp), MaterialTheme.colorScheme.onBackground
-            )
+    with(sharedTransitionScope) {
+        ConstraintLayout(
+            modifier = modifier.fillMaxWidth()
         ) {
+            val (backdropImage, posterImage, backIcon) = createRefs()
+            val topMargin = dimensionResource(R.dimen.x_x_large_padding)
+
+            IconButton(
+                onClick = backClickAction,
+                modifier = Modifier
+                    .windowInsetsPadding(WindowInsets.statusBars)
+                    .constrainAs(backIcon) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                    }
+                    .padding(start = dimensionResource(R.dimen.small_padding))
+                    .zIndex(2F)
+                    .clip(CircleShape),
+                colors = IconButtonDefaults.iconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    contentColor = MaterialTheme.colorScheme.onBackground
+                )) {
+                Icon(
+                    Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back",
+                )
+            }
+
             MovieImage(
-                modifier = Modifier.fillMaxSize(), imageUrl = movieDetailInfoModel.posterImageUrl
-            )
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height((screenHeight / 2.5).dp)
+                    .constrainAs(backdropImage) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                    .blur(dimensionResource(R.dimen.blur)),
+                imageUrl = movieDetailInfoModel.backgroundImageUrl,
+                contentScale = ContentScale.Crop)
+            Card(
+                modifier = if (shareAnimationKey == null) Modifier
+                    .height(dimensionResource(R.dimen.movie_detail_poster_height))
+                    .width(dimensionResource(R.dimen.movie_detail_poster_width))
+                else Modifier
+                    .height(dimensionResource(R.dimen.movie_detail_poster_height))
+                    .width(dimensionResource(R.dimen.movie_detail_poster_width))
+                    .sharedElement(
+                        sharedTransitionScope.rememberSharedContentState(key = "image-${shareAnimationKey}"),
+                        animatedVisibilityScope = animatedContentScope
+                    )
+                    .constrainAs(posterImage) {
+                        top.linkTo(parent.top, margin = topMargin)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
+                elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.card_elevation)),
+                shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border)),
+                border = BorderStroke(
+                    dimensionResource(R.dimen.one_dp), MaterialTheme.colorScheme.onBackground
+                )
+            ) {
+                MovieImage(
+                    modifier = Modifier.fillMaxSize(),
+                    imageUrl = movieDetailInfoModel.posterImageUrl
+                )
+            }
         }
     }
+
 }
 
 @Composable
@@ -598,9 +651,7 @@ private fun PlayView(videoKey: String, handleUiAction: (action: DetailUiAction) 
             elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.card_elevation))
         ) {
             AndroidView(
-                modifier = Modifier
-                    .fillMaxSize(),
-                factory = {
+                modifier = Modifier.fillMaxSize(), factory = {
                     YouTubePlayerView(context).apply {
                         lifeCycleOwner.lifecycle.addObserver(this)
                         val youTubePlayerListener = object : AbstractYouTubePlayerListener() {
@@ -611,8 +662,7 @@ private fun PlayView(videoKey: String, handleUiAction: (action: DetailUiAction) 
                         }
                         addYouTubePlayerListener(youTubePlayerListener)
                     }
-                }
-            )
+                })
 
         }
         IconButton(

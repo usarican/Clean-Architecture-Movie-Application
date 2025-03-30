@@ -120,7 +120,7 @@ class SearchViewModel @Inject constructor(
 
     fun handleSearchScreenAction(searchUiAction: SearchUiAction) {
         when (searchUiAction) {
-            is SearchUiAction.MovieClick -> sendEvent(MyEvent.MovieClickEvent(searchUiAction.movieId))
+            is SearchUiAction.MovieClick -> sendEvent(MyEvent.MovieClickEvent(searchUiAction.movieId,searchUiAction.sharedAnimationKey))
             SearchUiAction.OnBackPress -> sendEvent(MyEvent.OnBackPressed)
             is SearchUiAction.SearchAction -> setSearchText(searchUiAction.searchText)
             SearchUiAction.LastSearchAllClearAction -> deleteAllLastSearch()

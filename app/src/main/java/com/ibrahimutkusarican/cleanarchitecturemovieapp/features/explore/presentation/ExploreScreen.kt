@@ -1,5 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.presentation
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -29,25 +31,57 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentati
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun ExploreScreen() {
+fun ExploreScreen(
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
+) {
     val viewModel = hiltViewModel<ExploreViewModel>()
     val uiState by viewModel.exploreUiState.collectAsStateWithLifecycle()
     val data by viewModel.exploreInitialData.collectAsStateWithLifecycle()
     when (uiState) {
-        is UiState.Error -> ErrorScreen(exception = (uiState as UiState.Error).exception,
+        is UiState.Error -> ErrorScreen(
+            exception = (uiState as UiState.Error).exception,
             tryAgainOnClickAction = { viewModel.handleUiAction(ExploreUiAction.ErrorRetryAction) })
 
         UiState.Loading -> LoadingScreen()
         is UiState.Success -> {
-            ExploreSuccessScreen(data, handleUiAction = viewModel::handleUiAction)
+            ExploreSuccessScreen(
+                data = data,
+                handleUiAction = viewModel::handleUiAction,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedContentScope = animatedContentScope
+            )
         }
     }
 
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-@Preview(showBackground = true)
+fun MostPopularMovies(
+    modifier: Modifier = Modifier,
+    movies: List<BasicMovieModel>,
+    seeAllClickAction: (seeAllType: SeeAllType) -> Unit = {},
+    movieClickAction: (movieId: Int, sharedAnimationKey: String) -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
+) {
+    MovieCategory(
+        modifier = modifier,
+        seeAllMovieType = SeeAllType.SeeAllMovieType.Popular,
+        title = stringResource(R.string.most_popular),
+        movies = movies,
+        seeAllClickAction = seeAllClickAction,
+        movieClickAction = movieClickAction,
+        sharedTransitionScope = sharedTransitionScope,
+        animatedContentScope = animatedContentScope
+    )
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
 private fun ExploreSuccessScreen(
     data: ExploreInitialDataModel = ExploreInitialDataModel(
         forYouMovie = BasicMovieModel(
@@ -62,6 +96,8 @@ private fun ExploreSuccessScreen(
         )
     ),
     handleUiAction: (action: ExploreUiAction) -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
 ) {
     Column(
         modifier = Modifier
@@ -93,34 +129,23 @@ private fun ExploreSuccessScreen(
             )
         }
 
-        MostPopularMovies(modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = dimensionResource(R.dimen.large_padding),
-                vertical = dimensionResource(R.dimen.medium_padding)
-            ), movies = data.popularMovies, seeAllClickAction = { seeAllType ->
-            handleUiAction(ExploreUiAction.SeeAllClickAction(seeAllType))
-        }, movieClickAction = { movieId ->
-            handleUiAction(ExploreUiAction.MovieClickAction(movieId))
-        })
+        MostPopularMovies(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = dimensionResource(R.dimen.large_padding),
+                    vertical = dimensionResource(R.dimen.medium_padding)
+                ), movies = data.popularMovies,
+            seeAllClickAction = { seeAllType ->
+                handleUiAction(ExploreUiAction.SeeAllClickAction(seeAllType))
+            },
+            movieClickAction = { movieId,sharedAnimationKey ->
+                handleUiAction(ExploreUiAction.MovieClickAction(movieId,sharedAnimationKey))
+            },
+            sharedTransitionScope = sharedTransitionScope,
+            animatedContentScope = animatedContentScope
+        )
     }
-}
-
-@Composable
-fun MostPopularMovies(
-    modifier: Modifier = Modifier,
-    movies: List<BasicMovieModel>,
-    seeAllClickAction: (seeAllType: SeeAllType) -> Unit = {},
-    movieClickAction: (movieId: Int) -> Unit = {}
-) {
-    MovieCategory(
-        modifier = modifier,
-        seeAllMovieType = SeeAllType.SeeAllMovieType.Popular,
-        title = stringResource(R.string.most_popular),
-        movies = movies,
-        seeAllClickAction = seeAllClickAction,
-        movieClickAction = movieClickAction
-    )
 }
 
 

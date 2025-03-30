@@ -1,6 +1,9 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,38 +35,52 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.mod
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.HOME_SCREEN_BANNER_MOVIES_HEIGHT_RATIO
 
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun HomeScreen(
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
     homeViewModel: HomeViewModel
 ) {
     val homeUiState by homeViewModel.homeUiState.collectAsStateWithLifecycle()
     val movies by homeViewModel.movies.collectAsStateWithLifecycle()
     val refreshUiState by homeViewModel.refreshUiState.collectAsStateWithLifecycle()
     when (homeUiState) {
-        is UiState.Error -> ErrorScreen(exception = (homeUiState as UiState.Error).exception,
+        is UiState.Error -> ErrorScreen(
+            exception = (homeUiState as UiState.Error).exception,
             tryAgainOnClickAction = { homeViewModel.handleUiAction(HomeUiAction.ErrorRetryAction) })
 
         UiState.Loading -> LoadingScreen()
         is UiState.Success -> HomeSuccessScreen(
-            movies = movies, refreshUiState = refreshUiState, action = homeViewModel::handleUiAction
+            movies = movies,
+            refreshUiState = refreshUiState,
+            action = homeViewModel::handleUiAction,
+            sharedTransitionScope = sharedTransitionScope,
+            animatedContentScope = animatedContentScope
         )
     }
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun HomeSuccessScreen(
     movies: Map<MovieType, List<BasicMovieModel>>,
     refreshUiState: UiState<Map<MovieType, List<BasicMovieModel>>>?,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
     action: (HomeUiAction) -> Unit
 ) {
     val screenHeightDp = LocalConfiguration.current.screenHeightDp.dp
     val state = rememberPullToRefreshState()
 
-    PullToRefreshBox(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars), state = state, isRefreshing = refreshUiState == UiState.Loading, onRefresh = {
-        action.invoke(HomeUiAction.PullToRefreshAction)
-    }) {
+    PullToRefreshBox(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
+        state = state,
+        isRefreshing = refreshUiState == UiState.Loading,
+        onRefresh = {
+            action.invoke(HomeUiAction.PullToRefreshAction)
+        }) {
         Box {
             Column(
                 modifier = Modifier
@@ -81,16 +98,20 @@ fun HomeSuccessScreen(
                         action.invoke(HomeUiAction.BannerMovieClickAction(index))
                     }
                 )
-                MovieCategoryList(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = dimensionResource(R.dimen.twenty_dp)),
+                MovieCategoryList(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = dimensionResource(R.dimen.twenty_dp)),
                     movies = movies,
                     seeAllClickAction = { seeAllType ->
                         action.invoke(HomeUiAction.SeeAllClickAction(seeAllType))
                     },
-                    movieClickAction = { movieId ->
-                        action.invoke(HomeUiAction.MovieClickAction(movieId))
-                    })
+                    movieClickAction = { movieId,sharedAnimationKey ->
+                        action.invoke(HomeUiAction.MovieClickAction(movieId,sharedAnimationKey))
+                    },
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedContentScope = animatedContentScope
+                )
             }
         }
     }

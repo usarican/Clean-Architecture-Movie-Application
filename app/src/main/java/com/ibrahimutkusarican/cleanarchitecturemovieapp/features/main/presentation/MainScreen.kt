@@ -1,15 +1,20 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentation
 
-import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -28,8 +32,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarHost
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.presentation.ExploreScreen
@@ -44,8 +46,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.presenta
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.presentation.SeeAllViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.presentation.SettingsScreen
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.consumeAsFlow
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MainScreen(viewModel: MainViewModel) {
     val navController = rememberNavController()
@@ -91,81 +93,113 @@ fun MainScreen(viewModel: MainViewModel) {
             }
         }
     }
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        snackbarHost = {
-            MySnackBarHost(
-                hostState = snackbarHostState,
-                isDarkMode = userSettings.value.isDarkModeEnabled
-            )
-        },
-        bottomBar = if (bottomNavigationVisibility) {
-            {
-                BottomNavigationBar(
-                    modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
-                    navController = navController,
-                    selectedItemIndex = selectedItemIndex,
-                    onItemSelected = { index ->
-                        selectedItemIndex = index
-                    }
+    SharedTransitionLayout {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            snackbarHost = {
+                MySnackBarHost(
+                    hostState = snackbarHostState,
+                    isDarkMode = userSettings.value.isDarkModeEnabled
                 )
-            }
-        } else {
-            {}
-        }
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = NavigationRoutes.BottomNavRoutes.Home,
-            modifier = Modifier
-                .padding(bottom = innerPadding.calculateBottomPadding()),
-        ) {
-            composable<NavigationRoutes.BottomNavRoutes.Home> {
-                val homeViewModel = hiltViewModel<HomeViewModel>()
-                HomeScreen(homeViewModel)
-            }
-            composable<NavigationRoutes.BottomNavRoutes.Explore> {
-                ExploreScreen()
-            }
-            composable<NavigationRoutes.BottomNavRoutes.MyList> {
-                MyListScreen(myListSelectedPageIndex)
-            }
-            composable<NavigationRoutes.BottomNavRoutes.Settings> {
-                SettingsScreen()
-            }
-            composable<NavigationRoutes.ClickActionRoutes.SeeAll> { backStackEntry ->
-                val seeAllViewModel = hiltViewModel<SeeAllViewModel>()
-                val args = backStackEntry.toRoute<NavigationRoutes.ClickActionRoutes.SeeAll>()
-                val seeAllType = args.screenType.seeAllScreenTypeToSeeAllType(args.movieId)
-                seeAllViewModel.setSeeAllType(seeAllType)
-                SeeAllScreen(viewModel = seeAllViewModel)
-            }
-            composable<NavigationRoutes.ClickActionRoutes.Search> { backStackEntry ->
-                val searchViewModel = hiltViewModel<SearchViewModel>()
-                val recommendedMovieId =
-                    backStackEntry.toRoute<NavigationRoutes.ClickActionRoutes.Search>().recommendedMovieId
-                SearchScreen(viewModel = searchViewModel, recommendedMovieId = recommendedMovieId)
-            }
-            composable<NavigationRoutes.ClickActionRoutes.MovieDetail>(
-                deepLinks = listOf(
-                    navDeepLink {
-                        uriPattern = "movieapp://moviedetail/{movieId}"
-                    }
-                )
-            ) { backStackEntry ->
-                val detailViewModel = hiltViewModel<MovieDetailViewModel>()
-                val movieId =
-                    backStackEntry.toRoute<NavigationRoutes.ClickActionRoutes.MovieDetail>().movieId
-                LaunchedEffect(movieId) {
-                    detailViewModel.getMovieDetail(movieId)
+            },
+            bottomBar = {
+                AnimatedVisibility(
+                    visible = bottomNavigationVisibility,
+                    enter = fadeIn() + slideInVertically {
+                        it
+                    },
+                    exit = fadeOut() + slideOutVertically {
+                        it
+                    }) {
+                    BottomNavigationBar(
+                        modifier = Modifier
+                            .windowInsetsPadding(WindowInsets.navigationBars)
+                            .renderInSharedTransitionScopeOverlay(
+                                zIndexInOverlay = 1F
+                            ),
+                        navController = navController,
+                        selectedItemIndex = selectedItemIndex,
+                        onItemSelected = { index ->
+                            selectedItemIndex = index
+                        }
+                    )
                 }
-                MovieDetailScreen(viewModel = detailViewModel)
             }
-            composable<NavigationRoutes.ClickActionRoutes.BannerMovies> { backStackEntry ->
-                val clickedItemIndex =
-                    backStackEntry.toRoute<NavigationRoutes.ClickActionRoutes.BannerMovies>().clickedItemIndex
-                BannerMoviesScreen(clickItemIndex = clickedItemIndex)
+        ) { innerPadding ->
+            NavHost(
+                navController = navController,
+                startDestination = NavigationRoutes.BottomNavRoutes.Home,
+                modifier = Modifier
+                    .padding(bottom = innerPadding.calculateBottomPadding())
+
+            ) {
+                composable<NavigationRoutes.BottomNavRoutes.Home> {
+                    val homeViewModel = hiltViewModel<HomeViewModel>()
+                    HomeScreen(
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedContentScope = this@composable,
+                        homeViewModel = homeViewModel
+                    )
+                }
+                composable<NavigationRoutes.BottomNavRoutes.Explore> {
+                    ExploreScreen(
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedContentScope = this@composable
+                    )
+                }
+                composable<NavigationRoutes.BottomNavRoutes.MyList> {
+                    MyListScreen(myListSelectedPageIndex)
+                }
+                composable<NavigationRoutes.BottomNavRoutes.Settings> {
+                    SettingsScreen()
+                }
+                composable<NavigationRoutes.ClickActionRoutes.SeeAll> { backStackEntry ->
+                    val seeAllViewModel = hiltViewModel<SeeAllViewModel>()
+                    val args = backStackEntry.toRoute<NavigationRoutes.ClickActionRoutes.SeeAll>()
+                    val seeAllType = args.screenType.seeAllScreenTypeToSeeAllType(args.movieId)
+                    seeAllViewModel.setSeeAllType(seeAllType)
+                    SeeAllScreen(viewModel = seeAllViewModel)
+                }
+                composable<NavigationRoutes.ClickActionRoutes.Search> { backStackEntry ->
+                    val searchViewModel = hiltViewModel<SearchViewModel>()
+                    val recommendedMovieId =
+                        backStackEntry.toRoute<NavigationRoutes.ClickActionRoutes.Search>().recommendedMovieId
+                    SearchScreen(
+                        viewModel = searchViewModel,
+                        recommendedMovieId = recommendedMovieId,
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedContentScope = this@composable,
+                    )
+                }
+                composable<NavigationRoutes.ClickActionRoutes.MovieDetail>(
+                    deepLinks = listOf(
+                        navDeepLink {
+                            uriPattern = "movieapp://moviedetail/{movieId}"
+                        }
+                    )
+                ) { backStackEntry ->
+                    val detailViewModel = hiltViewModel<MovieDetailViewModel>()
+                    val movieDetailModel =
+                        backStackEntry.toRoute<NavigationRoutes.ClickActionRoutes.MovieDetail>()
+
+                    LaunchedEffect(movieDetailModel.movieId) {
+                        detailViewModel.getMovieDetail(movieDetailModel.movieId)
+                    }
+                    MovieDetailScreen(
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedContentScope = this@composable,
+                        viewModel = detailViewModel,
+                        shareAnimationKey = movieDetailModel.sharedAnimationKey
+                    )
+                }
+                composable<NavigationRoutes.ClickActionRoutes.BannerMovies> { backStackEntry ->
+                    val clickedItemIndex =
+                        backStackEntry.toRoute<NavigationRoutes.ClickActionRoutes.BannerMovies>().clickedItemIndex
+                    BannerMoviesScreen(clickItemIndex = clickedItemIndex)
+                }
             }
         }
     }
+
+
 }

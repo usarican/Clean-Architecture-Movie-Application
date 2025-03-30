@@ -1,5 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.presentation
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,8 +46,14 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MyTopBar
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
+fun SearchScreen(
+    viewModel: SearchViewModel,
+    recommendedMovieId: Int?,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
+) {
     LaunchedEffect(recommendedMovieId) {
         viewModel.getSearchScreenModel(recommendedMovieId)
     }
@@ -109,12 +118,14 @@ fun SearchScreen(viewModel: SearchViewModel, recommendedMovieId: Int?) {
                         }
                         RecommendedMoviesForYou(
                             movies = searchScreenModel.recommendedMoviesForYou,
-                            movieClickAction = { movieId ->
-                                viewModel.handleSearchScreenAction(SearchUiAction.MovieClick(movieId))
+                            movieClickAction = { movieId, sharedAnimationKey ->
+                                viewModel.handleSearchScreenAction(SearchUiAction.MovieClick(movieId,sharedAnimationKey))
                             },
                             seeAllClickAction = {
                                 viewModel.handleSearchScreenAction(SearchUiAction.RecommendedMovieSeeAllClickAction)
-                            }
+                            },
+                            sharedTransitionScope = sharedTransitionScope,
+                            animatedContentScope = animatedContentScope
                         )
                         if (searchScreenModel.recentlyViewedMovies.isNotEmpty()) {
                             RecentlyViewedMovies(

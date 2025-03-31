@@ -92,7 +92,10 @@ class HomeViewModel @Inject constructor(
                 )
             )
 
-            HomeUiAction.BannerMovieOnBackPress -> sendEvent(MyEvent.OnBackPressed)
+            HomeUiAction.BannerMovieOnBackPress -> {
+                sendEvent(MyEvent.OnBackPressed)
+                sendEvent(MyEvent.ChangeBottomNavigationVisibility(true))
+            }
         }
     }
 }

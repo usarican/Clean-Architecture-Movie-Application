@@ -104,11 +104,14 @@ class MainViewModel @Inject constructor(
                 _bottomNavigationVisibility.value = false
             }
 
-            is MyEvent.BannerMovieClickEvent -> navigationRouteAction(
-                NavigationRoutes.ClickActionRoutes.BannerMovies(
-                    event.clickedMovieIndex
+            is MyEvent.BannerMovieClickEvent ->  {
+                navigationRouteAction(
+                    NavigationRoutes.ClickActionRoutes.BannerMovies(
+                        event.clickedMovieIndex
+                    )
                 )
-            )
+                _bottomNavigationVisibility.value = false
+            }
 
             is MyEvent.GoToExploreEvent -> navigationRouteAction(NavigationRoutes.BottomNavRoutes.Explore)
 

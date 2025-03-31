@@ -115,11 +115,16 @@ class MainViewModel @Inject constructor(
 
             is MyEvent.GoToExploreEvent -> navigationRouteAction(NavigationRoutes.BottomNavRoutes.Explore)
 
-            is MyEvent.GoToMyListEvent -> navigationRouteAction(
-                NavigationRoutes.BottomNavRoutes.MyList(
-                    event.page
+            is MyEvent.GoToMyListEvent -> {
+                navigationRouteAction(
+                    NavigationRoutes.BottomNavRoutes.MyList(
+                        event.page
+                    )
                 )
-            )
+                if (bottomNavigationVisibility.value.not()){
+                    _bottomNavigationVisibility.value = !bottomNavigationVisibility.value
+                }
+            }
 
             is MyEvent.ChangeBottomNavigationVisibility -> {
                 _bottomNavigationVisibility.value = event.isVisible

@@ -1,6 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.di
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.data.UserSettingsDataStore
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.data.UserSettingsDataStore
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.MOVIE_API_URL
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.TIME_OUT_VALUE
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.RequestInterceptor

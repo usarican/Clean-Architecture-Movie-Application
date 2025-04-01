@@ -1,8 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.database
 
 import androidx.room.TypeConverter
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.feature.genre.data.remote.response.Genre
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.remote.response.Genre
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.entity.MovieType
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 

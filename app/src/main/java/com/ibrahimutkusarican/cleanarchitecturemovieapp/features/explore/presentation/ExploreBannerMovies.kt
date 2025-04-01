@@ -48,7 +48,7 @@ fun ExploreBannerMovies(
     HorizontalPager(
         modifier = modifier,
         state = state,
-        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.dp_64)),
+        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.dp_80)),
         pageSpacing = dimensionResource(R.dimen.twelve_padding),
     ) { page ->
         ExploreBannerMovieItem(modifier = Modifier.carouselTransition(

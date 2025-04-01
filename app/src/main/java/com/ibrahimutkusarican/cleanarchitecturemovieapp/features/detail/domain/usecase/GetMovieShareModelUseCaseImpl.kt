@@ -4,7 +4,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailInfoModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieShareModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.ImageShareHelper
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.ImageShareHelper
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

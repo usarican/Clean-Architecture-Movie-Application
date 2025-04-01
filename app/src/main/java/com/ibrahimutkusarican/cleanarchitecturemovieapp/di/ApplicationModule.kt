@@ -2,7 +2,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.di
 
 import android.content.Context
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.data.UserSettingsDataStore
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.ImageShareHelper
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.ImageShareHelper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
 import dagger.Module
 import dagger.Provides

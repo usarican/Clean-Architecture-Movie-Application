@@ -7,10 +7,10 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.Language
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BackdropSize
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.FormatHelper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.ImageUrlHelper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.MoviePosterSize
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.BackdropSize
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.FormatHelper
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.ImageUrlHelper
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.MoviePosterSize
 import javax.inject.Inject
 
 class HomeMovieModelMapper @Inject constructor(

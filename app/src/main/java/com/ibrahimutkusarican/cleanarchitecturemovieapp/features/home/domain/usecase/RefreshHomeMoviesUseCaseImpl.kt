@@ -9,7 +9,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.map
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.data.UserSettingsDataStore
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.Language
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.MoviePosterSize
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.MoviePosterSize
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.getSuccessOrThrow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine

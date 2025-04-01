@@ -89,7 +89,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presenta
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.MovieDetailTrailerScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.VIDEO_START_TIME
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.base.BaseUiStateComposable
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieImage
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener

@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.fontDimensionResource
 
 @Preview(showBackground = true)
 @Composable

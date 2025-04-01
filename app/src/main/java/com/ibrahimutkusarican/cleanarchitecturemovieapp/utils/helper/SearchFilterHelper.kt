@@ -1,6 +1,7 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchFilterModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
 import javax.inject.Inject
 
 class SearchFilterHelper @Inject constructor(

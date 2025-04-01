@@ -20,10 +20,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -39,7 +36,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.m
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchFilterModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SortModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.TimePeriodModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.SearchFilterHelper
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.SearchFilterHelper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
 
 @OptIn(ExperimentalMaterial3Api::class)

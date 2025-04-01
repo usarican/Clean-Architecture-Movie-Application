@@ -30,7 +30,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.m
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.mockMovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.action.DetailUiAction
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieImage
 
 @Composable

@@ -6,8 +6,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remot
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.local.VisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.model.SeeAllMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.Language
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.FormatHelper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.ImageUrlHelper
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.FormatHelper
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.ImageUrlHelper
 import javax.inject.Inject
 
 class SeeAllMovieModelMapper @Inject constructor(

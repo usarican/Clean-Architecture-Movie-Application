@@ -22,8 +22,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.m
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailTrailerModelItem
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.Language
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.FormatHelper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.ImageUrlHelper
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.FormatHelper
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.ImageUrlHelper
 import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter

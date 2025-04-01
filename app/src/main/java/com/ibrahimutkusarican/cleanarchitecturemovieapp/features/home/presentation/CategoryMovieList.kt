@@ -32,7 +32,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.mod
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.getStringRes
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieImage
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.fontDimensionResource
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable

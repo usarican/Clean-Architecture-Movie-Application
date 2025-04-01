@@ -26,7 +26,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.EmptyScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.model.SeeAllMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.base.BasePagingComposable
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieImage
 
 @Composable

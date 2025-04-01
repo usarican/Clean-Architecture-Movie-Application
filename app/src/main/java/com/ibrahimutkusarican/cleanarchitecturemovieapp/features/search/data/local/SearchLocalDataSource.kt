@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.local.VisitedMovieDao
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.local.VisitedMovieEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.database.VisitedMovieDao
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.local.VisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.entities.LastSearchEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.entities.RegionEntity
 import javax.inject.Inject

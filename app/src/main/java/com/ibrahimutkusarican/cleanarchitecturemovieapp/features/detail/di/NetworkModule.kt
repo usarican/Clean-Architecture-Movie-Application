@@ -1,10 +1,9 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.di
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.MovieDetailService
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.network.MovieDetailService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 

@@ -3,15 +3,15 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.
 import android.os.Build
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.mapper.GenreIdsToGenreNameListMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.model.GenreModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.AuthorResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.CastResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.MovieDetailCreditResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.MovieDetailResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.MovieReviewResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.MovieVideoResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.VideoResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.VideoSite
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.VideoType
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailAuthorResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailCastResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailCreditResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailReviewResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailVideoResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.VideoResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.VideoSite
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.VideoType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.AuthorModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.CastModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailAboutModel
@@ -37,7 +37,7 @@ class MovieDetailModelMapper @Inject constructor(
     private val formatHelper: FormatHelper,
     private val genreIdsToGenreNameListMapper: GenreIdsToGenreNameListMapper
 ) {
-    fun movieDetailResponseToMovieDetailInfoModel(movieDetailResponse: MovieDetailResponse,language : Language): MovieDetailInfoModel =
+    fun movieDetailResponseToMovieDetailInfoModel(movieDetailResponse: MovieDetailResponse, language : Language): MovieDetailInfoModel =
         with(movieDetailResponse) {
             MovieDetailInfoModel(
                 movieId = movieId,
@@ -79,7 +79,7 @@ class MovieDetailModelMapper @Inject constructor(
             })
     }
 
-    fun movieReviewResponseToMovieDetailReviewModel(movieReviewResponse: MovieReviewResponse): MovieDetailReviewModel =
+    fun movieReviewResponseToMovieDetailReviewModel(movieReviewResponse: MovieDetailReviewResponse): MovieDetailReviewModel =
         with(movieReviewResponse) {
             MovieDetailReviewModel(reviews = authorResponses.map { authorResponse ->
                 authorResponseToAuthorModel(authorResponse)
@@ -98,7 +98,7 @@ class MovieDetailModelMapper @Inject constructor(
         )
     }
 
-    fun movieTrailerResponseToMovieDetailTrailerModel(movieVideoResponse: MovieVideoResponse): MovieDetailTrailerModel =
+    fun movieTrailerResponseToMovieDetailTrailerModel(movieVideoResponse: MovieDetailVideoResponse): MovieDetailTrailerModel =
         with(movieVideoResponse) {
             val filteredMovieTrailerResponse = filterMovieTrailerResponse(videoResponses)
             val orderMovieTrailerResponse = orderVideoTrailersByUpdateTimeDescending(filteredMovieTrailerResponse)
@@ -140,7 +140,7 @@ class MovieDetailModelMapper @Inject constructor(
     }
 
 
-    fun authorResponseToAuthorModel(authorResponse: AuthorResponse): AuthorModel =
+    fun authorResponseToAuthorModel(authorResponse: MovieDetailAuthorResponse): AuthorModel =
         with(authorResponse) {
             AuthorModel(
                 authorName = authorDetailResponse.name,
@@ -152,7 +152,7 @@ class MovieDetailModelMapper @Inject constructor(
             )
         }
 
-    private fun castResponseToCastModel(castResponse: CastResponse): CastModel =
+    private fun castResponseToCastModel(castResponse: MovieDetailCastResponse): CastModel =
         with(castResponse) {
             CastModel(
                 characterName = character,

@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.di
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieDatabase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.local.VisitedMovieDao
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.database.VisitedMovieDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -10,8 +10,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.local.MyListMovieDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.local.MyListMovieEntity
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.local.VisitedMovieDao
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.local.VisitedMovieEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.database.VisitedMovieDao
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.local.VisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.LastSearchDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.RegionDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.entities.LastSearchEntity

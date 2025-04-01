@@ -1,15 +1,15 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote
 
 
 import com.squareup.moshi.Json
 
-data class MovieReviewResponse(
+data class MovieDetailReviewResponse(
     @Json(name = "id")
     val id: Int,
     @Json(name = "page")
     val page: Int,
     @Json(name = "results")
-    val authorResponses: List<AuthorResponse>,
+    val authorResponses: List<MovieDetailAuthorResponse>,
     @Json(name = "total_pages")
     val totalPages: Int,
     @Json(name = "total_results")

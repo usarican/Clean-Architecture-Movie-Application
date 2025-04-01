@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.local
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.local
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

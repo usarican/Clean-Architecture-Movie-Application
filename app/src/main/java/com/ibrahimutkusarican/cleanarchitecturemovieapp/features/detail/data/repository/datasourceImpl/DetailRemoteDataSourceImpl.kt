@@ -1,8 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.repository.datasourceImpl
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.MovieDetailService
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.network.MovieDetailService
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.repository.datasource.DetailRemoteDataSource
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.STARTING_PAGE_INDEX
 import javax.inject.Inject
 
 class DetailRemoteDataSourceImpl @Inject constructor(

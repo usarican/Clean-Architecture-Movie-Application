@@ -1,6 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.repository.datasource
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.local.VisitedMovieEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.local.VisitedMovieEntity
 
 interface DetailLocalDataSource {
 

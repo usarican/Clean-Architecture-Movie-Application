@@ -1,10 +1,11 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.local
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.database
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.local.VisitedMovieEntity
 
 @Dao
 interface VisitedMovieDao {

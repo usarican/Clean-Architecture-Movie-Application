@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote
 
 
 import com.squareup.moshi.Json

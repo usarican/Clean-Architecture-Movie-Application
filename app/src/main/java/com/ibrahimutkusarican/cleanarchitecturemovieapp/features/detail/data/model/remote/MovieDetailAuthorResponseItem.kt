@@ -1,9 +1,9 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote
 
 
 import com.squareup.moshi.Json
 
-data class AuthorDetailResponse(
+data class MovieDetailAuthorResponseItem(
     @Json(name = "avatar_path")
     val avatarPath: String?,
     @Json(name = "name")

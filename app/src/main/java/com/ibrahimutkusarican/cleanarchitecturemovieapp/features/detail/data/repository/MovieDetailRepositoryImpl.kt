@@ -3,10 +3,10 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.re
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ApiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.mapper.MovieDetailResponseMapper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.MovieDetailCreditResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.MovieDetailResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.MovieReviewResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.MovieVideoResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailCreditResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailReviewResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailVideoResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.repository.datasource.DetailLocalDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.repository.datasource.DetailRemoteDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.repository.MovieDetailRepository
@@ -22,8 +22,7 @@ class MovieDetailRepositoryImpl @Inject constructor(
     override suspend fun getMovieDetailResponse(movieId: Int): Flow<ApiState<MovieDetailResponse>> {
         return apiCall {
             val movieDetailResponse = detailRemoteDataSource.getMovieDetail(movieId)
-            val visitedMovieEntity =
-                movieDetailResponseMapper.mapResponseToEntity(movieDetailResponse)
+            val visitedMovieEntity = movieDetailResponseMapper.mapResponseToEntity(movieDetailResponse)
             detailLocalDataSource.insertVisitedMovie(visitedMovieEntity)
             movieDetailResponse
         }
@@ -37,11 +36,11 @@ class MovieDetailRepositoryImpl @Inject constructor(
         return apiCall { detailRemoteDataSource.getMovieRecommendations(movieId) }
     }
 
-    override suspend fun getMovieDetailReviews(movieId: Int): Flow<ApiState<MovieReviewResponse>> {
+    override suspend fun getMovieDetailReviews(movieId: Int): Flow<ApiState<MovieDetailReviewResponse>> {
         return apiCall { detailRemoteDataSource.getMovieReviews(movieId) }
     }
 
-    override suspend fun getMovieDetailTrailers(movieId: Int): Flow<ApiState<MovieVideoResponse>> {
+    override suspend fun getMovieDetailTrailers(movieId: Int): Flow<ApiState<MovieDetailVideoResponse>> {
         return apiCall { detailRemoteDataSource.getMovieTrailers(movieId) }
     }
 

@@ -1,9 +1,9 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote
 
 
 import com.squareup.moshi.Json
 
-data class MovieVideoResponse(
+data class MovieDetailVideoResponse(
     @Json(name = "id")
     val id: Int,
     @Json(name = "results")

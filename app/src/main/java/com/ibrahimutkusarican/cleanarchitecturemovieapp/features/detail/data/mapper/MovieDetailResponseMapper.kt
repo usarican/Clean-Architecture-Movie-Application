@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.mapper
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.local.VisitedMovieEntity
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.MovieDetailResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.local.VisitedMovieEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import javax.inject.Inject
 

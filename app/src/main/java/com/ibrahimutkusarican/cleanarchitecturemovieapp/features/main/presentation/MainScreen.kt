@@ -3,7 +3,6 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.presentat
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -32,8 +31,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarHost
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailScreen
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.presentation.MovieDetailViewModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.MovieDetailScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.MovieDetailViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.presentation.ExploreScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.BannerMoviesScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.HomeScreen

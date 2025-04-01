@@ -2,13 +2,11 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.mapper.GenreIdsToGenreNameListMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.model.GenreModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.MovieDetailResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.MovieDetailModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.remote.MovieDetailResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.local.MyListMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListMovieModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.FormatHelper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.ImageUrlHelper
 import javax.inject.Inject
 
 class MyListMovieModelMapper @Inject constructor(

@@ -3,7 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.mapper.GenreIdsToGenreNameListMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.model.GenreModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.local.VisitedMovieEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.local.VisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.model.SeeAllMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.Language
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.FormatHelper

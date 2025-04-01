@@ -135,7 +135,6 @@ class MainViewModel @Inject constructor(
             }
 
             else -> {
-                Log.d("MainViewModel", "observeMyEvents: $event")
             }
         }
     }

@@ -84,8 +84,15 @@ val mockMovieDetailModel = MovieDetailModel(
         listOf(
             MovieDetailRecommendedModelItem(
                 movieId = 67890,
-                movieTitle = "Recommended Action Flick",
+                movieTitle = "Movie Title 1",
                 movieGenres = listOf("Action", "Thriller"),
+                moviePosterImageUrl = "https://example.com/mock-recommendation-poster.jpg",
+                movieTMDBScore = 6.9
+            ),
+            MovieDetailRecommendedModelItem(
+                movieId = 67891,
+                movieTitle = "Movie Title 2",
+                movieGenres = listOf("Sport", "Thriller"),
                 moviePosterImageUrl = "https://example.com/mock-recommendation-poster.jpg",
                 movieTMDBScore = 6.9
             )

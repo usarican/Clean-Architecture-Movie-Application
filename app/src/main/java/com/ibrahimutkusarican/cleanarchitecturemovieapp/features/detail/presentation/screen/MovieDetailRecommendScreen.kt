@@ -34,13 +34,12 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResou
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
 
 @Composable
-fun MovieDetailRecommendedScreen(
-    modifier: Modifier = Modifier,
-    movieDetailModel: MovieDetailModel = mockMovieDetailModel,
-    handleUiAction: (action: DetailUiAction) -> Unit = {}
+fun MovieDetailRecommendScreen(
+    movieDetailModel: MovieDetailModel,
+    handleUiAction: (action: DetailUiAction) -> Unit
 ) {
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = dimensionResource(R.dimen.medium_padding))
             .padding(bottom = dimensionResource(R.dimen.medium_padding)),
@@ -95,14 +94,12 @@ fun MovieDetailRecommendedScreen(
 }
 
 @Composable
-@Preview(showBackground = true)
 private fun RecommendedMovieItem(
-    modifier: Modifier = Modifier,
-    recommendedMovieModel: MovieDetailRecommendedModelItem = mockMovieDetailModel.movieDetailRecommendedMovies.recommendedMovies.first(),
-    movieClickAction: (movieId: Int) -> Unit = {}
+    recommendedMovieModel: MovieDetailRecommendedModelItem,
+    movieClickAction: (movieId: Int) -> Unit
 ) {
     Column(
-        modifier = modifier
+        modifier = Modifier
             .width(dimensionResource(R.dimen.home_category_movie_width))
             .clickable {
                 movieClickAction(recommendedMovieModel.movieId)
@@ -137,3 +134,18 @@ private fun RecommendedMovieItem(
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+private fun PreviewMovieDetailRecommendedScreen() {
+    MovieDetailRecommendScreen(
+        movieDetailModel = mockMovieDetailModel
+    ) {}
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewRecommendedMovieItem() {
+    RecommendedMovieItem(
+        recommendedMovieModel = mockMovieDetailModel.movieDetailRecommendedMovies.recommendedMovies.first()
+    ) {}
+}

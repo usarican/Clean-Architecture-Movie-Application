@@ -83,7 +83,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.m
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.mockMovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.action.DetailUiAction
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.MovieDetailAboutScreen
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.MovieDetailRecommendedScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.MovieDetailRecommendScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.MovieDetailReviewScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.MovieDetailTrailerScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.VIDEO_START_TIME
@@ -374,7 +374,7 @@ private fun MovieDetailPager(
                 0 -> MovieDetailAboutScreen(movieDetailAboutModel = movieDetailModel.movieDetailAboutModel)
                 1 -> MovieDetailTrailerScreen(movieDetailTrailerModel = movieDetailModel.movieDetailTrailerModel)
                 2 -> MovieDetailReviewScreen(movieDetailModel = movieDetailModel, handleUiAction = handleUiAction)
-                3 -> MovieDetailRecommendedScreen(movieDetailModel = movieDetailModel, handleUiAction = handleUiAction)
+                3 -> MovieDetailRecommendScreen(movieDetailModel = movieDetailModel, handleUiAction = handleUiAction)
             }
         }
     }

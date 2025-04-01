@@ -5,8 +5,8 @@ import androidx.paging.cachedIn
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MySnackBarModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UIAction
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListPage
@@ -16,11 +16,10 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.u
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.GetMyListMovieUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.UpdateMyListMovieUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
-import java.util.Stack
 import javax.inject.Inject
 
 @HiltViewModel

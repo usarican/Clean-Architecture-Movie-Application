@@ -30,8 +30,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getStringRes
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.getStringRes
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieImage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 
 @OptIn(ExperimentalSharedTransitionApi::class)

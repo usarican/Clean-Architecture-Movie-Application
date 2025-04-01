@@ -2,7 +2,6 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.present
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -24,17 +22,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
-import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorScreen
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.EmptyScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.model.SeeAllMovieModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BasePagingComposable
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.convertMovieException
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.base.BasePagingComposable
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieImage
 
 @Composable
 fun SeeAllMovies(

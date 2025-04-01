@@ -15,10 +15,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieException
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.ErrorScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MyTopBar
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.component.MovieSearchBar
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieTopBar
 
 @Composable
 fun SeeAllScreen(
@@ -33,7 +33,7 @@ fun SeeAllScreen(
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.statusBars)
     ) {
-        MyTopBar(title = stringResource(
+        MovieTopBar(title = stringResource(
             when (seeAllType) {
                 is SeeAllType.MovieReviews -> R.string.reviews
                 is SeeAllType.RecommendationMovies -> R.string.recommended_for_you
@@ -53,7 +53,7 @@ fun SeeAllScreen(
 
             null -> ErrorScreen(exception = MovieException.NotFoundException(stringResource(R.string.error_content_not_found)))
             else -> {
-                MySearchBar(
+                MovieSearchBar(
                     modifier = Modifier.padding(dimensionResource(R.dimen.large_padding)),
                     searchText = searchText, onSearch = { searchText ->
                         viewModel.handleUiActions(SeeAllUiAction.SearchAction(searchText))

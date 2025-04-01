@@ -9,7 +9,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.m
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchFilterModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SortModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.TimePeriodModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getSuccessOrThrow
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.getSuccessOrThrow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first

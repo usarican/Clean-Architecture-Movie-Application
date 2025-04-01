@@ -6,7 +6,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.domain.model.ExploreInitialDataModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.domain.usecase.GetExploreInitialDataUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

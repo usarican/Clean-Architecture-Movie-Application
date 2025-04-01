@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable

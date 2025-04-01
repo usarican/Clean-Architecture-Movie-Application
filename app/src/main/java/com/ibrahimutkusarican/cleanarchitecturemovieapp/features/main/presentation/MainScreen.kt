@@ -30,7 +30,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarHost
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieSnackbarHost
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.MovieDetailScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.MovieDetailViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.presentation.ExploreScreen
@@ -96,7 +96,7 @@ fun MainScreen(viewModel: MainViewModel) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             snackbarHost = {
-                MySnackBarHost(
+                MovieSnackbarHost(
                     hostState = snackbarHostState,
                     isDarkMode = userSettings.value.isDarkModeEnabled
                 )

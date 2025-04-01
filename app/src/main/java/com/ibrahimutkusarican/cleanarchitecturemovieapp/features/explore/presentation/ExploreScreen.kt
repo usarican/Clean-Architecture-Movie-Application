@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -23,14 +22,14 @@ import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorScreen
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.ErrorScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.LoadingScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.domain.model.ExploreInitialDataModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.presentation.MovieCategory
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.component.MovieSearchBar
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -107,7 +106,7 @@ private fun ExploreSuccessScreen(
             .verticalScroll(rememberScrollState())
             .padding(bottom = dimensionResource(R.dimen.medium_padding))
     ) {
-        MySearchBar(
+        MovieSearchBar(
             modifier = Modifier.padding(dimensionResource(R.dimen.large_padding)),
             searchText = "",
             showFilterIcon = true,

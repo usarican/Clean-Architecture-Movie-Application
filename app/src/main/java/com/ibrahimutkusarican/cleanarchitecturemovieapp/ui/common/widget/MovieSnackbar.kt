@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
@@ -38,7 +38,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.SNACK_BAR_WITH_ACTION_DELAY
@@ -46,7 +45,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 @Preview(showBackground = true)
-fun MySnackBar(
+fun MovieSnackbar(
     modifier: Modifier = Modifier,
     snackBarModel: MySnackBarModel = MySnackBarModel(
         title = "Information",
@@ -152,9 +151,9 @@ fun MySnackBar(
 }
 
 @Composable
-fun MySnackBarHost(hostState: SnackbarHostState, isDarkMode: Boolean) {
+fun MovieSnackbarHost(hostState: SnackbarHostState, isDarkMode: Boolean) {
     SnackbarHost(hostState = hostState) { snackBarData ->
-        MySnackBar(
+        MovieSnackbar(
             snackBarModel = snackBarData.visuals as MySnackBarModel,
             isDarkMode = isDarkMode
         )

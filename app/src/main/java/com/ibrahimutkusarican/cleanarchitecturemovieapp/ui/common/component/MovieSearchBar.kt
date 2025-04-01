@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.component
 
 
 import androidx.compose.foundation.clickable
@@ -26,7 +26,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 
 @Composable
 @Preview(showBackground = true)
-fun MySearchBar(
+fun MovieSearchBar(
     modifier: Modifier = Modifier,
     onSearch: (String) -> Unit = {},
     searchText: String = "asd",

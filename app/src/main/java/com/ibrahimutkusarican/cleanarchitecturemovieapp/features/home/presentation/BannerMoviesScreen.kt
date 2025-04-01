@@ -64,8 +64,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.carouselTransition
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.carouselTransition
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieImage
 
 @Composable
 @Preview(showBackground = true)

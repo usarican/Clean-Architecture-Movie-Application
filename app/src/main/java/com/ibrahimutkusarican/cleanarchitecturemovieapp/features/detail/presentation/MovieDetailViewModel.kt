@@ -4,8 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.MySnackBarModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.SnackBarType
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MySnackBarModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieShareModel
@@ -17,8 +17,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.m
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.UpdateMyListMovieUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnError
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.doOnError
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

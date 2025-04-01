@@ -38,13 +38,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.EmptyScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchFilterModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.SearchScreenModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposable
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.base.BaseUiStateComposable
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MySearchBar
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MyTopBar
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.component.MovieSearchBar
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieTopBar
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -72,7 +72,7 @@ fun SearchScreen(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            MyTopBar(
+            MovieTopBar(
                 title = stringResource(R.string.search),
                 onBackClick = {
                     if (searchScreenModel.searchText.isEmpty()) {
@@ -176,7 +176,7 @@ private fun SearchScreenSearchBar(
             .padding(dimensionResource(R.dimen.large_padding)),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        MySearchBar(
+        MovieSearchBar(
             modifier = Modifier
                 .animateContentSize()
                 .weight(1F),

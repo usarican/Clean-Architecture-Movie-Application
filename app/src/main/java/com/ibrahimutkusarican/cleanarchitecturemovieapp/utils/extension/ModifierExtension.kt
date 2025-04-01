@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.navigationBars

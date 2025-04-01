@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable

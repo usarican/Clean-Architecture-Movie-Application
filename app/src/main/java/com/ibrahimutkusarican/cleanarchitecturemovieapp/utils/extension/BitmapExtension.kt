@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension
 
 import android.graphics.Bitmap
 import androidx.compose.ui.graphics.Color

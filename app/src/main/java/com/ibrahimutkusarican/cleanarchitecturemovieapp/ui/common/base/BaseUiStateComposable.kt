@@ -1,17 +1,17 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.base
 
 import androidx.compose.runtime.Composable
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.ErrorScreen
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.LoadingScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.ErrorScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.LoadingScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 
 @Composable
-fun <T>BaseUiStateComposable(
+fun <T> BaseUiStateComposable(
     uiState: UiState<T>,
     tryAgainOnClickAction: () -> Unit,
-    backButtonClickAction : () -> Unit,
-    successScreen : @Composable (data : T) -> Unit
+    backButtonClickAction: () -> Unit,
+    successScreen: @Composable (data: T) -> Unit
 ) {
     when (uiState) {
         is UiState.Error -> ErrorScreen(

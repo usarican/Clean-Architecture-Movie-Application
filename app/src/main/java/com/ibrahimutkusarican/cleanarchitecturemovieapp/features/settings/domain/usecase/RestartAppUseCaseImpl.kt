@@ -5,7 +5,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.reposito
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.MovieRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.SearchRepository
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getSuccessOrThrow
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.getSuccessOrThrow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first

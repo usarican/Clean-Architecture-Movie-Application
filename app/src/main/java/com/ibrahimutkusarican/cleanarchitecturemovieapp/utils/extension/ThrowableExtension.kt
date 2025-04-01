@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension
 
 import android.database.sqlite.SQLiteException
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieException

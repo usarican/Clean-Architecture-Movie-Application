@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +18,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResou
 
 @Preview(showBackground = true)
 @Composable
-fun MyTopBar(
+fun MovieTopBar(
     modifier: Modifier = Modifier,
     title: String = stringResource(R.string.top_rated_movies),
     onBackClick: () -> Unit = {}

@@ -20,7 +20,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.m
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.SEARCH_DEBOUNCE_TIME
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.SearchFilterHelper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.doOnSuccess
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

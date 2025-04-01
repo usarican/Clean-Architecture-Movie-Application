@@ -21,9 +21,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.blurTransition
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.carouselTransition
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.blurTransition
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.carouselTransition
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieImage
 
 @Composable
 fun HomeBannerMoviesList(

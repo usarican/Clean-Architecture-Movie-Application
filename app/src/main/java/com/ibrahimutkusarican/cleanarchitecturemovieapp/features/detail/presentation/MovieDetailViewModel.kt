@@ -12,6 +12,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.m
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.usecase.GetMovieDetailUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.usecase.GetMovieShareModelUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.action.DetailUiAction
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.model.MovieDetailActionButtonType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListUpdatePage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.UpdateMyListMovieUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
@@ -92,10 +93,7 @@ class MovieDetailViewModel @Inject constructor(
                     }
 
                     MovieDetailActionButtonType.SHARE -> getMovieUri()
-                    MovieDetailActionButtonType.ADD_FAVORITE -> addMovieFavoriteList(
-                        movieDetailModel.value
-                    )
-
+                    MovieDetailActionButtonType.ADD_FAVORITE -> addMovieFavoriteList(movieDetailModel.value)
                     MovieDetailActionButtonType.ADD_WATCH_LIST -> addMovieWatchList(movieDetailModel.value)
                 }
             }

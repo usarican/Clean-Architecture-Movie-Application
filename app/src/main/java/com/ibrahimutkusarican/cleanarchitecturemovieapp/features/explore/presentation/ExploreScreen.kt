@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -115,7 +116,7 @@ private fun ExploreSuccessScreen(
                 handleUiAction(ExploreUiAction.SearchBarClickAction(data.forYouMovie?.movieId))
             })
         ExploreBannerMovies(
-            modifier = Modifier.height(dimensionResource(R.dimen.explore_banner_movie_height)),
+            modifier = Modifier.wrapContentHeight(),
             bannerMovies = data.bannerMovies,
             handleUiAction = handleUiAction
         )

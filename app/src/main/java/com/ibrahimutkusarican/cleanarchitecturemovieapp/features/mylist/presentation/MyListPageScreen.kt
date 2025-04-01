@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -67,7 +68,7 @@ import kotlin.math.roundToInt
 @Composable
 fun MyListPageScreen(
     movies: LazyPagingItems<MyListMovieModel>,
-    handleUiAction: Pair<MyListViewModel,(action: UIAction<*>) -> Unit>,
+    handleUiAction: Pair<MyListViewModel, (action: UIAction<*>) -> Unit>,
     pageIndex: Int,
     emptyScreenType: EmptyScreenType
 ) {
@@ -88,7 +89,8 @@ fun MyListPageScreen(
                     MyListMovieItem(myListMovie = movie, movieClickAction = {
                         handleUiAction.second(handleUiAction.first.MovieClickAction(movie.movieId))
                     }, onDelete = {
-                        handleUiAction.second(handleUiAction.first.MovieDeleteAction(
+                        handleUiAction.second(
+                            handleUiAction.first.MovieDeleteAction(
                                 MyListViewModel.DeleteMovieData(
                                     movie = movie,
                                     page = MyListUpdatePage.findPageByIndex(pageIndex)
@@ -96,7 +98,8 @@ fun MyListPageScreen(
                             )
                         )
                     }, onInstantDelete = {
-                        handleUiAction.second(handleUiAction.first.InstantMovieDeleteAction(
+                        handleUiAction.second(
+                            handleUiAction.first.InstantMovieDeleteAction(
                                 MyListViewModel.DeleteMovieData(
                                     movie = movie,
                                     page = MyListUpdatePage.findPageByIndex(pageIndex)
@@ -132,11 +135,12 @@ fun MyListMovieItem(
         )
     }
 
-    Box(modifier = modifier
-        .fillMaxWidth()
-        .onGloballyPositioned { coords ->
-            itemWidth = coords.size.width
-        }) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .onGloballyPositioned { coords ->
+                itemWidth = coords.size.width
+            }) {
         Box(
             modifier = Modifier
                 .matchParentSize()
@@ -173,7 +177,8 @@ fun MyListMovieItem(
             }
         }
 
-        Card(shape = cardShape, border = BorderStroke(
+        Card(
+            shape = cardShape, border = BorderStroke(
             dimensionResource(R.dimen.one_dp), MaterialTheme.colorScheme.outlineVariant
         ),
             colors = CardDefaults.cardColors(
@@ -181,7 +186,8 @@ fun MyListMovieItem(
             ), modifier = Modifier
                 .offset { IntOffset(offsetX.value.roundToInt(), 0) }
                 .fillMaxWidth()
-                .draggable(orientation = Orientation.Horizontal,
+                .draggable(
+                    orientation = Orientation.Horizontal,
                     state = rememberDraggableState { delta ->
                         val newOffset = offsetX.value + delta
                         scope.launch {
@@ -237,7 +243,9 @@ fun MyListMovieItem(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(dimensionResource(R.dimen.see_all_category_movie_width))
+                    .wrapContentHeight(),
+                verticalAlignment = Alignment.CenterVertically
+
             ) {
                 Card(
                     shape = RoundedCornerShape(dimensionResource(R.dimen.medium_border))
@@ -246,17 +254,18 @@ fun MyListMovieItem(
                         imageUrl = myListMovie.posterPath,
                         modifier = Modifier
                             .width(dimensionResource(R.dimen.see_all_category_movie_width))
-                            .height(dimensionResource(R.dimen.see_all_category_movie_width))
+                            .wrapContentHeight()
                     )
                 }
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(start = dimensionResource(R.dimen.medium_padding)),
-                    verticalArrangement = Arrangement.Center,
+                        .padding(horizontal = dimensionResource(R.dimen.medium_padding)),
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = myListMovie.title, style = MaterialTheme.typography.titleMedium.copy(
+                        text = myListMovie.title,
+                        style = MaterialTheme.typography.titleMedium.copy(
                             fontSize = fontDimensionResource(R.dimen.movie_category_item_title_size),
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -269,7 +278,7 @@ fun MyListMovieItem(
                             fontSize = fontDimensionResource(R.dimen.see_all_movie_item_content_text_size),
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         ),
-                        maxLines = 3,
+                        maxLines = 6,
                         overflow = TextOverflow.Ellipsis
                     )
                     Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_padding)))

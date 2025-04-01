@@ -1,5 +1,6 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.action
 
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.MovieDetailActionButtonData
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 
 

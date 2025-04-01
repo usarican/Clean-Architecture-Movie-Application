@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,7 +32,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 
 @Composable
-fun TrailersPageScreen(
+fun MovieDetailTrailerScreen(
     modifier: Modifier = Modifier,
     movieDetailTrailerModel: MovieDetailTrailerModel = mockMovieDetailModel.movieDetailTrailerModel
 ) {

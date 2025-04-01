@@ -13,7 +13,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.mod
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.VideoSite
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.VideoType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailReviewModelItem
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.CastModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailCastModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailAboutModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailInfoModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailReviewModel
@@ -152,9 +152,9 @@ class MovieDetailModelMapper @Inject constructor(
             )
         }
 
-    private fun castResponseToCastModel(castResponse: MovieDetailCastResponse): CastModel =
+    private fun castResponseToCastModel(castResponse: MovieDetailCastResponse): MovieDetailCastModel =
         with(castResponse) {
-            CastModel(
+            MovieDetailCastModel(
                 characterName = character,
                 gender = gender,
                 order = order,

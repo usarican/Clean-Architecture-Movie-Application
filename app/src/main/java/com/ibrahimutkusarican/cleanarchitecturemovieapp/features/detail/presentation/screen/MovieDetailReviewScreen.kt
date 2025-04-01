@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,11 +34,12 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailReviewModelItem
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.mockMovieDetailModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.action.DetailUiAction
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 
 @Composable
 @Preview(showBackground = true)
-fun ReviewsPageScreen(
+fun MovieDetailReviewScreen(
     modifier: Modifier = Modifier,
     movieDetailModel: MovieDetailModel = mockMovieDetailModel,
     handleUiAction: (action: DetailUiAction) -> Unit = {}

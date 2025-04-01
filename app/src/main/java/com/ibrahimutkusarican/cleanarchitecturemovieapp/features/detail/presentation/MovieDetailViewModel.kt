@@ -11,6 +11,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.m
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieShareModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.usecase.GetMovieDetailUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.usecase.GetMovieShareModelUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.action.DetailUiAction
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.model.MyListUpdatePage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.usecase.UpdateMyListMovieUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants

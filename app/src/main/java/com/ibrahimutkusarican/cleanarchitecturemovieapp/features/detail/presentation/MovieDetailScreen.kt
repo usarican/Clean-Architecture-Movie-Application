@@ -81,6 +81,12 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailInfoModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.mockMovieDetailModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.action.DetailUiAction
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.MovieDetailAboutScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.MovieDetailRecommendedScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.MovieDetailReviewScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.MovieDetailTrailerScreen
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.VIDEO_START_TIME
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.BaseUiStateComposable
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets.MovieImage
@@ -365,15 +371,10 @@ private fun MovieDetailPager(
                 .padding(top = dimensionResource(R.dimen.medium_padding)), state = pagerState
         ) { page ->
             when (page) {
-                0 -> AboutPageScreen(movieDetailAboutModel = movieDetailModel.movieDetailAboutModel)
-                1 -> TrailersPageScreen(movieDetailTrailerModel = movieDetailModel.movieDetailTrailerModel)
-                2 -> ReviewsPageScreen(
-                    movieDetailModel = movieDetailModel, handleUiAction = handleUiAction
-                )
-
-                3 -> RecommendedPageScreen(
-                    movieDetailModel = movieDetailModel, handleUiAction = handleUiAction
-                )
+                0 -> MovieDetailAboutScreen(movieDetailAboutModel = movieDetailModel.movieDetailAboutModel)
+                1 -> MovieDetailTrailerScreen(movieDetailTrailerModel = movieDetailModel.movieDetailTrailerModel)
+                2 -> MovieDetailReviewScreen(movieDetailModel = movieDetailModel, handleUiAction = handleUiAction)
+                3 -> MovieDetailRecommendedScreen(movieDetailModel = movieDetailModel, handleUiAction = handleUiAction)
             }
         }
     }

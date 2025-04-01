@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation
+package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -31,13 +31,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.CastModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailAboutModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailCastModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.mockMovieDetailModel
 
 @Composable
 @Preview(showBackground = true)
-fun AboutPageScreen(
+fun MovieDetailAboutScreen(
     modifier: Modifier = Modifier,
     movieDetailAboutModel: MovieDetailAboutModel = mockMovieDetailModel.movieDetailAboutModel
 ) {
@@ -199,7 +199,7 @@ private fun MovieCastSection(
 @Preview(showBackground = true)
 private fun MovieCastItem(
     modifier: Modifier = Modifier,
-    castModel: CastModel = mockMovieDetailModel.movieDetailAboutModel.casts.first()
+    castModel: MovieDetailCastModel = mockMovieDetailModel.movieDetailAboutModel.casts.first()
 ) {
     Card(
         modifier = modifier,

@@ -3,7 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.main.domain.us
 import android.util.Log
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.MovieDetailRepository
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.repository.MovieDetailRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.MyListRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.domain.mapper.MyListMovieModelMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extensions.getSuccessOrThrow

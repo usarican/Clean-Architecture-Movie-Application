@@ -3,8 +3,8 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.usecase.GetMovieGenresUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.mapper.MovieDetailModelMapper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.domain.model.AuthorModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.mapper.MovieDetailModelMapper
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailReviewModelItem
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.domain.mapper.SeeAllMovieModelMapper
@@ -51,7 +51,7 @@ class GetSeeAllUseCaseImpl @Inject constructor(
         }
     }
 
-    override fun getMovieReviewsSeeAll(movieId: Int): Flow<PagingData<AuthorModel>> {
+    override fun getMovieReviewsSeeAll(movieId: Int): Flow<PagingData<MovieDetailReviewModelItem>> {
         return seeAllRepository.getMovieReviewsSeeAll(movieId).map { pagingData ->
             pagingData.map { response ->
                 detailModelMapper.authorResponseToAuthorModel(response)

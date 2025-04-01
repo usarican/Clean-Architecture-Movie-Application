@@ -4,8 +4,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseRepository
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.AuthorResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.details.data.remote.DetailRemoteDataSource
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailAuthorResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.repository.datasourceImpl.DetailRemoteDataSourceImpl
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.MovieLocalDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.MovieRemoteDataSource
@@ -21,7 +21,7 @@ class SeeAllRepositoryImpl @Inject constructor(
     private val movieRemoteDataSource: MovieRemoteDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val movieEntityToResponseMapper: MovieEntityToResponseMapper,
-    private val detailRemoteDataSource: DetailRemoteDataSource
+    private val detailRemoteDataSource: DetailRemoteDataSourceImpl
 ) : SeeAllRepository, BaseRepository() {
 
     override fun getSeeAllMoviesByType(movieType: MovieType): Flow<PagingData<MovieResultResponse>> {
@@ -44,7 +44,7 @@ class SeeAllRepositoryImpl @Inject constructor(
         }).flow
     }
 
-    override fun getMovieReviewsSeeAll(movieId: Int): Flow<PagingData<AuthorResponse>> {
+    override fun getMovieReviewsSeeAll(movieId: Int): Flow<PagingData<MovieDetailAuthorResponse>> {
         return Pager(config = PagingConfig(pageSize = MOVIE_PAGE_SIZE), pagingSourceFactory = {
             MovieReviewsSeeAllPagingSource(
                 movieId = movieId,

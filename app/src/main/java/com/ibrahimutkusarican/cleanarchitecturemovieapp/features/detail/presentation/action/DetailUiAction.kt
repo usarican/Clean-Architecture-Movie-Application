@@ -3,7 +3,6 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.present
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.MovieDetailActionButtonData
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 
-
 sealed class DetailUiAction {
     data class SeeAllClickAction(val seeAllType: SeeAllType) : DetailUiAction()
     data class RecommendedMovieClickAction(val movieId: Int) : DetailUiAction()

@@ -55,8 +55,12 @@ val mockMovieDetailModel = MovieDetailModel(
     movieDetailTrailerModel = MovieDetailTrailerModel(
         trailers = listOf(
             MovieDetailTrailerModelItem(
-                name = "videoName",
-                key = ""
+                name = "Movie Trail v1",
+                key = "00"
+            ),
+            MovieDetailTrailerModelItem(
+                name = "Movie Trail v2",
+                key = "11"
             )
         )
     ),

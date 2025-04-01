@@ -30,17 +30,18 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
+const val VIDEO_START_TIME = 0F
 
 @Composable
 fun MovieDetailTrailerScreen(
-    modifier: Modifier = Modifier,
-    movieDetailTrailerModel: MovieDetailTrailerModel = mockMovieDetailModel.movieDetailTrailerModel
+    movieDetailTrailerModel: MovieDetailTrailerModel
 ) {
     if (movieDetailTrailerModel.trailers.isEmpty()){
         EmptyScreen(emptyScreenType = EmptyScreenType.TRAILERS)
     }
+
     LazyColumn(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = dimensionResource(R.dimen.medium_padding))
             .padding(bottom = dimensionResource(R.dimen.medium_padding)),
@@ -50,13 +51,12 @@ fun MovieDetailTrailerScreen(
             TrailerItem(trailerModel = model)
         }
     }
-
-
 }
 
 @Composable
-@Preview(showBackground = true)
-private fun TrailerItem(trailerModel: MovieDetailTrailerModelItem = mockMovieDetailModel.movieDetailTrailerModel.trailers.first()) {
+private fun TrailerItem(
+    trailerModel: MovieDetailTrailerModelItem
+) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -95,4 +95,10 @@ private fun YoutubePlayerView(videoKey: String) {
     )
 }
 
-const val VIDEO_START_TIME = 0F
+@Preview(showBackground = true)
+@Composable
+private fun PreviewMovieDetailTrailerScreen() {
+    MovieDetailTrailerScreen(
+        movieDetailTrailerModel = mockMovieDetailModel.movieDetailTrailerModel
+    )
+}

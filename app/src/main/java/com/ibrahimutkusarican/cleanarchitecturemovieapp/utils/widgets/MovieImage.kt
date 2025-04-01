@@ -1,12 +1,10 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.widgets
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import coil3.compose.AsyncImage
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.BuildConfig
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 
 @Composable
 fun MovieImage(
@@ -15,7 +13,7 @@ fun MovieImage(
     contentScale: ContentScale = ContentScale.FillBounds
 ) {
     AsyncImage(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         model = imageUrl,
         contentDescription = "AsyncImage",
         contentScale = contentScale,

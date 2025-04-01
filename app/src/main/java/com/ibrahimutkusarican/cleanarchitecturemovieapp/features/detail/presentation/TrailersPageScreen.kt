@@ -24,7 +24,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailTrailerModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.TrailerModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailTrailerModelItem
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.mockMovieDetailModel
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -56,7 +56,7 @@ fun TrailersPageScreen(
 
 @Composable
 @Preview(showBackground = true)
-private fun TrailerItem(trailerModel: TrailerModel = mockMovieDetailModel.movieDetailTrailerModel.trailers.first()) {
+private fun TrailerItem(trailerModel: MovieDetailTrailerModelItem = mockMovieDetailModel.movieDetailTrailerModel.trailers.first()) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {

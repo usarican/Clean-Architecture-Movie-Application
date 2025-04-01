@@ -6,7 +6,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.repository.MovieDetailRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.mapper.MovieDetailModelMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailRecommendedMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailRecommendedModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.MyListRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.data.UserSettingsRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.Language
@@ -74,7 +74,7 @@ class GetMovieDetailUseCaseImpl @Inject constructor(
                 MovieDetailModel(
                     movieDetailInfoModel = movieDetailInfoModel,
                     movieDetailAboutModel = movieDetailAboutModel,
-                    movieDetailRecommendedMovies = MovieDetailRecommendedMovieModel(
+                    movieDetailRecommendedMovies = MovieDetailRecommendedModel(
                         recommendedMovies = emptyList()
                     ),
                     movieDetailReviewModel = movieDetailReviewModel,
@@ -93,7 +93,7 @@ class GetMovieDetailUseCaseImpl @Inject constructor(
                         isFavorite = favoriteAndWatchListAddStatus?.isAddedFavorite ?: false,
                         isAddedToWatchList = favoriteAndWatchListAddStatus?.isAddedWatchList ?: false
                     ),
-                    movieDetailRecommendedMovies = MovieDetailRecommendedMovieModel(
+                    movieDetailRecommendedMovies = MovieDetailRecommendedModel(
                         recommendedMovies = recommendedMovies
                     )
                 )

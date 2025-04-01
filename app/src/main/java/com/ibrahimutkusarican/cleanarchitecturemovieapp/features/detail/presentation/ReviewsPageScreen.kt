@@ -31,7 +31,7 @@ import coil3.compose.AsyncImage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.EmptyScreenType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.AuthorModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailReviewModelItem
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.mockMovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
@@ -96,7 +96,7 @@ fun ReviewsPageScreen(
 }
 
 @Composable
-fun ReviewItem(model: AuthorModel) {
+fun ReviewItem(model: MovieDetailReviewModelItem) {
     model.review?.let {
         Row {
             AuthorImage(imageUrl = model.authorProfilePhoto)

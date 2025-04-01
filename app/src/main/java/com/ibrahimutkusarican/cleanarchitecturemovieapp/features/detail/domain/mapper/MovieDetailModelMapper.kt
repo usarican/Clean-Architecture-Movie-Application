@@ -12,14 +12,14 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.mod
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.VideoResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.VideoSite
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.VideoType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.AuthorModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailReviewModelItem
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.CastModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailAboutModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailInfoModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailReviewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailTrailerModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.RecommendedMovieModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.TrailerModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailRecommendedModelItem
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailTrailerModelItem
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.domain.model.Language
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.FormatHelper
@@ -88,8 +88,8 @@ class MovieDetailModelMapper @Inject constructor(
 
     fun movieResponseToMovieDetailRecommendedMovieModel(
         movieResultResponse: MovieResultResponse, genreList: List<GenreModel>
-    ): RecommendedMovieModel = with(movieResultResponse) {
-        RecommendedMovieModel(
+    ): MovieDetailRecommendedModelItem = with(movieResultResponse) {
+        MovieDetailRecommendedModelItem(
             movieId = id,
             movieTitle = title,
             movieGenres = genreIdsToGenreNameListMapper.getGenreNames(genreIds, genreList),
@@ -104,7 +104,7 @@ class MovieDetailModelMapper @Inject constructor(
             val orderMovieTrailerResponse = orderVideoTrailersByUpdateTimeDescending(filteredMovieTrailerResponse)
             MovieDetailTrailerModel(trailers = orderMovieTrailerResponse
                 .map { response ->
-                    TrailerModel(
+                    MovieDetailTrailerModelItem(
                         name = response.name, key = response.key
                     )
                 })
@@ -140,9 +140,9 @@ class MovieDetailModelMapper @Inject constructor(
     }
 
 
-    fun authorResponseToAuthorModel(authorResponse: MovieDetailAuthorResponse): AuthorModel =
+    fun authorResponseToAuthorModel(authorResponse: MovieDetailAuthorResponse): MovieDetailReviewModelItem =
         with(authorResponse) {
-            AuthorModel(
+            MovieDetailReviewModelItem(
                 authorName = authorDetailResponse.name,
                 review = content,
                 updateTime = updatedAt,

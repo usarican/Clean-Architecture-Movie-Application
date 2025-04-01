@@ -9,13 +9,5 @@ data class MovieDetailAboutModel(
     val genres : List<String>,
     val fullReleaseDate : String,
     val rating: String,
-    val casts : List<CastModel>
-)
-
-data class CastModel(
-    val characterName: String,
-    val gender: Int,
-    val order: Int,
-    val originalName: String?,
-    val profileImage: String?
+    val casts : List<MovieDetailCastModel>
 )

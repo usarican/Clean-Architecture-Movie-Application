@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.RecommendedMovieModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailRecommendedModelItem
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.mockMovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.fontDimensionResource
@@ -97,7 +97,7 @@ fun RecommendedPageScreen(
 @Preview(showBackground = true)
 private fun RecommendedMovieItem(
     modifier: Modifier = Modifier,
-    recommendedMovieModel: RecommendedMovieModel = mockMovieDetailModel.movieDetailRecommendedMovies.recommendedMovies.first(),
+    recommendedMovieModel: MovieDetailRecommendedModelItem = mockMovieDetailModel.movieDetailRecommendedMovies.recommendedMovies.first(),
     movieClickAction: (movieId: Int) -> Unit = {}
 ) {
     Column(

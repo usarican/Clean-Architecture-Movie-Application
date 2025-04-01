@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model
 
-data class MovieDetailReviewModel(
-    val reviews : List<MovieDetailReviewModelItem>
+data class MovieDetailTrailerModelItem(
+    val name : String,
+    val key : String,
 )

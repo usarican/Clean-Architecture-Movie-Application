@@ -36,14 +36,14 @@ val mockMovieDetailModel = MovieDetailModel(
         fullReleaseDate = "15 May 2023",
         overview = "This is a mock overview of the movie.",
         casts = listOf(
-            CastModel(
+            MovieDetailCastModel(
                 characterName = "John Wick",
                 gender = 2,
                 order = 1,
                 originalName = "Keanu Reeves",
                 profileImage = "https://example.com/mock-profile-1.jpg"
             ),
-            CastModel(
+            MovieDetailCastModel(
                 characterName = "Sofia",
                 gender = 1,
                 order = 2,
@@ -54,7 +54,7 @@ val mockMovieDetailModel = MovieDetailModel(
     ),
     movieDetailTrailerModel = MovieDetailTrailerModel(
         trailers = listOf(
-            TrailerModel(
+            MovieDetailTrailerModelItem(
                 name = "videoName",
                 key = ""
             )
@@ -62,7 +62,7 @@ val mockMovieDetailModel = MovieDetailModel(
     ),
     movieDetailReviewModel = MovieDetailReviewModel(
         reviews = listOf(
-            AuthorModel(
+            MovieDetailReviewModelItem(
                 authorName = "Reviewer One",
                 review = "Amazing movie. Lots of action!",
                 updateTime = "2023-05-01",
@@ -70,7 +70,7 @@ val mockMovieDetailModel = MovieDetailModel(
                 authorNickName = "ActionFan",
                 authorProfilePhoto = null
             ),
-            AuthorModel(
+            MovieDetailReviewModelItem(
                 authorName = "Reviewer Two",
                 review = "A bit over the top, but fun overall.",
                 updateTime = "2023-05-02",
@@ -80,9 +80,9 @@ val mockMovieDetailModel = MovieDetailModel(
             )
         )
     ),
-    movieDetailRecommendedMovies = MovieDetailRecommendedMovieModel(
+    movieDetailRecommendedMovies = MovieDetailRecommendedModel(
         listOf(
-            RecommendedMovieModel(
+            MovieDetailRecommendedModelItem(
                 movieId = 67890,
                 movieTitle = "Recommended Action Flick",
                 movieGenres = listOf("Action", "Thriller"),

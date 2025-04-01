@@ -38,17 +38,15 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presenta
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.seeall.data.SeeAllType
 
 @Composable
-@Preview(showBackground = true)
 fun MovieDetailReviewScreen(
-    modifier: Modifier = Modifier,
-    movieDetailModel: MovieDetailModel = mockMovieDetailModel,
-    handleUiAction: (action: DetailUiAction) -> Unit = {}
+    movieDetailModel: MovieDetailModel,
+    handleUiAction: (action: DetailUiAction) -> Unit
 ) {
     if (movieDetailModel.movieDetailReviewModel.reviews.isEmpty()){
         EmptyScreen(emptyScreenType = EmptyScreenType.REVIEWS)
     }
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = dimensionResource(R.dimen.medium_padding))
             .padding(bottom = dimensionResource(R.dimen.medium_padding)),
@@ -171,5 +169,12 @@ private fun AuthorImage(
             contentScale = contentScale,
         )
     }
+}
 
+@Preview(showBackground = true)
+@Composable
+private fun PreviewMovieDetailReviewScreen() {
+    MovieDetailReviewScreen(
+        movieDetailModel = mockMovieDetailModel
+    ) {}
 }

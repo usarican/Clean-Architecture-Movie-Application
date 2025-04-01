@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.os.Build
 import android.util.Log
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
@@ -68,7 +67,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.zIndex
@@ -82,6 +80,9 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.m
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.model.mockMovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.action.DetailUiAction
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.model.MovieDetailActionButtonData
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.model.MovieDetailActionButtonType
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.model.MovieDetailPage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.MovieDetailAboutScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.MovieDetailRecommendScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.presentation.screen.MovieDetailReviewScreen
@@ -99,16 +100,15 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieDetailScreen(
-    modifier: Modifier = Modifier,
+    viewModel: MovieDetailViewModel,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
-    viewModel: MovieDetailViewModel,
     shareAnimationKey: String?
 ) {
+    val context = LocalContext.current
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val movieDetailModel by viewModel.movieDetailModel.collectAsStateWithLifecycle()
-    val context = LocalContext.current
     val playerViewVideoKey by viewModel.playerViewKey.collectAsStateWithLifecycle()
     val isLandscape = rememberOriantationIsLandscape()
 
@@ -121,57 +121,52 @@ fun MovieDetailScreen(
             val deepLinkUri = "https://movieapp.com/movie/$movieId"
 
             try {
-                // For Android 10+ (API 29+), use the newer ShareSheetActivity API
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     val shareIntent = Intent(Intent.ACTION_SEND).apply {
                         putExtra(Intent.EXTRA_STREAM, uri)
                         type = "image/jpeg"
 
-                        // Add rich metadata for better previews
                         putExtra(Intent.EXTRA_TITLE, movieTitle)
-                        putExtra(
-                            Intent.EXTRA_TEXT, "Check out this movie: $movieTitle\n\n$deepLinkUri"
-                        )
-                        val htmlText =
-                            "Check out this movie: $movieTitle<br><a href=\"$deepLinkUri\">Open in MovieApp</a>"
+                        putExtra(Intent.EXTRA_TEXT, "Check out this movie: $movieTitle\n\n$deepLinkUri")
+                        val htmlText = "Check out this movie: $movieTitle<br><a href=\"$deepLinkUri\">Open in MovieApp</a>"
                         putExtra(Intent.EXTRA_HTML_TEXT, htmlText)
                         putExtra(Intent.EXTRA_SUBJECT, movieTitle)
 
-                        // These flags help with preview visibility
-                        flags =
-                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_DOCUMENT
+                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_DOCUMENT
                     }
 
                     val chooserIntent =
                         Intent.createChooser(shareIntent, "Share Movie Poster").apply {
-                            // This flag improves preview rendering on some devices
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         }
 
                     startActivity(context, chooserIntent, null)
                 } else {
-                    // For older Android versions, use ShareCompat
-                    ShareCompat.IntentBuilder(context).setType("image/jpeg").setStream(uri)
+                    ShareCompat.IntentBuilder(context)
+                        .setType("image/jpeg")
+                        .setStream(uri)
                         .setText("Check out this movie: $movieTitle").setSubject(movieTitle)
                         .setChooserTitle("Share Movie Poster").startChooser()
                 }
             } catch (e: Exception) {
-                // Handle failure
                 e.printStackTrace()
             }
         }
     }
 
 
-    BaseUiStateComposable(uiState = uiState, tryAgainOnClickAction = {
-        viewModel.handleUiAction(DetailUiAction.ErrorRetryAction)
-    }, backButtonClickAction = {
-        viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction)
-    }) {
+    BaseUiStateComposable(
+        uiState = uiState,
+        tryAgainOnClickAction = {
+            viewModel.handleUiAction(DetailUiAction.ErrorRetryAction)
+        },
+        backButtonClickAction = {
+            viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction)
+        }
+    ) {
         movieDetailModel?.let { model ->
-            Box(modifier = modifier.fillMaxSize()) {
+            Box(modifier = Modifier.fillMaxSize()) {
                 MovieDetailSuccessScreen(
-                    modifier = modifier,
                     movieDetailModel = model,
                     backClickAction = { viewModel.handleUiAction(DetailUiAction.OnBackPressClickAction) },
                     action = viewModel::handleUiAction,
@@ -182,7 +177,8 @@ fun MovieDetailScreen(
                 playerViewVideoKey?.let { videoKey ->
                     if (isLandscape) {
                         PlayView(
-                            videoKey = videoKey, handleUiAction = viewModel::handleUiAction
+                            videoKey = videoKey,
+                            handleUiAction = viewModel::handleUiAction
                         )
                     }
                 }
@@ -195,7 +191,6 @@ fun MovieDetailScreen(
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun MovieDetailSuccessScreen(
-    modifier: Modifier = Modifier,
     movieDetailModel: MovieDetailModel = mockMovieDetailModel,
     backClickAction: () -> Unit = {},
     action: (action: DetailUiAction) -> Unit = {},
@@ -204,9 +199,12 @@ private fun MovieDetailSuccessScreen(
     shareAnimationKey: String?
 ) {
     Log.e("UUID","Detail $shareAnimationKey  + ${movieDetailModel.movieDetailInfoModel.movieId}" )
+
     with(sharedTransitionScope) {
         Column(
-            modifier = if (shareAnimationKey == null) modifier.fillMaxSize() else modifier
+            modifier = if (shareAnimationKey == null) {
+                Modifier.fillMaxSize()
+            } else Modifier
                 .fillMaxSize()
                 .sharedElement(
                     sharedTransitionScope.rememberSharedContentState(key = "container-${shareAnimationKey}"),
@@ -227,12 +225,15 @@ private fun MovieDetailSuccessScreen(
                 shareAnimationKey = shareAnimationKey
             )
             MovieDetailActionButtons(
-                action = action, movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
+                action = action,
+                movieDetailInfoModel = movieDetailModel.movieDetailInfoModel
             )
-            MovieDetailPager(movieDetailModel = movieDetailModel, handleUiAction = action)
+            MovieDetailPager(
+                movieDetailModel = movieDetailModel,
+                handleUiAction = action
+            )
         }
     }
-
 }
 
 @Composable
@@ -349,7 +350,6 @@ private fun MovieDetailActionButton(
 
 @Composable
 private fun MovieDetailPager(
-    modifier: Modifier = Modifier,
     movieDetailModel: MovieDetailModel,
     handleUiAction: (action: DetailUiAction) -> Unit
 ) {
@@ -366,7 +366,7 @@ private fun MovieDetailPager(
             coroutineScope.launch { pagerState.animateScrollToPage(index) }
         })
         HorizontalPager(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(top = dimensionResource(R.dimen.medium_padding)), state = pagerState
         ) { page ->
@@ -424,7 +424,6 @@ private fun TabLayout(
 }
 
 @Composable
-@Preview(showBackground = true)
 private fun TabLayoutItem(
     modifier: Modifier = Modifier,
     page: MovieDetailPage = MovieDetailPage(R.string.about, 0),
@@ -472,9 +471,7 @@ private fun MovieDetailInfo(
         Column(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(
-                    horizontal = dimensionResource(R.dimen.large_padding)
-                )
+                .padding(horizontal = dimensionResource(R.dimen.large_padding))
                 .padding(top = dimensionResource(R.dimen.medium_padding)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding))
         ) {
@@ -520,7 +517,6 @@ private fun MovieDetailInfo(
 
         }
     }
-
 }
 
 @Composable
@@ -550,7 +546,6 @@ private fun IconWithText(
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun MovieDetailImage(
-    modifier: Modifier = Modifier,
     movieDetailInfoModel: MovieDetailInfoModel,
     backClickAction: () -> Unit = {},
     sharedTransitionScope: SharedTransitionScope,
@@ -559,9 +554,8 @@ private fun MovieDetailImage(
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp
     with(sharedTransitionScope) {
-        ConstraintLayout(
-            modifier = modifier.fillMaxWidth()
-        ) {
+        ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+
             val (backdropImage, posterImage, backIcon) = createRefs()
             val topMargin = dimensionResource(R.dimen.x_x_large_padding)
 
@@ -631,7 +625,10 @@ private fun MovieDetailImage(
 }
 
 @Composable
-private fun PlayView(videoKey: String, handleUiAction: (action: DetailUiAction) -> Unit) {
+private fun PlayView(
+    videoKey: String,
+    handleUiAction: (action: DetailUiAction) -> Unit
+) {
     val context = LocalContext.current
     val lifeCycleOwner = LocalLifecycleOwner.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -688,22 +685,4 @@ private fun PlayView(videoKey: String, handleUiAction: (action: DetailUiAction) 
 fun rememberOriantationIsLandscape(): Boolean {
     val configuration = LocalConfiguration.current
     return configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-}
-
-data class MovieDetailPage(
-    @StringRes val title: Int, val index: Int
-)
-
-data class MovieDetailActionButtonData(
-    @DrawableRes val selectIcon: Int,
-    @DrawableRes val unSelectIcon: Int? = null,
-    @StringRes val selectText: Int = 0,
-    val type: MovieDetailActionButtonType,
-    val isSelected: Boolean = true
-) {
-    fun getIcon() = (if (isSelected) selectIcon else unSelectIcon) ?: selectIcon
-}
-
-enum class MovieDetailActionButtonType {
-    PLAY, SHARE, ADD_FAVORITE, ADD_WATCH_LIST
 }

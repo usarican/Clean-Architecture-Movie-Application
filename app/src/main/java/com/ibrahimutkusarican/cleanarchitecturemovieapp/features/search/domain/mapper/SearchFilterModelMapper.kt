@@ -1,6 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.mapper
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.entity.GenreEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.feature.genre.data.local.entity.GenreEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.entities.RegionEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.FilterGenreModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.domain.model.RegionModel

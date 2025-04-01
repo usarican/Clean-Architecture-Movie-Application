@@ -1,8 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.usecase
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.usecase.GetMovieGenresUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.feature.genre.domain.usecase.GetMovieGenresUseCase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.MovieRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.mapper.HomeMovieModelMapper

@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data
 
 import androidx.paging.PagingData
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ApiState
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.ApiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.local.MovieFavoriteAndWatchListStatus
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.mylist.data.local.MyListMovieEntity
 import kotlinx.coroutines.flow.Flow

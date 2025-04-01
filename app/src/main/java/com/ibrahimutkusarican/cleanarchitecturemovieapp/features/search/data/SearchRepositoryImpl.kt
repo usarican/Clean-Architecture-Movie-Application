@@ -3,8 +3,8 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ApiState
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseRepository
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.ApiState
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.local.VisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.SearchLocalDataSource

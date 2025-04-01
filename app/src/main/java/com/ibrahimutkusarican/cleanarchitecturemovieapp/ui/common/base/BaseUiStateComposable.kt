@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.ErrorScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.LoadingScreen
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
 
 @Composable
 fun <T> BaseUiStateComposable(

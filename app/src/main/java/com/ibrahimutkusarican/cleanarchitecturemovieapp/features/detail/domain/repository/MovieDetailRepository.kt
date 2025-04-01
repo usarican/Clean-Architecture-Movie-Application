@@ -1,6 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.repository
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ApiState
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.ApiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailCreditResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailReviewResponse

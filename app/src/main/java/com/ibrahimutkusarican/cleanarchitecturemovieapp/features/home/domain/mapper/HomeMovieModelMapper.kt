@@ -1,8 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.mapper
 
 import android.annotation.SuppressLint
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.mapper.GenreIdsToGenreNameListMapper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.model.GenreModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.feature.genre.domain.mapper.GenreIdsToGenreNameListMapper
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.feature.genre.domain.model.GenreModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.local.entity.MovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.domain.model.BasicMovieModel

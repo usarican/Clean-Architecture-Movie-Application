@@ -3,7 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.mo
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.remote.response.Genre
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.feature.genre.data.remote.response.Genre
 
 @Entity(tableName = "visited_movie")
 data class VisitedMovieEntity(

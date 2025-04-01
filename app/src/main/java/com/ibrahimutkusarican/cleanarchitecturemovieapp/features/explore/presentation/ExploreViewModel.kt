@@ -2,8 +2,8 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.presen
 
 import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.BaseViewModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseViewModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.domain.model.ExploreInitialDataModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.explore.domain.usecase.GetExploreInitialDataUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.doOnSuccess

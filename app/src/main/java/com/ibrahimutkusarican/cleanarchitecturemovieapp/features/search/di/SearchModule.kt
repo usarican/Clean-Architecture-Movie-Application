@@ -1,7 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.di
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieDatabase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.data.local.GenreDao
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.database.MovieDatabase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.SearchRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.SearchRepositoryImpl
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.LastSearchDao

@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.repository
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ApiState
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.BaseRepository
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.ApiState
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.mapper.MovieDetailResponseMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailCreditResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailResponse
@@ -18,7 +18,7 @@ class MovieDetailRepositoryImpl @Inject constructor(
     private val detailRemoteDataSource: DetailRemoteDataSource,
     private val detailLocalDataSource: DetailLocalDataSource,
     private val movieDetailResponseMapper: MovieDetailResponseMapper
-) :BaseRepository(), MovieDetailRepository {
+) : BaseRepository(), MovieDetailRepository {
     override suspend fun getMovieDetailResponse(movieId: Int): Flow<ApiState<MovieDetailResponse>> {
         return apiCall {
             val movieDetailResponse = detailRemoteDataSource.getMovieDetail(movieId)

@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension
 
 import android.database.sqlite.SQLiteException
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieException
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.exception.MovieException
 import kotlinx.coroutines.TimeoutCancellationException
 import retrofit2.HttpException
 import java.io.IOException

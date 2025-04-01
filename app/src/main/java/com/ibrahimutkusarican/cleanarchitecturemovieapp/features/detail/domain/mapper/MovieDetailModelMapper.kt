@@ -1,8 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.domain.mapper
 
 import android.os.Build
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.mapper.GenreIdsToGenreNameListMapper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.genre.domain.model.GenreModel
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.feature.genre.domain.mapper.GenreIdsToGenreNameListMapper
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.feature.genre.domain.model.GenreModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailAuthorResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailCastResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.remote.MovieDetailCreditResponse

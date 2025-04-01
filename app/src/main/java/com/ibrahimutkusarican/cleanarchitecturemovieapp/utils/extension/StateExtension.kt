@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ApiState
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ui.UiState
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.ApiState
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 

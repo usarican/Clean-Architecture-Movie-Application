@@ -35,7 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieException
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.exception.MovieException
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

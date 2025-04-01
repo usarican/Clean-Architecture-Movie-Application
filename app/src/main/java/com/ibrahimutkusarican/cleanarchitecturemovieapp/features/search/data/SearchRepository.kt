@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data
 
 import androidx.paging.PagingData
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.ApiState
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.ApiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.home.data.remote.response.MovieResultResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.detail.data.model.local.VisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.search.data.local.entities.LastSearchEntity

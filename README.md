@@ -38,6 +38,9 @@ The CAMA application has a completely compose UI and has been developed in accor
 ![](https://github.com/usarican/Clean-Architecture-Movie-Application/blob/main/ScreenShoots/8.png)
 ![](https://github.com/usarican/Clean-Architecture-Movie-Application/blob/main/ScreenShoots/10.png)</br></br>
 
+## 🏅 Contributors 👏
+* [icanerdogan](https://github.com/icanerdogan)
+
 ## 🤝 How to Contribute
 Contributions are welcome! Whether it's a bug fix, feature suggestion, or code improvement, feel free to get involved.
 

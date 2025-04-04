@@ -5,9 +5,9 @@ plugins {
     alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kotlinKapt)
+    alias(libs.plugins.android.room)
+    alias(libs.plugins.google.mapsplatform)
     kotlin("plugin.serialization") version "2.1.0"
-    id("androidx.room")
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {

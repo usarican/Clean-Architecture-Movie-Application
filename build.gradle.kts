@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.hiltAndroid) apply false
     alias(libs.plugins.kotlinAndroidKsp) apply false
     alias(libs.plugins.kotlinKapt) apply false
-    id("androidx.room") version "2.6.1" apply false
+    alias(libs.plugins.android.room) apply false
 }
 buildscript {
     dependencies {

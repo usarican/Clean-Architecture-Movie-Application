@@ -86,4 +86,5 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlinAndroidKsp = { id = "com.google.devtools.ksp", version.ref ="kspVersion" }
 kotlinKapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref ="hiltVersion" }
-
+android-room = { id = "androidx.room", version.ref ="roomVersion" }
+google-mapsplatform = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin" }

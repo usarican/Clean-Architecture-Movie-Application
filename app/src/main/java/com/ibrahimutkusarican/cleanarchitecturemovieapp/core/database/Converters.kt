@@ -10,11 +10,9 @@ class Converters {
     private val moshi: Moshi = Moshi.Builder().build()
     private val listType = Types.newParameterizedType(List::class.java, Int::class.javaObjectType)
     private val adapter = moshi.adapter<List<Int>>(listType)
-    private val movieTypeListType =
-        Types.newParameterizedType(List::class.java, MovieType::class.java)
+    private val movieTypeListType = Types.newParameterizedType(List::class.java, MovieType::class.java)
     private val movieTypeListAdapter = moshi.adapter<List<MovieType>>(movieTypeListType)
-    private val genreListType =
-        Types.newParameterizedType(List::class.java, Genre::class.java)
+    private val genreListType = Types.newParameterizedType(List::class.java, Genre::class.java)
     private val genreListAdapter = moshi.adapter<List<Genre>>(genreListType)
 
     @TypeConverter

@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.kotlin.ksp) apply false
     alias(libs.plugins.android.room) apply false
+    alias(libs.plugins.android.library) apply false
 }
 buildscript {
     dependencies {

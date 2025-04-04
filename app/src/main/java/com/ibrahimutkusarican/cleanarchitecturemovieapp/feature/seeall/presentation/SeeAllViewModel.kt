@@ -39,10 +39,6 @@ class SeeAllViewModel @Inject constructor(
     val searchText: StateFlow<String> = _searchText
 
 
-    fun setMovieType(movieType: MovieType?) {
-        _movieType.value = movieType
-    }
-
     fun setSeeAllType(seeAllType: SeeAllType?){
         _seeAllType.update { seeAllType }
     }
@@ -76,7 +72,7 @@ class SeeAllViewModel @Inject constructor(
 
     fun handleUiActions(uiAction: SeeAllUiAction) {
         when (uiAction) {
-            is SeeAllUiAction.MovieClick -> TODO()
+            is SeeAllUiAction.MovieClick -> sendEvent(MyEvent.MovieClickEvent(uiAction.movieId))
             SeeAllUiAction.OnBackPress -> sendEvent(MyEvent.OnBackPressed)
             is SeeAllUiAction.SearchAction -> {
                 _searchText.value = uiAction.searchText

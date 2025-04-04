@@ -61,6 +61,7 @@ fun SeeAllScreen(
                 SeeAllMovies(
                     modifier = Modifier.weight(1F),
                     pagingMovies = pagingMovies,
+                    handleUiActions = viewModel::handleUiActions
                 )
             }
         }

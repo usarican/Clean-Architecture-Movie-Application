@@ -34,6 +34,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieIm
 fun SeeAllMovies(
     modifier: Modifier = Modifier,
     pagingMovies: LazyPagingItems<SeeAllMovieModel>,
+    handleUiActions: (SeeAllUiAction) -> Unit = {}
 ) {
     BasePagingComposable(pagingItems = pagingMovies, emptyScreenType = EmptyScreenType.SEARCH) {
         LazyColumn(
@@ -46,7 +47,10 @@ fun SeeAllMovies(
                 key = { index -> index }) { index ->
                 pagingMovies[index]?.let { movie ->
                     SeeAllMovieItem(
-                        seeAllMovie = movie
+                        seeAllMovie = movie,
+                        movieClickAction = { movieId ->
+                            handleUiActions(SeeAllUiAction.MovieClick(movieId))
+                        }
                     )
                 }
             }

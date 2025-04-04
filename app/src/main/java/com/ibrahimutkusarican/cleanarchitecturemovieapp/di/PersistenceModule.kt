@@ -2,7 +2,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.MovieDatabase
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.database.MovieDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -17,7 +17,7 @@
         android:theme="@style/Theme.CleanArchitectureMovieApp"
         tools:targetApi="31">
         <activity
-            android:name=".features.main.presentation.MainActivity"
+            android:name=".feature.main.presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.CleanArchitectureMovieApp">

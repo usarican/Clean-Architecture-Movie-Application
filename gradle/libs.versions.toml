@@ -23,6 +23,7 @@ retrofitVersion = "2.9.0"
 okhttpVersion = "4.11.0"
 loggingInterceptorVersion = "4.10.0"
 moshiConverterVersion = "1.15.1"
+moshiKotlinCodegen = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -62,10 +63,11 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomVers
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "roomVersion" }
 ## Networking
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofitVersion" }
-kotlin-moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshiConverterVersion" }
-converter-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofitVersion" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttpVersion" }
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptorVersion" }
+moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshiConverterVersion" }
+moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshiKotlinCodegen" }
+moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofitVersion" }
 ## Serialization
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 ## Dependency Injection

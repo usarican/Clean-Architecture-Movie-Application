@@ -87,10 +87,11 @@ dependencies {
     // Networking & Serialization
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit)
-    implementation(libs.converter.moshi)
-    implementation(libs.kotlin.moshi)
+    implementation(libs.moshi.converter)
+    implementation(libs.moshi)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
+    ksp(libs.moshi.codegen)
 
     // Room Database
     implementation(libs.room.runtime)

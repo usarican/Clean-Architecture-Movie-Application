@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils
 
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.features.settings.data.UserSettingsDataStore
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.data.UserSettingsDataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor

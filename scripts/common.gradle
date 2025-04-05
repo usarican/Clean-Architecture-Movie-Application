@@ -1,0 +1,9 @@
+apply plugin: "org.jetbrains.kotlin.plugin.compose"
+apply plugin: "org.jetbrains.kotlin.android"
+apply plugin: "com.google.devtools.ksp"
+apply plugin: "com.google.dagger.hilt.android"
+apply plugin: "androidx.room"
+apply plugin: "com.google.android.libraries.mapsplatform.secrets-gradle-plugin"
+
+apply from: "$rootDir/scripts/compiler.gradle"
+apply from: "$rootDir/scripts/dependencies.gradle"

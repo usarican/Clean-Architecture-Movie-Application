@@ -3,7 +3,6 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.presenta
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -198,8 +197,6 @@ private fun MovieDetailSuccessScreen(
     animatedContentScope: AnimatedContentScope,
     shareAnimationKey: String?
 ) {
-    Log.e("UUID","Detail $shareAnimationKey  + ${movieDetailModel.movieDetailInfoModel.movieId}" )
-
     with(sharedTransitionScope) {
         Column(
             modifier = if (shareAnimationKey == null) {
@@ -596,6 +593,11 @@ private fun MovieDetailImage(
                 modifier = if (shareAnimationKey == null) Modifier
                     .height(dimensionResource(R.dimen.movie_detail_poster_height))
                     .width(dimensionResource(R.dimen.movie_detail_poster_width))
+                    .constrainAs(posterImage) {
+                        top.linkTo(parent.top, margin = topMargin)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
                 else Modifier
                     .height(dimensionResource(R.dimen.movie_detail_poster_height))
                     .width(dimensionResource(R.dimen.movie_detail_poster_width))

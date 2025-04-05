@@ -39,7 +39,7 @@ class GetExploreInitialDataUseCaseImpl @Inject constructor(
                     movieModelMapper.mapEntityToModel(
                         entity = movieEntity,
                         genreList = genreModelList,
-                        posterSize = MoviePosterSize.W780,
+                        posterSize = MoviePosterSize.W500,
                         language = language
                     )
                 }

@@ -94,9 +94,10 @@ fun BannerMoviesScreen(
                 .fillMaxWidth()
                 .height((screenHeight / 2) + topMargin)
         ) {
-            IconButton(onClick = {
-                viewModel.handleUiAction(HomeUiAction.BannerMovieOnBackPress)
-            },
+            IconButton(
+                onClick = {
+                    viewModel.handleUiAction(HomeUiAction.BannerMovieOnBackPress)
+                },
                 modifier = Modifier
                     .windowInsetsPadding(WindowInsets.statusBars)
                     .align(Alignment.TopStart)
@@ -106,7 +107,8 @@ fun BannerMoviesScreen(
                 colors = IconButtonDefaults.iconButtonColors(
                     containerColor = MaterialTheme.colorScheme.background,
                     contentColor = MaterialTheme.colorScheme.onBackground
-                )) {
+                )
+            ) {
                 Icon(
                     Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back",
@@ -127,9 +129,9 @@ fun BannerMoviesScreen(
                 movies[MovieType.NOW_PLAYING]?.get(page)?.let { movie ->
                     BannerMovie(
                         modifier = Modifier.carouselTransition(
-                                page = page,
-                                pagerState = pagerState
-                            ),
+                            page = page,
+                            pagerState = pagerState
+                        ),
                         bannerMovie = movie,
                         isSelected = pagerState.currentPage == page,
                     )
@@ -137,24 +139,84 @@ fun BannerMoviesScreen(
                 }
             }
         }
-        movies[MovieType.NOW_PLAYING]?.get(pagerState.currentPage)?.let {
-                BannerMovieInfo(modifier = Modifier
-                    .fillMaxSize()
+        movies[MovieType.NOW_PLAYING]?.get(pagerState.currentPage)?.let { movie ->
+            BannerMovieInfo(
+                modifier = Modifier
+                    .weight(1F)
                     .padding(
                         horizontal = dimensionResource(R.dimen.dp_64),
-                        vertical = dimensionResource(R.dimen.x_large_padding)
-                    ), bannerMovie = it, seeMoreClickAction = { movieId ->
-                    viewModel.handleUiAction(HomeUiAction.MovieClickAction(movieId))
-                })
+                    )
+                    .padding(
+                        top = dimensionResource(R.dimen.x_large_padding),
+                        bottom = dimensionResource(R.dimen.medium_padding)
+                    ),
+                bannerMovie = movie,
+            )
+            SeeMoreDetailButton(
+                movie = movie,
+                seeMoreClickAction = { movieId ->
+                    viewModel.handleUiAction(HomeUiAction.BannerMovieSeeMoreClickAction(movieId))
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun SeeMoreDetailButton(
+    movie: BasicMovieModel,
+    seeMoreClickAction: (movieId: Int) -> Unit
+) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = dimensionResource(R.dimen.dp_64),
+            )
+            .padding(bottom = dimensionResource(R.dimen.dp_80)),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.small_border)),
+        onClick = { seeMoreClickAction(movie.movieId) },
+        colors = ButtonDefaults.buttonColors(
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            containerColor = MaterialTheme.colorScheme.primary
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    vertical = dimensionResource(R.dimen.x_small_padding),
+                    horizontal = dimensionResource(R.dimen.small_padding)
+                ), verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.see_more),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                modifier = Modifier.weight(1f)
+            )
+            Card(
+                shape = CircleShape,
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    contentColor = MaterialTheme.colorScheme.primary
+                ),
+            ) {
+                Icon(
+                    modifier = Modifier.padding(dimensionResource(R.dimen.x_small_padding)),
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                    contentDescription = ""
+                )
             }
+        }
     }
 }
 
 @Composable
 private fun BannerMovieInfo(
     bannerMovie: BasicMovieModel,
-    seeMoreClickAction: (movieId: Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -174,7 +236,6 @@ private fun BannerMovieInfo(
             )
         }
 
-        // Animated Row for Release Date and Rating
         AnimatedContent(
             targetState = bannerMovie.releaseDate to bannerMovie.movieVotePoint, transitionSpec = {
                 slideInVertically(initialOffsetY = { it }) togetherWith slideOutVertically(
@@ -220,50 +281,6 @@ private fun BannerMovieInfo(
             }, label = "MovieGenresAnimation"
         ) { genres ->
             MovieGenreView(modifier = Modifier.weight(1f), genreList = genres)
-        }
-
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = dimensionResource(R.dimen.large_padding)),
-            shape = RoundedCornerShape(dimensionResource(R.dimen.small_border)),
-            onClick = {
-                seeMoreClickAction(bannerMovie.movieId)
-            },
-            colors = ButtonDefaults.buttonColors(
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                containerColor = MaterialTheme.colorScheme.primary
-            )
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        vertical = dimensionResource(R.dimen.x_small_padding),
-                        horizontal = dimensionResource(R.dimen.small_padding)
-                    ), verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.see_more),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    modifier = Modifier.weight(1f)
-                )
-                Card(
-                    shape = CircleShape,
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.background,
-                        contentColor = MaterialTheme.colorScheme.primary
-                    ),
-                ) {
-                    Icon(
-                        modifier = Modifier.padding(dimensionResource(R.dimen.x_small_padding)),
-                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = ""
-                    )
-                }
-            }
         }
     }
 }

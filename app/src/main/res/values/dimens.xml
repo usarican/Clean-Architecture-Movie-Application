@@ -59,4 +59,5 @@
     <dimen name="movie_category_item_title_size">14sp</dimen>
     <dimen name="see_all_movie_item_content_text_size">10sp</dimen>
     <dimen name="movie_detail_info_row_text_size">10sp</dimen>
+    <dimen name="big_button_height">56dp</dimen>
 </resources>

@@ -28,3 +28,4 @@ dependencyResolutionManagement {
 rootProject.name = "CleanArchitectureMovieApp"
 include(":app")
 include(":core")
+include(":build-logic:convention")

@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -28,4 +29,4 @@ dependencyResolutionManagement {
 rootProject.name = "CleanArchitectureMovieApp"
 include(":app")
 include(":core")
-include(":build-logic:convention")
+

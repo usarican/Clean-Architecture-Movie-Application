@@ -30,3 +30,12 @@ tasks {
         failOnWarning = true
     }
 }
+
+gradlePlugin {
+    plugins {
+        register("androidLibrary") {
+            id = "cama.android.library"
+            implementationClass = "com.iusarican.AndroidLibraryConventionPlugin"
+        }
+    }
+}

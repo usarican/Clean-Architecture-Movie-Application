@@ -120,3 +120,6 @@ hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersi
 android-room = { id = "androidx.room", version.ref = "roomVersion" }
 google-mapsplatform = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+
+# Custom Gradle Plugins
+cama-android-library= { id = "cama.android.library" }

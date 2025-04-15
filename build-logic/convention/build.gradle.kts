@@ -37,5 +37,10 @@ gradlePlugin {
             id = "cama.android.library"
             implementationClass = "com.iusarican.AndroidLibraryConventionPlugin"
         }
+
+        register("androidApplication") {
+            id = "cama.android.application"
+            implementationClass = "com.iusarican.AndroidApplicationConventionPlugin"
+        }
     }
 }

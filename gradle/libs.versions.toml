@@ -123,3 +123,4 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 
 # Custom Gradle Plugins
 cama-android-library= { id = "cama.android.library" }
+cama-android-application= { id = "cama.android.application" }

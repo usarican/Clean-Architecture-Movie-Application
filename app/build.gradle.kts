@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.cama.android.application)
-    alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.kotlin.ksp)
-    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.cama.retrofit)
+    alias(libs.plugins.cama.hilt)
+    alias(libs.plugins.cama.compose.application)
     alias(libs.plugins.android.room)
     alias(libs.plugins.google.mapsplatform)
     kotlin("plugin.serialization") version "2.1.0"
@@ -43,32 +43,9 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.palette.ktx)
 
-    // Jetpack Compose
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.ui.text.google.fonts)
-    implementation(libs.androidx.animation.graphics.android)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.constraintlayout.compose)
-
     // Navigation
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.hilt.navigation.compose)
-
-    // Dependency Injection (Hilt)
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-
-    // Networking & Serialization
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.retrofit)
-    implementation(libs.moshi.converter)
-    implementation(libs.moshi)
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
-    ksp(libs.moshi.codegen)
 
     // Room Database
     implementation(libs.room.runtime)

@@ -1,4 +1,4 @@
-package com.iusarican.core
+package com.iusarican.ui
 
 import org.junit.Test
 

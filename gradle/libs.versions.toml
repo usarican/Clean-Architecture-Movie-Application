@@ -36,7 +36,6 @@ androidTools = "31.9.1"
 
 [libraries]
 # AndroidX
-androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
@@ -58,6 +57,7 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 # End
 
 # Paging & Room
@@ -124,3 +124,7 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 # Custom Gradle Plugins
 cama-android-library= { id = "cama.android.library" }
 cama-android-application= { id = "cama.android.application" }
+cama-retrofit= { id = "cama.retrofit" }
+cama-compose-application= { id = "cama.compose.application" }
+cama-compose-library= { id = "cama.compose.library" }
+cama-hilt = { id = "cama.hilt" }

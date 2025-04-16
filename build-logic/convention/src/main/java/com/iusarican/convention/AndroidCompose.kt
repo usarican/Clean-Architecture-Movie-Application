@@ -26,6 +26,7 @@ internal fun Project.configureAndroidCompose(
             implementation(libs.findLibrary("androidx-ui-text-google-fonts").get())
             implementation(libs.findLibrary("androidx-ui-graphics").get())
             implementation(libs.findLibrary("androidx-ui").get())
+            implementation(libs.findLibrary("androidx-constraintlayout-compose").get())
         }
     }
 }

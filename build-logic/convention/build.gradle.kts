@@ -42,5 +42,25 @@ gradlePlugin {
             id = "cama.android.application"
             implementationClass = "com.iusarican.AndroidApplicationConventionPlugin"
         }
+
+        register("retrofit") {
+            id = "cama.retrofit"
+            implementationClass = "com.iusarican.RetrofitConventionPlugin"
+        }
+
+        register("composeApplicaiton") {
+            id = "cama.compose.application"
+            implementationClass = "com.iusarican.AndroidApplicationComposeConventionPlugin"
+        }
+
+        register("composeLibrary") {
+            id = "cama.compose.library"
+            implementationClass = "com.iusarican.AndroidLibraryComposeConventionPlugin"
+        }
+
+        register("hilt"){
+            id = "cama.hilt"
+            implementationClass = "com.iusarican.HiltConventionPlugin"
+        }
     }
 }

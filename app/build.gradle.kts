@@ -1,3 +1,5 @@
+import com.iusarican.convention.implementation
+
 plugins {
     alias(libs.plugins.cama.android.application)
     alias(libs.plugins.cama.retrofit)
@@ -34,6 +36,9 @@ android {
 }
 
 dependencies {
+    // Modules
+    implementation(project(":core:common"))
+    
     // Core AndroidX Libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

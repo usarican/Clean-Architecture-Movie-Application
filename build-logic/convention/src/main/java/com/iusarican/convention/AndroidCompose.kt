@@ -8,6 +8,8 @@ internal fun Project.configureAndroidCompose(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
     commonExtension.apply {
+        pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
+
         buildFeatures {
             compose = true
         }

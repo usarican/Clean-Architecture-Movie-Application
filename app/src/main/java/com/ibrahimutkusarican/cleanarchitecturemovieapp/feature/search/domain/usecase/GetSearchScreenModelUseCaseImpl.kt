@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.domain.usecase
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.exception.MovieException
+import com.iusarican.common.exception.MovieException
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.domain.usecase.GetMovieGenresUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.domain.mapper.HomeMovieModelMapper

@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.exception.MovieException
+import com.iusarican.common.exception.MovieException
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.ErrorScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.data.SeeAllType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.component.MovieSearchBar

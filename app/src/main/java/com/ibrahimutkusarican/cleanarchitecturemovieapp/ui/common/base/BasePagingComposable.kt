@@ -7,7 +7,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.EmptySc
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.EmptyScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.ErrorScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.LoadingScreen
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.convertMovieException
+import com.iusarican.common.exception.toMovieException
 
 @Composable
 fun <T : Any> BasePagingComposable(
@@ -18,7 +18,7 @@ fun <T : Any> BasePagingComposable(
 ) {
     when (pagingItems.loadState.refresh) {
         is LoadState.Error -> {
-            ErrorScreen(exception = (pagingItems.loadState.refresh as LoadState.Error).error.convertMovieException())
+            ErrorScreen(exception = (pagingItems.loadState.refresh as LoadState.Error).error.toMovieException())
         }
 
         LoadState.Loading -> LoadingScreen()

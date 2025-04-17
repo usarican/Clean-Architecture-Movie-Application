@@ -1,6 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.exception.MovieException
+import com.iusarican.common.exception.MovieException
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

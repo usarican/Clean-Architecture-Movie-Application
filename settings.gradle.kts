@@ -29,7 +29,6 @@ dependencyResolutionManagement {
 rootProject.name = "CleanArchitectureMovieApp"
 include(":app")
 include(":core")
-
 include(":feature:home")
 include(":feature:settings")
 include(":core:network")

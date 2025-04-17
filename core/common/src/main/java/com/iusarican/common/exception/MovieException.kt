@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.exception
+package com.iusarican.common.exception
 
 import android.database.sqlite.SQLiteException
 import kotlinx.coroutines.TimeoutCancellationException

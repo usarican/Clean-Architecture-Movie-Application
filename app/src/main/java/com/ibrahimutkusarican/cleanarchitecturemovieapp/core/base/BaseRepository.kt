@@ -21,9 +21,9 @@ abstract class BaseRepository {
             is IOException -> MovieException.NoInternetException("No Internet Connection")
             is HttpException -> {
                 when (exp.code()) {
-                    401 -> MovieException.UnauthorizedException("Unauthorized Access")
-                    404 -> MovieException.NotFoundException("Resource Not Found")
-                    500 -> MovieException.InternalServerErrorException("Internal Server Error")
+                    UNAUTHORIZED_ERROR_CODE -> MovieException.UnauthorizedException("Unauthorized Access")
+                    NOT_FOUND_ERROR_CODE -> MovieException.NotFoundException("Resource Not Found")
+                    INTERNAL_SERVER_ERROR_CODE -> MovieException.InternalServerErrorException("Internal Server Error")
                     else -> MovieException.GeneralHttpException(
                         code = exp.code(), message = "HTTP Error: ${exp.code()} ${exp.message}"
                     )
@@ -37,4 +37,11 @@ abstract class BaseRepository {
         }
         emit(ApiState.Error(error))
     }.flowOn(Dispatchers.IO)
+
+
+    companion object {
+        private const val UNAUTHORIZED_ERROR_CODE = 401
+        private const val NOT_FOUND_ERROR_CODE = 404
+        private const val INTERNAL_SERVER_ERROR_CODE = 500
+    }
 }

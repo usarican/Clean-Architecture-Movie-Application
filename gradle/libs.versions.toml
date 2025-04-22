@@ -33,6 +33,7 @@ paletteKtx = "1.0.0"
 appcompat = "1.7.0"
 material = "1.12.0"
 androidTools = "31.9.1"
+pagingComposeAndroid = "3.3.6"
 
 [libraries]
 # AndroidX
@@ -109,6 +110,7 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-paging-compose-android = { group = "androidx.paging", name = "paging-compose-android", version.ref = "pagingComposeAndroid" }
 # End
 
 [plugins]

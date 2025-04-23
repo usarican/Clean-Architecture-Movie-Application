@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CleanArchitectureFilmUygulaması</string>
+    <string name="movies">Filmler</string>
+    <string name="search">Ara</string>
+    <string name="explore">Keşfet</string>
+    <string name="search_placeholder">Ara…</string>
+    <string name="my_list">Listem</string>
+    <string name="settings">Ayarlar</string>
+    <string name="tv_series">Dizi</string>
+    <string name="error_snackbar_title">Bir şeyler ters gitti..</string>
+    <string name="popular_movies">Popüler Filmler</string>
+    <string name="up_coming_movies">Yakında Çıkacak Filmler</string>
+    <string name="top_rated_movies">En Yüksek Puanlı Filmler</string>
+    <string name="see_all">Tümünü Gör</string>
+    <string name="retry">TEKRAR DENE</string>
+    <string name="try_again">Tekrar Dene</string>
+    <string name="go_back_home">Ana Sayfaya Dön</string>
+    <string name="categories">Kategoriler</string>
+    <string name="most_popular">En Popüler</string>
+    <string name="all">Tümü</string>
+    <string name="for_you">Sizin İçin Önerilen Film</string>
+    <string name="top_search">En Çok Arananlar</string>
+    <string name="last_search">Son Aramalar</string>
+    <string name="clear_all">Tümünü Temizle</string>
+    <string name="recommended_for_you">Sizin İçin Önerilenler</string>
+    <string name="recently_viewed">Son Görüntülenenler</string>
+    <string name="about">Hakkında</string>
+    <string name="similar">Benzer</string>
+    <string name="reviews">Yorumlar</string>
+    <string name="trailers">Fragmanlar</string>
+    <string name="share">Paylaş</string>
+    <string name="play">Oynat</string>
+    <string name="add_favorite">Favorilere Ekle</string>
+    <string name="remove_favorite">Favorilerden Kaldır</string>
+    <string name="movie_added_to_favorite">%1$s Favori Listesine Eklendi.</string>
+    <string name="movie_removed_to_favorite">%1$s Favori Listesinden Kaldırıldı.</string>
+    <string name="add_watch_list">İzleme Listesine Ekle</string>
+    <string name="remove_watch_list">İzleme Listesinden Kaldır</string>
+    <string name="movie_added_to_watch_list">%1$s İzleme Listesine Eklendi.</string>
+    <string name="movie_removed_to_watch_list">%1$s İzleme Listesinden Kaldırıldı.</string>
+    <string name="revenue">Hasılat</string>
+    <string name="rating">Puan</string>
+    <string name="release">Çıkış Tarihi</string>
+    <string name="budget">Bütçe</string>
+    <string name="genres">Türler</string>
+    <string name="synopsis">Özet</string>
+    <string name="cast">Oyuncular</string>
+    <string name="anonymous">Anonim</string>
+    <string name="watch_list">İzleme Listesi</string>
+    <string name="favorite">Favoriler</string>
+    <string name="dark_mode">Karanlık Mod</string>
+    <string name="language">Dil</string>
+    <string name="notification">Bildirim</string>
+    <string name="help_center">Yardım Merkezi</string>
+    <string name="about_me">Hakkımda</string>
+    <string name="language_en">İngilizce</string>
+    <string name="language_tr">Türkçe</string>
+    <string name="delete">Kaldır</string>
+    <string name="done">Tamam</string>
+    <string name="cancel">İptal</string>
+    <string name="undo">Geri Al</string>
+    <string name="see_more">Daha Fazla Gör</string>
+    <string name="are_you_sure">Emin misiniz?</string>
+    <string name="my_list_are_you_sure_snack_bar_content">%1$s öğesini %2$s listesinden kaldırmak istediğinizden emin misiniz?</string>
+    <string name="my_list_delete_snack_bar_content">%1$s filmi %2$s listesinden kaldırıldı</string>
+    <string name="my_list_undo_snack_bar_title">Geri Alma Başarılı</string>
+    <string name="my_list_undo_snack_bar_content">Önceki değişiklikleriniz geri alındı. %1$s filmi %2$s listenize eklendi.</string>
+    <string name="sort_popularity">Popularity</string>
+    <string name="sort_release_date">Latest Releases</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="all_periods">All Periods</string>
+    <string name="sort_and_filter">Sırala &amp; Filtrele</string>
+    <string name="genres_title">Türler</string>
+    <string name="regions_title">Bölgeler</string>
+    <string name="time_periods_title">Zaman Aralıkları</string>
+    <string name="sorts_title">Sıralama Seçenekleri</string>
+    <string name="apply">Uygula</string>
+    <string name="reset">Yenile</string>
+
+
+    <!-- Hata Metinleri -->
+    <string name="error_title_coil">Görsel Yükleme Hatası</string>
+    <string name="error_content_coil">Görsel yüklenemedi. Lütfen tekrar deneyin.</string>
+    <string name="error_title_general">Hata</string>
+    <string name="error_message">Beklenmeyen bir hata oluştu. Lütfen daha sonra tekrar deneyin.</string>
+    <string name="error_title_http">HTTP Hatası: %1$d</string>
+    <string name="error_content_http">Sunucu bir hata döndürdü: %1$s</string>
+    <string name="error_title_server">Sunucu Hatası</string>
+    <string name="error_content_server">Sunucu iç hatası oluştu. Lütfen daha sonra tekrar deneyin.</string>
+    <string name="error_title_no_internet">İnternet Bağlantısı Yok</string>
+    <string name="error_content_no_internet">Lütfen internet bağlantınızı kontrol edip tekrar deneyin.</string>
+    <string name="error_title_not_found">Bulunamadı</string>
+    <string name="error_content_not_found">İstenen kaynak bulunamadı.</string>
+    <string name="error_title_unauthorized">Yetkisiz İşlem</string>
+    <string name="error_content_unauthorized">Bu işlemi gerçekleştirmek için yetkiniz yok. Lütfen tekrar giriş yapın.</string>
+    <string name="error_no_play_video_title">Oops :(</string>
+    <string name="error_no_play_video_content">Oynatılacak bir video bulunmamaktadır.</string>
+
+    <!-- Empty Screen Titles -->
+    <string name="empty_screen_title_favorite">Henüz Favorileriniz Yok</string>
+    <string name="empty_screen_title_watch_list">İzleme Listeniz Boş</string>
+    <string name="empty_screen_title_search">Sonuç Bulunamadı</string>
+    <string name="empty_screen_title_reviews">Henüz Yorum Yok</string>
+    <string name="empty_screen_title_trailers">Fragman Bulunamadı</string>
+    <string name="empty_screen_title_filter">Bu Filtre İçin Sonuç Yok</string>
+
+
+    <!-- Empty Screen Descriptions -->
+    <string name="empty_screen_description_favorite">Henüz favorilerinize film eklemediniz. Keşfetmeye başlayın ve bazılarını ekleyin!</string>
+    <string name="empty_screen_description_watch_list">İzleme listeniz şu an boş. Daha sonra izlemek için filmleri kaydedin!</string>
+    <string name="empty_screen_description_search">Aramanızla eşleşen bir sonuç bulamadık. Farklı bir kelime deneyin.</string>
+    <string name="empty_screen_description_reviews">Bu film için henüz yorum yok. İlk yorumu siz yazın!</string>
+    <string name="empty_screen_description_trailers">Bu film için henüz fragman eklenmedi. Güncellemeler için tekrar kontrol edin.</string>
+    <string name="empty_screen_description_filter">Seçtiğiniz filtrelere uygun sonuç bulunamadı. Filtreleri değiştirerek tekrar deneyin.</string>
+    <string name="explore_button">Keşfet</string>
+
+</resources>

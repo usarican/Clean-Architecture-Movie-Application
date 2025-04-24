@@ -57,7 +57,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UIAction
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.domain.model.MyListMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.domain.model.MyListUpdatePage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.base.BasePagingComposable
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.SNACK_BAR_WITH_ACTION_DELAY
+import com.iusarican.common.utils.Constants.SNACK_BAR_WITH_ACTION_DELAY
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.fontDimensionResource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieImage
 import kotlinx.coroutines.delay

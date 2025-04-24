@@ -2,7 +2,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.map
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.local.VisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
+import com.iusarican.common.utils.Constants
 import javax.inject.Inject
 
 class MovieDetailResponseMapper @Inject constructor() {

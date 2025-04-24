@@ -1,12 +1,12 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.base
+package com.iusarican.ui.base
 
 import androidx.compose.runtime.Composable
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.EmptyScreen
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.EmptyScreenType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.ErrorScreen
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.LoadingScreen
+import com.iusarican.ui.screen.EmptyScreen
+import com.iusarican.ui.screen.EmptyScreenType
+import com.iusarican.ui.screen.ErrorScreen
+import com.iusarican.ui.screen.LoadingScreen
 import com.iusarican.common.exception.toMovieException
 
 @Composable

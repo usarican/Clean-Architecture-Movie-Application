@@ -6,7 +6,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote.MovieRemoteDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote.response.MovieResultResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.data.MovieEntityToResponseMapper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.STARTING_PAGE_INDEX
+import com.iusarican.common.utils.Constants.STARTING_PAGE_INDEX
 
 class SeeAllMoviePagingSource(
     private val movieRemoteDataSource: MovieRemoteDataSource,

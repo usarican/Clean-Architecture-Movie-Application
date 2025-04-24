@@ -2,7 +2,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper
 
 import android.annotation.SuppressLint
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model.Language
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
+import com.iusarican.common.utils.Constants
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Currency

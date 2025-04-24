@@ -8,7 +8,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.data.local.MovieFavoriteAndWatchListStatus
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.data.local.MyListLocalDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.data.local.MyListMovieEntity
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.MY_LIST_PAGE_SIZE
+import com.iusarican.common.utils.Constants.MY_LIST_PAGE_SIZE
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

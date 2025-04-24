@@ -1,6 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
+import com.iusarican.common.utils.Constants
 import javax.inject.Inject
 
 class ImageUrlHelper @Inject constructor() {

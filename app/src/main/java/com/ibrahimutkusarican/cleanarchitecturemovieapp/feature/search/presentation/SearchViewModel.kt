@@ -17,8 +17,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.domain.us
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.domain.usecase.SearchMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.data.SeeAllType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.domain.model.SeeAllMovieModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.SEARCH_DEBOUNCE_TIME
+import com.iusarican.common.utils.Constants
+import com.iusarican.common.utils.Constants.SEARCH_DEBOUNCE_TIME
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.SearchFilterHelper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel

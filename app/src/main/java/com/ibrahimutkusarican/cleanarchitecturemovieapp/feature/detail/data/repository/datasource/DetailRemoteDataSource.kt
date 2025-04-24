@@ -5,7 +5,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.mode
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailReviewResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailVideoResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote.response.MovieResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.STARTING_PAGE_INDEX
+import com.iusarican.common.utils.Constants.STARTING_PAGE_INDEX
 
 interface DetailRemoteDataSource {
     suspend fun getMovieDetail(movieId: Int): MovieDetailResponse

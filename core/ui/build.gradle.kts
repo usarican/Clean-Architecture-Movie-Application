@@ -14,4 +14,5 @@ dependencies {
     implementation(project(":core:common"))
     implementation(libs.androidx.paging.compose.android)
     implementation(libs.coil.compose)
+    implementation(libs.dotlottie.android)
 }

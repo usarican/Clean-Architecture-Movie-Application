@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget
+package com.iusarican.ui.widget
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,8 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.fontDimensionResource
+import com.iusarican.ui.R
+import fontDimensionResource
 
 @Preview(showBackground = true)
 @Composable
@@ -35,7 +35,7 @@ fun MovieTopBar(
             modifier = Modifier.align(Alignment.Center),
             text = title,
             style = MaterialTheme.typography.titleSmall.copy(
-                fontSize = fontDimensionResource(R.dimen.twenty_dp)
+                fontSize = fontDimensionResource(R.dimen.movie_top_bar_title_size)
             )
         )
     }

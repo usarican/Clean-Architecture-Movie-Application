@@ -32,7 +32,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.Loading
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.domain.model.BasicMovieModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.HOME_SCREEN_BANNER_MOVIES_HEIGHT_RATIO
+import com.iusarican.common.utils.Constants.HOME_SCREEN_BANNER_MOVIES_HEIGHT_RATIO
 
 
 @OptIn(ExperimentalSharedTransitionApi::class)

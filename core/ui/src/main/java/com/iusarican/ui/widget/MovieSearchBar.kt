@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.component
+package com.iusarican.ui.widget
 
 
 import androidx.compose.foundation.clickable
@@ -22,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.iusarican.ui.R
 
 @Composable
 @Preview(showBackground = true)
@@ -57,7 +57,7 @@ fun MovieSearchBar(
         trailingIcon = if (isFocused && showFilterIcon) {
             {
                 Icon(
-                    modifier = Modifier.padding(end = dimensionResource(R.dimen.small_padding)),
+                    modifier = Modifier.padding(end = dimensionResource(R.dimen.padding_8)),
                     painter = painterResource(R.drawable.ic_filter),
                     contentDescription = "Filter Icon",
                     tint = MaterialTheme.colorScheme.primary
@@ -66,7 +66,7 @@ fun MovieSearchBar(
         } else null,
         singleLine = true,
         enabled = isEnable,
-        shape = RoundedCornerShape(dimensionResource(R.dimen.large_border)),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.border_24)),
         textStyle = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
         placeholder = {
             Text(

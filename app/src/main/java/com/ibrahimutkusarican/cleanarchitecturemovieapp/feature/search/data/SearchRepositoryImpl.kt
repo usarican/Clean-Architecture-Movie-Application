@@ -13,7 +13,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.data.loca
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.data.paging.FilterMoviePagingSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.data.paging.SearchMoviePagingSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.data.remote.SearchRemoteDataSource
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.MOVIE_PAGE_SIZE
+import com.iusarican.common.utils.Constants.MOVIE_PAGE_SIZE
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

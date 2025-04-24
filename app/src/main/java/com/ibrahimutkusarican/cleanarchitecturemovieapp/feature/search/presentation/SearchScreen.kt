@@ -42,7 +42,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.EmptySc
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.domain.model.SearchFilterModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.domain.model.SearchScreenModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.base.BaseUiStateComposable
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
+import com.iusarican.common.utils.Constants
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.component.MovieSearchBar
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieTopBar
 

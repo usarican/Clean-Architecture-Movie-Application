@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model.Language
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.USER_SETTINGS_DATA_STORE
+import com.iusarican.common.utils.Constants.USER_SETTINGS_DATA_STORE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.Locale

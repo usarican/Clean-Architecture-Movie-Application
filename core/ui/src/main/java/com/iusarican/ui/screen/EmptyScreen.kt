@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen
+package com.iusarican.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -22,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.iusarican.ui.R
 
 @Composable
 @Preview(showBackground = true)
@@ -39,22 +39,22 @@ fun EmptyScreen(
             verticalArrangement = Arrangement.Center
         ) {
             EmptyImage(
-                modifier = Modifier.padding(dimensionResource(R.dimen.medium_padding)),
+                modifier = Modifier.padding(dimensionResource(R.dimen.padding_16)),
                 emptyScreenType = emptyScreenType
 
             )
             EmptyTitleText(
-                modifier = Modifier.padding(bottom = dimensionResource(R.dimen.small_padding)),
+                modifier = Modifier.padding(bottom = dimensionResource(R.dimen.padding_8)),
                 emptyScreenType = emptyScreenType
             )
             EmptyContextText(
-                modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.large_padding)),
+                modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_24)),
                 emptyScreenType = emptyScreenType
 
             )
             if (emptyScreenType.showExploreButton()) {
                 GoToExploreButton(
-                    modifier = Modifier.padding(top = dimensionResource(R.dimen.medium_padding)),
+                    modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_16)),
                     onClick = seeExploreAction
                 )
             }
@@ -124,7 +124,7 @@ private fun EmptyContextText(
     Text(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = dimensionResource(R.dimen.large_padding)),
+            .padding(horizontal = dimensionResource(R.dimen.padding_24)),
         text = contextText,
         style = MaterialTheme.typography.bodyMedium.copy(
             color = MaterialTheme.colorScheme.onBackground
@@ -141,7 +141,7 @@ private fun GoToExploreButton(
     Button(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = dimensionResource(R.dimen.dp_64)),
+            .padding(horizontal = dimensionResource(R.dimen.padding_64)),
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,

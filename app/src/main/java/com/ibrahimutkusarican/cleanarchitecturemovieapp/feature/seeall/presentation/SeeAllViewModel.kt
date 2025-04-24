@@ -9,8 +9,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.domain.usecase.SearchMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.data.SeeAllType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.domain.usecase.GetSeeAllUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.EMPTY_STRING
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.SEARCH_DEBOUNCE_TIME
+import com.iusarican.common.utils.Constants.EMPTY_STRING
+import com.iusarican.common.utils.Constants.SEARCH_DEBOUNCE_TIME
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

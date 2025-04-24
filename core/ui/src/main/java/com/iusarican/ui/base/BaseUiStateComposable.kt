@@ -1,9 +1,9 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.base
+package com.iusarican.ui.base
 
 import androidx.compose.runtime.Composable
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.ErrorScreen
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen.LoadingScreen
+import com.iusarican.ui.screen.ErrorScreen
+import com.iusarican.ui.screen.LoadingScreen
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
 
 @Composable

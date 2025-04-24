@@ -3,7 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.data.pag
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BasePagingSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote.response.MovieResultResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.data.remote.SearchRemoteDataSource
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants.STARTING_PAGE_INDEX
+import com.iusarican.common.utils.Constants.STARTING_PAGE_INDEX
 
 class SearchMoviePagingSource(
     private val searchRemoteDataSource: SearchRemoteDataSource,

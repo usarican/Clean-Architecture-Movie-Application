@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.screen
+package com.iusarican.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
@@ -34,9 +34,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.Constants
 import com.iusarican.common.exception.MovieException
+import com.iusarican.common.utils.Constants
+import com.iusarican.ui.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -57,19 +57,19 @@ fun ErrorScreen(
             verticalArrangement = Arrangement.Center
         ) {
             ErrorImage(
-                modifier = Modifier.padding(dimensionResource(R.dimen.medium_padding)),
+                modifier = Modifier.padding(dimensionResource(R.dimen.padding_16)),
                 exception = exception
             )
             ErrorTitleText(
-                modifier = Modifier.padding(bottom = dimensionResource(R.dimen.small_padding)),
+                modifier = Modifier.padding(bottom = dimensionResource(R.dimen.padding_8)),
                 exception = exception
             )
             ErrorContentText(
-                modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.large_padding)),
+                modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_24)),
                 exception = exception
             )
             TryAgainButton(
-                modifier = Modifier.padding(top = dimensionResource(R.dimen.medium_padding)),
+                modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_16)),
                 onClick = tryAgainOnClickAction
             )
             if (backButtonIsEnable){
@@ -121,7 +121,7 @@ fun ErrorContentText(modifier: Modifier = Modifier, exception: MovieException) {
     Text(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = dimensionResource(R.dimen.large_padding)),
+            .padding(horizontal = dimensionResource(R.dimen.padding_24)),
         text = text,
         style = MaterialTheme.typography.bodyMedium.copy(
             color = MaterialTheme.colorScheme.onBackground

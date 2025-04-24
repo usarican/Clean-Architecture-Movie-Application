@@ -147,7 +147,7 @@ private fun GoToExploreButton(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary
         ),
-        shape = RoundedCornerShape(dimensionResource(R.dimen.small_border))
+        shape = RoundedCornerShape(dimensionResource(R.dimen.border_8))
     ) {
         Text(
             text = stringResource(R.string.explore_button),

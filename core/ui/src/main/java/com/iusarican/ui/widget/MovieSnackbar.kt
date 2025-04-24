@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget
+package com.iusarican.ui.widget
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
@@ -39,8 +39,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.iusarican.common.utils.Constants.SNACK_BAR_WITH_ACTION_DELAY
+import com.iusarican.ui.R
 import kotlinx.coroutines.delay
 
 @Composable
@@ -85,11 +85,11 @@ fun MovieSnackbar(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = dimensionResource(R.dimen.small_padding),
-                    vertical = dimensionResource(R.dimen.x_small_padding)
+                    horizontal = dimensionResource(R.dimen.padding_8),
+                    vertical = dimensionResource(R.dimen.padding_4)
                 ),
-            shape = RoundedCornerShape(dimensionResource(R.dimen.small_border)),
-            elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.small_padding)),
+            shape = RoundedCornerShape(dimensionResource(R.dimen.border_8)),
+            elevation = CardDefaults.elevatedCardElevation(dimensionResource(R.dimen.padding_8)),
             colors = CardDefaults.cardColors(
                 containerColor = snackBarColors.containerColor,
                 contentColor = snackBarColors.onContainerColor
@@ -102,7 +102,7 @@ fun MovieSnackbar(
                         visibility = false
                         snackBarModel.clickActionDismiss?.invoke()
                     }
-                    .padding(dimensionResource(R.dimen.small_padding)),
+                    .padding(dimensionResource(R.dimen.padding_8)),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
@@ -114,7 +114,7 @@ fun MovieSnackbar(
                 Column(
                     modifier = Modifier
                         .weight(1F)
-                        .padding(horizontal = dimensionResource(R.dimen.small_padding))
+                        .padding(horizontal = dimensionResource(R.dimen.padding_8))
                 ) {
                     if (snackBarModel.title != null) {
                         Text(
@@ -137,7 +137,7 @@ fun MovieSnackbar(
                 if (snackBarModel.action != null){
                     Text(
                         modifier = Modifier
-                            .padding(end = dimensionResource(R.dimen.x_small_padding))
+                            .padding(end = dimensionResource(R.dimen.padding_4))
                             .clickable { snackBarModel.action.invoke() },
                         text = snackBarModel.actionLabel ?: stringResource(R.string.retry),
                         style = MaterialTheme.typography.labelLarge.copy(

@@ -46,9 +46,9 @@ fun ErrorScreen(
     modifier: Modifier = Modifier,
     exception: MovieException = MovieException.NoInternetException("Error"),
     tryAgainOnClickAction: () -> Unit = {},
-    backButtonOnClickAction : () -> Unit = {},
+    backButtonOnClickAction: () -> Unit = {},
     visibility: Boolean = true,
-    backButtonIsEnable : Boolean = false
+    backButtonIsEnable: Boolean = false
 ) {
     AnimatedVisibility(modifier = modifier.fillMaxSize(), visible = visibility) {
         Column(
@@ -72,7 +72,7 @@ fun ErrorScreen(
                 modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_16)),
                 onClick = tryAgainOnClickAction
             )
-            if (backButtonIsEnable){
+            if (backButtonIsEnable) {
                 BackButton(
                     modifier = Modifier,
                     onClick = backButtonOnClickAction
@@ -156,14 +156,14 @@ fun TryAgainButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Button(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = dimensionResource(R.dimen.dp_64))
+            .padding(horizontal = dimensionResource(R.dimen.padding_64))
             .graphicsLayer(rotationZ = rotationZ.value),
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.errorContainer,
             contentColor = MaterialTheme.colorScheme.onErrorContainer
         ),
-        shape = RoundedCornerShape(dimensionResource(R.dimen.small_border))
+        shape = RoundedCornerShape(dimensionResource(R.dimen.border_8))
     ) {
         Text(
             modifier = Modifier,
@@ -179,17 +179,17 @@ fun TryAgainButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
 @Composable
 fun BackButton(
     modifier: Modifier = Modifier, onClick: () -> Unit
-){
+) {
     TextButton(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = dimensionResource(R.dimen.dp_64)),
+            .padding(horizontal = dimensionResource(R.dimen.padding_64)),
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.primary
         ),
-        shape = RoundedCornerShape(dimensionResource(R.dimen.small_border))
+        shape = RoundedCornerShape(dimensionResource(R.dimen.border_8))
     ) {
         Text(
             modifier = Modifier,
@@ -206,7 +206,9 @@ fun BackButton(
 fun ErrorImage(modifier: Modifier = Modifier, exception: MovieException) {
     val vectorImage = when (exception) {
         is MovieException.CoilHttpException -> R.drawable.ic_palette
-        is MovieException.GeneralException, is MovieException.GeneralHttpException, is MovieException.InternalServerErrorException -> R.drawable.ic_very_sad
+        is MovieException.GeneralException,
+        is MovieException.GeneralHttpException,
+        is MovieException.InternalServerErrorException -> R.drawable.ic_very_sad
 
         is MovieException.NoInternetException -> R.drawable.ic_no_internet_connection
         is MovieException.NotFoundException -> R.drawable.ic_search_global

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="retry">TEKRAR DENE</string>
+    <string name="try_again">Tekrar Dene</string>
+    <string name="go_back_home">Ana Sayfaya Dön</string>
+    <string name="search_placeholder">Ara…</string>
 
     <!-- Hata Metinleri -->
     <string name="error_title_coil">Görsel Yükleme Hatası</string>

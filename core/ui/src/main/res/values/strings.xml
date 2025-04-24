@@ -1,5 +1,8 @@
 <resources>
     <string name="retry">RETRY</string>
+    <string name="try_again">Try Again</string>
+    <string name="go_back_home">Go Back Home</string>
+    <string name="search_placeholder">Search…</string>
 
     <!-- Error Texts -->
     <string name="error_title_coil">Image Load Error</string>

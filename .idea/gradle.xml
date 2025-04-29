@@ -35,7 +35,13 @@
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/detail" />
+            <option value="$PROJECT_DIR$/feature/detail/data" />
+            <option value="$PROJECT_DIR$/feature/detail/domain" />
+            <option value="$PROJECT_DIR$/feature/detail/ui" />
             <option value="$PROJECT_DIR$/feature/explore" />
+            <option value="$PROJECT_DIR$/feature/explore/data" />
+            <option value="$PROJECT_DIR$/feature/explore/domain" />
+            <option value="$PROJECT_DIR$/feature/explore/ui" />
             <option value="$PROJECT_DIR$/feature/genre" />
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/mylist" />

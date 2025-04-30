@@ -1,6 +1,5 @@
 package com.iusarican.common.utils
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.BuildConfig
 
 object Constants {
     const val MOVIE_API_URL = "https://api.themoviedb.org/3/"

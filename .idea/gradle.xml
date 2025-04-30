@@ -44,10 +44,25 @@
             <option value="$PROJECT_DIR$/feature/explore/ui" />
             <option value="$PROJECT_DIR$/feature/genre" />
             <option value="$PROJECT_DIR$/feature/home" />
+            <option value="$PROJECT_DIR$/feature/home/data" />
+            <option value="$PROJECT_DIR$/feature/home/domain" />
+            <option value="$PROJECT_DIR$/feature/home/ui" />
             <option value="$PROJECT_DIR$/feature/mylist" />
+            <option value="$PROJECT_DIR$/feature/mylist/data" />
+            <option value="$PROJECT_DIR$/feature/mylist/domain" />
+            <option value="$PROJECT_DIR$/feature/mylist/ui" />
             <option value="$PROJECT_DIR$/feature/search" />
+            <option value="$PROJECT_DIR$/feature/search/data" />
+            <option value="$PROJECT_DIR$/feature/search/domain" />
+            <option value="$PROJECT_DIR$/feature/search/ui" />
             <option value="$PROJECT_DIR$/feature/seeall" />
+            <option value="$PROJECT_DIR$/feature/seeall/data" />
+            <option value="$PROJECT_DIR$/feature/seeall/domain" />
+            <option value="$PROJECT_DIR$/feature/seeall/ui" />
             <option value="$PROJECT_DIR$/feature/settings" />
+            <option value="$PROJECT_DIR$/feature/settings/data" />
+            <option value="$PROJECT_DIR$/feature/settings/domain" />
+            <option value="$PROJECT_DIR$/feature/settings/ui" />
           </set>
         </option>
       </GradleProjectSettings>

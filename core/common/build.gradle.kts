@@ -6,6 +6,10 @@ plugins {
 
 android {
     namespace = "com.iusarican.common"
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {

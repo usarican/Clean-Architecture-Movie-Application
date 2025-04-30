@@ -3,7 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.di
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.data.UserSettingsDataStore
 import com.iusarican.common.utils.Constants.MOVIE_API_URL
 import com.iusarican.common.utils.Constants.TIME_OUT_VALUE
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.RequestInterceptor
+import com.iusarican.network.RequestInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -27,7 +27,7 @@ object NetworkModule {
        userSettingsDataStore: UserSettingsDataStore
     ) : OkHttpClient {
         return OkHttpClient().newBuilder()
-            .addNetworkInterceptor(RequestInterceptor(userSettingsDataStore))
+            .addNetworkInterceptor(com.iusarican.network.RequestInterceptor(userSettingsDataStore))
             .addInterceptor(HttpLoggingInterceptor())
             .readTimeout(TIME_OUT_VALUE, TimeUnit.SECONDS)
             .connectTimeout(TIME_OUT_VALUE,TimeUnit.SECONDS)

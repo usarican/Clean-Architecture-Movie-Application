@@ -62,5 +62,9 @@ gradlePlugin {
             id = "cama.hilt"
             implementationClass = "com.iusarican.HiltConventionPlugin"
         }
+        register("secret"){
+            id = "cama.secret"
+            implementationClass = "com.iusarican.SecretsConventionPlugin"
+        }
     }
 }

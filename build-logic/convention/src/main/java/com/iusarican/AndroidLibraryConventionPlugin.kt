@@ -17,6 +17,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         extensions.configure<LibraryExtension> {
             configureKotlinAndroid(this)
             defaultConfig.targetSdk = AppConfig.TARGET_SDK
+            defaultConfig.minSdk = AppConfig.MIN_SDK
         }
     }
 }

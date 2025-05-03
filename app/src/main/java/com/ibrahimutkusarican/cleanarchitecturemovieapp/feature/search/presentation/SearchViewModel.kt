@@ -19,8 +19,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.data.SeeA
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.domain.model.SeeAllMovieModel
 import com.iusarican.common.utils.Constants
 import com.iusarican.common.utils.Constants.SEARCH_DEBOUNCE_TIME
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.SearchFilterHelper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.doOnSuccess
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.SearchFilterHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

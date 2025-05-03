@@ -16,7 +16,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.presentat
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.domain.model.MyListUpdatePage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.domain.usecase.UpdateMyListMovieUseCase
 import com.iusarican.common.utils.Constants
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
+import com.iusarican.common.utils.StringProvider
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.doOnError
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel

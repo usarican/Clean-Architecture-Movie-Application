@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.domain.model.BasicMovieModel
 import com.iusarican.common.utils.Constants.BANNER_EXPLORE_PAGER_DOT_INDICATOR_COUNT
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.carouselTransition
+import com.iusarican.common.utils.extension.carouselTransition
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieImage
 
 @Composable

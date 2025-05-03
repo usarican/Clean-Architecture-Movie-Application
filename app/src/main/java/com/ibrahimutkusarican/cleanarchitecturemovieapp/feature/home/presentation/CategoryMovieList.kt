@@ -30,7 +30,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.data.SeeAllType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.getStringRes
+import com.iusarican.common.utils.extension.getStringRes
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieImage
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.fontDimensionResource
 

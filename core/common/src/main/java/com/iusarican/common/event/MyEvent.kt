@@ -1,5 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event
 
+import com.iusarican.seeAllType.SeeAllType
+import com.iusarican.snackbar.MySnackBarModel
 
 
 sealed class MyEvent {

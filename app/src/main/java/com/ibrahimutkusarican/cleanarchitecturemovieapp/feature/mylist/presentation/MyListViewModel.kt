@@ -15,7 +15,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.domain.us
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.domain.usecase.DeleteMyListMovieUseCaseImpl
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.domain.usecase.GetMyListMovieUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.domain.usecase.UpdateMyListMovieUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
+import com.iusarican.common.utils.StringProvider
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn

@@ -1,8 +1,8 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.utils
+package com.iusarican.common.utils
 
 import android.content.Context
 import androidx.annotation.StringRes
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.data.UserSettingsDataStore
+import com.iusarican.datastore.UserSettingsDataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject

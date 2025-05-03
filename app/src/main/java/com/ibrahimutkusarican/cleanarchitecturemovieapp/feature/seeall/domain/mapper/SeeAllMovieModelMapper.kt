@@ -6,7 +6,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.local.VisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.domain.model.SeeAllMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model.Language
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.FormatHelper
+import com.iusarican.common.utils.helper.FormatHelper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.ImageUrlHelper
 import javax.inject.Inject
 

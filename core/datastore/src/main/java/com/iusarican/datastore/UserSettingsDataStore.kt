@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.iusarican.Language
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.Locale
@@ -66,6 +67,7 @@ class UserSettingsDataStore(
 
 
     companion object {
+        private const val USER_SETTINGS_DATA_STORE = "USER_SETTINGS_DATASTORE_NAME"
         private val Context.userSettingsDataStore by preferencesDataStore(USER_SETTINGS_DATA_STORE)
         private val DARK_MODE_KEY = booleanPreferencesKey("dark_mode")
         private val NOTIFICATION_ENABLED_KEY = booleanPreferencesKey("notification_enabled")

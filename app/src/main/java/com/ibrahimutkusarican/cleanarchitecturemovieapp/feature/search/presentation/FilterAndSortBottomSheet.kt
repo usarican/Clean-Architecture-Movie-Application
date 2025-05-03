@@ -36,8 +36,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.domain.mo
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.domain.model.SearchFilterModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.domain.model.SortModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.domain.model.TimePeriodModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.SearchFilterHelper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
+import com.iusarican.common.utils.StringProvider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

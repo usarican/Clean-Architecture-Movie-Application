@@ -11,7 +11,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.domain.usecase.GetHomeMoviesUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.domain.usecase.RefreshHomeMoviesUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.StringProvider
+import com.iusarican.common.utils.StringProvider
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.doOnError
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.doOnSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel

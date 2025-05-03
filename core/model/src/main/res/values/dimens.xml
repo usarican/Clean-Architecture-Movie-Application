@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Border -->
+    <dimen name="border_4">4dp</dimen>      <!-- Extra Small -->
+    <dimen name="border_8">8dp</dimen>      <!-- Small -->
+    <dimen name="border_12">12dp</dimen>    <!-- Small-Medium -->
+    <dimen name="border_16">16dp</dimen>    <!-- Medium -->
+    <dimen name="border_24">24dp</dimen>    <!-- Large -->
+    <dimen name="border_32">32dp</dimen>    <!-- Extra Large -->
+
+    <!-- Padding -->
+    <dimen name="padding_4">4dp</dimen>       <!-- Extra Small -->
+    <dimen name="padding_6">6dp</dimen>       <!-- Between XS and S -->
+    <dimen name="padding_8">8dp</dimen>       <!-- Small -->
+    <dimen name="padding_12">12dp</dimen>     <!-- Small-Medium -->
+    <dimen name="padding_16">16dp</dimen>     <!-- Medium -->
+    <dimen name="padding_20">20dp</dimen>     <!-- Medium-Large -->
+    <dimen name="padding_24">24dp</dimen>     <!-- Large -->
+    <dimen name="padding_32">32dp</dimen>     <!-- Extra Large -->
+    <dimen name="padding_48">48dp</dimen>     <!-- XX Large -->
+    <dimen name="padding_56">56dp</dimen>     <!-- XXX Large -->
+    <dimen name="padding_64">64dp</dimen>     <!-- XXX Large -->
+
+    <dimen name="movie_top_bar_title_size">24sp</dimen>
+    <dimen name="error_icon_size">36dp</dimen>
+
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="popular_movies">Popüler Filmler</string>
+    <string name="up_coming_movies">Yakında Çıkacak Filmler</string>
+    <string name="top_rated_movies">En Yüksek Puanlı Filmler</string>
+</resources>

@@ -8,7 +8,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.domain.model.BasicMovieModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model.Language
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.BackdropSize
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.FormatHelper
+import com.iusarican.common.utils.helper.FormatHelper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.ImageUrlHelper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.MoviePosterSize
 import javax.inject.Inject

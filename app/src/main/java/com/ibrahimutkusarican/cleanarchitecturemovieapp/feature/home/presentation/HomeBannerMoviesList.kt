@@ -21,8 +21,8 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.domain.model.BasicMovieModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.blurTransition
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.carouselTransition
+import com.iusarican.common.utils.extension.blurTransition
+import com.iusarican.common.utils.extension.carouselTransition
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieImage
 
 @Composable

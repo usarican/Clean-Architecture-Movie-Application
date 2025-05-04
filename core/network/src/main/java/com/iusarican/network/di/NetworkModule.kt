@@ -1,8 +1,8 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.di
+package com.iusarican.network.di
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.data.UserSettingsDataStore
 import com.iusarican.common.utils.Constants.MOVIE_API_URL
 import com.iusarican.common.utils.Constants.TIME_OUT_VALUE
+import com.iusarican.datastore.UserSettingsDataStore
 import com.iusarican.network.RequestInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -24,10 +24,10 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideOkHttpClient(
-       userSettingsDataStore: UserSettingsDataStore
+        userSettingsDataStore: UserSettingsDataStore
     ) : OkHttpClient {
         return OkHttpClient().newBuilder()
-            .addNetworkInterceptor(com.iusarican.network.RequestInterceptor(userSettingsDataStore))
+            .addNetworkInterceptor(RequestInterceptor(userSettingsDataStore))
             .addInterceptor(HttpLoggingInterceptor())
             .readTimeout(TIME_OUT_VALUE, TimeUnit.SECONDS)
             .connectTimeout(TIME_OUT_VALUE,TimeUnit.SECONDS)

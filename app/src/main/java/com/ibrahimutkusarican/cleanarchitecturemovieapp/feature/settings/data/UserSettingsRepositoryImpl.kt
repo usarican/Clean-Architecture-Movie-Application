@@ -1,5 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.data
 
+import com.iusarican.datastore.UserSettingsDataStore
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

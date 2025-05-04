@@ -1,9 +1,9 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.di
+package com.iusarican.common.di
 
 import android.content.Context
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.data.UserSettingsDataStore
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.ImageShareHelper
 import com.iusarican.common.utils.StringProvider
+import com.iusarican.datastore.UserSettingsDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

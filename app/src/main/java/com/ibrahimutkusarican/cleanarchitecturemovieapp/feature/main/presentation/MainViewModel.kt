@@ -8,9 +8,9 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MySnack
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.main.domain.usecase.LanguageChangeUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.data.SeeAllScreenType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.data.SeeAllType
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.data.UserSettingsDataStore
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model.SettingsModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.usecase.GetSettingsModelUseCase
+import com.iusarican.datastore.UserSettingsDataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

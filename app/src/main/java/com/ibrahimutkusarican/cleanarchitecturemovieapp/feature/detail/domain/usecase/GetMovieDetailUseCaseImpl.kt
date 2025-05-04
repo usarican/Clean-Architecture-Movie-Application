@@ -9,8 +9,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.mo
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailRecommendedModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.data.MyListRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.data.UserSettingsRepository
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model.Language
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.getSuccessOrThrow
+import com.iusarican.Language
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first

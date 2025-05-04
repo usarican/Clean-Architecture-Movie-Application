@@ -1,8 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.usecase
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.data.UserSettingsRepository
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model.Language
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model.SettingsModel
+import com.iusarican.Language
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject

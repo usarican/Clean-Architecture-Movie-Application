@@ -63,10 +63,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model.Language
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model.SettingsType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model.SettingsItem
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model.SettingsModel
+import com.iusarican.Language
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

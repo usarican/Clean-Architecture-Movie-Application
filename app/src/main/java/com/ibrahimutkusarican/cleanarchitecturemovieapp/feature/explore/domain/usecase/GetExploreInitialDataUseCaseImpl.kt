@@ -7,10 +7,10 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.explore.domain.m
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.MovieRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.domain.mapper.HomeMovieModelMapper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.data.UserSettingsDataStore
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model.Language
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.MoviePosterSize
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.getSuccessOrThrow
+import com.iusarican.Language
+import com.iusarican.datastore.UserSettingsDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first

@@ -1,7 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model
 
-import androidx.annotation.StringRes
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
+import com.iusarican.Language
 
 data class SettingsModel(
     val isDarkModeEnabled: Boolean = false,
@@ -9,16 +8,3 @@ data class SettingsModel(
     val isNotificationEnabled: Boolean = false
 )
 
-enum class Language(
-    val languageCode: String,
-    @StringRes val languageText: Int
-) {
-    TR(languageCode = "tr", languageText = R.string.language_tr),
-    EN(languageCode = "en", languageText = R.string.language_en);
-
-    companion object {
-        fun fromLanguageCode(languageCode: String): Language {
-            return entries.find { it.languageCode == languageCode } ?: EN
-        }
-    }
-}

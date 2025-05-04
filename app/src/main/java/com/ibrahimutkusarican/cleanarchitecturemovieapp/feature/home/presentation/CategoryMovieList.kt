@@ -32,6 +32,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.domain.mode
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.data.SeeAllType
 import com.iusarican.common.utils.extension.getStringRes
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MovieImage
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.getStringRes
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.fontDimensionResource
 
 @OptIn(ExperimentalSharedTransitionApi::class)

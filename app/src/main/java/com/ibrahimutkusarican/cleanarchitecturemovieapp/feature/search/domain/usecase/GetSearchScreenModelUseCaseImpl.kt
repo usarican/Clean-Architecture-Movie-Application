@@ -12,8 +12,8 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.domain.mo
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.domain.model.turkishTopSearchedMovies
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.domain.mapper.SeeAllMovieModelMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.data.UserSettingsRepository
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model.Language
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.getSuccessOrThrow
+import com.iusarican.Language
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first

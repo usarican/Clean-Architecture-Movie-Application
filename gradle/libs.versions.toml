@@ -131,3 +131,4 @@ cama-compose-application= { id = "cama.compose.application" }
 cama-compose-library= { id = "cama.compose.library" }
 cama-hilt = { id = "cama.hilt" }
 cama-secrets = { id = "cama.secret" }
+cama-room = { id = "cama.room" }

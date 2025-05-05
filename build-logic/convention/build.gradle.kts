@@ -58,13 +58,19 @@ gradlePlugin {
             implementationClass = "com.iusarican.AndroidLibraryComposeConventionPlugin"
         }
 
-        register("hilt"){
+        register("hilt") {
             id = "cama.hilt"
             implementationClass = "com.iusarican.HiltConventionPlugin"
         }
-        register("secret"){
+
+        register("secret") {
             id = "cama.secret"
             implementationClass = "com.iusarican.SecretsConventionPlugin"
+        }
+
+        register("room") {
+            id = "cama.room"
+            implementationClass = "com.iusarican.AndroidRoomConventionPlugin"
         }
     }
 }

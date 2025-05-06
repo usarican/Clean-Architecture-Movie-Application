@@ -34,6 +34,7 @@ appcompat = "1.7.0"
 material = "1.12.0"
 androidTools = "31.9.1"
 pagingComposeAndroid = "3.3.6"
+roomGradlePlugin = "2.7.1"
 
 [libraries]
 # AndroidX
@@ -111,6 +112,7 @@ android-tools-common = { group = "com.android.tools", name = "common", version.r
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-paging-compose-android = { group = "androidx.paging", name = "paging-compose-android", version.ref = "pagingComposeAndroid" }
+androidx-room-gradle-plugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "roomGradlePlugin" }
 # End
 
 [plugins]

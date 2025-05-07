@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.repository
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.ApiState
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseRepository
+import com.iusarican.common.base.BaseRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.mapper.GenreResponseMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local.GenreLocalDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local.entity.GenreEntity

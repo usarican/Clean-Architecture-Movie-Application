@@ -1,6 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.usecase
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseUseCase
+import com.iusarican.common.base.BaseUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.repository.GenreRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.MovieRepository

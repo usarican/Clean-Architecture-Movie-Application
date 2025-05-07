@@ -1,9 +1,8 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.main.presentation
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseViewModel
+import com.iusarican.common.base.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MySnackBarModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.main.domain.usecase.LanguageChangeUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.data.SeeAllScreenType

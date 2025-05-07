@@ -16,8 +16,9 @@
             </builds>
           </compositeBuild>
         </compositeConfiguration>
+        <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="jbr-17" />
+        <option name="gradleJvm" value="jbr-21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -35,7 +36,6 @@
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/detail" />
             <option value="$PROJECT_DIR$/feature/detail/data" />
-            <option value="$PROJECT_DIR$/feature/detail/di" />
             <option value="$PROJECT_DIR$/feature/detail/domain" />
             <option value="$PROJECT_DIR$/feature/detail/ui" />
             <option value="$PROJECT_DIR$/feature/explore" />
@@ -65,7 +65,6 @@
             <option value="$PROJECT_DIR$/feature/settings/ui" />
           </set>
         </option>
-        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

@@ -2,7 +2,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.presen
 
 import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseViewModel
+import com.iusarican.common.base.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.model.SettingsModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.usecase.ChangeUserSettingsUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.domain.usecase.GetSettingsModelUseCase

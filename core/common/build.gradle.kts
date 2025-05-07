@@ -1,3 +1,5 @@
+import com.iusarican.convention.implementation
+
 plugins {
     alias(libs.plugins.cama.android.library)
     alias(libs.plugins.cama.compose.library)
@@ -20,6 +22,9 @@ android {
 dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:datastore"))
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.room.paging)
     implementation(libs.coil.network.okhttp)
 }
 

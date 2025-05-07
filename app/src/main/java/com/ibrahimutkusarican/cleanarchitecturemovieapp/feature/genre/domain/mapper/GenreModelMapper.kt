@@ -1,6 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.domain.mapper
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.EntityMapper
+import com.iusarican.common.base.EntityMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local.entity.GenreEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.domain.model.GenreModel
 import javax.inject.Inject

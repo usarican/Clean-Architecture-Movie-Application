@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.ApiState
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseRepository
+import com.iusarican.common.base.BaseRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote.response.MovieResultResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.local.VisitedMovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.data.local.SearchLocalDataSource

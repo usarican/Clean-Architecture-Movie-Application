@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.main.domain.usecase
 
 import android.util.Log
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseUseCase
+import com.iusarican.common.base.BaseUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.repository.MovieDetailRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.data.MyListRepository

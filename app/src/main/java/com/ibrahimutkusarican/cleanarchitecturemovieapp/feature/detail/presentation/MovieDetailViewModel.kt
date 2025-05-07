@@ -3,7 +3,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.presenta
 import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.R
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseViewModel
+import com.iusarican.common.base.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.MySnackBarModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.common.widget.SnackBarType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState

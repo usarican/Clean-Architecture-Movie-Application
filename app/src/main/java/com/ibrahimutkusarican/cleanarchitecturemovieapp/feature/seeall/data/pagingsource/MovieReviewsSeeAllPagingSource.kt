@@ -1,6 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.data.pagingsource
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BasePagingSource
+import com.iusarican.common.base.BasePagingSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailAuthorResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.repository.datasourceImpl.DetailRemoteDataSourceImpl
 import com.iusarican.common.utils.Constants.STARTING_PAGE_INDEX

@@ -9,7 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseActivity
+import com.iusarican.common.base.BaseActivity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.EventListener
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.ui.theme.AppTheme

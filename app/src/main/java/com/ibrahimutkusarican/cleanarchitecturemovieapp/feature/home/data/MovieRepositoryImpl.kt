@@ -2,7 +2,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data
 
 import android.util.Log
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.ApiState
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseRepository
+import com.iusarican.common.base.BaseRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.MovieLocalDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.entity.MovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.entity.MovieType

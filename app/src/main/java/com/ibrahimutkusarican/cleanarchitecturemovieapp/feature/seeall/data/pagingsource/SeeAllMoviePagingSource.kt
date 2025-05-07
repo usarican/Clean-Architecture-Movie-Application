@@ -1,6 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.seeall.data.pagingsource
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BasePagingSource
+import com.iusarican.common.base.BasePagingSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.MovieLocalDataSource
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.entity.MovieType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote.MovieRemoteDataSource

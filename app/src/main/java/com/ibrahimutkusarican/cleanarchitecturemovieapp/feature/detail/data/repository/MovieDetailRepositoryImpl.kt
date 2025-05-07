@@ -1,7 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.repository
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.ApiState
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseRepository
+import com.iusarican.common.base.BaseRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.mapper.MovieDetailResponseMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailCreditResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailResponse

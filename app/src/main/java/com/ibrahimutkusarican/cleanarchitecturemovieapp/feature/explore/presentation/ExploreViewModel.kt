@@ -2,7 +2,7 @@ package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.explore.present
 
 import androidx.lifecycle.viewModelScope
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.event.MyEvent
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.base.BaseViewModel
+import com.iusarican.common.base.BaseViewModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.explore.domain.model.ExploreInitialDataModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.explore.domain.usecase.GetExploreInitialDataUseCase

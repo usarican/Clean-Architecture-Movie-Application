@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.database
+package com.iusarican.data.data.database
 
 import androidx.room.Dao
 import androidx.room.Delete

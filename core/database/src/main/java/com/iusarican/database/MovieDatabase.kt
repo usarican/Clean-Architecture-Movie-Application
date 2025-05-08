@@ -3,6 +3,7 @@ package com.iusarican.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.iusarican.data.database.VisitedMovieDao
 
 @Database(
     entities = [

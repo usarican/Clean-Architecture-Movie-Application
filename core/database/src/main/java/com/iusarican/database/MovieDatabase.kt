@@ -3,7 +3,18 @@ package com.iusarican.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local.GenreDao
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local.entity.GenreEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.MovieDao
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.entity.MovieEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.data.local.MyListMovieDao
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.data.local.MyListMovieEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.data.local.LastSearchDao
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.data.local.RegionDao
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.data.local.entities.LastSearchEntity
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.search.data.local.entities.RegionEntity
 import com.iusarican.data.database.VisitedMovieDao
+import com.iusarican.data.model.local.VisitedMovieEntity
 
 @Database(
     entities = [
@@ -14,7 +25,7 @@ import com.iusarican.data.database.VisitedMovieDao
         RegionEntity::class,
         LastSearchEntity::class
     ],
-    version = DATABASE_VERSION
+    version = MovieDatabase.DATABASE_VERSION
 )
 @TypeConverters(Converters::class)
 abstract class MovieDatabase : RoomDatabase() {

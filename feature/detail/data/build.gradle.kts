@@ -15,4 +15,6 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:common"))
     implementation(project(":feature:genre:data"))
+    implementation(project(":feature:home:data"))
+    implementation(project(":feature:detail:domain"))
 }

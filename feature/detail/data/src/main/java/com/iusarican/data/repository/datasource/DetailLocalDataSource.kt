@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.repository.datasource
+package com.iusarican.data.repository.datasource
 
 import com.iusarican.data.model.local.VisitedMovieEntity
 

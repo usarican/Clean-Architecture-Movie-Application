@@ -1,8 +1,8 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.repository.datasourceImpl
+package com.iusarican.data.repository.datasourceImpl
 
 import com.iusarican.data.database.VisitedMovieDao
 import com.iusarican.data.model.local.VisitedMovieEntity
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.repository.datasource.DetailLocalDataSource
+import com.iusarican.data.repository.datasource.DetailLocalDataSource
 import javax.inject.Inject
 
 class DetailLocalDataSourceImpl @Inject constructor(

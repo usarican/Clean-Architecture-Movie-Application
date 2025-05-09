@@ -3,6 +3,7 @@ package com.iusarican.data.model.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.remote.response.Genre
 
 @Entity(tableName = "visited_movie")
 data class VisitedMovieEntity(

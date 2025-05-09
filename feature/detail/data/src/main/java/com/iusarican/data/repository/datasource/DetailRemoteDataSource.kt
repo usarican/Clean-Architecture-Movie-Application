@@ -1,10 +1,9 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.repository.datasource
+package com.iusarican.data.repository.datasource
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailCreditResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailResponse
+import com.iusarican.data.model.remote.MovieDetailCreditResponse
+import com.iusarican.data.model.remote.MovieDetailResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailReviewResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailVideoResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote.response.MovieResponse
+import com.iusarican.data.model.remote.MovieDetailVideoResponse
 import com.iusarican.common.utils.Constants.STARTING_PAGE_INDEX
 
 interface DetailRemoteDataSource {

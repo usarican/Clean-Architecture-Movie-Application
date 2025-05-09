@@ -1,7 +1,7 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.repository.datasourceImpl
+package com.iusarican.data.repository.datasourceImpl
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.network.MovieDetailService
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.repository.datasource.DetailRemoteDataSource
+import com.iusarican.data.network.MovieDetailService
+import com.iusarican.data.repository.datasource.DetailRemoteDataSource
 import javax.inject.Inject
 
 class DetailRemoteDataSourceImpl @Inject constructor(

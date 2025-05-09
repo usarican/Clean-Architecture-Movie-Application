@@ -1,7 +1,7 @@
 package com.iusarican.data.mapper
 
 import com.iusarican.data.model.local.VisitedMovieEntity
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailResponse
+import com.iusarican.data.model.remote.MovieDetailResponse
 import com.iusarican.common.utils.Constants
 import javax.inject.Inject
 

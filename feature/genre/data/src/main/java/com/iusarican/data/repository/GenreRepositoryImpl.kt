@@ -3,7 +3,7 @@ package com.iusarican.data.repository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.ApiState
 import com.iusarican.common.base.BaseRepository
 import com.iusarican.data.mapper.GenreResponseMapper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local.GenreLocalDataSource
+import com.iusarican.data.local.GenreLocalDataSource
 import com.iusarican.data.remote.GenreRemoteDataSource
 import com.iusarican.data.mapper.GenreModelMapper
 import com.iusarican.domain.model.GenreModel

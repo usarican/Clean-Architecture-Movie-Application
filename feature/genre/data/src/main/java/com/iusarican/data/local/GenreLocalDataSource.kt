@@ -1,6 +1,5 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local
+package com.iusarican.data.local
 
-import com.iusarican.data.local.GenreDao
 import com.iusarican.data.local.entity.GenreEntity
 import javax.inject.Inject
 

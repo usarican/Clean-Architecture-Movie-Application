@@ -3,8 +3,8 @@ package com.iusarican.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local.GenreDao
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local.entity.GenreEntity
+import com.iusarican.data.local.GenreDao
+import com.iusarican.data.local.entity.GenreEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.MovieDao
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.local.entity.MovieEntity
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.data.local.MyListMovieDao

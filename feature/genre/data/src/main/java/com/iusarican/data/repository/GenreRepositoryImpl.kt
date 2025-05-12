@@ -1,23 +1,26 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.repository
+package com.iusarican.data.repository
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.ApiState
 import com.iusarican.common.base.BaseRepository
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.mapper.GenreResponseMapper
+import com.iusarican.data.mapper.GenreResponseMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local.GenreLocalDataSource
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local.entity.GenreEntity
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.remote.GenreRemoteDataSource
+import com.iusarican.data.remote.GenreRemoteDataSource
+import com.iusarican.data.mapper.GenreModelMapper
+import com.iusarican.domain.model.GenreModel
+import com.iusarican.domain.repository.GenreRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GenreRepositoryImpl @Inject constructor(
     private val genreRemoteDataSource: GenreRemoteDataSource,
     private val genreLocalDataSource: GenreLocalDataSource,
-    private val genreResponseMapper: GenreResponseMapper
+    private val genreResponseMapper: GenreResponseMapper,
+    private val genreModelMapper: GenreModelMapper
 ) : BaseRepository(), GenreRepository {
 
-    override fun getMovieGenreList(): Flow<ApiState<List<GenreEntity>>> {
+    override fun getMovieGenreList(): Flow<ApiState<List<GenreModel>>> {
         return apiCall {
-            genreLocalDataSource.getAllGenres().ifEmpty {
+            val entities = genreLocalDataSource.getAllGenres().ifEmpty {
                 val genreResponse = genreRemoteDataSource.getMovieGenreList()
                 genreLocalDataSource.insertAllGenres(genreResponse.genreList.map { genre ->
                     genreResponseMapper.mapResponseToEntity(
@@ -25,6 +28,9 @@ class GenreRepositoryImpl @Inject constructor(
                     )
                 })
                 genreLocalDataSource.getAllGenres()
+            }
+            entities.map { entity ->
+                genreModelMapper.mapEntityToModel(entity)
             }
         }
     }

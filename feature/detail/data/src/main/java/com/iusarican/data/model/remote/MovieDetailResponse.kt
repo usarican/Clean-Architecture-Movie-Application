@@ -1,7 +1,7 @@
 package com.iusarican.data.model.remote
 
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.remote.response.Genre
+import com.iusarican.data.remote.response.Genre
 import com.squareup.moshi.Json
 
 data class MovieDetailResponse(

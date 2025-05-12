@@ -1,10 +1,10 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local
+package com.iusarican.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local.entity.GenreEntity
+import com.iusarican.data.local.entity.GenreEntity
 
 @Dao
 interface GenreDao {

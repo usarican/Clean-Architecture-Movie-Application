@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.remote.response
+package com.iusarican.data.remote.response
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

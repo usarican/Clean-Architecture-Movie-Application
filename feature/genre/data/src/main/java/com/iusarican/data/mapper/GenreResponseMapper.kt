@@ -1,8 +1,8 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.mapper
+package com.iusarican.data.mapper
 
 import com.iusarican.common.base.ResponseMapper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local.entity.GenreEntity
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.remote.response.Genre
+import com.iusarican.data.local.entity.GenreEntity
+import com.iusarican.data.remote.response.Genre
 import javax.inject.Inject
 
 class GenreResponseMapper @Inject constructor() : ResponseMapper<GenreEntity, Genre> {

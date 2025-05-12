@@ -1,17 +1,6 @@
 package com.iusarican.domain.mapper
 
 import android.os.Build
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.domain.mapper.GenreIdsToGenreNameListMapper
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.domain.model.GenreModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailAuthorResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailCastResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailCreditResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailReviewResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailVideoResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.VideoResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.VideoSite
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.VideoType
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailReviewModelItem
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailCastModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailAboutModel
@@ -24,6 +13,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote
 import com.iusarican.common.utils.helper.FormatHelper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.ImageUrlHelper
 import com.iusarican.Language
+import com.iusarican.data.mapper.GenreIdsToGenreNameListMapper
 import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter

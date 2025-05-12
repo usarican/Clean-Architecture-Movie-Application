@@ -1,6 +1,6 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.remote
+package com.iusarican.data.remote
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.remote.response.GenreResponse
+import com.iusarican.data.remote.response.GenreResponse
 import retrofit2.http.GET
 
 interface GenreService {

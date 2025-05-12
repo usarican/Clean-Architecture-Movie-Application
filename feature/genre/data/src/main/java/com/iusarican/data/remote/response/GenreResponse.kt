@@ -1,5 +1,6 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.remote.response
+package com.iusarican.data.remote.response
 
+import com.iusarican.data.remote.response.Genre
 import com.squareup.moshi.Json
 
 data class GenreResponse(

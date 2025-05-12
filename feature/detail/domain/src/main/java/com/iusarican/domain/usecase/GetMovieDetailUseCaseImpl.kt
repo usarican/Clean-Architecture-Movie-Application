@@ -1,7 +1,6 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.usecase
 
 import com.iusarican.common.base.BaseUseCase
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.domain.usecase.GetMovieGenresUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.repository.MovieDetailRepository
 import com.iusarican.domain.mapper.MovieDetailModelMapper

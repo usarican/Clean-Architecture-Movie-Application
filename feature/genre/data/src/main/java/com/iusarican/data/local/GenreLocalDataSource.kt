@@ -1,6 +1,7 @@
 package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.genre.data.local.entity.GenreEntity
+import com.iusarican.data.local.GenreDao
+import com.iusarican.data.local.entity.GenreEntity
 import javax.inject.Inject
 
 class GenreLocalDataSource @Inject constructor(

@@ -14,7 +14,9 @@ android {
 dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:common"))
+    implementation(project(":core:database"))
     implementation(project(":feature:genre:data"))
+    implementation(project(":feature:genre:domain"))
     implementation(project(":feature:home:data"))
     implementation(project(":feature:detail:domain"))
 }

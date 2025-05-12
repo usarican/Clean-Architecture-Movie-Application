@@ -2,7 +2,8 @@ package com.iusarican.data.network
 
 import com.iusarican.data.model.remote.MovieDetailCreditResponse
 import com.iusarican.data.model.remote.MovieDetailResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.model.remote.MovieDetailReviewResponse
+import com.iusarican.data.model.remote.MovieDetailReviewResponse
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote.response.MovieResponse
 import com.iusarican.data.model.remote.MovieDetailVideoResponse
 import retrofit2.http.GET
 import retrofit2.http.Path

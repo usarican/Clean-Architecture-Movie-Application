@@ -1,6 +1,7 @@
-package com.iusarican.domain.mapper
+package com.iusarican.data.mapper
 
 import android.os.Build
+import com.iusarican.data.model.remote.MovieDetailReviewResponse
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailReviewModelItem
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailCastModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailAboutModel
@@ -13,7 +14,15 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote
 import com.iusarican.common.utils.helper.FormatHelper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.ImageUrlHelper
 import com.iusarican.Language
-import com.iusarican.data.mapper.GenreIdsToGenreNameListMapper
+import com.iusarican.data.model.remote.MovieDetailAuthorResponse
+import com.iusarican.data.model.remote.MovieDetailCastResponse
+import com.iusarican.data.model.remote.MovieDetailCreditResponse
+import com.iusarican.data.model.remote.MovieDetailResponse
+import com.iusarican.data.model.remote.MovieDetailVideoResponse
+import com.iusarican.data.model.remote.VideoResponse
+import com.iusarican.data.model.remote.VideoSite
+import com.iusarican.data.model.remote.VideoType
+import com.iusarican.domain.model.GenreModel
 import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter

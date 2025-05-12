@@ -1,6 +1,6 @@
 package com.iusarican.data.di
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.data.network.MovieDetailService
+import com.iusarican.data.network.MovieDetailService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

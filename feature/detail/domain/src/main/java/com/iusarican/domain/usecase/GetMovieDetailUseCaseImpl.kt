@@ -1,13 +1,11 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.usecase
+package com.iusarican.domain.usecase
 
 import com.iusarican.common.base.BaseUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.repository.MovieDetailRepository
-import com.iusarican.domain.mapper.MovieDetailModelMapper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailRecommendedModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.mylist.data.MyListRepository
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.settings.data.UserSettingsRepository
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.usecase.GetMovieDetailUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.getSuccessOrThrow
 import com.iusarican.Language
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +15,7 @@ import javax.inject.Inject
 
 class GetMovieDetailUseCaseImpl @Inject constructor(
     private val movieDetailRepository: MovieDetailRepository,
-    private val movieDetailModelMapper: MovieDetailModelMapper,
+    private val movieDetailModelMapper: com.iusarican.data.mapper.MovieDetailModelMapper,
     private val myListRepository: MyListRepository,
     private val genresUseCase: GetMovieGenresUseCase,
     private val userSettingsRepository: UserSettingsRepository

@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.usecase
+package com.iusarican.domain.usecase
 
 import com.iusarican.common.base.BaseUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
@@ -8,10 +8,10 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.ImageShareH
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetMovieShareModelUseCaseImpl @Inject constructor(
+class GetMovieShareModelUseCase @Inject constructor(
     private val imageShareHelper: ImageShareHelper
-) : BaseUseCase(), GetMovieShareModelUseCase {
-    override fun getMovieUri(movieDetail: MovieDetailInfoModel?): Flow<UiState<MovieShareModel>> {
+) : BaseUseCase() {
+    operator fun invoke(movieDetail: MovieDetailInfoModel?): Flow<UiState<MovieShareModel>> {
         return execute {
             if (movieDetail == null) throw NullPointerException()
             val uri = imageShareHelper.getShareableImageUri(

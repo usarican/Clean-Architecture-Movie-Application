@@ -7,6 +7,7 @@ import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.mo
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailRecommendedModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.getSuccessOrThrow
 import com.iusarican.Language
+import com.iusarican.domain.repository.GenreRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -16,7 +17,7 @@ class GetMovieDetailUseCase @Inject constructor(
     private val movieDetailRepository: MovieDetailRepository,
     private val movieDetailModelMapper: com.iusarican.data.mapper.MovieDetailModelMapper,
     private val myListRepository: MyListRepository,
-    private val genresUseCase: GetMovieGenresUseCase,
+    private val genreRepository: GenreRepository,
     private val userSettingsRepository: UserSettingsRepository
 ) : BaseUseCase(){
     fun getMovieDetail(movieId: Int): Flow<UiState<MovieDetailModel>> {

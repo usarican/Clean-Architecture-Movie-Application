@@ -1,4 +1,4 @@
-package com.iusarican.data.repository.datasourceImpl
+package com.iusarican.data.datasource
 
 import com.iusarican.data.database.VisitedMovieDao
 import com.iusarican.data.model.local.VisitedMovieEntity

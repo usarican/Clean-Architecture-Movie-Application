@@ -1,4 +1,4 @@
-package com.iusarican.data.repository.datasourceImpl
+package com.iusarican.data.datasource
 
 import com.iusarican.data.network.MovieDetailService
 import javax.inject.Inject

@@ -4,7 +4,7 @@ import com.iusarican.common.base.BaseUseCase
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.UiState
 import com.iusarican.domain.repository.MovieDetailRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailRecommendedModel
+import com.iusarican.domain.model.MovieDetailRecommendedModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.extension.getSuccessOrThrow
 import com.iusarican.Language
 import com.iusarican.domain.repository.GenreRepository

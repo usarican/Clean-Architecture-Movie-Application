@@ -1,7 +1,7 @@
 package com.iusarican.domain.repository
 
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.core.action.ApiState
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailInfoModel
+import com.iusarican.domain.model.MovieDetailInfoModel
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote.response.MovieResponse
 import kotlinx.coroutines.flow.Flow
 

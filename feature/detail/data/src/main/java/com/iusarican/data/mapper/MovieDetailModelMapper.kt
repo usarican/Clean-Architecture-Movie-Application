@@ -2,14 +2,14 @@ package com.iusarican.data.mapper
 
 import android.os.Build
 import com.iusarican.data.model.remote.MovieDetailReviewResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailReviewModelItem
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailCastModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailAboutModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailInfoModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailReviewModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailTrailerModel
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailRecommendedModelItem
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailTrailerModelItem
+import com.iusarican.domain.model.MovieDetailReviewModelItem
+import com.iusarican.domain.model.MovieDetailCastModel
+import com.iusarican.domain.model.MovieDetailAboutModel
+import com.iusarican.domain.model.MovieDetailInfoModel
+import com.iusarican.domain.model.MovieDetailReviewModel
+import com.iusarican.domain.model.MovieDetailTrailerModel
+import com.iusarican.domain.model.MovieDetailRecommendedModelItem
+import com.iusarican.domain.model.MovieDetailTrailerModelItem
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote.response.MovieResultResponse
 import com.iusarican.common.utils.helper.FormatHelper
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.utils.helper.ImageUrlHelper

@@ -1,4 +1,6 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model
+package com.iusarican.domain.model
+
+import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model.MovieDetailModel
 
 
 data class MovieDetailInfoModel(

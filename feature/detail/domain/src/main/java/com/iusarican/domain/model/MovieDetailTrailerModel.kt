@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model
+package com.iusarican.domain.model
 
 data class MovieDetailTrailerModel(
     val trailers : List<MovieDetailTrailerModelItem>

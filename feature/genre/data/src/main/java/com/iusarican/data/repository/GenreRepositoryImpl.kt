@@ -18,27 +18,23 @@ class GenreRepositoryImpl @Inject constructor(
     private val genreModelMapper: GenreModelMapper
 ) : BaseRepository(), GenreRepository {
 
-    override fun getMovieGenreList(): Flow<ApiState<List<GenreModel>>> {
-        return apiCall {
-            val entities = genreLocalDataSource.getAllGenres().ifEmpty {
-                val genreResponse = genreRemoteDataSource.getMovieGenreList()
-                genreLocalDataSource.insertAllGenres(genreResponse.genreList.map { genre ->
-                    genreResponseMapper.mapResponseToEntity(
-                        genre
-                    )
-                })
-                genreLocalDataSource.getAllGenres()
-            }
-            entities.map { entity ->
-                genreModelMapper.mapEntityToModel(entity)
-            }
+    override suspend fun getMovieGenreList(): List<GenreModel> {
+        val entities = genreLocalDataSource.getAllGenres().ifEmpty {
+            val genreResponse = genreRemoteDataSource.getMovieGenreList()
+            genreLocalDataSource.insertAllGenres(genreResponse.genreList.map { genre ->
+                genreResponseMapper.mapResponseToEntity(
+                    genre
+                )
+            })
+            genreLocalDataSource.getAllGenres()
+        }
+        return entities.map { entity ->
+            genreModelMapper.mapEntityToModel(entity)
         }
     }
 
-    override fun deleteAllGenreList(): Flow<ApiState<Boolean>> {
-        return apiCall {
-            genreLocalDataSource.deleteAllGenres()
-            true
-        }
+    override suspend fun deleteAllGenreList(): Boolean {
+        genreLocalDataSource.deleteAllGenres()
+        return true
     }
 }

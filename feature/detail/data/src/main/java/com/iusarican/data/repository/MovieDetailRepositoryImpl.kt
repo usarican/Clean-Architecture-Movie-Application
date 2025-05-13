@@ -6,7 +6,7 @@ import com.iusarican.data.mapper.MovieDetailResponseMapper
 import com.iusarican.data.model.remote.MovieDetailCreditResponse
 import com.iusarican.data.model.remote.MovieDetailResponse
 import com.iusarican.data.model.remote.MovieDetailReviewResponse
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.repository.MovieDetailRepository
+import com.iusarican.domain.repository.MovieDetailRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote.response.MovieResponse
 import com.iusarican.data.model.remote.MovieDetailVideoResponse
 import kotlinx.coroutines.flow.Flow

@@ -1,6 +1,6 @@
 package com.iusarican.data.di
 
-import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.repository.MovieDetailRepository
+import com.iusarican.domain.repository.MovieDetailRepository
 import com.iusarican.data.repository.MovieDetailRepositoryImpl
 import dagger.Binds
 import dagger.Module

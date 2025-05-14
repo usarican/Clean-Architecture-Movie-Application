@@ -1,5 +1,7 @@
 package com.iusarican.di
 
+import com.iusarican.repository.UserSettingsRepository
+import com.iusarican.repository.UserSettingsRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

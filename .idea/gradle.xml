@@ -45,7 +45,6 @@
             <option value="$PROJECT_DIR$/feature/genre" />
             <option value="$PROJECT_DIR$/feature/genre/data" />
             <option value="$PROJECT_DIR$/feature/genre/domain" />
-            <option value="$PROJECT_DIR$/feature/genre/ui" />
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/home/data" />
             <option value="$PROJECT_DIR$/feature/home/domain" />

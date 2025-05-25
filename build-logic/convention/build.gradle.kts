@@ -73,5 +73,10 @@ gradlePlugin {
             id = "cama.room"
             implementationClass = "com.iusarican.AndroidRoomConventionPlugin"
         }
+
+        register("feature") {
+            id = "cama.feature"
+            implementationClass = "com.iusarican.CamaFeatureConventionPlugin"
+        }
     }
 }

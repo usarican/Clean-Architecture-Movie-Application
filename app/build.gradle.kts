@@ -52,7 +52,7 @@ dependencies {
     implementation(libs.androidx.palette.ktx)
 
     // Navigation
-    implementation(libs.androidx.navigation)
+    implementation(libs.androidx.compose.navigation)
     implementation(libs.androidx.hilt.navigation.compose)
 
     // Room Database

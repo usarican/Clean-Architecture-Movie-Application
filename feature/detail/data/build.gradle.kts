@@ -19,4 +19,5 @@ dependencies {
     implementation(project(":feature:genre:domain"))
     implementation(project(":feature:home:data"))
     implementation(project(":feature:detail:domain"))
+    implementation(project(":feature:settings:domain"))
 }

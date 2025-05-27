@@ -1,4 +1,4 @@
-package com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.detail.domain.model
+package com.iusarican.domain.model
 
 import com.iusarican.domain.model.MovieDetailAboutModel
 import com.iusarican.domain.model.MovieDetailInfoModel

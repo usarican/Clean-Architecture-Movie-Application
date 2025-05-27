@@ -7,27 +7,42 @@ import com.iusarican.data.model.remote.MovieDetailCreditResponse
 import com.iusarican.data.model.remote.MovieDetailReviewResponse
 import com.iusarican.domain.repository.MovieDetailRepository
 import com.ibrahimutkusarican.cleanarchitecturemovieapp.feature.home.data.remote.response.MovieResponse
+import com.iusarican.Language
 import com.iusarican.data.datasource.DetailLocalDataSource
 import com.iusarican.data.datasource.DetailRemoteDataSource
 import com.iusarican.data.mapper.MovieDetailModelMapper
 import com.iusarican.data.model.remote.MovieDetailVideoResponse
+import com.iusarican.datastore.UserSettingsDataStore
 import com.iusarican.domain.model.MovieDetailInfoModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 class MovieDetailRepositoryImpl @Inject constructor(
     private val detailRemoteDataSource: DetailRemoteDataSource,
     private val detailLocalDataSource: DetailLocalDataSource,
     private val movieDetailResponseMapper: MovieDetailResponseMapper,
-    private val movieDetailModelMapper: MovieDetailModelMapper
+    private val movieDetailModelMapper: MovieDetailModelMapper,
+    userSettingsDataStore: UserSettingsDataStore
 ) : BaseRepository(), MovieDetailRepository {
-    override suspend fun getMovieDetailResponse(movieId: Int): Flow<ApiState<MovieDetailInfoModel>> {
-        return apiCall {
-            val movieDetailResponse = detailRemoteDataSource.getMovieDetail(movieId)
-            val visitedMovieEntity = movieDetailResponseMapper.mapResponseToEntity(movieDetailResponse)
-            detailLocalDataSource.insertVisitedMovie(visitedMovieEntity)
 
-            movieDetailModelMapper.movieDetailResponseToMovieDetailInfoModel(movieDetailResponse)
+    private val languageCodeFlow = userSettingsDataStore.getLanguageCode()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override suspend fun getMovieDetailResponse(movieId: Int): Flow<ApiState<MovieDetailInfoModel>> {
+        return languageCodeFlow.flatMapLatest { languageCode ->
+            val language = Language.fromLanguageCode(languageCode)
+            apiCall {
+                val movieDetailResponse = detailRemoteDataSource.getMovieDetail(movieId)
+                val visitedMovieEntity =
+                    movieDetailResponseMapper.mapResponseToEntity(movieDetailResponse)
+                detailLocalDataSource.insertVisitedMovie(visitedMovieEntity)
+                movieDetailModelMapper.movieDetailResponseToMovieDetailInfoModel(
+                    movieDetailResponse = movieDetailResponse,
+                    language = language
+                )
+            }
         }
     }
 

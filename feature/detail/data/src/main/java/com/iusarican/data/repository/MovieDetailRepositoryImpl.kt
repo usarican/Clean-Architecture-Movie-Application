@@ -11,9 +11,11 @@ import com.iusarican.Language
 import com.iusarican.data.datasource.DetailLocalDataSource
 import com.iusarican.data.datasource.DetailRemoteDataSource
 import com.iusarican.data.mapper.MovieDetailModelMapper
-import com.iusarican.data.model.remote.MovieDetailVideoResponse
 import com.iusarican.datastore.UserSettingsDataStore
+import com.iusarican.domain.model.MovieDetailCastModel
 import com.iusarican.domain.model.MovieDetailInfoModel
+import com.iusarican.domain.model.MovieDetailReviewModel
+import com.iusarican.domain.model.MovieDetailTrailerModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -46,7 +48,7 @@ class MovieDetailRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getMovieDetailCredits(movieId: Int): Flow<ApiState<MovieDetailCreditResponse>> {
+    override suspend fun getMovieDetailCredits(movieId: Int): Flow<ApiState<MovieDetailCastModel>> {
         return apiCall { detailRemoteDataSource.getMovieCredits(movieId) }
     }
 
@@ -54,11 +56,11 @@ class MovieDetailRepositoryImpl @Inject constructor(
         return apiCall { detailRemoteDataSource.getMovieRecommendations(movieId) }
     }
 
-    override suspend fun getMovieDetailReviews(movieId: Int): Flow<ApiState<MovieDetailReviewResponse>> {
+    override suspend fun getMovieDetailReviews(movieId: Int): Flow<ApiState<MovieDetailReviewModel>> {
         return apiCall { detailRemoteDataSource.getMovieReviews(movieId) }
     }
 
-    override suspend fun getMovieDetailTrailers(movieId: Int): Flow<ApiState<MovieDetailVideoResponse>> {
+    override suspend fun getMovieDetailTrailers(movieId: Int): Flow<ApiState<MovieDetailTrailerModel>> {
         return apiCall { detailRemoteDataSource.getMovieTrailers(movieId) }
     }
 

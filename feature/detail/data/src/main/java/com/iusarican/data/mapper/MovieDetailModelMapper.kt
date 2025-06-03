@@ -71,12 +71,16 @@ class MovieDetailModelMapper @Inject constructor(
                 language = language
             ),
             overview = overview,
-            casts = movieDetailCreditResponse.castResponse.map { castResponse ->
-                castResponseToCastModel(
-                    castResponse
-                )
-            })
+            casts = movieDetailCreditResponseToMovieDetailCastModel(movieDetailCreditResponse)
+        )
     }
+
+    fun movieDetailCreditResponseToMovieDetailCastModel(movieDetailCreditResponse: MovieDetailCreditResponse) =
+        movieDetailCreditResponse.castResponse.map { castResponse ->
+            castResponseToCastModel(
+                castResponse
+            )
+        }
 
     fun movieReviewResponseToMovieDetailReviewModel(movieReviewResponse: MovieDetailReviewResponse): MovieDetailReviewModel =
         with(movieReviewResponse) {
@@ -132,7 +136,6 @@ class MovieDetailModelMapper @Inject constructor(
                     e.printStackTrace()
                     null
                 }
-                // Sort by the Date's time in milliseconds; default to 0 if null
                 parsedDate?.time ?: 0L
             }
         }
@@ -151,7 +154,7 @@ class MovieDetailModelMapper @Inject constructor(
             )
         }
 
-    private fun castResponseToCastModel(castResponse: MovieDetailCastResponse): MovieDetailCastModel =
+    fun castResponseToCastModel(castResponse: MovieDetailCastResponse): MovieDetailCastModel =
         with(castResponse) {
             MovieDetailCastModel(
                 characterName = character,

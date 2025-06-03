@@ -49,7 +49,10 @@ class MovieDetailRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getMovieDetailCredits(movieId: Int): Flow<ApiState<MovieDetailCastModel>> {
-        return apiCall { detailRemoteDataSource.getMovieCredits(movieId) }
+        return apiCall {
+            val movieDetailCreditResponse = detailRemoteDataSource.getMovieCredits(movieId)
+            movieDetailModelMapper.castResponseToCastModel(movieDetailCreditResponse)
+        }
     }
 
     override suspend fun getMovieDetailRecommendationMovies(movieId: Int): Flow<ApiState<MovieResponse>> {
